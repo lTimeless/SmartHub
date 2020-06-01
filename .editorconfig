@@ -1,0 +1,4 @@
+﻿[*.cs]
+
+# CA2007: Aufruf von "ConfigureAwait" für erwarteten Task erwägen
+dotnet_diagnostic.CA2007.severity = silent
