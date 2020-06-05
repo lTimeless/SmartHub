@@ -3,8 +3,12 @@
 # Add steps that publish symbols, save build artifacts, and more:
 # https://docs.microsoft.com/azure/devops/pipelines/languages/dotnet-core
 
-trigger:
-- master
+trigger: # when to trigger a build
+  batch: true # means that if there are more changes when build is running, they will be waited for instead of starting a parallel build
+  branches:
+    include:
+      - master # trigger only on changes to master branch
+      - develop
 
 pool:
   vmImage: 'windows-latest'
@@ -13,22 +17,85 @@ variables:
   solution: '**/*.sln'
   buildPlatform: 'Any CPU'
   buildConfiguration: 'Release'
+  linx64: 'linux-x64'
+  winx64: 'win-x64'
+  arm: 'linux-arm'
 
-steps:
-- task: NuGetToolInstaller@1
+stages:
+  - stage: RestoreBuild
+    displayName: 'Restore and Build'
+    jobs:
+      - job: 
+        steps:
+        - task: NuGetToolInstaller@1
+          displayName: Nuget Install
+        - task: NuGetCommand@2
+          displayName: Restore
+          inputs:
+            restoreSolution: '$(solution)'
+        # - task: SonarCloudPrepare@1  
+        #   displayName: Sonar Prepare
+        #   inputs:
+        #     SonarCloud: 'SonarCloud'
+        #     organization: 'maximilianstuempfl'
+        #     scannerMode: 'MSBuild'
+        #     projectKey: 'NewHaven_Server'
+        #     projectName: 'NewHaven_Server'
+        - task: VSBuild@1
+          displayName: Build
+          inputs:
+            solution: '$(solution)'
+            msbuildArgs: '/p:DeployOnBuild=true /p:WebPublishMethod=Package /p:PackageAsSingleFile=true /p:SkipInvalidConfigurations=true /p:DesktopBuildPackageLocation="$(build.artifactStagingDirectory)\WebApp.zip" /p:DeployIisAppPath="Default Web Site"'
+            platform: '$(buildPlatform)'
+            configuration: '$(buildConfiguration)'
+        # - task: Visual Studio IntelliCode Team Model Training@0
+        #   inputs:
+        #     branch: 'develop'
+        #     intelliCodeServiceEndpoint: 'IntelliCode'
+        - task: VSTest@2
+          displayName: Test
+          inputs:
+            platform: '$(buildPlatform)'
+            configuration: '$(buildConfiguration)'
+        # - task: SonarCloudAnalyze@1
+        #   displayName: Sonar Analyze
+        # - task: SonarCloudPublish@1
+        #   displayName: Sonar Publish
+        #   inputs:
+        #     pollingTimeoutSec: '300'
+ 
+  - stage: Publish
+    dependsOn: RestoreBuild
+    jobs:
+      - job: 
+        strategy:
+          maxParallel: 3
+          matrix:
+            windows:
+              imageName: 'windows-latest'
+            linux:
+              imageName: 'ubuntu-latest'
+            arm:
+              imageName: 'arm-latest'
+        steps:
+        - task: NuGetToolInstaller@1
+          displayName: Nuget Install
+          
+        - task: NuGetCommand@2
+          displayName: Restore
+          inputs:
+            restoreSolution: '$(solution)'
 
-- task: NuGetCommand@2
-  inputs:
-    restoreSolution: '$(solution)'
+        - task: DotNetCoreCLI@2
+          displayName: Publish
+          inputs:
+            command: 'publish'
+            publishWebProjects: true
+            arguments: '--configuration $(BuildConfiguration) --output $(Build.ArtifactStagingDirectory)'
+            zipAfterPublish: true
 
-- task: VSBuild@1
-  inputs:
-    solution: '$(solution)'
-    msbuildArgs: '/p:DeployOnBuild=true /p:WebPublishMethod=Package /p:PackageAsSingleFile=true /p:SkipInvalidConfigurations=true /p:DesktopBuildPackageLocation="$(build.artifactStagingDirectory)\WebApp.zip" /p:DeployIisAppPath="Default Web Site"'
-    platform: '$(buildPlatform)'
-    configuration: '$(buildConfiguration)'
-
-# - task: VSTest@2
-#   inputs:
-#     platform: '$(buildPlatform)'
-#     configuration: '$(buildConfiguration)'
+        - task: PublishBuildArtifacts@1
+          displayName: Publish Artifacts
+          inputs:
+            pathtoPublish: '$(Build.ArtifactStagingDirectory)' 
+            artifactName: 'Newhaven_Server_$(imageName)'
