@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+    <HasSharedItems>true</HasSharedItems>
+    <SharedGUID>80ad1fa2-346a-4e2c-9678-1cfc9b4b45a8</SharedGUID>
+  </PropertyGroup>
+  <PropertyGroup Label="Configuration">
+    <Import_RootNamespace>SmartHub.BasePlugin</Import_RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)Interfaces\DeviceType\IDoor.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Interfaces\DeviceType\ILight.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Interfaces\IBuild.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Interfaces\IHttpSupport.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Interfaces\IMqttSupport.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)IPlugin.cs" />
+  </ItemGroup>
+</Project>

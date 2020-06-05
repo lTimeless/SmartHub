@@ -19,19 +19,19 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		..\README.md = ..\README.md
 	EndProjectSection
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "PluginProjects", "PluginProjects", "{F8B86870-9BE0-4B04-B86A-CC726E308EF3}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SmartHub", "SmartHub", "{A4808DAE-2F25-4874-9D4A-778A02F10C05}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{1F8BFE47-D5C3-43C8-9FD7-4282A18B8900}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MockPlugin", "..\PluginProjects\MockPlugin\MockPlugin.csproj", "{B2CBA111-690A-4A5B-81ED-7A564B0D9191}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Shared", "Shared", "{5982C7DF-4F10-4BBF-84C4-9B5C897ADBE7}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PluginBase", "..\PluginProjects\PluginBase\PluginBase.csproj", "{78BD1A1E-5C4D-4E39-A919-71B148592BAE}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ShellyPlugin", "..\PluginProjects\ShellyPlugin\ShellyPlugin.csproj", "{61FD05F5-7330-41BF-A139-3283D2CB0EEC}"
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "SmartHub.BasePlugin", "SmartHub.BasePlugin\SmartHub.BasePlugin.shproj", "{80AD1FA2-346A-4E2C-9678-1CFC9B4B45A8}"
 EndProject
 Global
+	GlobalSection(SharedMSBuildProjectFiles) = preSolution
+		SmartHub.BasePlugin\SmartHub.BasePlugin.projitems*{80ad1fa2-346a-4e2c-9678-1cfc9b4b45a8}*SharedItemsImports = 13
+		SmartHub.BasePlugin\SmartHub.BasePlugin.projitems*{e666aab0-95c1-4638-a952-97109bbf2ab4}*SharedItemsImports = 5
+	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
@@ -53,18 +53,6 @@ Global
 		{E666AAB0-95C1-4638-A952-97109BBF2AB4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E666AAB0-95C1-4638-A952-97109BBF2AB4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E666AAB0-95C1-4638-A952-97109BBF2AB4}.Release|Any CPU.Build.0 = Release|Any CPU
-		{B2CBA111-690A-4A5B-81ED-7A564B0D9191}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{B2CBA111-690A-4A5B-81ED-7A564B0D9191}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{B2CBA111-690A-4A5B-81ED-7A564B0D9191}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{B2CBA111-690A-4A5B-81ED-7A564B0D9191}.Release|Any CPU.Build.0 = Release|Any CPU
-		{78BD1A1E-5C4D-4E39-A919-71B148592BAE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{78BD1A1E-5C4D-4E39-A919-71B148592BAE}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{78BD1A1E-5C4D-4E39-A919-71B148592BAE}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{78BD1A1E-5C4D-4E39-A919-71B148592BAE}.Release|Any CPU.Build.0 = Release|Any CPU
-		{61FD05F5-7330-41BF-A139-3283D2CB0EEC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{61FD05F5-7330-41BF-A139-3283D2CB0EEC}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{61FD05F5-7330-41BF-A139-3283D2CB0EEC}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{61FD05F5-7330-41BF-A139-3283D2CB0EEC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -74,9 +62,7 @@ Global
 		{106B3ACC-8E85-4961-9CC1-F6931322CACA} = {A4808DAE-2F25-4874-9D4A-778A02F10C05}
 		{1097B98A-DECF-43AB-84B7-5BD315CC417B} = {A4808DAE-2F25-4874-9D4A-778A02F10C05}
 		{E666AAB0-95C1-4638-A952-97109BBF2AB4} = {A4808DAE-2F25-4874-9D4A-778A02F10C05}
-		{B2CBA111-690A-4A5B-81ED-7A564B0D9191} = {F8B86870-9BE0-4B04-B86A-CC726E308EF3}
-		{78BD1A1E-5C4D-4E39-A919-71B148592BAE} = {F8B86870-9BE0-4B04-B86A-CC726E308EF3}
-		{61FD05F5-7330-41BF-A139-3283D2CB0EEC} = {F8B86870-9BE0-4B04-B86A-CC726E308EF3}
+		{80AD1FA2-346A-4E2C-9678-1CFC9B4B45A8} = {5982C7DF-4F10-4BBF-84C4-9B5C897ADBE7}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {3B05BA04-E698-45A7-86F3-CD424A0D81C2}

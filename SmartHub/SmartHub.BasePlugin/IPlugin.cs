@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace PluginBase
+namespace SmartHub.BasePlugin
 {
 	public interface IPlugin
 	{

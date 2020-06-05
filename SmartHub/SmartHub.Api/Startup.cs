@@ -1,14 +1,14 @@
 using Autofac;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.SpaServices.AngularCli;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Serilog;
 using SmartHub.Api.Extensions;
-using System.IO;
-using Microsoft.AspNetCore.SpaServices.AngularCli;
 using SmartHub.Infrastructure.Database;
+using System.IO;
 
 namespace SmartHub.Api
 {
@@ -95,10 +95,7 @@ namespace SmartHub.Api
 			// Endpoints
 			app.UseEndpoints(endpoints =>
 			{
-				endpoints.MapControllerRoute(
-					name: "default",
-					pattern: "{controller}/{action=Index}/{id?}");
-				endpoints.MapRazorPages();
+
 			});
 
 			app.UseSpa(spa =>

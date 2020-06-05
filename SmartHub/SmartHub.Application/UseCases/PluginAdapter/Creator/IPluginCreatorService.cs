@@ -1,4 +1,4 @@
-﻿using PluginBase;
+﻿using SmartHub.BasePlugin;
 using SmartHub.Domain.Entities.Plugins;
 using System.Collections.Generic;
 using System.Reflection;
