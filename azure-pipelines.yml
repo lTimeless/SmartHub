@@ -33,14 +33,14 @@ stages:
           displayName: Restore
           inputs:
             restoreSolution: '$(solution)'
-        - task: SonarCloudPrepare@1  
-          displayName: Sonar Prepare
-          inputs:
-            SonarCloud: 'SonarCloud'
-            organization: 'maximilianstuempfl'
-            scannerMode: 'MSBuild'
-            projectKey: 'NewHaven_Server'
-            projectName: 'NewHaven_Server'
+        # - task: SonarCloudPrepare@1  
+        #   displayName: Sonar Prepare
+        #   inputs:
+        #     SonarCloud: 'SonarCloud'
+        #     organization: 'maximilianstuempfl'
+        #     scannerMode: 'MSBuild'
+        #     projectKey: 'NewHaven_Server'
+        #     projectName: 'NewHaven_Server'
         - task: VSBuild@1
           displayName: Build
           inputs:
@@ -57,12 +57,12 @@ stages:
           inputs:
             platform: '$(buildPlatform)'
             configuration: '$(buildConfiguration)'
-        - task: SonarCloudAnalyze@1
-          displayName: Sonar Analyze
-        - task: SonarCloudPublish@1
-          displayName: Sonar Publish
-          inputs:
-            pollingTimeoutSec: '300'
+        # - task: SonarCloudAnalyze@1
+        #   displayName: Sonar Analyze
+        # - task: SonarCloudPublish@1
+        #   displayName: Sonar Publish
+        #   inputs:
+        #     pollingTimeoutSec: '300'
  
   - stage: Publish
     dependsOn: RestoreBuild
