@@ -48,10 +48,10 @@ stages:
             msbuildArgs: '/p:DeployOnBuild=true /p:WebPublishMethod=Package /p:PackageAsSingleFile=true /p:SkipInvalidConfigurations=true /p:DesktopBuildPackageLocation="$(build.artifactStagingDirectory)\WebApp.zip" /p:DeployIisAppPath="Default Web Site"'
             platform: '$(buildPlatform)'
             configuration: '$(buildConfiguration)'
-        - task: Visual Studio IntelliCode Team Model Training@0
-          inputs:
-            branch: 'develop'
-            intelliCodeServiceEndpoint: 'IntelliCode'
+        # - task: Visual Studio IntelliCode Team Model Training@0
+        #   inputs:
+        #     branch: 'develop'
+        #     intelliCodeServiceEndpoint: 'IntelliCode'
         - task: VSTest@2
           displayName: Test
           inputs:
