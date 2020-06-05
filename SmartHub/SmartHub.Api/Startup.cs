@@ -95,7 +95,9 @@ namespace SmartHub.Api
 			// Endpoints
 			app.UseEndpoints(endpoints =>
 			{
-
+				endpoints.MapControllerRoute(
+					name: "default",
+					pattern: "{controller}/{action=Index}/{id?}");
 			});
 
 			app.UseSpa(spa =>

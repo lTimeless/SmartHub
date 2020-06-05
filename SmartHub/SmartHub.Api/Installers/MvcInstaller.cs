@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 
 namespace SmartHub.Api.Installers
 {
@@ -11,7 +12,7 @@ namespace SmartHub.Api.Installers
 	{
 		public void InstallServices(IServiceCollection services, IConfiguration configuration)
 		{
-			services.AddControllersWithViews(opt =>
+			services.AddControllers(opt =>
 			{
 				var policy = new AuthorizationPolicyBuilder().RequireAuthenticatedUser().Build();
 				opt.Filters.Add(new AuthorizeFilter(policy));
@@ -19,6 +20,7 @@ namespace SmartHub.Api.Installers
 			{
 				options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
 				options.SerializerSettings.DateFormatHandling = DateFormatHandling.IsoDateFormat;
+				options.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
 			})
 				.SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
 

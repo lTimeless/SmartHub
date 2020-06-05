@@ -1,11 +1,11 @@
-﻿using Hangfire;
-using Microsoft.AspNetCore.Builder;
-using Serilog;
-using SmartHub.Api.Middleware;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Net.NetworkInformation;
 using System.Net.Sockets;
+using Hangfire;
+using Microsoft.AspNetCore.Builder;
+using Serilog;
+using SmartHub.Api.Middleware;
 
 namespace SmartHub.Api.Extensions
 {
@@ -36,13 +36,22 @@ namespace SmartHub.Api.Extensions
 
 		public static void ShowLocalIpv4(this IApplicationBuilder app)
 		{
-			foreach (var ip in from item in NetworkInterface.GetAllNetworkInterfaces()
-							   let _types = new List<NetworkInterfaceType> { NetworkInterfaceType.Ethernet, NetworkInterfaceType.Wireless80211 }
-							   where _types.Contains(item.NetworkInterfaceType) && item.OperationalStatus == OperationalStatus.Up
-							   from ip in item.GetIPProperties().UnicastAddresses
-							   where ip.Address.AddressFamily == AddressFamily.InterNetwork
-							   where ip.Address.ToString().Contains("192.")
-							   select ip)
+			foreach (var ip in NetworkInterface.GetAllNetworkInterfaces()
+				.Select(item => new
+				{
+					item,
+					types = new List<NetworkInterfaceType>
+					{
+						NetworkInterfaceType.Ethernet, NetworkInterfaceType.Wireless80211
+					}
+				})
+				.Where(t =>
+					t.types.Contains(t.item.NetworkInterfaceType) &&
+					t.item.OperationalStatus == OperationalStatus.Up)
+				.SelectMany(t => t.item.GetIPProperties().UnicastAddresses, (t, ip) => new {t, ip})
+				.Where(t => t.ip.Address.AddressFamily == AddressFamily.InterNetwork)
+				.Where(t => t.ip.Address.ToString().Contains("192."))
+				.Select(t => t.ip))
 			{
 				Log.Information($"Your server ip is : {ip.Address}");
 			}

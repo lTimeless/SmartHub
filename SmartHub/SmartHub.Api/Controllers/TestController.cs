@@ -1,9 +1,11 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 
 namespace SmartHub.Api.Controllers
 {
+	[AllowAnonymous]
 	public class TestController : BaseController
 	{
 		// GET: api/Test
