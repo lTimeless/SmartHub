@@ -61,7 +61,6 @@ namespace SmartHub.Api.Controllers
 			return Ok(plugins);
 		}
 
-
 		// GET: api/Plugin/Iplugins
 		[HttpGet("iplugins/{pluginName}")]
 		public async Task<IActionResult> IPlugins(string pluginName)
@@ -69,7 +68,6 @@ namespace SmartHub.Api.Controllers
 			var iPlugins = await _pluginHostService.Plugins.GetIPluginByName(pluginName);
 			return Ok(iPlugins);
 		}
-
 
 	}
 }
