@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using Serilog;
 
 namespace SmartHub.Application.UseCases.PluginAdapter.Util
 {
@@ -14,7 +15,6 @@ namespace SmartHub.Application.UseCases.PluginAdapter.Util
 			return assembly.GetTypes().Where(type => !type.IsInterface)
 				.Where(type => typeof(IPlugin).IsAssignableFrom(type))
 				.ToList();
-
 		}
 
 		// TODO: refactor wie in dev.to article?? Scheint auch nicht richtig zu funktionieren

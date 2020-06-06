@@ -1,6 +1,6 @@
 ﻿using SmartHub.Application.UseCases.PluginAdapter.Loader;
 using SmartHub.BasePlugin;
-using SmartHub.BasePlugin.Interfaces.DeviceType;
+using SmartHub.BasePlugin.Interfaces.DeviceTypes;
 
 namespace SmartHub.Application.UseCases.PluginAdapter.Host
 {

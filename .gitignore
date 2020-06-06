@@ -233,7 +233,9 @@ _Pvt_Extensions
 
 # Project Files / Folders
 SmartHub.Api/ClientApp/node_modules/
+SmartHub/Plugins/
 
 # Intellij
 SmartHub/.idea
+
 

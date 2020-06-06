@@ -28,8 +28,8 @@ namespace SmartHub.Api.Extensions
 		{
 			Console.WriteLine("Welcome to SmartHub, this is a smarthome written in c# and asp.net core." + "\n\r" +
 				"This is a private project of mine and I use this to learn new things and create my own smarthome that " + "\n\r" +
-				"I am going to use at home." + "\n\r" +
-				"For more info and if you encounter any issues or have any feedback please visit: https://github.com/lTimeless/NewHaven_Server :)" + "\n\r" +
+				"I am going to use at myself." + "\n\r" +
+				"For more info and if you encounter any issues or have any feedback please visit: https://github.com/SmartHub-Io/SmartHub :)" + "\n\r" +
 				"--------------------------------------------------");
 			return host;
 		}

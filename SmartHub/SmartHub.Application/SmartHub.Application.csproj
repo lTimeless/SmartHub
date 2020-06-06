@@ -12,9 +12,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\SmartHub.BasePlugin\SmartHub.BasePlugin.csproj" />
     <ProjectReference Include="..\SmartHub.Domain\SmartHub.Domain.csproj" />
   </ItemGroup>
-
-  <Import Project="..\SmartHub.BasePlugin\SmartHub.BasePlugin.projitems" Label="Shared" />
 
 </Project>

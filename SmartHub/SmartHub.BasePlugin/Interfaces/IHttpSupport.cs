@@ -1,6 +1,6 @@
 ﻿namespace SmartHub.BasePlugin.Interfaces
 {
-	public interface IHttpSupport
-	{
-	}
+    public interface IHttpSupport
+    {
+    }
 }
