@@ -1,8 +1,0 @@
-backend:
-  - any: "SmartHub/**/*"
-    all: "!SmartHub/SmartHub.Api/**/*"
-frontend:
-  - any: "SmartHub/SmartHub.Api/clientApp/**/*"
-    all: "!SmartHub/**/*"
-review:
-  - "./*"
