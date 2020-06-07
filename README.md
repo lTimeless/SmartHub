@@ -6,7 +6,7 @@
 [![License](https://img.shields.io/badge/License-MIT%20License-yellow)](https://github.com/SmartHub-Io/SmartHub/blob/master/LICENSE)
 
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=smarthub-io&metric=alert_status)](https://sonarcloud.io/dashboard?id=smarthub-io)
-[![Codacy Badge](https://api.codacy.com/project/badge/Grade/ba5ed91a4cd64a4091cf5038b8d67f2b)](https://www.codacy.com/manual/lTimeless/Corellia_Server?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=lTimeless/Corellia_Server&amp;utm_campaign=Badge_Grade)
+[![Codacy Badge](https://app.codacy.com/project/badge/Grade/18e1a3445e9b4152ade6be916f8bae0c)](https://www.codacy.com/gh/SmartHub-Io/SmartHub?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=SmartHub-Io/SmartHub&amp;utm_campaign=Badge_Grade)
 
 > This is a smarthome project based on asp.net core(3.1),ef core(3.1), postgreSql,angular9 -later maybe Vue3-
 
