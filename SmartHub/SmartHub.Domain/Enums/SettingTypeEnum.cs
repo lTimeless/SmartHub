@@ -1,5 +1,8 @@
-﻿namespace SmartHub.Domain.Enums
+﻿using System;
+
+namespace SmartHub.Domain.Enums
 {
+	[Flags]
 	public enum SettingTypeEnum
 	{
 		Default,

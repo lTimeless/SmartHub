@@ -4,7 +4,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using Serilog;
 
 namespace SmartHub.Application.UseCases.PluginAdapter.Util
 {
@@ -17,24 +16,19 @@ namespace SmartHub.Application.UseCases.PluginAdapter.Util
 				.ToList();
 		}
 
-		// TODO: refactor wie in dev.to article?? Scheint auch nicht richtig zu funktionieren
 		public static PluginTypeEnum GetEnumType(string pluginName)
 		{
-			if (Enum.TryParse<PluginTypeEnum>(pluginName, out var tryTypeResult))
+			return pluginName switch
 			{
-				return tryTypeResult switch
-				{
-					PluginTypeEnum.Base => PluginTypeEnum.Base,
-					PluginTypeEnum.Mock => PluginTypeEnum.Mock,
-					PluginTypeEnum.Door => PluginTypeEnum.Door,
-					PluginTypeEnum.Light => PluginTypeEnum.Light,
-					PluginTypeEnum.Ht => PluginTypeEnum.Ht,
-					PluginTypeEnum.Sensor => PluginTypeEnum.Sensor,
-					PluginTypeEnum.Rgb => PluginTypeEnum.Rgb,
-					_ => PluginTypeEnum.None,
-				};
-			}
-			return PluginTypeEnum.Base;
+				nameof(PluginTypeEnum.Base) => PluginTypeEnum.Base,
+				nameof(PluginTypeEnum.Mock) => PluginTypeEnum.Mock,
+				nameof(PluginTypeEnum.Door) => PluginTypeEnum.Door,
+				nameof(PluginTypeEnum.Light) => PluginTypeEnum.Light,
+				nameof(PluginTypeEnum.Ht) => PluginTypeEnum.Ht,
+				nameof(PluginTypeEnum.Sensor) => PluginTypeEnum.Sensor,
+				nameof(PluginTypeEnum.Rgb) => PluginTypeEnum.Rgb,
+				_ => PluginTypeEnum.None,
+			};
 		}
 	}
 }
