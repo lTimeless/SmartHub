@@ -5,4 +5,4 @@ frontend:
   - any: ['SmartHub/SmartHub.Api/clientApp/**/*']
     all: ['!SmartHub/**/*']
 review:
-  - ./*
+  - "./*"
