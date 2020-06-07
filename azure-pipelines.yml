@@ -33,14 +33,15 @@ stages:
           displayName: Restore
           inputs:
             restoreSolution: '$(solution)'
-        - task: SonarCloudPrepare@1  
-          displayName: Sonar Prepare
+
+        - task: SonarCloudPrepare@1
           inputs:
-            SonarCloud: 'SonarCloud'
+            SonarCloud: 'SmartHub-SonarCloud'
             organization: 'smarthub-io'
             scannerMode: 'MSBuild'
             projectKey: 'smarthub-io'
             projectName: 'SmartHub'
+
         - task: VSBuild@1
           displayName: Build
           inputs:
