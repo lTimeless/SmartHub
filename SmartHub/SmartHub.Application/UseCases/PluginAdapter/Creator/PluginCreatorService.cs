@@ -36,15 +36,18 @@ namespace SmartHub.Application.UseCases.PluginAdapter.Creator
 		public List<Plugin> CreatePluginsFromIPlugins(IEnumerable<IPlugin> iPluginsList, string assemblyLocation)
 		{
 			var pluginList = new List<Plugin>();
-			if (iPluginsList.IsNullOrEmpty())
+			var pluginsList = iPluginsList.ToList();
+			if (pluginsList.IsNullOrEmpty())
 			{
 				return pluginList;
 			}
 
-			// TODO: den support anhand des interfaces herausfinden, erbt IPlugin von dem jeweiligeninterface dann setze auf true
-			pluginList.AddRange(iPluginsList
-				.Select(iPlugin => new Plugin(iPlugin.Name, string.Empty, PluginUtils.GetEnumType(iPlugin.Name), assemblyLocation, true,
-					iPlugin.AssemblyVersion, iPlugin.Company, iPlugin.MqttSupport, iPlugin.HttpSupport)));
+			pluginList.AddRange(from iPlugin in pluginsList
+				let interfaces = iPlugin.GetType().GetInterfaces()
+				let httpSupport = interfaces.Any(x => x.Name.Contains("HttpSupport"))
+				let mqttSupport = interfaces.Any(x => x.Name.Contains("MqttSupport"))
+				select new Plugin(iPlugin.Name, string.Empty, PluginUtils.GetEnumType(iPlugin.Name), assemblyLocation,
+					true, iPlugin.AssemblyVersion, iPlugin.Company, mqttSupport, httpSupport));
 			return pluginList;
 		}
 	}
