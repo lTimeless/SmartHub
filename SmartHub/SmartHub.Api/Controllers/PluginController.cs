@@ -1,33 +1,19 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Serilog;
-using SmartHub.Application.Common.Interfaces;
 using SmartHub.Application.UseCases.PluginAdapter.Finder;
-using SmartHub.Application.UseCases.PluginAdapter.Host;
 using SmartHub.Application.UseCases.PluginAdapter.Loader;
-using System;
 using System.Threading.Tasks;
 
 namespace SmartHub.Api.Controllers
 {
 	public class PluginController : BaseController
 	{
-		private readonly IUnitOfWork _unitOfWork;
-		private readonly ILogger _logger;
-		private readonly IPluginHostService _pluginHostService;
-
-		public PluginController(IUnitOfWork unitOfWork, ILogger logger, IPluginHostService pluginHostService)
-		{
-			_unitOfWork = unitOfWork;
-			_logger = logger;
-			_pluginHostService = pluginHostService;
-		}
 
 		/// <summary>
 		/// Finds all available plugins in the plugin folder
 		/// </summary>
 		/// <returns></returns>
 		[HttpGet("find")]
-		public async Task<IActionResult> Find()
+		public async Task<IActionResult> FindAll()
 		{
 			return Ok(await Mediator.Send(new PluginFinderQuery(false)));
 		}
@@ -56,25 +42,5 @@ namespace SmartHub.Api.Controllers
 		{
 			return Ok(await Mediator.Send(new PluginLoadCommand(pluginPath)));
 		}
-
-
-		// GET: api/Plugin/plugins
-		[HttpGet("plugins")]
-		[Obsolete("Just for testing")]
-		public async Task<IActionResult> Plugins()
-		{
-			var home = await _unitOfWork.HomeRepository.GetFirstAsync();
-			var plugins = home.Plugins;
-			return Ok(plugins);
-		}
-
-		// GET: api/Plugin/Iplugins
-		[HttpGet("iplugins/{pluginName}")]
-		public async Task<IActionResult> IPlugins(string pluginName)
-		{
-			var iPlugins = await _pluginHostService.Plugins.GetAndLoadByName(pluginName, null);
-			return Ok(iPlugins);
-		}
-
 	}
 }
