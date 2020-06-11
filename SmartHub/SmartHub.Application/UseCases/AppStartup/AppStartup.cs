@@ -82,7 +82,7 @@ namespace SmartHub.Application.UseCases.AppStartup
 				_logger.Warning($"[{nameof(AppStartup)}] No new Plugins loaded");
 				return;
 			}
-			await _pluginHostService.Plugins.LoadAndAddIPluginsToHome(new List<string> { setting.PluginPath });
+			await _pluginHostService.Plugins.LoadAndAddToHomeAsync(new List<string> { setting.PluginPath });
 		}
 	}
 }

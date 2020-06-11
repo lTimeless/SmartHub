@@ -18,7 +18,7 @@ namespace SmartHub.Application.UseCases.PluginAdapter.Creator
 		public Dictionary<string, T> CreateIPluginsFromAssembly(Assembly assembly)
 		{
 			var iPluginsDictionary = new Dictionary<string, T>();
-			foreach (var type in PluginUtils.GetPluginTypes(assembly))
+			foreach (var type in PluginUtils.GetValidPluginTypes(assembly))
 			{
 				var plugin = Activator.CreateInstance(type) as T;
 				switch (plugin)

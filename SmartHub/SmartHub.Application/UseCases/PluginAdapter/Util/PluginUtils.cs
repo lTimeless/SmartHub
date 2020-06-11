@@ -9,10 +9,10 @@ namespace SmartHub.Application.UseCases.PluginAdapter.Util
 {
 	public static class PluginUtils
 	{
-		public static List<Type> GetPluginTypes(Assembly assembly)
+		public static IEnumerable<Type> GetValidPluginTypes(Assembly assembly)
 		{
-			return assembly.GetTypes().Where(type => !type.IsInterface)
-				.Where(type => typeof(IPlugin).IsAssignableFrom(type))
+			return assembly.GetTypes()
+				.Where(type => !type.IsInterface && typeof(IPlugin).IsAssignableFrom(type))
 				.ToList();
 		}
 

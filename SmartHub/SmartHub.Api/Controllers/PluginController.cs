@@ -22,13 +22,20 @@ namespace SmartHub.Api.Controllers
 			_pluginHostService = pluginHostService;
 		}
 
-		// GET: api/Plugin
+		/// <summary>
+		/// Finds all available plugins in the plugin folder
+		/// </summary>
+		/// <returns></returns>
 		[HttpGet("find")]
 		public async Task<IActionResult> Find()
 		{
 			return Ok(await Mediator.Send(new PluginFinderQuery(false)));
 		}
-		// GET: api/Plugin
+
+		/// <summary>
+		/// Find all new plugins in the plugin folder
+		/// </summary>
+		/// <returns></returns>
 		[HttpGet("findNew")]
 		public async Task<IActionResult> FindNew()
 		{
@@ -40,14 +47,14 @@ namespace SmartHub.Api.Controllers
 		public async Task<IActionResult> LoadAllNew()
 		{
 
-			return Ok(await Mediator.Send(new PluginLoadCommand(false)));
+			return Ok(await Mediator.Send(new PluginLoadCommand()));
 		}
 
 		// GET: api/Plugin/
-		[HttpGet("{path}", Name = "Get")]
-		public async Task<IActionResult> LoadByName(string path)
+		[HttpGet("{pluginPath}", Name = "Get")]
+		public async Task<IActionResult> LoadNewBypath(string pluginPath)
 		{
-			return Ok(await Mediator.Send(new PluginLoadCommand(true, path)));
+			return Ok(await Mediator.Send(new PluginLoadCommand(pluginPath)));
 		}
 
 
@@ -65,7 +72,7 @@ namespace SmartHub.Api.Controllers
 		[HttpGet("iplugins/{pluginName}")]
 		public async Task<IActionResult> IPlugins(string pluginName)
 		{
-			var iPlugins = await _pluginHostService.Plugins.GetIPluginByName(pluginName);
+			var iPlugins = await _pluginHostService.Plugins.GetAndLoadByName(pluginName, null);
 			return Ok(iPlugins);
 		}
 

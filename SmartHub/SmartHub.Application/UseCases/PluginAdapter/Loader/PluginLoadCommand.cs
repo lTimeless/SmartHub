@@ -5,14 +5,12 @@ namespace SmartHub.Application.UseCases.PluginAdapter.Loader
 {
     public class PluginLoadCommand : IRequest<ServiceResponse<string>>
     {
-        public bool LoadOne { get; }
-        public string? Path { get; }
+        public string Path { get; }
 
 
-        public PluginLoadCommand(bool loadOne, string path = null)
+        public PluginLoadCommand(string path = null)
         {
-            LoadOne = loadOne;
-            Path = path;
+            Path = path is null ? string.Empty : path;
         }
     }
 }
