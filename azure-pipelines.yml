@@ -27,9 +27,8 @@ variables:
 
 stages:
   - stage: RestoreBuild
-    displayName: 'Restore and Build'
     jobs:
-      - job: 
+      - job: Restore_and_Build
         steps:
         - task: NuGetToolInstaller@1
           displayName: Nuget Install
@@ -72,7 +71,7 @@ stages:
   - stage: Publish
     dependsOn: RestoreBuild
     jobs:
-      - job: 
+      - job: Publish
         strategy:
           maxParallel: 3
           matrix:
@@ -103,4 +102,4 @@ stages:
           displayName: Publish Artifacts
           inputs:
             pathtoPublish: '$(Build.ArtifactStagingDirectory)' 
-            artifactName: 'Newhaven_Server_$(imageName)'
+            artifactName: 'SmartHub_$(imageName)'
