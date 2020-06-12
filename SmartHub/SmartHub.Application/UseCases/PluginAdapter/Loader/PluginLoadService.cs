@@ -12,6 +12,7 @@ using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using SmartHub.Domain.Entities.Homes;
+using SmartHub.Domain.Enums;
 
 namespace SmartHub.Application.UseCases.PluginAdapter.Loader
 {
@@ -42,7 +43,7 @@ namespace SmartHub.Application.UseCases.PluginAdapter.Loader
 				throw new PluginException($"[{nameof(GetAndLoadByName)}] Error: No plugin found, in the database, under the given name : {pluginName}");
 			}
 
-			(PluginLoadContext pluginLoadContext, IEnumerable<Assembly> assembly) = Load(plugin.AssemblyFilepath);
+			(PluginLoadContext pluginLoadContext, IEnumerable<Assembly> assembly) = Load(plugin.AssemblyFilepath, LoadStrategyEnum.Single);
 
 			var dictionaryOfIPlugin = _pluginCreator.CreateIPluginsFromAssembly(assembly.FirstOrDefault());
 
@@ -64,7 +65,7 @@ namespace SmartHub.Application.UseCases.PluginAdapter.Loader
 				throw new SmartHubException($"[{nameof(GetAndLoadByPath)}] The given assemblyPath is null");
 			}
 
-			(PluginLoadContext pluginLoadContext, IEnumerable<Assembly> assemblies) = Load(assemblyPath, true);
+			(PluginLoadContext pluginLoadContext, IEnumerable<Assembly> assemblies) = Load(assemblyPath, LoadStrategyEnum.Multiple);
 			var listOfIPlugins = new List<T>();
 			foreach (var assembly in assemblies)
 			{
@@ -78,7 +79,7 @@ namespace SmartHub.Application.UseCases.PluginAdapter.Loader
 
 
 		/// <inheritdoc cref="IPluginLoadService{T}.LoadAndAddToHomeAsync"/>
-		public async Task<bool> LoadAndAddToHomeAsync(IEnumerable<string> assemblyPaths)
+		public async Task<bool> LoadAndAddToHomeAsync(IEnumerable<string> assemblyPaths, LoadStrategyEnum multiple)
 		{
 			var paths = assemblyPaths.ToList();
 			if (paths.IsNullOrEmpty())
@@ -87,7 +88,7 @@ namespace SmartHub.Application.UseCases.PluginAdapter.Loader
 			}
 			foreach (var path in paths)
 			{
-				(PluginLoadContext pluginLoadContext, IEnumerable<Assembly> assemblies) = Load(path, true);
+				(PluginLoadContext pluginLoadContext, IEnumerable<Assembly> assemblies) = Load(path, multiple);
 				foreach (var assembly in assemblies)
 				{
 					await AddToHome(_pluginCreator.CreateIPluginsFromAssembly(assembly), assembly);
@@ -101,14 +102,14 @@ namespace SmartHub.Application.UseCases.PluginAdapter.Loader
 
 		// put entire unloadable AssemblyLoadContext in a method to avoid caller holding on to the reference
 		[MethodImpl(MethodImplOptions.NoInlining)]
-		private Tuple<PluginLoadContext, IEnumerable<Assembly>> Load(string path, bool multiple = false)
+		private Tuple<PluginLoadContext, IEnumerable<Assembly>> Load(string path, LoadStrategyEnum multiple)
 		{
 			if (!Directory.Exists(path))
 			{
 				throw new PluginException($"[{nameof(Load)}] The given path does not exist, path: {path}");
 			}
 
-			if (multiple)
+			if (multiple == LoadStrategyEnum.Multiple)
 			{
 				return _pluginFinderService.GetAssembliesAndLoadContext(path);
 			}

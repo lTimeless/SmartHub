@@ -42,7 +42,7 @@ namespace SmartHub.Application.UseCases.PluginAdapter.Loader
             }
             var path = request.Path.IsNullOrEmpty() ? setting.PluginPath : request.Path;
 
-            var pluginsLoaded = await _pluginHostService.Plugins.LoadAndAddToHomeAsync(new []{ path });
+            var pluginsLoaded = await _pluginHostService.Plugins.LoadAndAddToHomeAsync(new []{ path }, request.LoadStrategyMultiple);
             return new ServiceResponse<string>(pluginsLoaded ? "New Plugins loaded" : "Error loading new Plugins",
                 pluginsLoaded);
         }

@@ -2,6 +2,7 @@
 using SmartHub.Application.UseCases.PluginAdapter.Finder;
 using SmartHub.Application.UseCases.PluginAdapter.Loader;
 using System.Threading.Tasks;
+using SmartHub.Domain.Enums;
 
 namespace SmartHub.Api.Controllers
 {
@@ -33,14 +34,14 @@ namespace SmartHub.Api.Controllers
 		public async Task<IActionResult> LoadAllNew()
 		{
 
-			return Ok(await Mediator.Send(new PluginLoadCommand()));
+			return Ok(await Mediator.Send(new PluginLoadCommand(LoadStrategyEnum.Multiple)));
 		}
 
 		// GET: api/Plugin/
 		[HttpGet("{pluginPath}", Name = "Get")]
 		public async Task<IActionResult> LoadNewBypath(string pluginPath)
 		{
-			return Ok(await Mediator.Send(new PluginLoadCommand(pluginPath)));
+			return Ok(await Mediator.Send(new PluginLoadCommand(LoadStrategyEnum.Multiple, pluginPath)));
 		}
 	}
 }
