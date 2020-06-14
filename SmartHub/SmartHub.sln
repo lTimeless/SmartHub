@@ -25,14 +25,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{1F8BFE47
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Shared", "Shared", "{5982C7DF-4F10-4BBF-84C4-9B5C897ADBE7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SmartHub.BasePlugin", "SmartHub.BasePlugin\SmartHub.BasePlugin.csproj", "{B1FC6183-41B0-439E-BA46-53B1DE88DF17}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SmartHub.BasePlugin", "SmartHub.BasePlugin\SmartHub.BasePlugin.csproj", "{B1FC6183-41B0-439E-BA46-53B1DE88DF17}"
 EndProject
 Global
-	GlobalSection(SharedMSBuildProjectFiles) = preSolution
-		SmartHub.BasePlugin\SmartHub.BasePlugin.projitems*{80ad1fa2-346a-4e2c-9678-1cfc9b4b45a8}*SharedItemsImports = 13
-		SmartHub.BasePlugin\SmartHub.BasePlugin.projitems*{9e9fa8f4-9c11-4fce-8455-e9e96ef532ee}*SharedItemsImports = 5
-		SmartHub.BasePlugin\SmartHub.BasePlugin.projitems*{e666aab0-95c1-4638-a952-97109bbf2ab4}*SharedItemsImports = 5
-	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU

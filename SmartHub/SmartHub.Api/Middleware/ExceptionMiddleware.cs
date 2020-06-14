@@ -41,9 +41,9 @@ namespace SmartHub.Api.Middleware
 					errors = restException.Errors;
 					break;
 
-				case SmartHubException newHavenException:
-					Log.Warning($"[{nameof(HandleExceptionAsync)}] NewHaven ERROR: {newHavenException.Message} -- {newHavenException.Source}");
-					errors = string.IsNullOrWhiteSpace(newHavenException.Message) ? "Error" : newHavenException.Message;
+				case SmartHubException smartHubException:
+					Log.Warning($"[{nameof(HandleExceptionAsync)}] SmartHub ERROR: {smartHubException.Message} -- {smartHubException.Source}");
+					errors = string.IsNullOrWhiteSpace(smartHubException.Message) ? "Error" : smartHubException.Message;
 					httpContext.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
 					break;
 

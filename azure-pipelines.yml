@@ -9,6 +9,10 @@ trigger: # when to trigger a build
     include:
       - master # trigger only on changes to master branch
       - develop
+pr:
+  branches:
+    include:
+    - '*'  # must quote since "*" is a YAML reserved character; we want a string
 
 pool:
   vmImage: 'windows-latest'
@@ -23,9 +27,8 @@ variables:
 
 stages:
   - stage: RestoreBuild
-    displayName: 'Restore and Build'
     jobs:
-      - job: 
+      - job: Restore_and_Build
         steps:
         - task: NuGetToolInstaller@1
           displayName: Nuget Install
@@ -33,14 +36,15 @@ stages:
           displayName: Restore
           inputs:
             restoreSolution: '$(solution)'
-        # - task: SonarCloudPrepare@1  
-        #   displayName: Sonar Prepare
-        #   inputs:
-        #     SonarCloud: 'SonarCloud'
-        #     organization: 'maximilianstuempfl'
-        #     scannerMode: 'MSBuild'
-        #     projectKey: 'NewHaven_Server'
-        #     projectName: 'NewHaven_Server'
+
+        - task: SonarCloudPrepare@1
+          inputs:
+            SonarCloud: 'SmartHub-SonarCloud'
+            organization: 'smarthub-io'
+            scannerMode: 'MSBuild'
+            projectKey: 'smarthub-io'
+            projectName: 'SmartHub'
+
         - task: VSBuild@1
           displayName: Build
           inputs:
@@ -57,17 +61,17 @@ stages:
           inputs:
             platform: '$(buildPlatform)'
             configuration: '$(buildConfiguration)'
-        # - task: SonarCloudAnalyze@1
-        #   displayName: Sonar Analyze
-        # - task: SonarCloudPublish@1
-        #   displayName: Sonar Publish
-        #   inputs:
-        #     pollingTimeoutSec: '300'
+        - task: SonarCloudAnalyze@1
+          displayName: Sonar Analyze
+        - task: SonarCloudPublish@1
+          displayName: Sonar Publish
+          inputs:
+            pollingTimeoutSec: '300'
  
   - stage: Publish
     dependsOn: RestoreBuild
     jobs:
-      - job: 
+      - job: Publish
         strategy:
           maxParallel: 3
           matrix:
@@ -98,4 +102,4 @@ stages:
           displayName: Publish Artifacts
           inputs:
             pathtoPublish: '$(Build.ArtifactStagingDirectory)' 
-            artifactName: 'Newhaven_Server_$(imageName)'
+            artifactName: 'SmartHub_$(imageName)'

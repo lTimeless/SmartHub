@@ -25,23 +25,28 @@ namespace SmartHub.Application.UseCases.PluginAdapter.Finder
 
         public async Task<ServiceResponse<IReadOnlyDictionary<string, FoundPluginDto>>> Handle(PluginFinderQuery request, CancellationToken cancellationToken)
         {
+            _logger.Warning($"[{nameof(PluginFinderHandler)}] Find (new = {request.OnlyNew}) available plugins");
             var home = await _unitOfWork.HomeRepository.GetFirstAsync().ConfigureAwait(false);
             var setting = home.Settings.FirstOrDefault(c => c.IsActive || c.PluginPath.Contains("_private"));
             var foundPlugins = _pluginFinder.FindPluginsInAssemblies(setting.PluginPath);
 
             if (!request.OnlyNew)
             {
-                return new ServiceResponse<IReadOnlyDictionary<string, FoundPluginDto>>(foundPlugins, true,
-                    "New Plugins available");
+                return foundPlugins.IsNullOrEmpty()
+                    ? new ServiceResponse<IReadOnlyDictionary<string, FoundPluginDto>>(foundPlugins, true,
+                        "Plugins available")
+                    : new ServiceResponse<IReadOnlyDictionary<string, FoundPluginDto>>(foundPlugins, false,
+                        "No plugins available");
             }
 
             var filteredOrAllFoundPlugins = await _pluginFinder.FilterByPluginsInHome(foundPlugins);
-            if (filteredOrAllFoundPlugins.IsNullOrEmpty())
-            {
-                _logger.Warning($"[{nameof(PluginFinderHandler)}] No new Plugins available");
-                return new ServiceResponse<IReadOnlyDictionary<string, FoundPluginDto>>(filteredOrAllFoundPlugins, false, "No new Plugins available");
-            }
-            return new ServiceResponse<IReadOnlyDictionary<string, FoundPluginDto>>(foundPlugins, true, "New Plugins available");
+            return filteredOrAllFoundPlugins.IsNullOrEmpty()
+                ? new ServiceResponse<IReadOnlyDictionary<string, FoundPluginDto>>(filteredOrAllFoundPlugins,
+                    false,
+                    "No new plugins available")
+                : new ServiceResponse<IReadOnlyDictionary<string, FoundPluginDto>>(foundPlugins,
+                    true,
+                    "New plugins available");
         }
     }
 }

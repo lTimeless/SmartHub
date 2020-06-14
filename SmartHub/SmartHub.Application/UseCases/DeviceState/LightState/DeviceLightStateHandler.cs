@@ -14,6 +14,7 @@ namespace SmartHub.Application.UseCases.DeviceState.LightState
 		private readonly IUnitOfWork _unitOfWork;
 		private readonly IPluginHostService _pluginHostService;
 		private readonly IHttpService _httpService;
+		private string _query = "";
 
 		public DeviceLightStateHandler(IUnitOfWork unitOfWork, IPluginHostService pluginHostService, IHttpService httpService)
 		{
@@ -32,24 +33,20 @@ namespace SmartHub.Application.UseCases.DeviceState.LightState
 			var foundDevice = home.Devices.Find(x => x.Id == request.LightStateDto.DeviceId);
 			if (foundDevice is null)
 			{
-				throw new SmartHubException($"[{nameof(DeviceLightStateHandler)}] Error: No device found to the given deviceId {request.LightStateDto.DeviceId}");
+				throw new SmartHubException($"[{nameof(DeviceLightStateHandler)}] Error: No device found by the given deviceId {request.LightStateDto.DeviceId}");
 			}
-			var dbPlugin = home.Plugins.Find(x => x.Name.Equals(foundDevice.PluginName));
-			if (dbPlugin is null)
-			{
-				throw new DeviceStateException($"[{nameof(DeviceLightStateHandler)}] Error: No plugin found to the device {foundDevice.Name}");
-			}
-			var pluginObject = await _pluginHostService.LightPlugins.GetIPluginByName(dbPlugin.Name);
-			var query = "";
+			var pluginObject = await _pluginHostService.LightPlugins.GetAndLoadByName(foundDevice.PluginName, home);
 			if (pluginObject.HttpSupport)
 			{
-				query = pluginObject.Instantiate()
+				_query = pluginObject.Instantiate()
 					.SetToggleLight(request.LightStateDto.ToggleLight)
 				.Build();
 			}
 
-			var response = await _httpService.SendAsync(foundDevice.Ip.Ipv4, query);
-			return new ServiceResponse<DeviceStateDto>(null, response, response ? "Light on" : "Error: Something went wrong");
+			var response = await _httpService.SendAsync(foundDevice.Ip.Ipv4, _query);
+			return new ServiceResponse<DeviceStateDto>(null, response, response
+				? $"{foundDevice.Name} changed light status"
+				: "Error: Something went wrong");
 		}
 
 	}
