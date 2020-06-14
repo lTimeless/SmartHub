@@ -9,10 +9,9 @@ namespace SmartHub.Application.UseCases.PluginAdapter.Finder
 	{
 		IReadOnlyDictionary<string, FoundPluginDto> FindPluginsInAssemblies(string path);
 
-		Task<IReadOnlyDictionary<string, FoundPluginDto>> FilterByPluginsInHome(
-			IReadOnlyDictionary<string, FoundPluginDto> foundPluginDtosDictionary);
+		Task<IReadOnlyDictionary<string, FoundPluginDto>> FilterByPluginsInHome(IReadOnlyDictionary<string, FoundPluginDto> foundPluginDtosDictionary);
 
-		Tuple<PluginLoadContext, IEnumerable<Assembly>> GetValidAssembliesAndLoadContext(string path);
-		Tuple<PluginLoadContext, Assembly> GetValidAssemblyAndLoadContext(string path);
+		Tuple<PluginLoadContext, IEnumerable<Assembly>> GetAssembliesAndLoadContext(string path);
+		Tuple<PluginLoadContext, Assembly> GetAssemblyAndLoadContext(string path);
 	}
 }

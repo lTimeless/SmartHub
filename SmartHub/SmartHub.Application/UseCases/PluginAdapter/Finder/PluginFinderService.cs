@@ -26,11 +26,11 @@ namespace SmartHub.Application.UseCases.PluginAdapter.Finder
 		public IReadOnlyDictionary<string, FoundPluginDto> FindPluginsInAssemblies(string path)
 		{
 			var assemblyPluginInfos = new Dictionary<string, FoundPluginDto>();
-			(PluginLoadContext pluginLoadContext, IEnumerable<Assembly> assemblies) = GetValidAssembliesAndLoadContext(path);
+			(PluginLoadContext pluginLoadContext, IEnumerable<Assembly> assemblies) = GetAssembliesAndLoadContext(path);
 
 			foreach (var assembly in assemblies)
 			{
-				foreach (var plugin in PluginUtils.GetPluginTypes(assembly))
+				foreach (var plugin in PluginUtils.GetValidPluginTypes(assembly))
 				{
 					var pluginDto = new FoundPluginDto(plugin.Name, assembly.Location);
 					assemblyPluginInfos.Add(plugin.Name, pluginDto);
@@ -61,26 +61,25 @@ namespace SmartHub.Application.UseCases.PluginAdapter.Finder
 			return finalDictionary;
 		}
 
-		public Tuple<PluginLoadContext, IEnumerable<Assembly>> GetValidAssembliesAndLoadContext(string path)
+		public Tuple<PluginLoadContext, IEnumerable<Assembly>> GetAssembliesAndLoadContext(string path)
 		{
 			var pluginLoadContext = new PluginLoadContext();
 			var assemblies = Directory
 				.EnumerateFiles(path, "*.dll", SearchOption.AllDirectories)
 				.Select(pluginLoadContext.LoadFromAssemblyPath)
-				.Where(x => !PluginUtils.GetPluginTypes(x).IsNullOrEmpty());
+				.Distinct();
 			return new Tuple<PluginLoadContext, IEnumerable<Assembly>>(pluginLoadContext, assemblies);
 		}
 
-		public Tuple<PluginLoadContext, Assembly> GetValidAssemblyAndLoadContext(string path)
+		public Tuple<PluginLoadContext, Assembly> GetAssemblyAndLoadContext(string path)
 		{
 			var pluginLoadContext = new PluginLoadContext();
 			var assembly = pluginLoadContext.LoadFromAssemblyPath(path);
 			if (assembly is null)
 			{
-				throw new PluginException($"[{nameof(GetValidAssemblyAndLoadContext)}] Error: Could not load the assembly under the given path: {path}");
+				throw new PluginException($"[{nameof(GetAssemblyAndLoadContext)}] Error: Could not load the assembly under the given path: {path}");
 			}
 			return new Tuple<PluginLoadContext, Assembly>(pluginLoadContext, assembly);
 		}
-
 	}
 }

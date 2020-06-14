@@ -1,18 +1,19 @@
 ﻿using MediatR;
 using SmartHub.Domain.Common;
+using SmartHub.Domain.Enums;
 
 namespace SmartHub.Application.UseCases.PluginAdapter.Loader
 {
     public class PluginLoadCommand : IRequest<ServiceResponse<string>>
     {
-        public bool LoadOne { get; }
-        public string? Path { get; }
+        public string Path { get; }
+        public LoadStrategyEnum LoadStrategyMultiple { get;  }
 
 
-        public PluginLoadCommand(bool loadOne, string path = null)
+        public PluginLoadCommand(LoadStrategyEnum loadStrategyMultiple, string path = null)
         {
-            LoadOne = loadOne;
-            Path = path;
+            LoadStrategyMultiple = loadStrategyMultiple;
+            Path = path is null ? string.Empty : path;
         }
     }
 }
