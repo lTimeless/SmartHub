@@ -1,9 +1,12 @@
-﻿namespace SmartHub.Domain.Enums
+﻿using System;
+
+namespace SmartHub.Domain.Enums
 {
+	[Flags]
 	public enum ConnectionTypeEnum
 	{
-		Http,
-		Mqtt,
-		None
+		None = 0,
+		Http = 1,
+		Mqtt = 2,
 	}
 }
