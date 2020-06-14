@@ -9,6 +9,7 @@ using System.Linq;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
+using SmartHub.Application.Common.Interfaces.Repositories;
 
 namespace SmartHub.Application.UseCases.PluginAdapter.Finder
 {
@@ -43,7 +44,7 @@ namespace SmartHub.Application.UseCases.PluginAdapter.Finder
 		public async Task<IReadOnlyDictionary<string, FoundPluginDto>> FilterByPluginsInHome(
 			IReadOnlyDictionary<string, FoundPluginDto> foundPluginDtosDictionary)
 		{
-			var home = await _unitOfWork.HomeRepository.GetFirstAsync();
+			var home = await _unitOfWork.HomeRepository.GetHome();
 			var pluginsInHome = home.Plugins;
 			if (pluginsInHome.IsNullOrEmpty())
 			{

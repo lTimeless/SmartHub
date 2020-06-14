@@ -1,15 +1,14 @@
-﻿using SmartHub.Domain.Entities.ValueObjects;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
-namespace SmartHub.Domain.Entities.Homes
+namespace SmartHub.Domain.Entities.ValueObjects
 {
 	public class Address : ValueObject
 	{
-		public string Street { get; private set; }
-		public string City { get; private set; }
-		public string State { get; private set; }
-		public string Country { get; private set; }
-		public string ZipCode { get; private set; }
+		public string Street { get; }
+		public string City { get; }
+		public string State { get; }
+		public string Country { get; }
+		public string ZipCode { get; }
 
 		protected Address()
 		{

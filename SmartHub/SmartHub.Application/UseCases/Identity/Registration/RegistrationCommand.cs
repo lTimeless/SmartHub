@@ -1,5 +1,6 @@
 ﻿
 using MediatR;
+using SmartHub.Application.Common.Models;
 using SmartHub.Domain.Common;
 
 namespace SmartHub.Application.UseCases.Identity.Registration

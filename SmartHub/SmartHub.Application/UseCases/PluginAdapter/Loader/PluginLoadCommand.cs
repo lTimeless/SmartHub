@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using SmartHub.Application.Common.Models;
 using SmartHub.Domain.Common;
 using SmartHub.Domain.Enums;
 

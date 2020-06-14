@@ -6,21 +6,22 @@ using SmartHub.Domain.Entities.Plugins;
 using SmartHub.Domain.Entities.Settings;
 using SmartHub.Domain.Entities.Users;
 using System.Collections.Generic;
+using SmartHub.Domain.Entities.ValueObjects;
 
 namespace SmartHub.Domain.Entities.Homes
 {
-	public partial class Home : BaseEntity, IAggregateRoot
+	public sealed partial class Home : BaseEntity, IAggregateRoot
 	{
-		public virtual List<User> Users { get; internal set; }
-		public virtual List<Group> Groups { get; internal set; }
+		public List<User> Users { get; internal set; }
+		public List<Group> Groups { get; internal set; }
 
-		public virtual List<Plugin> Plugins { get; internal set; } // make it so that all plugins will be saved for backup /restore etc.
+		public List<Plugin> Plugins { get; internal set; } // make it so that all plugins will be saved for backup /restore etc.
 
-		public virtual List<Device> Devices { get; internal set; }
+		public List<Device> Devices { get; internal set; }
 
-		public virtual List<Setting> Settings { get; internal set; }
+		public List<Setting> Settings { get; internal set; }
 
-		public virtual Address Address { get; set; }
+		public Address Address { get; set; }
 		public List<IDomainEvent> Events { get; set; }
 
 		public Home()
@@ -35,6 +36,7 @@ namespace SmartHub.Domain.Entities.Homes
 			Plugins = new List<Plugin>();
 			Settings = new List<Setting>() { setting };
 			Events = new List<IDomainEvent>();
+			Address = new Address("","","","",""); // TODO: add functionality
 		}
 
 		public void AddDomainEvent(IDomainEvent domainEvent)

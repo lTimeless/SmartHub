@@ -1,14 +1,20 @@
-﻿using SmartHub.Domain.Enums;
+﻿using SmartHub.Application.Common.Mappings;
+using SmartHub.Domain.Entities.Settings;
+using SmartHub.Domain.Enums;
 
 namespace SmartHub.Application.UseCases.Entity.Settings
 {
-	public class SettingDto : BaseDto
+	public class SettingDto : BaseDto, IMapFrom<Setting>
 	{
-		public string HomeId { get; set; }
+		public SettingTypeEnum Type { get; set; }
 		public bool IsActive { get; set; }
 		public bool IsDefault { get; set; }
+
+		public string WatchPathAbsolut { get; set; }
 		public string PluginPath { get; set; }
-		public SettingTypeEnum Type { get; set; }
-		public string SettingCreator { get; set; }
+		public string DownloadServerUrl { get; set; }
+		public string? Filepath { get; set; }
+
+		public string CreatorName { get; set; }
 	}
 }

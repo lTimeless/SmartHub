@@ -8,6 +8,8 @@ using SmartHub.Domain.Common.Extensions;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using SmartHub.Application.Common.Interfaces.Repositories;
+using SmartHub.Application.Common.Models;
 
 namespace SmartHub.Application.UseCases.PluginAdapter.Loader
 {
@@ -28,7 +30,7 @@ namespace SmartHub.Application.UseCases.PluginAdapter.Loader
 
         public async Task<ServiceResponse<string>> Handle(PluginLoadCommand request, CancellationToken cancellationToken)
         {
-            var home = await _unitOfWork.HomeRepository.GetFirstAsync().ConfigureAwait(false);
+            var home = await _unitOfWork.HomeRepository.GetHome();
             var setting = home.Settings.FirstOrDefault(c => c.IsActive || c.PluginPath.Contains("_private"));
 
             var foundPlugins = _pluginFinderService.FindPluginsInAssemblies(setting.PluginPath);

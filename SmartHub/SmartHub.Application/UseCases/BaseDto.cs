@@ -1,4 +1,5 @@
 ﻿using System;
+using SmartHub.Application.Common.Mappings;
 
 namespace SmartHub.Application.UseCases
 {

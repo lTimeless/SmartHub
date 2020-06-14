@@ -6,6 +6,8 @@ using SmartHub.Domain.Common;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
+using SmartHub.Application.Common.Interfaces.Repositories;
+using SmartHub.Application.Common.Models;
 
 namespace SmartHub.Application.UseCases.DeviceState.LightState
 {
@@ -29,7 +31,7 @@ namespace SmartHub.Application.UseCases.DeviceState.LightState
 			{
 				throw new ArgumentNullException(nameof(request));
 			}
-			var home = await _unitOfWork.HomeRepository.GetFirstAsync();
+			var home = await _unitOfWork.HomeRepository.GetHome();
 			var foundDevice = home.Devices.Find(x => x.Id == request.LightStateDto.DeviceId);
 			if (foundDevice is null)
 			{

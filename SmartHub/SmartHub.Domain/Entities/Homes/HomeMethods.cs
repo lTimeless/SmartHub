@@ -10,7 +10,7 @@ using System.Linq;
 
 namespace SmartHub.Domain.Entities.Homes
 {
-	public partial class Home
+	public sealed partial class Home
 	{
 		public Home AddUser(User user)
 		{
@@ -22,7 +22,7 @@ namespace SmartHub.Domain.Entities.Homes
 			{
 				Users.Add(user);
 			}
-			AddDomainEvent(new HomeChangedEvent(Id, null, Users, null, null, null, null, null));
+			AddDomainEvent(new HomeUpdatedEvent( user ));
 			return this;
 		}
 
@@ -82,7 +82,7 @@ namespace SmartHub.Domain.Entities.Homes
 
 			foreach (var plugin in plugins)
 			{
-				AddDomainEvent(new HomeAddPluginEvent(plugin.Name));
+				AddDomainEvent(new HomeUpdatedEvent(plugin));
 			}
 			return this;
 		}

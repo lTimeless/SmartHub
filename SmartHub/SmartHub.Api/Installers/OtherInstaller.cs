@@ -4,6 +4,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using SmartHub.Application.UseCases.Entity.Homes;
 using System.Reflection;
+using SmartHub.Application.Common.Mappings;
 
 namespace SmartHub.Api.Installers
 {
@@ -12,7 +13,7 @@ namespace SmartHub.Api.Installers
 		public void InstallServices(IServiceCollection services, IConfiguration configuration)
 		{
 			// AutoMapper
-			ConfigureMapper(services);
+			ConfigureAutoMapper(services);
 
 			// Mediatr
 			ConfigureMediatr(services);
@@ -34,9 +35,9 @@ namespace SmartHub.Api.Installers
 			services.AddMediatR(Assembly.Load("SmartHub.Application"));
 		}
 
-		private static void ConfigureMapper(IServiceCollection services)
+		private static void ConfigureAutoMapper(IServiceCollection services)
 		{
-			services.AddAutoMapper(typeof(HomeProfile));
+			services.AddAutoMapper(Assembly.Load("SmartHub.Application"));
 		}
 	}
 }

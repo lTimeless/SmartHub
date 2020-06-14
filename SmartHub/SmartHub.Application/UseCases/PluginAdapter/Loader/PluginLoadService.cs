@@ -11,6 +11,7 @@ using System.Linq;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
+using SmartHub.Application.Common.Interfaces.Repositories;
 using SmartHub.Domain.Entities.Homes;
 using SmartHub.Domain.Enums;
 
@@ -128,7 +129,7 @@ namespace SmartHub.Application.UseCases.PluginAdapter.Loader
 										 $"[{nameof(AddToHome)}] Error converting list of {name} to list of IPlugin");
 
 				var listOfPlugins = _pluginCreator.CreatePluginsFromIPlugins(listOfIPlugins, assembly.Location);
-				var home = await _unitOfWork.HomeRepository.GetFirstAsync();
+				var home = await _unitOfWork.HomeRepository.GetHome();
 
 				foreach (var plugin in listOfPlugins.Where(plugin => home.CheckIfPluginExistAndHasHigherVersion(plugin)))
 				{

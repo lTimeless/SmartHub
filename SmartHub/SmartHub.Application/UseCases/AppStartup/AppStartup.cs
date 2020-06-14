@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using SmartHub.Application.Common.Interfaces.Repositories;
 using SmartHub.Domain.Enums;
 
 namespace SmartHub.Application.UseCases.AppStartup
@@ -42,7 +43,7 @@ namespace SmartHub.Application.UseCases.AppStartup
 			//var t2 = StartHangfireJobs();
 			//return Task.WhenAll(t2);
 
-			var home = await _unitOfWork.HomeRepository.GetFirstAsync();
+			var home = await _unitOfWork.HomeRepository.GetHome();
 			if (home is null)
 			{
 				_logger.Information($"[{nameof(AppStartup)}] No home created");

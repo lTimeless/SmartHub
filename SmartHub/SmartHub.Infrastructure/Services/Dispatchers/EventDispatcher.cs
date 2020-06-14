@@ -4,6 +4,7 @@ using SmartHub.Domain.Entities.Homes;
 using SmartHub.Domain.Entities.ValueObjects;
 using System;
 using System.Collections.Generic;
+using System.Text;
 using Serilog;
 using SmartHub.Domain.Enums;
 using SmartHub.Application.Common.Interfaces.Events;
@@ -17,6 +18,7 @@ namespace SmartHub.Infrastructure.Services.Dispatchers
 	{
 		private readonly IChannelManager _channelManager;
 		private readonly ILogger _logger;
+		private static readonly string NewLine = Environment.NewLine;
 
 		public EventDispatcher(IChannelManager channelManager, ILogger logger)
 		{
@@ -84,22 +86,17 @@ namespace SmartHub.Infrastructure.Services.Dispatchers
 		{
 			switch (domainEvent)
 			{
-				case HomeChangedEvent homeChangedEvent:
-					_logger.Information($"[{nameof(DispatchDomainEvents)}] Dispatch {nameof(HomeChangedEvent)} =>  " +
-						$"id: {homeChangedEvent.HomeId}; " +
-						$"name: {homeChangedEvent.Name ?? "unchanged"}; " +
-						$"description: {homeChangedEvent.Description ?? "unchanged"}; " +
-						$"users: {(homeChangedEvent.Users.IsNullOrEmpty() ? "unchanged" : string.Join(",", homeChangedEvent.Users))}; " +
-						$"groups: {(homeChangedEvent.Groups.IsNullOrEmpty() ? "unchanged" : string.Join(",", homeChangedEvent.Groups))}; " +
-						$"devices: {(homeChangedEvent.Devices.IsNullOrEmpty() ? "unchanged" : string.Join(",", homeChangedEvent.Devices))}; " +
-						$"settings: {(homeChangedEvent.Settings.IsNullOrEmpty() ? "unchanged" : string.Join(",", homeChangedEvent.Settings))}; " +
-						$"address: {(homeChangedEvent.Address is null ? "unchanged" : ValueObject.Print)}; "
-						); // hier an den jeweiligen service schicken der das event verarbeiten soll, z.B email, notification signalr
-					break;
-
-				case HomeAddPluginEvent addPluginEvent:
-					_logger.Information($"[{nameof(DispatchDomainEvents)}] Dispatch {nameof(HomeAddPluginEvent)} =>  " +
-						$"Added Plugin: {addPluginEvent.PluginName};");
+				case HomeUpdatedEvent homeUpdatedEvent:
+					_logger.Information($"[{nameof(DispatchDomainEvents)}] Dispatch {nameof(HomeUpdatedEvent)} =>  " +
+					                    homeUpdatedEvent.Name == null ? "" : $"Updated name to: {homeUpdatedEvent.Name} {NewLine}" +
+					                    homeUpdatedEvent.Description is null ? "" : $"Updated description to: {homeUpdatedEvent.Description} {NewLine}" +
+					                    homeUpdatedEvent.NewUser is null ? "" : $"Added new user: {homeUpdatedEvent.NewUser!.UserName}{NewLine}" +
+					                    homeUpdatedEvent.NewGroup is null ? "" : $"Added new group: {homeUpdatedEvent.NewGroup!.Name}{NewLine}" +
+					                    homeUpdatedEvent.NewDevice is null ? "" : $"Added new device: {homeUpdatedEvent.NewDevice!.Name}{NewLine}" +
+					                    homeUpdatedEvent.NewPlugin is null ? "" : $"Added new plugin: {homeUpdatedEvent.NewPlugin!.Name}{NewLine}" +
+					                    homeUpdatedEvent.NewSetting is null ? "" : $"Added new setting: {homeUpdatedEvent.NewSetting!.Name}{NewLine}" +
+					                    homeUpdatedEvent.NewAddress is null ? "" : $"Updated address to: {ValueObject.Print}{NewLine}");
+                    // hier an den jeweiligen service schicken der das event verarbeiten soll, z.B email, notification, signalr
 					break;
 
 				default:

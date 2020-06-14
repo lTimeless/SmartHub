@@ -6,12 +6,13 @@ using SmartHub.Domain.Entities.Homes;
 using SmartHub.Domain.Enums;
 using System.Linq;
 using System.Threading.Tasks;
+using SmartHub.Application.Common.Interfaces.Repositories;
 
 namespace SmartHub.Infrastructure.Database.Repositories
 {
 	public class UnitOfWork : IUnitOfWork
 	{
-		private IBaseRepository<Home> _homeRepository;
+		private IHomeRepository _homeRepository;
 		private IBaseRepository<Group> _groupRepository;
 		private readonly IChannelManager _channelManager;
 		private readonly IUserAccessor _userAccessor;
@@ -27,7 +28,7 @@ namespace SmartHub.Infrastructure.Database.Repositories
 			_dateTimeService = dateTimeService;
 		}
 
-		public IBaseRepository<Home> HomeRepository => _homeRepository ??= new BaseRepository<Home>(AppDbContext);
+		public IHomeRepository HomeRepository => _homeRepository ??= new HomeRepository(AppDbContext);
 		public IBaseRepository<Group> GroupRepository => _groupRepository ??= new BaseRepository<Group>(AppDbContext);
 
 		public async Task SaveAsync()

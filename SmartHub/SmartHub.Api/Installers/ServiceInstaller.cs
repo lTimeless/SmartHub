@@ -2,6 +2,7 @@
 using Microsoft.Extensions.DependencyInjection;
 using SmartHub.Application.Common.Interfaces;
 using SmartHub.Application.Common.Interfaces.Events;
+using SmartHub.Application.Common.Interfaces.Repositories;
 using SmartHub.Application.UseCases.AppStartup;
 using SmartHub.Application.UseCases.Identity.Login;
 using SmartHub.Application.UseCases.Identity.Registration;
@@ -10,6 +11,7 @@ using SmartHub.Application.UseCases.PluginAdapter.Creator;
 using SmartHub.Application.UseCases.PluginAdapter.Finder;
 using SmartHub.Application.UseCases.PluginAdapter.Host;
 using SmartHub.Application.UseCases.PluginAdapter.Loader;
+using SmartHub.Domain.Entities.Homes;
 using SmartHub.Domain.Entities.Users;
 using SmartHub.Infrastructure.Database;
 using SmartHub.Infrastructure.Database.Repositories;
@@ -34,6 +36,7 @@ namespace SmartHub.Api.Installers
 
 		private static void ConfigureRepositories(IServiceCollection services)
 		{
+			services.AddScoped<IHomeRepository, HomeRepository>();
 			services.AddScoped<IUnitOfWork, UnitOfWork>();
 			services.AddTransient<SeedDatabase>();
 		}

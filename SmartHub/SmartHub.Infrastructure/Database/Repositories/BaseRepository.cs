@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
+using SmartHub.Application.Common.Interfaces.Repositories;
 
 namespace SmartHub.Infrastructure.Database.Repositories
 {
@@ -29,11 +30,6 @@ namespace SmartHub.Infrastructure.Database.Repositories
 		public async Task<List<T>> GetAllAsync()
 		{
 			return await _entities.ToListAsync().ConfigureAwait(false);
-		}
-
-		public async Task<T> GetFirstAsync()
-		{
-			return await _entities.FirstOrDefaultAsync().ConfigureAwait(false);
 		}
 
 		public async Task<List<T>> FindAllAsync(Expression<Func<T, bool>> expression)

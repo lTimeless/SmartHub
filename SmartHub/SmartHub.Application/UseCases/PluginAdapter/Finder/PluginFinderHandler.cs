@@ -7,6 +7,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using SmartHub.Application.Common.Interfaces.Repositories;
+using SmartHub.Application.Common.Models;
 
 namespace SmartHub.Application.UseCases.PluginAdapter.Finder
 {
@@ -26,7 +28,7 @@ namespace SmartHub.Application.UseCases.PluginAdapter.Finder
         public async Task<ServiceResponse<IReadOnlyDictionary<string, FoundPluginDto>>> Handle(PluginFinderQuery request, CancellationToken cancellationToken)
         {
             _logger.Warning($"[{nameof(PluginFinderHandler)}] Find (new = {request.OnlyNew}) available plugins");
-            var home = await _unitOfWork.HomeRepository.GetFirstAsync().ConfigureAwait(false);
+            var home = await _unitOfWork.HomeRepository.GetHome().ConfigureAwait(false);
             var setting = home.Settings.FirstOrDefault(c => c.IsActive || c.PluginPath.Contains("_private"));
             var foundPlugins = _pluginFinder.FindPluginsInAssemblies(setting.PluginPath);
 

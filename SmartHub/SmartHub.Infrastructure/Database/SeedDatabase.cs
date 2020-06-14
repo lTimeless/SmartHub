@@ -8,6 +8,7 @@ using SmartHub.Domain.Entities.ValueObjects;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
+using SmartHub.Application.Common.Interfaces.Repositories;
 
 namespace SmartHub.Infrastructure.Database
 {

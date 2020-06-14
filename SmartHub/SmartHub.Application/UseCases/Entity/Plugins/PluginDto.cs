@@ -1,6 +1,9 @@
-﻿namespace SmartHub.Application.UseCases.Entity.Plugins
+﻿using SmartHub.Application.Common.Mappings;
+using SmartHub.Domain.Entities.Plugins;
+
+namespace SmartHub.Application.UseCases.Entity.Plugins
 {
-	public class PluginDto
+	public class PluginDto : BaseDto , IMapFrom<Plugin>
 	{
 	}
 }

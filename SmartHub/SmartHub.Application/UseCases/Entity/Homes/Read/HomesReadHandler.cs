@@ -5,10 +5,12 @@ using SmartHub.Domain.Common;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
+using SmartHub.Application.Common.Interfaces.Repositories;
+using SmartHub.Application.Common.Models;
 
 namespace SmartHub.Application.UseCases.Entity.Homes.Read
 {
-	public class HomesReadHandler : IRequestHandler<HomesReadQuery, ServiceResponse<List<HomeReadResponseDto>>>
+	public class HomesReadHandler : IRequestHandler<HomesReadQuery, ServiceResponse<HomeDto>>
 	{
 		private readonly IUnitOfWork _unitOfWork;
 		private readonly IMapper _mapper;
@@ -19,11 +21,11 @@ namespace SmartHub.Application.UseCases.Entity.Homes.Read
 			_mapper = mapper;
 		}
 
-		public async Task<ServiceResponse<List<HomeReadResponseDto>>> Handle(HomesReadQuery request, CancellationToken cancellationToken)
+		public async Task<ServiceResponse<HomeDto>> Handle(HomesReadQuery request, CancellationToken cancellationToken)
 		{
-			var homes = await _unitOfWork.HomeRepository.GetAllAsync();
-			var homeList = _mapper.Map<List<HomeReadResponseDto>>(homes);
-			return new ServiceResponse<List<HomeReadResponseDto>>(homeList, true);
+			var home = await _unitOfWork.HomeRepository.GetHome();
+			var homeDto = _mapper.Map<HomeDto>(home);
+			return new ServiceResponse<HomeDto>(homeDto, true);
 		}
 	}
 }

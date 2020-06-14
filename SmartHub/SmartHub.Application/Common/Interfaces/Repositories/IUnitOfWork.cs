@@ -1,14 +1,14 @@
-﻿using SmartHub.Domain.Entities;
+﻿using System;
+using System.Threading.Tasks;
+using SmartHub.Domain.Entities;
 using SmartHub.Domain.Entities.Groups;
 using SmartHub.Domain.Entities.Homes;
-using System;
-using System.Threading.Tasks;
 
-namespace SmartHub.Application.Common.Interfaces
+namespace SmartHub.Application.Common.Interfaces.Repositories
 {
 	public interface IUnitOfWork : IDisposable
 	{
-		IBaseRepository<Home> HomeRepository { get; }
+		IHomeRepository HomeRepository { get; }
 		IBaseRepository<Group> GroupRepository { get; }
 
 		Task SaveAsync();

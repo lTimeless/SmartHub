@@ -19,7 +19,7 @@ namespace SmartHub.Api.Controllers
 		[ProducesResponseType(StatusCodes.Status401Unauthorized)]
 		public async Task<IActionResult> Get()
 		{
-			return Ok(await Mediator.Send(new HomesReadQuery()).ConfigureAwait(false));
+			return Ok(await Mediator.Send(new HomesReadQuery()));
 		}
 
 		// GET: api/Home/5
