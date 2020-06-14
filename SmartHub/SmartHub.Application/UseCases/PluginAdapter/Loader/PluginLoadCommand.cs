@@ -10,10 +10,14 @@ namespace SmartHub.Application.UseCases.PluginAdapter.Loader
         public LoadStrategyEnum LoadStrategyMultiple { get;  }
 
 
-        public PluginLoadCommand(LoadStrategyEnum loadStrategyMultiple, string? path)
+        public PluginLoadCommand(LoadStrategyEnum loadStrategyMultiple) : this(loadStrategyMultiple, string.Empty)
+        {
+        }
+
+        public PluginLoadCommand(LoadStrategyEnum loadStrategyMultiple, string path)
         {
             LoadStrategyMultiple = loadStrategyMultiple;
-            Path = path ?? string.Empty;
+            Path = path;
         }
     }
 }
