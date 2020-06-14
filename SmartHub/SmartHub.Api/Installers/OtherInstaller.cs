@@ -4,6 +4,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using SmartHub.Application.UseCases.Entity.Homes;
 using System.Reflection;
+using SmartHub.Application.Common.Behaviours;
 using SmartHub.Application.Common.Mappings;
 
 namespace SmartHub.Api.Installers
@@ -33,6 +34,8 @@ namespace SmartHub.Api.Installers
 		private static void ConfigureMediatr(IServiceCollection services)
 		{
 			services.AddMediatR(Assembly.Load("SmartHub.Application"));
+			services.AddTransient(typeof(IPipelineBehavior<,>), typeof(RequestPerformanceBehaviour<,>));
+			// services.AddTransient(typeof(IPipelineBehavior<,>), typeof(RequestValidationBehavior<,>));
 		}
 
 		private static void ConfigureAutoMapper(IServiceCollection services)

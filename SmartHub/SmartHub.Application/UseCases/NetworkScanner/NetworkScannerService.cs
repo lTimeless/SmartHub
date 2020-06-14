@@ -80,27 +80,27 @@ namespace SmartHub.Application.UseCases.NetworkScanner
 		// Helpers
 		private static string MakeNameFromHostname(string hostname)
 		{
-			if (hostname == null)
+			switch (hostname)
 			{
-				return "Not available";
-			}
-
-			if (hostname.Equals("fritz.box") || hostname.Equals("speedport.ip"))
-			{
-				return hostname;
+				case null:
+					return "Not available";
+				case "fritz.box":
+				case "speedport.ip":
+					return hostname;
 			}
 
 			if (hostname.Contains(".fritz.box"))
 			{
-				return hostname.Split(new[] { ".fritz.box" }, StringSplitOptions.None)[0];
+				return hostname.Split(new[] {".fritz.box"}, StringSplitOptions.None)[0];
 			}
 
 			if (hostname.Contains(".speedport.ip"))
 			{
-				return hostname.Split(new[] { ".speedport.ip" }, StringSplitOptions.None)[0];
+				return hostname.Split(new[] {".speedport.ip"}, StringSplitOptions.None)[0];
 			}
 
 			return "Not available";
+
 		}
 
 		private static string FindMyNetworkGateway()
@@ -109,7 +109,7 @@ namespace SmartHub.Application.UseCases.NetworkScanner
 			return host
 				.AddressList
 				.FirstOrDefault(ip => ip.AddressFamily == AddressFamily.InterNetwork)?
-				.ToString();
+				.ToString() ?? "";
 		}
 
 		private static async Task<string> GetHostnameAsync(string ip)

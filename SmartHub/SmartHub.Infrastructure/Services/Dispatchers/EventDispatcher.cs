@@ -35,45 +35,43 @@ namespace SmartHub.Infrastructure.Services.Dispatchers
 
 		private void Dispatch(object baseEvent)
 		{
-			if (baseEvent is null)
+			switch (baseEvent)
 			{
-				return;
-			}
-			else if (baseEvent is IApplicationEvent appEvent)
-			{
-				DispatchApplicationEvent(appEvent);
-				return;
-			}
-			else if (baseEvent is IEnumerable<IDomainEvent> events)
-			{
-				foreach (var item in events)
+				case null:
+					break;
+				case IApplicationEvent appEvent:
+					DispatchApplicationEvent(appEvent);
+					break;
+				case IEnumerable<IDomainEvent> events:
 				{
-					DispatchDomainEvents(item);
+					foreach (var item in events)
+					{
+						DispatchDomainEvents(item);
+					}
+
+					break;
 				}
-				return;
-			}
-			else
-			{
-				Dispatch(baseEvent);
-				return;
+				default:
+					DispatchGeneralEvent(baseEvent);
+					break;
 			}
 		}
 
-		private void Dispatch(IEvent baseEvent)
+		private void DispatchGeneralEvent(object baseEvent)
 		{
-			_logger.Information($"[{nameof(Dispatch)}] Dispatch {nameof(IEvent)}=> {baseEvent.GetType().Name}");
+			var iEvent = baseEvent as IEvent;
+			_logger.Information($"[{nameof(Dispatch)}] Dispatch {nameof(IEvent)}=> {iEvent?.GetType().Name}");
 			// hier dann alle aus den events Evententitys bauen und in die db speichern
 			// und an signalR geben für liveEvents
 		}
 
-		private void DispatchApplicationEvent(IApplicationEvent applicataionEvent)
+		private void DispatchApplicationEvent(IApplicationEvent applicationEvent)
 		{
-			switch (applicataionEvent)
+			switch (applicationEvent)
 			{
 				case LoginEvent loginEvent:
-					_logger.Information($"[{nameof(DispatchApplicationEvent)}] Dispatch {nameof(LoginEvent)} =>  " +
-						$"UserName: {loginEvent.UserName}; " +
-						$"Login state: {loginEvent.Successful}; "
+					_logger.Information("[DispatchApplicationEvent] Dispatch LoginEvent =>  UserName: {@UserName}; Login state: {@Successful}; ",
+						loginEvent.UserName, loginEvent.Successful
 						); // hier an den jeweiligen service schicken der das event verarbeiten soll, z.B email, notification signalr
 					break;
 
@@ -87,15 +85,18 @@ namespace SmartHub.Infrastructure.Services.Dispatchers
 			switch (domainEvent)
 			{
 				case HomeUpdatedEvent homeUpdatedEvent:
-					_logger.Information($"[{nameof(DispatchDomainEvents)}] Dispatch {nameof(HomeUpdatedEvent)} =>  " +
-					                    homeUpdatedEvent.Name == null ? "" : $"Updated name to: {homeUpdatedEvent.Name} {NewLine}" +
-					                    homeUpdatedEvent.Description is null ? "" : $"Updated description to: {homeUpdatedEvent.Description} {NewLine}" +
-					                    homeUpdatedEvent.NewUser is null ? "" : $"Added new user: {homeUpdatedEvent.NewUser!.UserName}{NewLine}" +
-					                    homeUpdatedEvent.NewGroup is null ? "" : $"Added new group: {homeUpdatedEvent.NewGroup!.Name}{NewLine}" +
-					                    homeUpdatedEvent.NewDevice is null ? "" : $"Added new device: {homeUpdatedEvent.NewDevice!.Name}{NewLine}" +
-					                    homeUpdatedEvent.NewPlugin is null ? "" : $"Added new plugin: {homeUpdatedEvent.NewPlugin!.Name}{NewLine}" +
-					                    homeUpdatedEvent.NewSetting is null ? "" : $"Added new setting: {homeUpdatedEvent.NewSetting!.Name}{NewLine}" +
-					                    homeUpdatedEvent.NewAddress is null ? "" : $"Updated address to: {ValueObject.Print}{NewLine}");
+					_logger.Information("[DispatchDomainEvents] Dispatch HomeUpdatedEvent => Updated home {@home} ", homeUpdatedEvent);
+
+					// _logger.Information($"[{nameof(DispatchDomainEvents)}] Dispatch {nameof(HomeUpdatedEvent)} =>  " +
+					//                     homeUpdatedEvent.Name == null ? "" : $"Updated name to: {homeUpdatedEvent.Name} {NewLine}" +
+					//                     homeUpdatedEvent.Description is null ? "" : $"Updated description to: {homeUpdatedEvent.Description} {NewLine}" +
+					//                     homeUpdatedEvent.NewUser is null ? "" : $"Added new user: {homeUpdatedEvent.NewUser!.UserName}{NewLine}" +
+					//                     homeUpdatedEvent.NewGroup is null ? "" : $"Added new group: {homeUpdatedEvent.NewGroup!.Name}{NewLine}" +
+					//                     homeUpdatedEvent.NewDevice is null ? "" : $"Added new device: {homeUpdatedEvent.NewDevice!.Name}{NewLine}" +
+					//                     homeUpdatedEvent.NewPlugin is null ? "" : $"Added new plugin: {homeUpdatedEvent.NewPlugin!.Name}{NewLine}" +
+					//                     homeUpdatedEvent.NewSetting is null ? "" : $"Added new setting: {homeUpdatedEvent.NewSetting!.Name}{NewLine}" +
+					//                     homeUpdatedEvent.NewAddress is null ? "" : $"Updated address to: {ValueObject.Print}{NewLine}");
+
                     // hier an den jeweiligen service schicken der das event verarbeiten soll, z.B email, notification, signalr
 					break;
 

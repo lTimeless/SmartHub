@@ -32,7 +32,7 @@ namespace SmartHub.Infrastructure.Services.Auth
 			}
 			var claims = new List<Claim>
 			{
-				new Claim(JwtRegisteredClaimNames.NameId, user.UserName)
+				new Claim(JwtRegisteredClaimNames.NameId, user.UserName),
 			};
 
 			var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtSettings.Secret));

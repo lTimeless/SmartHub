@@ -10,7 +10,7 @@ using System.Linq;
 
 namespace SmartHub.Domain.Entities.Homes
 {
-	public sealed partial class Home
+	public partial class Home
 	{
 		public Home AddUser(User user)
 		{

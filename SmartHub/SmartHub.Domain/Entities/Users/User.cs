@@ -5,17 +5,18 @@ using System;
 
 namespace SmartHub.Domain.Entities.Users
 {
+	/// <inheritdoc />
 	public class User : IdentityUser<string>
 	{
 		private DateTime CreatedAt { get; }
 		private DateTime ModifiedDate { get; set; }
 
-		public string? PersonInfo { get; private set; }
+		public string? PersonInfo { get; }
 
-		public virtual PersonName? PersonName { get; private set; }
+		public virtual PersonName? PersonName { get; }
 
 		public string? HomeId { get; private set; }
-		public virtual Home? Home { get; private set; }
+		public virtual Home? Home { get; }
 
 		protected User()
 		{

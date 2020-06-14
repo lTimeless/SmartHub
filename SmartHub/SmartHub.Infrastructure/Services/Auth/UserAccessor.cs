@@ -17,16 +17,18 @@ namespace SmartHub.Infrastructure.Services.Auth
 
 		public string GetCurrentUsername()
 		{
-			if ((_httpContextAccessor.HttpContext is null) || (_httpContextAccessor.HttpContext.User is null))
-			{
-				return Home;
-			}
 			return _httpContextAccessor
-				.HttpContext
-				.User
-				.Claims?
-				.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier)?
-				.Value ?? Home;
+				.HttpContext?
+				.User?
+				.FindFirstValue(ClaimTypes.NameIdentifier) ?? "null";
+		}
+
+		public string GetCurrentUserId()
+		{
+			return _httpContextAccessor
+				.HttpContext?
+				.User?
+				.FindFirstValue("Id") ?? "null";
 		}
 	}
 }

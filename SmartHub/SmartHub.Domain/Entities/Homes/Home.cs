@@ -10,21 +10,21 @@ using SmartHub.Domain.Entities.ValueObjects;
 
 namespace SmartHub.Domain.Entities.Homes
 {
-	public sealed partial class Home : BaseEntity, IAggregateRoot
+	public partial class Home : BaseEntity, IAggregateRoot
 	{
-		public List<User> Users { get; internal set; }
-		public List<Group> Groups { get; internal set; }
+		public virtual List<User> Users { get; internal set; }
+		public virtual List<Group> Groups { get; internal set; }
 
-		public List<Plugin> Plugins { get; internal set; } // make it so that all plugins will be saved for backup /restore etc.
+		public virtual List<Plugin> Plugins { get; internal set; } // make it so that all plugins will be saved for backup /restore etc.
 
-		public List<Device> Devices { get; internal set; }
+		public virtual List<Device> Devices { get; internal set; }
 
-		public List<Setting> Settings { get; internal set; }
+		public virtual List<Setting> Settings { get; internal set; }
 
-		public Address Address { get; set; }
-		public List<IDomainEvent> Events { get; set; }
+		public virtual Address Address { get; set; }
+		public virtual List<IDomainEvent> Events { get; set; }
 
-		public Home()
+		protected Home()
 		{
 		}
 

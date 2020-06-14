@@ -39,8 +39,7 @@ namespace SmartHub.Application.UseCases.PluginAdapter.Loader
             if (filteredOrAllFoundPlugins.IsNullOrEmpty())
             {
                 _logger.Warning($"[{nameof(PluginLoadHandler)}] No new plugins available");
-                return new ServiceResponse<string>(null, false,
-                    "No new plugins available");
+                return new ServiceResponse<string>(false,"No new plugins available");
             }
             var path = request.Path.IsNullOrEmpty() ? setting.PluginPath : request.Path;
 

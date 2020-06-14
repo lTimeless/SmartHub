@@ -27,7 +27,7 @@ namespace SmartHub.Application.UseCases.PluginAdapter.Finder
 
         public async Task<ServiceResponse<IReadOnlyDictionary<string, FoundPluginDto>>> Handle(PluginFinderQuery request, CancellationToken cancellationToken)
         {
-            _logger.Warning($"[{nameof(PluginFinderHandler)}] Find (new = {request.OnlyNew}) available plugins");
+            _logger.Information($"[{nameof(PluginFinderHandler)}] Find (new = {request.OnlyNew}) available plugins");
             var home = await _unitOfWork.HomeRepository.GetHome().ConfigureAwait(false);
             var setting = home.Settings.FirstOrDefault(c => c.IsActive || c.PluginPath.Contains("_private"));
             var foundPlugins = _pluginFinder.FindPluginsInAssemblies(setting.PluginPath);
@@ -35,10 +35,10 @@ namespace SmartHub.Application.UseCases.PluginAdapter.Finder
             if (!request.OnlyNew)
             {
                 return foundPlugins.IsNullOrEmpty()
-                    ? new ServiceResponse<IReadOnlyDictionary<string, FoundPluginDto>>(foundPlugins, true,
-                        "Plugins available")
-                    : new ServiceResponse<IReadOnlyDictionary<string, FoundPluginDto>>(foundPlugins, false,
-                        "No plugins available");
+                    ? new ServiceResponse<IReadOnlyDictionary<string, FoundPluginDto>>(foundPlugins, false,
+                        "No plugins available")
+                    : new ServiceResponse<IReadOnlyDictionary<string, FoundPluginDto>>(foundPlugins, true,
+                        "Plugins available");
             }
 
             var filteredOrAllFoundPlugins = await _pluginFinder.FilterByPluginsInHome(foundPlugins);

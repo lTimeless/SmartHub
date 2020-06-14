@@ -43,7 +43,7 @@ namespace SmartHub.Application.UseCases.Entity.Homes.Create
 			var homAlreadyExists = await _unitOfWork.HomeRepository.GetHome();
 			if (homAlreadyExists != null)
 			{
-				return new ServiceResponse<HomeDto>(false, $"[{nameof(Handle)}] There is already a home");
+				return new ServiceResponse<HomeDto>(false, $"[{nameof(HomeCreateHandler)}] There is already a home");
 			}
 
 			var solutionRootPath = Path.GetDirectoryName(Path.GetDirectoryName(Path.Combine(Directory.GetCurrentDirectory(), "Plugins")))

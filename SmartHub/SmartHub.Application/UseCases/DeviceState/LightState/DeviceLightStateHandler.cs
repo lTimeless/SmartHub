@@ -35,7 +35,8 @@ namespace SmartHub.Application.UseCases.DeviceState.LightState
 			var foundDevice = home.Devices.Find(x => x.Id == request.LightStateDto.DeviceId);
 			if (foundDevice is null)
 			{
-				throw new SmartHubException($"[{nameof(DeviceLightStateHandler)}] Error: No device found by the given deviceId {request.LightStateDto.DeviceId}");
+				return new ServiceResponse<DeviceStateDto>(false,
+					$"[{nameof(DeviceLightStateHandler)}] Error: No device found by the given deviceId {request.LightStateDto.DeviceId}");
 			}
 			var pluginObject = await _pluginHostService.LightPlugins.GetAndLoadByName(foundDevice.PluginName, home);
 			if (pluginObject.HttpSupport)
@@ -46,7 +47,7 @@ namespace SmartHub.Application.UseCases.DeviceState.LightState
 			}
 
 			var response = await _httpService.SendAsync(foundDevice.Ip.Ipv4, _query);
-			return new ServiceResponse<DeviceStateDto>(null, response, response
+			return new ServiceResponse<DeviceStateDto>(response, response
 				? $"{foundDevice.Name} changed light status"
 				: "Error: Something went wrong");
 		}
