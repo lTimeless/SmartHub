@@ -53,11 +53,11 @@ namespace SmartHub.Infrastructure.Services.Dispatchers
 					break;
 
 				case DateTimeEnum.Day:
-					RecurringJob.AddOrUpdate(action, $"* * * ? * {_dateTimeService.GetNow().Day}/{interval} *");
+					RecurringJob.AddOrUpdate(action, $"* * * ? * {_dateTimeService.LocalNow.Day}/{interval} *");
 					break;
 
 				case DateTimeEnum.Week:
-					RecurringJob.AddOrUpdate(action, $"* * * ? * {_dateTimeService.GetNow().DayOfWeek.ToString().Substring(0, 2)} *");
+					RecurringJob.AddOrUpdate(action, $"* * * ? * {_dateTimeService.LocalNow.DayOfWeek.ToString().Substring(0, 2)} *");
 					break;
 
 				case DateTimeEnum.Month:
@@ -65,7 +65,7 @@ namespace SmartHub.Infrastructure.Services.Dispatchers
 					break;
 
 				case DateTimeEnum.Year:
-					RecurringJob.AddOrUpdate(action, $"* * * ? * * {_dateTimeService.GetNow().Year}/{interval}");
+					RecurringJob.AddOrUpdate(action, $"* * * ? * * {_dateTimeService.LocalNow.Year}/{interval}");
 					break;
 
 				case DateTimeEnum.Never:
@@ -92,11 +92,11 @@ namespace SmartHub.Infrastructure.Services.Dispatchers
 					break;
 
 				case DateTimeEnum.Day:
-					RecurringJob.AddOrUpdate(jobId, action, $"* * * ? * {_dateTimeService.GetNow().Day}/{interval} *");
+					RecurringJob.AddOrUpdate(jobId, action, $"* * * ? * {_dateTimeService.LocalNow.Day}/{interval} *");
 					break;
 
 				case DateTimeEnum.Week:
-					RecurringJob.AddOrUpdate(jobId, action, $"* * * ? * {_dateTimeService.GetNow().DayOfWeek.ToString().Substring(0, 2)} *");
+					RecurringJob.AddOrUpdate(jobId, action, $"* * * ? * {_dateTimeService.LocalNow.DayOfWeek.ToString().Substring(0, 2)} *");
 					break;
 
 				case DateTimeEnum.Month:
@@ -104,7 +104,7 @@ namespace SmartHub.Infrastructure.Services.Dispatchers
 					break;
 
 				case DateTimeEnum.Year:
-					RecurringJob.AddOrUpdate(jobId, action, $"* * * ? * * {_dateTimeService.GetNow().Year}/{interval}");
+					RecurringJob.AddOrUpdate(jobId, action, $"* * * ? * * {_dateTimeService.LocalNow.Year}/{interval}");
 					break;
 
 				case DateTimeEnum.Never:

@@ -40,7 +40,7 @@ namespace SmartHub.Infrastructure.Services.Auth
 			var tokenDescriptor = new SecurityTokenDescriptor
 			{
 				Subject = new ClaimsIdentity(claims),
-				Expires = _dateTimeService.GetNow().AddHours(JwtExpireTimeEnum.HoursToExpire.GetValue()),
+				Expires = _dateTimeService.Now.ToDateTimeUtc().AddHours(JwtExpireTimeEnum.HoursToExpire.GetValue()),
 				SigningCredentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256Signature)
 			};
 

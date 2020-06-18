@@ -5,6 +5,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
+using NodaTime;
+using NodaTime.Serialization.JsonNet;
 
 namespace SmartHub.Api.Installers
 {
@@ -18,9 +20,13 @@ namespace SmartHub.Api.Installers
 				opt.Filters.Add(new AuthorizeFilter(policy));
 			}).AddNewtonsoftJson(options =>
 			{
-				options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
-				options.SerializerSettings.DateFormatHandling = DateFormatHandling.IsoDateFormat;
-				options.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
+				var settings = options.SerializerSettings;
+
+				settings.DateParseHandling = DateParseHandling.None;
+				settings.ConfigureForNodaTime(DateTimeZoneProviders.Tzdb);
+				settings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
+				settings.DateFormatHandling = DateFormatHandling.IsoDateFormat;
+				settings.ContractResolver = new CamelCasePropertyNamesContractResolver();
 			})
 				.SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
 

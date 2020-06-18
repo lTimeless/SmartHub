@@ -35,7 +35,7 @@ namespace SmartHub.Infrastructure.Database.Repositories
 		{
 			foreach (var entry in AppDbContext.ChangeTracker.Entries<BaseEntity>())
 			{
-				var dateTime = _dateTimeService.GetNow();
+				var dateTime = _dateTimeService.Now.ToDateTimeUtc();
 				var userName = _userAccessor.GetCurrentUsername();
 				switch (entry.State)
 				{

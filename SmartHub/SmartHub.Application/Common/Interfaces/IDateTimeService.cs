@@ -1,9 +1,20 @@
 ﻿using System;
+using NodaTime;
 
 namespace SmartHub.Application.Common.Interfaces
 {
     public interface IDateTimeService
     {
-        DateTime GetNow();
+        DateTimeZone TimeZone{get;}
+
+        LocalDateTime? OffsetDateTime{get;}
+
+        Instant Now{get;}
+
+        LocalDateTime LocalNow{get;}
+
+        Instant ToInstant(LocalDateTime local);
+
+        LocalDateTime ToLocal(Instant instant);
     }
 }
