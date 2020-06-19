@@ -1,7 +1,6 @@
 using Autofac;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.SpaServices.AngularCli;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -32,7 +31,6 @@ namespace SmartHub.Api
 				builder.AddUserSecrets<Startup>();
 			}
 			Configuration = builder.Build();
-
 		}
 
 		// Autofac DI Container -> runs/builds after ConfigureServices!
@@ -70,6 +68,10 @@ namespace SmartHub.Api
 			}
 			Log.Information($"----------------------------------------------------------------");
 			app.ShowLocalIpv4();
+
+			// Response Compression
+			// needs to be called before 'UseStaticFiles' otherwise these wont be compressed
+			app.UseResponseCompression();
 
 			// Serilog
 			app.UseSerilogRequestLogging();
