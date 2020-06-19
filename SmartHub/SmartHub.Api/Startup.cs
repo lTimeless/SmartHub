@@ -9,6 +9,7 @@ using Serilog;
 using SmartHub.Api.Extensions;
 using SmartHub.Infrastructure.Database;
 using System.IO;
+using SmartHub.Domain.Common.Settings;
 
 namespace SmartHub.Api
 {
@@ -16,7 +17,7 @@ namespace SmartHub.Api
 	{
 		public IConfiguration Configuration { get; }
 
-		public Startup(IWebHostEnvironment env)
+		public Startup(IHostEnvironment env)
 		{
 			var builder = new ConfigurationBuilder()
 							.SetBasePath(Directory.GetCurrentDirectory())
@@ -24,12 +25,14 @@ namespace SmartHub.Api
 							.AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
 							.AddJsonFile("appsettings.Development.json", optional: true, reloadOnChange: true)
 							.AddJsonFile("appsettings.Production.json", optional: true)
+							.AddJsonFile("smartHub.config.json", optional: false)
 							.AddEnvironmentVariables();
 			if (env.IsDevelopment())
 			{
 				builder.AddUserSecrets<Startup>();
 			}
 			Configuration = builder.Build();
+
 		}
 
 		// Autofac DI Container -> runs/builds after ConfigureServices!
@@ -42,6 +45,10 @@ namespace SmartHub.Api
 		public void ConfigureServices(IServiceCollection services)
 		{
 			services.InstallServicesInAssembly(Configuration);
+
+			// -------------- SmartHubSettings ---------------
+			services.Configure<SmartHubSettings>(Configuration.GetSection("SmartHubSettings"));
+			// dann injecten mit IOptions<SmartHubSettings> smartHubSettings -> smartHubSettings.value
 		}
 
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -110,9 +117,9 @@ namespace SmartHub.Api
 				if (env.IsDevelopment())
 				{
 					// Start seperate FE server and Server listens to it 
-					// spa.UseProxyToSpaDevelopmentServer("http://localhost:4200");
+					 spa.UseProxyToSpaDevelopmentServer("http://localhost:4200");
 					// To start its own FE server
-					spa.UseAngularCliServer(npmScript: "start");
+					// spa.UseAngularCliServer(npmScript: "start");
 				}
 			});
 		}
