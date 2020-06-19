@@ -9,7 +9,8 @@ namespace SmartHub.Application.Common.Interfaces
 
         LocalDateTime? OffsetDateTime{get;}
 
-        Instant Now{get;}
+        Instant Now{ get;}
+        Instant NowUtc { get; }
 
         LocalDateTime LocalNow{get;}
 

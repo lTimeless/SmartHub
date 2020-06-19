@@ -1,10 +1,11 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System;
+using Microsoft.EntityFrameworkCore;
 using SmartHub.Application.Common.Interfaces;
 using SmartHub.Domain.Entities;
 using SmartHub.Domain.Entities.Groups;
-using SmartHub.Domain.Entities.Homes;
 using SmartHub.Domain.Enums;
 using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
 using SmartHub.Application.Common.Interfaces.Repositories;
 
@@ -33,9 +34,9 @@ namespace SmartHub.Infrastructure.Database.Repositories
 
 		public async Task SaveAsync()
 		{
-			foreach (var entry in AppDbContext.ChangeTracker.Entries<BaseEntity>())
+			foreach (var entry in AppDbContext.ChangeTracker.Entries<IEntity>())
 			{
-				var dateTime = _dateTimeService.Now.ToDateTimeUtc();
+				var dateTime = _dateTimeService.NowUtc;
 				var userName = _userAccessor.GetCurrentUsername();
 				switch (entry.State)
 				{
@@ -49,9 +50,16 @@ namespace SmartHub.Infrastructure.Database.Repositories
 						entry.Entity.LastModifiedAt = dateTime;
 						entry.Entity.LastModifiedBy = userName;
 						break;
+					case EntityState.Detached:
+						break;
+					case EntityState.Unchanged:
+						break;
+					case EntityState.Deleted:
+						break;
+					default:
+						throw new ArgumentOutOfRangeException();
 				}
 			}
-
 
 			var aggregateRoots = AppDbContext.ChangeTracker.Entries().Where(x => x.Entity is IAggregateRoot)
 				.Select(x => x.Entity as IAggregateRoot).ToList();

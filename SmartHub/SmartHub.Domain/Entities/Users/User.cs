@@ -2,15 +2,18 @@
 using SmartHub.Domain.Entities.Homes;
 using SmartHub.Domain.Entities.ValueObjects;
 using System;
+using NodaTime;
+using SmartHub.Domain.Common.EventTypes;
 
 namespace SmartHub.Domain.Entities.Users
 {
-	/// <inheritdoc />
-	public class User : IdentityUser<string>
+	/// <inheritdoc cref="Microsoft.AspNetCore.Identity.IdentityUser" />
+	public class User : IdentityUser<string>, IEntity
 	{
-		private DateTime CreatedAt { get; }
-		private DateTime ModifiedDate { get; set; }
-
+		public Instant CreatedAt { get; set; }
+		public Instant LastModifiedAt { get; set; }
+		public string CreatedBy { get; set; }
+		public string LastModifiedBy { get; set; }
 		public string? PersonInfo { get; }
 
 		public virtual PersonName? PersonName { get; }
@@ -26,9 +29,6 @@ namespace SmartHub.Domain.Entities.Users
 			base(userName)
 		{
 			Id = Guid.NewGuid().ToString();
-			CreatedAt = DateTime.Now;
-			ModifiedDate = DateTime.Now;
-
 			EmailConfirmed = true;
 			PersonInfo = personInfo;
 			PersonName = fullname;
@@ -36,9 +36,6 @@ namespace SmartHub.Domain.Entities.Users
 			Home = home;
 		}
 
-		public void UpdateModifiedDate()
-		{
-			ModifiedDate = DateTime.Now;
-		}
+
 	}
 }

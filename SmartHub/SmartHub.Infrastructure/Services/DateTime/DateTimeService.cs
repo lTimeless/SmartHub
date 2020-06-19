@@ -1,4 +1,5 @@
 ﻿using NodaTime;
+using NodaTime.Extensions;
 using NodaTime.TimeZones;
 using SmartHub.Application.Common.Interfaces;
 
@@ -11,6 +12,8 @@ namespace SmartHub.Infrastructure.Services.DateTime
         public LocalDateTime? OffsetDateTime { get; }
 
         public Instant Now => OffsetDateTime?.InZoneLeniently(TimeZone).ToInstant() ?? SystemClock.Instance.GetCurrentInstant();
+        public Instant NowUtc => OffsetDateTime?.InZoneLeniently(TimeZone).ToDateTimeUtc().ToInstant()
+                                 ?? SystemClock.Instance.InUtc().GetCurrentInstant();
 
         public LocalDateTime LocalNow => Now.InZone(TimeZone).LocalDateTime;
 
