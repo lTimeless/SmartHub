@@ -105,16 +105,20 @@ namespace SmartHub.Application.UseCases.PluginAdapter.Loader
 		[MethodImpl(MethodImplOptions.NoInlining)]
 		private Tuple<PluginLoadContext, IEnumerable<Assembly>> Load(string path, LoadStrategyEnum multiple)
 		{
-			if (!Directory.Exists(path))
-			{
-				throw new PluginException($"[{nameof(Load)}] The given path does not exist, path: {path}");
-			}
+			var pathInfo = File.GetAttributes(path);
 
-			if (multiple == LoadStrategyEnum.Multiple)
+			if ((pathInfo & FileAttributes.Directory) == FileAttributes.Directory)
 			{
-				return _pluginFinderService.GetAssembliesAndLoadContext(path);
-			}
+				if (!Directory.Exists(path))
+				{
+					throw new PluginException($"[{nameof(Load)}] The given path does not exist, path: {path}");
+				}
 
+				if (multiple == LoadStrategyEnum.Multiple)
+				{
+					return _pluginFinderService.GetAssembliesAndLoadContext(path);
+				}
+			}
 			var (pluginLoadContext, assembly) = _pluginFinderService.GetAssemblyAndLoadContext(path);
 			return new Tuple<PluginLoadContext, IEnumerable<Assembly>>(pluginLoadContext, new[] { assembly });
 		}

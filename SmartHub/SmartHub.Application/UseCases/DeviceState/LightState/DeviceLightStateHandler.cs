@@ -49,7 +49,7 @@ namespace SmartHub.Application.UseCases.DeviceState.LightState
 			var response = await _httpService.SendAsync(foundDevice.Ip.Ipv4, _query);
 			return new ServiceResponse<DeviceStateDto>(response, response
 				? $"{foundDevice.Name} changed light status"
-				: "Error: Something went wrong");
+				: $"Error: Couldn't send new light status to {foundDevice.Name}");
 		}
 
 	}

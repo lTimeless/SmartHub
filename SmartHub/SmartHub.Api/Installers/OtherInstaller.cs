@@ -26,6 +26,9 @@ namespace SmartHub.Api.Installers
 			// Response compression
 			ConfigureResponseCompression(services);
 
+
+			// Http
+			services.AddHttpClient();
 			// Http
 			//services.AddHttpClient("Sensors", (x) =>
 			//{
