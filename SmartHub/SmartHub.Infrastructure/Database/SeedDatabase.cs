@@ -38,9 +38,18 @@ namespace SmartHub.Infrastructure.Database
 		{
 			using var serviceScope = _scopeFactory.CreateScope();
 			_userManager = serviceScope.ServiceProvider.GetRequiredService<UserManager<User>>();
-			var admin = new User("Admin", null, new PersonName("Max", "", "Test"), null);
-			var guest = new User("Guest", null, new PersonName("Luci", "", "Test"), null);
-			var user = new User("User", null, new PersonName("Test", "Middle", "Best"), null);
+			var admin = new User("Admin", null, new PersonName("Max", "", "Test"), null)
+			{
+				CreatedBy = "Home", LastModifiedBy = "Home"
+			};
+			var guest = new User("Guest", null, new PersonName("Luci", "", "Test"), null)
+			{
+				CreatedBy = "Home", LastModifiedBy = "home"
+			};
+			var user = new User("User", null, new PersonName("Test", "Middle", "Best"), null)
+			{
+				CreatedBy = "Home", LastModifiedBy = "Home"
+			};
 
 			if (!_userManager.Users.Any(x => x.UserName == admin.UserName))
 			{
@@ -63,9 +72,9 @@ namespace SmartHub.Infrastructure.Database
 		{
 			using var serviceScope = _scopeFactory.CreateScope();
 			_roleManager = serviceScope.ServiceProvider.GetRequiredService<RoleManager<Role>>();
-			var admin = new Role("Admin", "Admin description");
-			var guest = new Role("Guest", "Guest description");
-			var user = new Role("User", "User description");
+			var admin = new Role("Admin", "Admin description") {CreatedBy = "Home", LastModifiedBy = "Home"};
+			var guest = new Role("Guest", "Guest description") {CreatedBy = "Home", LastModifiedBy = "home"};
+			var user = new Role("User", "User description") {CreatedBy = "Home", LastModifiedBy = "Home"};
 
 			if (!_roleManager.Roles.Any(x => x.Name == admin.Name))
 			{

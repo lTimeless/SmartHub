@@ -10,7 +10,8 @@ namespace SmartHub.Domain.Entities.Roles
 		public Instant LastModifiedAt { get; set; }
 		public string CreatedBy { get; set; }
 		public string LastModifiedBy { get; set; }
-		public string? Description { get; private set; }
+
+		public string? Description { get; set; }
 
 		protected Role()
 		{

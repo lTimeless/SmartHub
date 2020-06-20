@@ -11,17 +11,15 @@ namespace SmartHub.Domain.Entities.Plugins
 		public double AssemblyVersion { get; private set; }
 		public virtual Company Company { get; private set; }
 
-		// TODO: will be replaced later for a new tabel "ConnectionTypes"
-		public bool MqttSupport { get; set; }
-
-		public bool HttpSupport { get; set; }
+		// TODO: will be replaced later for an Enum flag "ConnectionTypes"
+		public ConnectionTypeEnum ConnectionTypeEnum { get; private set; }
 		public bool IsDownloaded { get; private set; }
 
 		public Plugin()
 		{
 		}
 
-		public Plugin(string name, string description, PluginTypeEnum pluginType, string systemPath, bool active, double version, string company, bool mqtt = false, bool http = false) :
+		public Plugin(string name, string description, PluginTypeEnum pluginType, string systemPath, bool active, double version, string company, ConnectionTypeEnum connectionTypeEnum) :
 			 base(name, description)
 		{
 			PluginType = pluginType;
@@ -30,20 +28,18 @@ namespace SmartHub.Domain.Entities.Plugins
 			AssemblyVersion = version;
 			Company = new Company(company);
 			IsDownloaded = true;
-			MqttSupport = mqtt;
-			HttpSupport = http;
+			ConnectionTypeEnum = connectionTypeEnum;
 		}
 
-		public void UpdatePlugin(PluginTypeEnum pluginType, string systempath, bool active, double version, string company, bool isDownloaded, bool mqtt = false, bool http = false)
+		public void UpdatePlugin(PluginTypeEnum pluginType, string systemPath, bool active, double version, string company, bool isDownloaded, ConnectionTypeEnum connectionTypeEnum)
 		{
 			PluginType = pluginType;
-			AssemblyFilepath = systempath;
+			AssemblyFilepath = systemPath;
 			Active = active;
 			AssemblyVersion = version;
 			Company = new Company(company);
 			IsDownloaded = isDownloaded;
-			MqttSupport = mqtt;
-			HttpSupport = http;
+			ConnectionTypeEnum = connectionTypeEnum;
 		}
 	}
 }

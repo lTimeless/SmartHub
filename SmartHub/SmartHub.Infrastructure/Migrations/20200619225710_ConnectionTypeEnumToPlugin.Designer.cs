@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using NodaTime;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
@@ -10,9 +11,10 @@ using SmartHub.Infrastructure.Database;
 namespace SmartHub.Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200619225710_ConnectionTypeEnumToPlugin")]
+    partial class ConnectionTypeEnumToPlugin
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -358,9 +360,8 @@ namespace SmartHub.Infrastructure.Migrations
                     b.Property<double>("AssemblyVersion")
                         .HasColumnType("double precision");
 
-                    b.Property<string>("ConnectionTypeEnum")
-                        .IsRequired()
-                        .HasColumnType("text");
+                    b.Property<int>("ConnectionTypeEnum")
+                        .HasColumnType("integer");
 
                     b.Property<Instant>("CreatedAt")
                         .HasColumnType("timestamp");
