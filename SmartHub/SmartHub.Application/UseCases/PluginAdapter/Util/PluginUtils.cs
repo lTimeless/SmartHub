@@ -30,5 +30,24 @@ namespace SmartHub.Application.UseCases.PluginAdapter.Util
 				_ => PluginTypeEnum.None,
 			};
 		}
+
+		public static ConnectionTypeEnum CombineConnectionTypes(IPlugin iPlugin)
+		{
+			var interfaces = iPlugin.GetType().GetInterfaces();
+			var connectionTyp = ConnectionTypeEnum.None;
+			var httpSupport = interfaces.Any(x => x.Name.Contains("HttpSupport"));
+			var mqttSupport = interfaces.Any(x => x.Name.Contains("MqttSupport"));
+
+			if (httpSupport)
+			{
+				connectionTyp |= ConnectionTypeEnum.Http;
+			}
+			if (mqttSupport)
+			{
+				connectionTyp |= ConnectionTypeEnum.Mqtt;
+			}
+
+			return connectionTyp;
+		}
 	}
 }
