@@ -13,9 +13,9 @@ namespace SmartHub.Application.Common.Models
         public ServiceResponse(T? data, IEnumerable<string> errors,  bool success, string? message)
         {
             Errors = errors;
-            Data = data ?? null;
+            Data = data;
             Success = success;
-            Message = message ?? null;
+            Message = message ;
         }
 
         public ServiceResponse(T data, bool success, string? message)

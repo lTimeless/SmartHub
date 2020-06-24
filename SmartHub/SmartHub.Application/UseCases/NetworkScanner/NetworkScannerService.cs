@@ -113,7 +113,7 @@ namespace SmartHub.Application.UseCases.NetworkScanner
 
 		private static async Task<string> GetHostnameAsync(string ip)
 		{
-			IPHostEntry res = new IPHostEntry();
+			IPHostEntry? res = null;
 			try
 			{
 				res = await Dns.GetHostEntryAsync(IPAddress.Parse(ip));
@@ -122,7 +122,7 @@ namespace SmartHub.Application.UseCases.NetworkScanner
 			{
 				Log.Information($"[GetHostname] {e.Message}");
 			}
-			return res.HostName;
+			return res?.HostName ?? "";
 		}
 
 		private static async Task<string> GetMacAddressAsync(string ipAddress)

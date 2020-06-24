@@ -8,6 +8,7 @@ using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 using SmartHub.Application.Common.Interfaces.Repositories;
+using SmartHub.Infrastructure.Utils;
 
 namespace SmartHub.Infrastructure.Database.Repositories
 {
@@ -17,16 +18,14 @@ namespace SmartHub.Infrastructure.Database.Repositories
 		private IBaseRepository<Group> _groupRepository;
 		private readonly IChannelManager _channelManager;
 		private readonly IUserAccessor _userAccessor;
-		private readonly IDateTimeService _dateTimeService;
 
 		public AppDbContext AppDbContext { get; }
 
-		public UnitOfWork(AppDbContext appDbContext, IChannelManager channelManager, IUserAccessor userAccessor, IDateTimeService dateTimeService)
+		public UnitOfWork(AppDbContext appDbContext, IChannelManager channelManager, IUserAccessor userAccessor)
 		{
 			AppDbContext = appDbContext;
 			_channelManager = channelManager;
 			_userAccessor = userAccessor;
-			_dateTimeService = dateTimeService;
 		}
 
 		public IHomeRepository HomeRepository => _homeRepository ??= new HomeRepository(AppDbContext);
@@ -36,7 +35,7 @@ namespace SmartHub.Infrastructure.Database.Repositories
 		{
 			foreach (var entry in AppDbContext.ChangeTracker.Entries<IEntity>())
 			{
-				var dateTime = _dateTimeService.NowUtc;
+				var dateTime = DateTimeUtils.NowUtc;
 				var userName = _userAccessor.GetCurrentUsername();
 				switch (entry.State)
 				{

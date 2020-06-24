@@ -5,6 +5,7 @@ using SmartHub.Domain.Enums;
 using System;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
+using SmartHub.Infrastructure.Utils;
 
 namespace SmartHub.Infrastructure.Services.Dispatchers
 {
@@ -13,10 +14,8 @@ namespace SmartHub.Infrastructure.Services.Dispatchers
 	/// </summary>
 	public class HangfireDispatcher : IHangfireDispatcher
 	{
-		private IDateTimeService _dateTimeService;
-		public HangfireDispatcher(IDateTimeService dateTimeService)
+		public HangfireDispatcher()
 		{
-			_dateTimeService = dateTimeService;
 		}
 
 		private const int _interval = 10;
@@ -53,11 +52,11 @@ namespace SmartHub.Infrastructure.Services.Dispatchers
 					break;
 
 				case DateTimeEnum.Day:
-					RecurringJob.AddOrUpdate(action, $"* * * ? * {_dateTimeService.LocalNow.Day}/{interval} *");
+					RecurringJob.AddOrUpdate(action, $"* * * ? * {DateTimeUtils.LocalNow.Day}/{interval} *");
 					break;
 
 				case DateTimeEnum.Week:
-					RecurringJob.AddOrUpdate(action, $"* * * ? * {_dateTimeService.LocalNow.DayOfWeek.ToString().Substring(0, 2)} *");
+					RecurringJob.AddOrUpdate(action, $"* * * ? * {DateTimeUtils.LocalNow.DayOfWeek.ToString().Substring(0, 2)} *");
 					break;
 
 				case DateTimeEnum.Month:
@@ -65,7 +64,7 @@ namespace SmartHub.Infrastructure.Services.Dispatchers
 					break;
 
 				case DateTimeEnum.Year:
-					RecurringJob.AddOrUpdate(action, $"* * * ? * * {_dateTimeService.LocalNow.Year}/{interval}");
+					RecurringJob.AddOrUpdate(action, $"* * * ? * * {DateTimeUtils.LocalNow.Year}/{interval}");
 					break;
 
 				case DateTimeEnum.Never:
@@ -92,11 +91,11 @@ namespace SmartHub.Infrastructure.Services.Dispatchers
 					break;
 
 				case DateTimeEnum.Day:
-					RecurringJob.AddOrUpdate(jobId, action, $"* * * ? * {_dateTimeService.LocalNow.Day}/{interval} *");
+					RecurringJob.AddOrUpdate(jobId, action, $"* * * ? * {DateTimeUtils.LocalNow.Day}/{interval} *");
 					break;
 
 				case DateTimeEnum.Week:
-					RecurringJob.AddOrUpdate(jobId, action, $"* * * ? * {_dateTimeService.LocalNow.DayOfWeek.ToString().Substring(0, 2)} *");
+					RecurringJob.AddOrUpdate(jobId, action, $"* * * ? * {DateTimeUtils.LocalNow.DayOfWeek.ToString().Substring(0, 2)} *");
 					break;
 
 				case DateTimeEnum.Month:
@@ -104,7 +103,7 @@ namespace SmartHub.Infrastructure.Services.Dispatchers
 					break;
 
 				case DateTimeEnum.Year:
-					RecurringJob.AddOrUpdate(jobId, action, $"* * * ? * * {_dateTimeService.LocalNow.Year}/{interval}");
+					RecurringJob.AddOrUpdate(jobId, action, $"* * * ? * * {DateTimeUtils.LocalNow.Year}/{interval}");
 					break;
 
 				case DateTimeEnum.Never:
