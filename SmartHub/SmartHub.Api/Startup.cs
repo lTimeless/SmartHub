@@ -121,7 +121,6 @@ namespace SmartHub.Api
 					// Start seperate FE server and Server listens to it 
 					 spa.UseProxyToSpaDevelopmentServer("http://localhost:4200");
 					// To start its own FE server
-					// spa.UseAngularCliServer(npmScript: "start");
 				}
 			});
 		}

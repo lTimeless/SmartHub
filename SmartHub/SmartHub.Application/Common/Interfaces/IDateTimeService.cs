@@ -5,11 +5,9 @@ namespace SmartHub.Application.Common.Interfaces
 {
     public interface IDateTimeService
     {
-        DateTimeZone TimeZone{get;}
+        static DateTimeZone TimeZone { get; }
 
-        LocalDateTime? OffsetDateTime{get;}
-
-        Instant Now{ get;}
+        Instant Now { get; }
         Instant NowUtc { get; }
 
         LocalDateTime LocalNow{get;}

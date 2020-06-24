@@ -7,13 +7,10 @@ namespace SmartHub.Infrastructure.Services.DateTime
 {
     public class DateTimeService : IDateTimeService
     {
+        public static DateTimeZone TimeZone => DateTimeZoneProviders.Tzdb.GetSystemDefault();
 
-        public DateTimeZone TimeZone => DateTimeZoneProviders.Tzdb.GetSystemDefault();
-        public LocalDateTime? OffsetDateTime { get; }
-
-        public Instant Now => OffsetDateTime?.InZoneLeniently(TimeZone).ToInstant() ?? SystemClock.Instance.GetCurrentInstant();
-        public Instant NowUtc => OffsetDateTime?.InZoneLeniently(TimeZone).ToDateTimeUtc().ToInstant()
-                                 ?? SystemClock.Instance.InUtc().GetCurrentInstant();
+        public Instant Now => SystemClock.Instance.GetCurrentInstant();
+        public Instant NowUtc => SystemClock.Instance.InUtc().GetCurrentInstant();
 
         public LocalDateTime LocalNow => Now.InZone(TimeZone).LocalDateTime;
 

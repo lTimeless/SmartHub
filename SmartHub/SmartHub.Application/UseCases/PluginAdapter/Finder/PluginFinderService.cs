@@ -1,5 +1,4 @@
 ﻿using SmartHub.Application.Common.Exceptions;
-using SmartHub.Application.Common.Interfaces;
 using SmartHub.Application.UseCases.PluginAdapter.Util;
 using SmartHub.Domain.Common.Extensions;
 using System;

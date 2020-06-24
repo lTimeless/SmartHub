@@ -10,9 +10,9 @@ namespace SmartHub.Application.Common.Models
 
         public IEnumerable<string>? Errors { get; }
 
-        public ServiceResponse(T? data, IEnumerable<string>? errors,  bool success, string? message)
+        public ServiceResponse(T? data, IEnumerable<string> errors,  bool success, string? message)
         {
-            Errors = errors ?? null;
+            Errors = errors;
             Data = data ?? null;
             Success = success;
             Message = message ?? null;
@@ -21,8 +21,8 @@ namespace SmartHub.Application.Common.Models
         public ServiceResponse(T data, bool success, string? message)
         {
             Success = success;
-            Data = data ?? null;
-            Message = message ?? null;
+            Data = data;
+            Message = message;
             Errors = null;
         }
 

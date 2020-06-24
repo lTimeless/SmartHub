@@ -80,20 +80,19 @@ namespace SmartHub.Application.UseCases.NetworkScanner
 		// Helpers
 		private static string MakeNameFromHostname(string hostname)
 		{
-			switch (hostname)
+			if (hostname == null)
 			{
-				case null:
-					return "Not available";
-				case "fritz.box":
-				case "speedport.ip":
-					return hostname;
+				return "Not available";
+			}
+			if (hostname == "fritz.box" || hostname == "speedport.ip")
+			{
+				return hostname;
 			}
 
 			if (hostname.Contains(".fritz.box"))
 			{
 				return hostname.Split(new[] {".fritz.box"}, StringSplitOptions.None)[0];
 			}
-
 			if (hostname.Contains(".speedport.ip"))
 			{
 				return hostname.Split(new[] {".speedport.ip"}, StringSplitOptions.None)[0];
@@ -114,7 +113,7 @@ namespace SmartHub.Application.UseCases.NetworkScanner
 
 		private static async Task<string> GetHostnameAsync(string ip)
 		{
-			IPHostEntry res = null;
+			IPHostEntry res = new IPHostEntry();
 			try
 			{
 				res = await Dns.GetHostEntryAsync(IPAddress.Parse(ip));
@@ -123,8 +122,7 @@ namespace SmartHub.Application.UseCases.NetworkScanner
 			{
 				Log.Information($"[GetHostname] {e.Message}");
 			}
-
-			return res?.HostName;
+			return res.HostName;
 		}
 
 		private static async Task<string> GetMacAddressAsync(string ipAddress)

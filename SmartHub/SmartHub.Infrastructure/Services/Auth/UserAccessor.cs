@@ -8,7 +8,7 @@ namespace SmartHub.Infrastructure.Services.Auth
 	public class UserAccessor : IUserAccessor
 	{
 		private readonly IHttpContextAccessor _httpContextAccessor;
-		private const string Home = "Home"; // If no user did a request, than probably the Home itself did it
+		private const string System = "System"; // If no user did a request, than probably the System itself did it
 
 		public UserAccessor(IHttpContextAccessor httpContextAccessor)
 		{
@@ -20,7 +20,7 @@ namespace SmartHub.Infrastructure.Services.Auth
 			return _httpContextAccessor
 				.HttpContext?
 				.User?
-				.FindFirstValue(ClaimTypes.NameIdentifier) ?? "null";
+				.FindFirstValue(ClaimTypes.NameIdentifier) ?? System;
 		}
 
 		public string GetCurrentUserId()
@@ -28,7 +28,7 @@ namespace SmartHub.Infrastructure.Services.Auth
 			return _httpContextAccessor
 				.HttpContext?
 				.User?
-				.FindFirstValue("Id") ?? "null";
+				.FindFirstValue("Id") ?? System;
 		}
 	}
 }

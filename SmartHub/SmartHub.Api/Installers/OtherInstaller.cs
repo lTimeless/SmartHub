@@ -29,10 +29,9 @@ namespace SmartHub.Api.Installers
 			// Http
 			services.AddHttpClient("SmartDevices", (x) =>
 				{
-					// x.DefaultRequestHeaders.Add("Accept", "");
 					x.DefaultRequestHeaders.Add("User-Agent", "smartHub");
 				})
-				.AddTransientHttpErrorPolicy(configurePolicy: x => x.WaitAndRetryAsync(3,
+				.AddTransientHttpErrorPolicy(x => x.WaitAndRetryAsync(3,
 					retryAttempt => TimeSpan.FromMilliseconds(retryAttempt * 100)));
 
 			// SignalR

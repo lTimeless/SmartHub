@@ -18,7 +18,6 @@ namespace SmartHub.Infrastructure.Services.Dispatchers
 	{
 		private readonly IChannelManager _channelManager;
 		private readonly ILogger _logger;
-		private static readonly string NewLine = Environment.NewLine;
 
 		public EventDispatcher(IChannelManager channelManager, ILogger logger)
 		{
@@ -74,7 +73,6 @@ namespace SmartHub.Infrastructure.Services.Dispatchers
 						loginEvent.UserName, loginEvent.Successful
 						); // hier an den jeweiligen service schicken der das event verarbeiten soll, z.B email, notification signalr
 					break;
-
 				default:
 					throw new SmartHubException("Unknown event error");
 			}
@@ -85,18 +83,7 @@ namespace SmartHub.Infrastructure.Services.Dispatchers
 			switch (domainEvent)
 			{
 				case HomeUpdatedEvent homeUpdatedEvent:
-					_logger.Information("[DispatchDomainEvents] Dispatch HomeUpdatedEvent => Updated home {@home} ", homeUpdatedEvent);
-
-					// _logger.Information($"[{nameof(DispatchDomainEvents)}] Dispatch {nameof(HomeUpdatedEvent)} =>  " +
-					//                     homeUpdatedEvent.Name == null ? "" : $"Updated name to: {homeUpdatedEvent.Name} {NewLine}" +
-					//                     homeUpdatedEvent.Description is null ? "" : $"Updated description to: {homeUpdatedEvent.Description} {NewLine}" +
-					//                     homeUpdatedEvent.NewUser is null ? "" : $"Added new user: {homeUpdatedEvent.NewUser!.UserName}{NewLine}" +
-					//                     homeUpdatedEvent.NewGroup is null ? "" : $"Added new group: {homeUpdatedEvent.NewGroup!.Name}{NewLine}" +
-					//                     homeUpdatedEvent.NewDevice is null ? "" : $"Added new device: {homeUpdatedEvent.NewDevice!.Name}{NewLine}" +
-					//                     homeUpdatedEvent.NewPlugin is null ? "" : $"Added new plugin: {homeUpdatedEvent.NewPlugin!.Name}{NewLine}" +
-					//                     homeUpdatedEvent.NewSetting is null ? "" : $"Added new setting: {homeUpdatedEvent.NewSetting!.Name}{NewLine}" +
-					//                     homeUpdatedEvent.NewAddress is null ? "" : $"Updated address to: {ValueObject.Print}{NewLine}");
-
+					_logger.Information("[DispatchDomainEvents] Dispatch HomeUpdatedEvent => Updated home {@homeUpdatedEvent} ", homeUpdatedEvent);
                     // hier an den jeweiligen service schicken der das event verarbeiten soll, z.B email, notification, signalr
 					break;
 
