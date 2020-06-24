@@ -1,8 +1,4 @@
-﻿using SmartHub.Domain.Entities.Homes;
-using SmartHub.Domain.Enums;
-using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using SmartHub.Domain.Enums;
 
 namespace SmartHub.Domain.Entities.Settings
 {

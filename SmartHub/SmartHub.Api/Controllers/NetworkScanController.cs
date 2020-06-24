@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using System.Threading;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using SmartHub.Application.UseCases.NetworkScanner;
 using System.Threading.Tasks;
@@ -22,9 +23,10 @@ namespace SmartHub.Api.Controllers
 		[ProducesResponseType(StatusCodes.Status200OK)]
 		[ProducesResponseType(StatusCodes.Status400BadRequest)]
 		[ProducesResponseType(StatusCodes.Status401Unauthorized)]
-		public async Task<IActionResult> Get()
+		public async Task<IActionResult> Get(CancellationToken cancellationToken)
 		{
-			return Ok(await Mediator.Send(new NetworkScannerQuery()).ConfigureAwait(false));
+
+			return Ok(await Mediator.Send(new NetworkScannerQuery(), cancellationToken));
 		}
 	}
 }

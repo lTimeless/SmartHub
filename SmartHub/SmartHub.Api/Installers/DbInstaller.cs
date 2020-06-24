@@ -19,7 +19,11 @@ namespace SmartHub.Api.Installers
 				builder.EnableSensitiveDataLogging(false);
 				builder.UseLazyLoadingProxies();
 				builder.UseNpgsql(connectionString,
-					options => options.MigrationsAssembly(typeof(AppDbContext).Assembly.FullName));
+					options =>
+					{
+						options.MigrationsAssembly(typeof(AppDbContext).Assembly.FullName);
+						options.UseNodaTime();
+					});
 			})
 			.BuildServiceProvider();
 

@@ -1,14 +1,30 @@
-﻿using SmartHub.Application.Common.Interfaces;
+﻿using System;
+using System.Net.Http;
+using SmartHub.Application.Common.Interfaces;
 using System.Threading.Tasks;
 
 namespace SmartHub.Infrastructure.Services.Http
 {
 	public class HttpService : IHttpService
 	{
-		public Task<bool> SendAsync(string ipAddress, string query)
+		private readonly HttpClient _httpClient;
+		public HttpService(IHttpClientFactory clientFactory)
 		{
-			//TODO: bsp. http://192.168.2.23?turn=On
-			throw new System.NotImplementedException();
+			_httpClient = clientFactory.CreateClient("SmartDevices");
+		}
+
+		public async Task<bool> SendAsync(string ipAddress, string query)
+		{
+			var uri = new UriBuilder
+			{
+				Host = ipAddress,
+				Query = query
+			};
+			//bsp. http://192.168.2.23?turn=On
+			var request = new HttpRequestMessage(HttpMethod.Get, uri.ToString());
+
+			using var response = await _httpClient.SendAsync(request, HttpCompletionOption.ResponseHeadersRead);
+			return response.IsSuccessStatusCode;
 		}
 
 		public Task GetAsync(string ipAddress, string query)

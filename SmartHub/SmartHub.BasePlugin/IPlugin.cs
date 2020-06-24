@@ -9,9 +9,6 @@ namespace SmartHub.BasePlugin
         string Company { get; set; }
         DateTime ModifiedAt { get; }
         DateTime CreatedAt { get; }
-        //TODO: vlt ersetzen durch interfaces
-        public bool MqttSupport { get; set; }
-        public bool HttpSupport { get; set; }
         /// <summary>
         /// Build version of the Assembly
         /// </summary>

@@ -84,23 +84,22 @@ namespace SmartHub.Application.UseCases.NetworkScanner
 			{
 				return "Not available";
 			}
-
-			if (hostname.Equals("fritz.box") || hostname.Equals("speedport.ip"))
+			if (hostname == "fritz.box" || hostname == "speedport.ip")
 			{
 				return hostname;
 			}
 
 			if (hostname.Contains(".fritz.box"))
 			{
-				return hostname.Split(new[] { ".fritz.box" }, StringSplitOptions.None)[0];
+				return hostname.Split(new[] {".fritz.box"}, StringSplitOptions.None)[0];
 			}
-
 			if (hostname.Contains(".speedport.ip"))
 			{
-				return hostname.Split(new[] { ".speedport.ip" }, StringSplitOptions.None)[0];
+				return hostname.Split(new[] {".speedport.ip"}, StringSplitOptions.None)[0];
 			}
 
 			return "Not available";
+
 		}
 
 		private static string FindMyNetworkGateway()
@@ -109,12 +108,12 @@ namespace SmartHub.Application.UseCases.NetworkScanner
 			return host
 				.AddressList
 				.FirstOrDefault(ip => ip.AddressFamily == AddressFamily.InterNetwork)?
-				.ToString();
+				.ToString() ?? "";
 		}
 
 		private static async Task<string> GetHostnameAsync(string ip)
 		{
-			IPHostEntry res = null;
+			IPHostEntry? res = null;
 			try
 			{
 				res = await Dns.GetHostEntryAsync(IPAddress.Parse(ip));
@@ -123,8 +122,7 @@ namespace SmartHub.Application.UseCases.NetworkScanner
 			{
 				Log.Information($"[GetHostname] {e.Message}");
 			}
-
-			return res?.HostName;
+			return res?.HostName ?? "";
 		}
 
 		private static async Task<string> GetMacAddressAsync(string ipAddress)

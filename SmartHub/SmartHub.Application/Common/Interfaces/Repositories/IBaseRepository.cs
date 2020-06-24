@@ -2,16 +2,15 @@
 using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
+using SmartHub.Domain.Entities;
 
-namespace SmartHub.Domain.Entities
+namespace SmartHub.Application.Common.Interfaces.Repositories
 {
 	public interface IBaseRepository<T> where T : BaseEntity
 	{
 		Task<T> GetByIdAsync(string id);
 
 		Task<List<T>> GetAllAsync();
-
-		Task<T> GetFirstAsync();
 
 		Task<List<T>> FindAllAsync(Expression<Func<T, bool>> expression);
 

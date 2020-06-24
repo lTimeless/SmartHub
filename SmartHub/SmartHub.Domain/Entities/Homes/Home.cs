@@ -6,6 +6,7 @@ using SmartHub.Domain.Entities.Plugins;
 using SmartHub.Domain.Entities.Settings;
 using SmartHub.Domain.Entities.Users;
 using System.Collections.Generic;
+using SmartHub.Domain.Entities.ValueObjects;
 
 namespace SmartHub.Domain.Entities.Homes
 {
@@ -21,9 +22,9 @@ namespace SmartHub.Domain.Entities.Homes
 		public virtual List<Setting> Settings { get; internal set; }
 
 		public virtual Address Address { get; set; }
-		public List<IDomainEvent> Events { get; set; }
+		public virtual List<IDomainEvent> Events { get; set; }
 
-		public Home()
+		protected Home()
 		{
 		}
 
@@ -35,6 +36,7 @@ namespace SmartHub.Domain.Entities.Homes
 			Plugins = new List<Plugin>();
 			Settings = new List<Setting>() { setting };
 			Events = new List<IDomainEvent>();
+			Address = new Address("","","","",""); // TODO: add functionality
 		}
 
 		public void AddDomainEvent(IDomainEvent domainEvent)

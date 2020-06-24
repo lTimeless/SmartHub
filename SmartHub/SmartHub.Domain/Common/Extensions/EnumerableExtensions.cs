@@ -3,7 +3,7 @@ using System.Linq;
 
 namespace SmartHub.Domain.Common.Extensions
 {
-	public static class IEnumerableExtensions
+	public static class EnumerableExtensions
 	{
 		/// <summary>
 		/// Determines whether the collection is null or contains no elements.

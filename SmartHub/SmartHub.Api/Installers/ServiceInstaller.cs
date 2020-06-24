@@ -2,6 +2,7 @@
 using Microsoft.Extensions.DependencyInjection;
 using SmartHub.Application.Common.Interfaces;
 using SmartHub.Application.Common.Interfaces.Events;
+using SmartHub.Application.Common.Interfaces.Repositories;
 using SmartHub.Application.UseCases.AppStartup;
 using SmartHub.Application.UseCases.Identity.Login;
 using SmartHub.Application.UseCases.Identity.Registration;
@@ -14,7 +15,6 @@ using SmartHub.Domain.Entities.Users;
 using SmartHub.Infrastructure.Database;
 using SmartHub.Infrastructure.Database.Repositories;
 using SmartHub.Infrastructure.Services.Auth;
-using SmartHub.Infrastructure.Services.DateTime;
 using SmartHub.Infrastructure.Services.Dispatchers;
 using SmartHub.Infrastructure.Services.Http;
 
@@ -34,6 +34,7 @@ namespace SmartHub.Api.Installers
 
 		private static void ConfigureRepositories(IServiceCollection services)
 		{
+			services.AddScoped<IHomeRepository, HomeRepository>();
 			services.AddScoped<IUnitOfWork, UnitOfWork>();
 			services.AddTransient<SeedDatabase>();
 		}
@@ -63,7 +64,6 @@ namespace SmartHub.Api.Installers
 
 		private static void ConfigureHelpServices(IServiceCollection services)
 		{
-			services.AddTransient<IDateTimeService, DateTimeService>();
 		}
 
 		private static void ConfigureServices(IServiceCollection services)

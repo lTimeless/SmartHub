@@ -1,11 +1,15 @@
 ﻿using MediatR;
-using SmartHub.Application.Common.Exceptions;
 using SmartHub.Application.Common.Interfaces;
 using SmartHub.Application.UseCases.PluginAdapter.Host;
-using SmartHub.Domain.Common;
 using System;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using Serilog;
+using SmartHub.Application.Common.Interfaces.Repositories;
+using SmartHub.Application.Common.Models;
+using SmartHub.Application.UseCases.PluginAdapter.Util;
+using SmartHub.Domain.Enums;
 
 namespace SmartHub.Application.UseCases.DeviceState.LightState
 {
@@ -29,24 +33,34 @@ namespace SmartHub.Application.UseCases.DeviceState.LightState
 			{
 				throw new ArgumentNullException(nameof(request));
 			}
-			var home = await _unitOfWork.HomeRepository.GetFirstAsync();
-			var foundDevice = home.Devices.Find(x => x.Id == request.LightStateDto.DeviceId);
+			var home = await _unitOfWork.HomeRepository.GetHome();
+			var foundDevice = home.Devices.SingleOrDefault(x => x.Id == request.LightStateDto.DeviceId);
 			if (foundDevice is null)
 			{
-				throw new SmartHubException($"[{nameof(DeviceLightStateHandler)}] Error: No device found by the given deviceId {request.LightStateDto.DeviceId}");
+				return new ServiceResponse<DeviceStateDto>(false,
+					$"[{nameof(DeviceLightStateHandler)}] Error: No device found by the given deviceId {request.LightStateDto.DeviceId}");
 			}
 			var pluginObject = await _pluginHostService.LightPlugins.GetAndLoadByName(foundDevice.PluginName, home);
-			if (pluginObject.HttpSupport)
+			var connectionType = PluginUtils.CombineConnectionTypes(pluginObject);
+			if ((connectionType & ConnectionTypeEnum.Http) != 0 && foundDevice.PrimaryConnection == ConnectionTypeEnum.Http)
 			{
-				_query = pluginObject.Instantiate()
-					.SetToggleLight(request.LightStateDto.ToggleLight)
-				.Build();
+				_query = pluginObject.Instantiate().SetToggleLight(request.LightStateDto.ToggleLight).Build();
 			}
+			else if ((connectionType & ConnectionTypeEnum.Mqtt) != 0 && foundDevice.PrimaryConnection == ConnectionTypeEnum.Mqtt)
+			{
+				// TODO: implement later when Mqtt is useable
+				Log.Information($"[{nameof(DeviceLightStateHandler)}] {connectionType}");
+			}
+			else
+			{
+				// TODO: implement later -> error path
+				Log.Information($"[{nameof(DeviceLightStateHandler)}] {connectionType}");
 
+			}
 			var response = await _httpService.SendAsync(foundDevice.Ip.Ipv4, _query);
-			return new ServiceResponse<DeviceStateDto>(null, response, response
+			return new ServiceResponse<DeviceStateDto>(response, response
 				? $"{foundDevice.Name} changed light status"
-				: "Error: Something went wrong");
+				: $"Error: Couldn't send new light status to {foundDevice.Name}");
 		}
 
 	}

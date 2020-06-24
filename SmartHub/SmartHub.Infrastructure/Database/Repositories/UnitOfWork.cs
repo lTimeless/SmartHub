@@ -1,40 +1,41 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System;
+using Microsoft.EntityFrameworkCore;
 using SmartHub.Application.Common.Interfaces;
 using SmartHub.Domain.Entities;
 using SmartHub.Domain.Entities.Groups;
-using SmartHub.Domain.Entities.Homes;
 using SmartHub.Domain.Enums;
 using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
+using SmartHub.Application.Common.Interfaces.Repositories;
+using SmartHub.Infrastructure.Utils;
 
 namespace SmartHub.Infrastructure.Database.Repositories
 {
 	public class UnitOfWork : IUnitOfWork
 	{
-		private IBaseRepository<Home> _homeRepository;
+		private IHomeRepository _homeRepository;
 		private IBaseRepository<Group> _groupRepository;
 		private readonly IChannelManager _channelManager;
 		private readonly IUserAccessor _userAccessor;
-		private readonly IDateTimeService _dateTimeService;
 
 		public AppDbContext AppDbContext { get; }
 
-		public UnitOfWork(AppDbContext appDbContext, IChannelManager channelManager, IUserAccessor userAccessor, IDateTimeService dateTimeService)
+		public UnitOfWork(AppDbContext appDbContext, IChannelManager channelManager, IUserAccessor userAccessor)
 		{
 			AppDbContext = appDbContext;
 			_channelManager = channelManager;
 			_userAccessor = userAccessor;
-			_dateTimeService = dateTimeService;
 		}
 
-		public IBaseRepository<Home> HomeRepository => _homeRepository ??= new BaseRepository<Home>(AppDbContext);
+		public IHomeRepository HomeRepository => _homeRepository ??= new HomeRepository(AppDbContext);
 		public IBaseRepository<Group> GroupRepository => _groupRepository ??= new BaseRepository<Group>(AppDbContext);
 
 		public async Task SaveAsync()
 		{
-			foreach (var entry in AppDbContext.ChangeTracker.Entries<BaseEntity>())
+			foreach (var entry in AppDbContext.ChangeTracker.Entries<IEntity>())
 			{
-				var dateTime = _dateTimeService.GetNow();
+				var dateTime = DateTimeUtils.NowUtc;
 				var userName = _userAccessor.GetCurrentUsername();
 				switch (entry.State)
 				{
@@ -48,9 +49,16 @@ namespace SmartHub.Infrastructure.Database.Repositories
 						entry.Entity.LastModifiedAt = dateTime;
 						entry.Entity.LastModifiedBy = userName;
 						break;
+					case EntityState.Detached:
+						break;
+					case EntityState.Unchanged:
+						break;
+					case EntityState.Deleted:
+						break;
+					default:
+						throw new ArgumentOutOfRangeException();
 				}
 			}
-
 
 			var aggregateRoots = AppDbContext.ChangeTracker.Entries().Where(x => x.Entity is IAggregateRoot)
 				.Select(x => x.Entity as IAggregateRoot).ToList();

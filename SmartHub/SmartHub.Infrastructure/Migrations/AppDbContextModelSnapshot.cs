@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
+using NodaTime;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using SmartHub.Infrastructure.Database;
 
@@ -210,8 +211,8 @@ namespace SmartHub.Infrastructure.Migrations
                     b.Property<string>("Id")
                         .HasColumnType("text");
 
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("timestamp without time zone");
+                    b.Property<Instant>("CreatedAt")
+                        .HasColumnType("timestamp");
 
                     b.Property<string>("CreatedBy")
                         .IsRequired()
@@ -226,8 +227,8 @@ namespace SmartHub.Infrastructure.Migrations
                     b.Property<string>("HomeId")
                         .HasColumnType("text");
 
-                    b.Property<DateTime>("LastModifiedAt")
-                        .HasColumnType("timestamp without time zone");
+                    b.Property<Instant>("LastModifiedAt")
+                        .HasColumnType("timestamp");
 
                     b.Property<string>("LastModifiedBy")
                         .IsRequired()
@@ -270,8 +271,8 @@ namespace SmartHub.Infrastructure.Migrations
                     b.Property<string>("Id")
                         .HasColumnType("text");
 
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("timestamp without time zone");
+                    b.Property<Instant>("CreatedAt")
+                        .HasColumnType("timestamp");
 
                     b.Property<string>("CreatedBy")
                         .IsRequired()
@@ -287,8 +288,8 @@ namespace SmartHub.Infrastructure.Migrations
                     b.Property<string>("HomeId")
                         .HasColumnType("text");
 
-                    b.Property<DateTime>("LastModifiedAt")
-                        .HasColumnType("timestamp without time zone");
+                    b.Property<Instant>("LastModifiedAt")
+                        .HasColumnType("timestamp");
 
                     b.Property<string>("LastModifiedBy")
                         .IsRequired()
@@ -313,8 +314,8 @@ namespace SmartHub.Infrastructure.Migrations
                     b.Property<string>("Id")
                         .HasColumnType("text");
 
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("timestamp without time zone");
+                    b.Property<Instant>("CreatedAt")
+                        .HasColumnType("timestamp");
 
                     b.Property<string>("CreatedBy")
                         .IsRequired()
@@ -323,8 +324,8 @@ namespace SmartHub.Infrastructure.Migrations
                     b.Property<string>("Description")
                         .HasColumnType("text");
 
-                    b.Property<DateTime>("LastModifiedAt")
-                        .HasColumnType("timestamp without time zone");
+                    b.Property<Instant>("LastModifiedAt")
+                        .HasColumnType("timestamp");
 
                     b.Property<string>("LastModifiedBy")
                         .IsRequired()
@@ -357,8 +358,12 @@ namespace SmartHub.Infrastructure.Migrations
                     b.Property<double>("AssemblyVersion")
                         .HasColumnType("double precision");
 
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("timestamp without time zone");
+                    b.Property<string>("ConnectionTypeEnum")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<Instant>("CreatedAt")
+                        .HasColumnType("timestamp");
 
                     b.Property<string>("CreatedBy")
                         .IsRequired()
@@ -370,21 +375,15 @@ namespace SmartHub.Infrastructure.Migrations
                     b.Property<string>("HomeId")
                         .HasColumnType("text");
 
-                    b.Property<bool>("HttpSupport")
-                        .HasColumnType("boolean");
-
                     b.Property<bool>("IsDownloaded")
                         .HasColumnType("boolean");
 
-                    b.Property<DateTime>("LastModifiedAt")
-                        .HasColumnType("timestamp without time zone");
+                    b.Property<Instant>("LastModifiedAt")
+                        .HasColumnType("timestamp");
 
                     b.Property<string>("LastModifiedBy")
                         .IsRequired()
                         .HasColumnType("text");
-
-                    b.Property<bool>("MqttSupport")
-                        .HasColumnType("boolean");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -413,7 +412,21 @@ namespace SmartHub.Infrastructure.Migrations
                         .IsConcurrencyToken()
                         .HasColumnType("text");
 
+                    b.Property<Instant>("CreatedAt")
+                        .HasColumnType("timestamp");
+
+                    b.Property<string>("CreatedBy")
+                        .IsRequired()
+                        .HasColumnType("text");
+
                     b.Property<string>("Description")
+                        .HasColumnType("text");
+
+                    b.Property<Instant>("LastModifiedAt")
+                        .HasColumnType("timestamp");
+
+                    b.Property<string>("LastModifiedBy")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("Name")
@@ -441,8 +454,8 @@ namespace SmartHub.Infrastructure.Migrations
                     b.Property<string>("Id")
                         .HasColumnType("text");
 
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("timestamp without time zone");
+                    b.Property<Instant>("CreatedAt")
+                        .HasColumnType("timestamp");
 
                     b.Property<string>("CreatedBy")
                         .IsRequired()
@@ -471,8 +484,8 @@ namespace SmartHub.Infrastructure.Migrations
                     b.Property<bool>("IsDefault")
                         .HasColumnType("boolean");
 
-                    b.Property<DateTime>("LastModifiedAt")
-                        .HasColumnType("timestamp without time zone");
+                    b.Property<Instant>("LastModifiedAt")
+                        .HasColumnType("timestamp");
 
                     b.Property<string>("LastModifiedBy")
                         .IsRequired()
@@ -516,6 +529,13 @@ namespace SmartHub.Infrastructure.Migrations
                         .IsConcurrencyToken()
                         .HasColumnType("text");
 
+                    b.Property<Instant>("CreatedAt")
+                        .HasColumnType("timestamp");
+
+                    b.Property<string>("CreatedBy")
+                        .IsRequired()
+                        .HasColumnType("text");
+
                     b.Property<string>("Email")
                         .HasColumnType("character varying(256)")
                         .HasMaxLength(256);
@@ -524,6 +544,13 @@ namespace SmartHub.Infrastructure.Migrations
                         .HasColumnType("boolean");
 
                     b.Property<string>("HomeId")
+                        .HasColumnType("text");
+
+                    b.Property<Instant>("LastModifiedAt")
+                        .HasColumnType("timestamp");
+
+                    b.Property<string>("LastModifiedBy")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<bool>("LockoutEnabled")
@@ -541,9 +568,6 @@ namespace SmartHub.Infrastructure.Migrations
                         .HasMaxLength(256);
 
                     b.Property<string>("PasswordHash")
-                        .HasColumnType("text");
-
-                    b.Property<string>("PersonInfo")
                         .HasColumnType("text");
 
                     b.Property<string>("PhoneNumber")
@@ -699,7 +723,7 @@ namespace SmartHub.Infrastructure.Migrations
 
             modelBuilder.Entity("SmartHub.Domain.Entities.Homes.Home", b =>
                 {
-                    b.OwnsOne("SmartHub.Domain.Entities.Homes.Address", "Address", b1 =>
+                    b.OwnsOne("SmartHub.Domain.Entities.ValueObjects.Address", "Address", b1 =>
                         {
                             b1.Property<string>("HomeId")
                                 .HasColumnType("text");

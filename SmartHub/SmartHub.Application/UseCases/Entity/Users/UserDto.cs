@@ -1,15 +1,11 @@
 ﻿using System;
+using SmartHub.Application.Common.Mappings;
+using SmartHub.Domain.Entities.Users;
 
 namespace SmartHub.Application.UseCases.Entity.Users
 {
-	public class UserDto
+	public class UserDto : BaseDto , IMapFrom<User>
 	{
-		public string Id { get; set; }
-		private DateTime? CreatedAt { get; set; }
-		private DateTime? ModifiedDate { get; set; }
-
-		public string? Description { get; set; }
-
 		public string? PersonInfo { get; set; }
 
 		public string UserName { get; set; }

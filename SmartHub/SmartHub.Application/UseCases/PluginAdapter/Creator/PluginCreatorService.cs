@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using SmartHub.Domain.Enums;
 
 namespace SmartHub.Application.UseCases.PluginAdapter.Creator
 {
@@ -43,12 +44,11 @@ namespace SmartHub.Application.UseCases.PluginAdapter.Creator
 			}
 
 			pluginList.AddRange(from iPlugin in pluginsList
-				let interfaces = iPlugin.GetType().GetInterfaces()
-				let httpSupport = interfaces.Any(x => x.Name.Contains("HttpSupport"))
-				let mqttSupport = interfaces.Any(x => x.Name.Contains("MqttSupport"))
 				select new Plugin(iPlugin.Name, string.Empty, PluginUtils.GetEnumType(iPlugin.Name), assemblyLocation,
-					true, iPlugin.AssemblyVersion, iPlugin.Company, mqttSupport, httpSupport));
+					true, iPlugin.AssemblyVersion, iPlugin.Company, PluginUtils.CombineConnectionTypes(iPlugin)));
 			return pluginList;
 		}
+
+
 	}
 }

@@ -18,6 +18,9 @@ namespace SmartHub.Infrastructure.Database.Configurations
 			builder.Property(x => x.PluginType)
 				.HasConversion<string>(new EnumToStringConverter<PluginTypeEnum>());
 
+			builder.Property(x => x.ConnectionTypeEnum)
+				.HasConversion<string>(new EnumToStringConverter<ConnectionTypeEnum>());
+
 			builder.OwnsOne(x => x.Company, c =>
 			{
 				c.Property(v => v.Name).HasMaxLength(200)

@@ -1,5 +1,4 @@
 ﻿using SmartHub.Application.Common.Exceptions;
-using SmartHub.Application.Common.Interfaces;
 using SmartHub.Application.UseCases.PluginAdapter.Creator;
 using SmartHub.Application.UseCases.PluginAdapter.Finder;
 using SmartHub.BasePlugin;
@@ -11,6 +10,7 @@ using System.Linq;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
+using SmartHub.Application.Common.Interfaces.Repositories;
 using SmartHub.Domain.Entities.Homes;
 using SmartHub.Domain.Enums;
 
@@ -104,16 +104,20 @@ namespace SmartHub.Application.UseCases.PluginAdapter.Loader
 		[MethodImpl(MethodImplOptions.NoInlining)]
 		private Tuple<PluginLoadContext, IEnumerable<Assembly>> Load(string path, LoadStrategyEnum multiple)
 		{
-			if (!Directory.Exists(path))
-			{
-				throw new PluginException($"[{nameof(Load)}] The given path does not exist, path: {path}");
-			}
+			var pathInfo = File.GetAttributes(path);
 
-			if (multiple == LoadStrategyEnum.Multiple)
+			if ((pathInfo & FileAttributes.Directory) == FileAttributes.Directory)
 			{
-				return _pluginFinderService.GetAssembliesAndLoadContext(path);
-			}
+				if (!Directory.Exists(path))
+				{
+					throw new PluginException($"[{nameof(Load)}] The given path does not exist, path: {path}");
+				}
 
+				if (multiple == LoadStrategyEnum.Multiple)
+				{
+					return _pluginFinderService.GetAssembliesAndLoadContext(path);
+				}
+			}
 			var (pluginLoadContext, assembly) = _pluginFinderService.GetAssemblyAndLoadContext(path);
 			return new Tuple<PluginLoadContext, IEnumerable<Assembly>>(pluginLoadContext, new[] { assembly });
 		}
@@ -128,7 +132,7 @@ namespace SmartHub.Application.UseCases.PluginAdapter.Loader
 										 $"[{nameof(AddToHome)}] Error converting list of {name} to list of IPlugin");
 
 				var listOfPlugins = _pluginCreator.CreatePluginsFromIPlugins(listOfIPlugins, assembly.Location);
-				var home = await _unitOfWork.HomeRepository.GetFirstAsync();
+				var home = await _unitOfWork.HomeRepository.GetHome();
 
 				foreach (var plugin in listOfPlugins.Where(plugin => home.CheckIfPluginExistAndHasHigherVersion(plugin)))
 				{

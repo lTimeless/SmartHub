@@ -1,12 +1,22 @@
 ﻿using System;
+using NodaTime;
 
 namespace SmartHub.Domain.Entities
 {
-	public abstract class BaseEntity
+	public interface IEntity
+	{
+		public Instant CreatedAt { get; set; }
+		public Instant LastModifiedAt { get; set; }
+		public string CreatedBy { get; set; }
+		public string LastModifiedBy { get; set; }
+	}
+
+
+	public abstract class BaseEntity : IEntity
 	{
 		public string Id { get; }
-		public DateTime CreatedAt { get; set; }
-		public DateTime LastModifiedAt { get; set; }
+		public Instant CreatedAt { get; set; }
+		public Instant LastModifiedAt { get; set; }
 		public string CreatedBy { get; set; }
 		public string LastModifiedBy { get; set; }
 

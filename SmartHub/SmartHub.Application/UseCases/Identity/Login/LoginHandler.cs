@@ -2,6 +2,7 @@
 using SmartHub.Domain.Common;
 using System.Threading;
 using System.Threading.Tasks;
+using SmartHub.Application.Common.Models;
 
 namespace SmartHub.Application.UseCases.Identity.Login
 {

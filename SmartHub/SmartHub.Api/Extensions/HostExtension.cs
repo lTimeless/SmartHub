@@ -52,14 +52,14 @@ namespace SmartHub.Api.Extensions
 					Log.Information("[MigrationManager] Update or Create database if needed");
 
 					// adds the current Entity structure
-					appContext.Database.EnsureCreated(); //creates or updates the db if neccassary
+					// appContext.Database.EnsureCreated(); //creates or updates the db if neccassary
 				}
 				// prod mode
 				else
 				{
 					Log.Information("[MigrationManager] Update or Create database if needed");
 					// adds the latest Migration from the Migrationsfolder
-					await appContext.Database.MigrateAsync(); //creates or updates the db if neccassary
+					// await appContext.Database.MigrateAsync(); //creates or updates the db if neccassary
 				}
 			}
 			catch (Exception ex)
