@@ -10,7 +10,7 @@ namespace SmartHub.Infrastructure.Services.Http
 		private readonly HttpClient _httpClient;
 		public HttpService(IHttpClientFactory clientFactory)
 		{
-			_httpClient = clientFactory.CreateClient();
+			_httpClient = clientFactory.CreateClient("SmartDevices");
 		}
 
 		public async Task<bool> SendAsync(string ipAddress, string query)
@@ -22,7 +22,8 @@ namespace SmartHub.Infrastructure.Services.Http
 			};
 			//bsp. http://192.168.2.23?turn=On
 			var request = new HttpRequestMessage(HttpMethod.Get, uri.ToString());
-			using var response = await _httpClient.SendAsync(request,  HttpCompletionOption.ResponseHeadersRead);
+
+			using var response = await _httpClient.SendAsync(request, HttpCompletionOption.ResponseHeadersRead);
 			return response.IsSuccessStatusCode;
 		}
 

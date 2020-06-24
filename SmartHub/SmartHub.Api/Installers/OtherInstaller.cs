@@ -1,15 +1,14 @@
-﻿using System.Collections.Generic;
+﻿using System;
 using System.IO.Compression;
 using AutoMapper;
 using MediatR;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using SmartHub.Application.UseCases.Entity.Homes;
 using System.Reflection;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.ResponseCompression;
+using Polly;
 using SmartHub.Application.Common.Behaviours;
-using SmartHub.Application.Common.Mappings;
 
 namespace SmartHub.Api.Installers
 {
@@ -28,14 +27,13 @@ namespace SmartHub.Api.Installers
 
 
 			// Http
-			services.AddHttpClient();
-			// Http
-			//services.AddHttpClient("Sensors", (x) =>
-			//{
-			//	// x.DefaultRequestHeaders.Add("Accept", "");
-			//	x.DefaultRequestHeaders.Add("User-Agent", "smarthome");
-			//}).AddTransientHttpErrorPolicy(x =>
-			//	x.WaitAndRetryAsync(2, _ => TimeSpan.FromMilliseconds(300)));
+			services.AddHttpClient("SmartDevices", (x) =>
+				{
+					// x.DefaultRequestHeaders.Add("Accept", "");
+					x.DefaultRequestHeaders.Add("User-Agent", "smartHub");
+				})
+				.AddTransientHttpErrorPolicy(configurePolicy: x => x.WaitAndRetryAsync(3,
+					retryAttempt => TimeSpan.FromMilliseconds(retryAttempt * 100)));
 
 			// SignalR
 			services.AddSignalR();
