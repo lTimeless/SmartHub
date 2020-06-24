@@ -22,8 +22,6 @@ variables:
   buildPlatform: 'Any CPU'
   buildConfiguration: 'Release'
   linx64: 'linux-x64'
-  winx64: 'win-x64'
-  arm: 'linux-arm'
 
 stages:
   - stage: RestoreBuild
@@ -73,14 +71,9 @@ stages:
     jobs:
       - job: Publish
         strategy:
-          maxParallel: 3
           matrix:
-            windows:
-              imageName: 'windows-latest'
             linux:
               imageName: 'ubuntu-latest'
-            arm:
-              imageName: 'arm-latest'
         steps:
         - task: NuGetToolInstaller@1
           displayName: Nuget Install
