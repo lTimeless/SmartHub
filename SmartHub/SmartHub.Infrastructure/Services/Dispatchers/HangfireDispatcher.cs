@@ -14,11 +14,7 @@ namespace SmartHub.Infrastructure.Services.Dispatchers
 	/// </summary>
 	public class HangfireDispatcher : IHangfireDispatcher
 	{
-		public HangfireDispatcher()
-		{
-		}
-
-		private const int _interval = 10;
+		private const int Interval = 10;
 
 		public Task<string> AddJob(Expression<Action> action)
 		{
@@ -38,7 +34,7 @@ namespace SmartHub.Infrastructure.Services.Dispatchers
 			return Task.FromResult(BackgroundJob.Schedule(action, delay));
 		}
 
-		public Task AddRecurringJob(Expression<Action> action, DateTimeEnum recurring, int interval = _interval)
+		public Task AddRecurringJob(Expression<Action> action, DateTimeEnum recurring, int interval = Interval)
 		{
 			Log.Information($"[{nameof(AddRecurringJob)}] Add RecurringJob {action.Name}");
 			switch (recurring)
@@ -77,7 +73,7 @@ namespace SmartHub.Infrastructure.Services.Dispatchers
 			return Task.CompletedTask;
 		}
 
-		public Task UpdateRecurringJob(string jobId, Expression<Action> action, DateTimeEnum recurring, int interval = _interval)
+		public Task UpdateRecurringJob(string jobId, Expression<Action> action, DateTimeEnum recurring, int interval = Interval)
 		{
 			Log.Information($"[{nameof(AddRecurringJob)}] Update RecurringJob {nameof(action.Name)}");
 			switch (recurring)
