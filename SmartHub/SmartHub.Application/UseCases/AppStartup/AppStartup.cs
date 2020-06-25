@@ -31,10 +31,10 @@ namespace SmartHub.Application.UseCases.AppStartup
 		{
 			//var t2 = StartHangfireJobs();
 			//return Task.WhenAll(t2);
-			await _eventDispatcher.Init();
-			await _hangfireManager.Init();
-			await _homeFolderService.Init();
-			await StartLoadPlugins();
+			await _eventDispatcher.Init().ConfigureAwait(false);
+			await _hangfireManager.Init().ConfigureAwait(false);
+			await _homeFolderService.Init().ConfigureAwait(false);
+			await StartLoadPlugins().ConfigureAwait(false);
 		}
 
 		public Task StopAsync(CancellationToken cancellationToken)
