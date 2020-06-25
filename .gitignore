@@ -238,4 +238,7 @@ SmartHub/Plugins/
 # Intellij
 SmartHub/.idea
 
+# Dev configFolder
+SmartHub.configFolder-dev/
+
 

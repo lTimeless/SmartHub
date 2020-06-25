@@ -8,6 +8,7 @@ using Serilog;
 using SmartHub.Api.Extensions;
 using SmartHub.Infrastructure.Database;
 using System.IO;
+using Microsoft.Extensions.Options;
 using SmartHub.Domain.Common.Settings;
 
 namespace SmartHub.Api
@@ -15,7 +16,7 @@ namespace SmartHub.Api
 	public class Startup
 	{
 		public IConfiguration Configuration { get; }
-
+		private IHostEnvironment AppEnvironment { get; set; }
 		public Startup(IHostEnvironment env)
 		{
 			var builder = new ConfigurationBuilder()
@@ -30,6 +31,8 @@ namespace SmartHub.Api
 			{
 				builder.AddUserSecrets<Startup>();
 			}
+
+			AppEnvironment = env;
 			Configuration = builder.Build();
 		}
 
@@ -45,7 +48,12 @@ namespace SmartHub.Api
 			services.InstallServicesInAssembly(Configuration);
 
 			// -------------- SmartHubSettings ---------------
-			services.Configure<SmartHubSettings>(Configuration.GetSection("SmartHubSettings"));
+			services.Configure<ApplicationSettings>(Configuration.GetSection("SmartHub"));
+			services.PostConfigure<ApplicationSettings>(options =>
+			{
+				options.EnvironmentName = AppEnvironment.EnvironmentName;
+				options.DefaultName = AppEnvironment.ApplicationName;
+			});
 			// dann injecten mit IOptions<SmartHubSettings> smartHubSettings -> smartHubSettings.value
 		}
 

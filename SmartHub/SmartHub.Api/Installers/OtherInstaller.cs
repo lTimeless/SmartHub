@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.ResponseCompression;
 using Polly;
 using SmartHub.Application.Common.Behaviours;
+using SmartHub.Domain.Common.Settings;
 
 namespace SmartHub.Api.Installers
 {
