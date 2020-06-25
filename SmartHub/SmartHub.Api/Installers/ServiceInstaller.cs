@@ -4,6 +4,7 @@ using SmartHub.Application.Common.Interfaces;
 using SmartHub.Application.Common.Interfaces.Events;
 using SmartHub.Application.Common.Interfaces.Repositories;
 using SmartHub.Application.UseCases.AppStartup;
+using SmartHub.Application.UseCases.HomeFolder;
 using SmartHub.Application.UseCases.Identity.Login;
 using SmartHub.Application.UseCases.Identity.Registration;
 using SmartHub.Application.UseCases.NetworkScanner;
@@ -16,6 +17,7 @@ using SmartHub.Infrastructure.Database;
 using SmartHub.Infrastructure.Database.Repositories;
 using SmartHub.Infrastructure.Services.Auth;
 using SmartHub.Infrastructure.Services.Dispatchers;
+using SmartHub.Infrastructure.Services.FileSystem;
 using SmartHub.Infrastructure.Services.Http;
 
 namespace SmartHub.Api.Installers
@@ -44,6 +46,7 @@ namespace SmartHub.Api.Installers
 			services.AddSingleton(typeof(IChannelManager), typeof(ChannelManager));
 			services.AddSingleton<IEventDispatcher, EventDispatcher>();
 			services.AddScoped<IHangfireDispatcher, HangfireDispatcher>();
+			services.AddScoped<IHomeFolderService, HomeFolderService>();
 			services.AddHostedService<AppStartup>();
 		}
 
@@ -76,6 +79,7 @@ namespace SmartHub.Api.Installers
 			services.AddScoped<IPluginFinderService, PluginFinderService>();
 			services.AddScoped(typeof(IPluginCreatorService<>), typeof(PluginCreatorService<>));
 			services.AddScoped(typeof(IPluginHostService), typeof(PluginHostService));
+			services.AddScoped<IDirectoryService, DirectoryService>();
 		}
 	}
 }

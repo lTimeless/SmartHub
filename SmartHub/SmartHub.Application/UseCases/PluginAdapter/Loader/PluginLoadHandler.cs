@@ -1,9 +1,7 @@
 ﻿using MediatR;
 using Serilog;
-using SmartHub.Application.Common.Interfaces;
 using SmartHub.Application.UseCases.PluginAdapter.Finder;
 using SmartHub.Application.UseCases.PluginAdapter.Host;
-using SmartHub.Domain.Common;
 using SmartHub.Domain.Common.Extensions;
 using System.Linq;
 using System.Threading;
@@ -31,6 +29,11 @@ namespace SmartHub.Application.UseCases.PluginAdapter.Loader
         public async Task<ServiceResponse<string>> Handle(PluginLoadCommand request, CancellationToken cancellationToken)
         {
             var home = await _unitOfWork.HomeRepository.GetHome();
+            if (home is null)
+            {
+                Log.Warning($"[{nameof(PluginLoadHandler)}] No home created");
+                return new ServiceResponse<string>(false,"No home created");
+            }
             var setting = home.Settings.FirstOrDefault(c => c.IsActive || c.PluginPath.Contains("_private"));
 
             var foundPlugins = _pluginFinderService.FindPluginsInAssemblies(setting.PluginPath);

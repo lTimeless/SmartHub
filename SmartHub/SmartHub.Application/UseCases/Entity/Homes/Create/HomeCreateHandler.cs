@@ -1,20 +1,18 @@
 ﻿using AutoMapper;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.Extensions.Configuration;
-using SmartHub.Application.Common.Exceptions;
 using SmartHub.Application.Common.Interfaces;
 using SmartHub.Domain.Entities.Homes;
 using SmartHub.Domain.Entities.Settings;
 using SmartHub.Domain.Entities.Users;
 using SmartHub.Domain.Enums;
 using System;
-using System.IO;
-using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Options;
 using SmartHub.Application.Common.Interfaces.Repositories;
 using SmartHub.Application.Common.Models;
+using SmartHub.Domain.Common.Settings;
 
 namespace SmartHub.Application.UseCases.Entity.Homes.Create
 {
@@ -23,18 +21,18 @@ namespace SmartHub.Application.UseCases.Entity.Homes.Create
 		private readonly IUnitOfWork _unitOfWork;
 		private readonly IMapper _mapper;
 		private readonly Random _random;
-		private readonly IConfiguration _configuration;
 		private readonly UserManager<User> _userManager;
 		private readonly IUserAccessor _userAccessor;
+		private readonly IOptionsSnapshot<ApplicationSettings> _optionsSnapshot;
 
-		public HomeCreateHandler(IMapper mapper, IUnitOfWork unitOfWork, IConfiguration configuration, UserManager<User> userManager, IUserAccessor userAccessor
-			)
+		public HomeCreateHandler(IMapper mapper, IUnitOfWork unitOfWork, UserManager<User> userManager, IUserAccessor userAccessor,
+			IOptionsSnapshot<ApplicationSettings> optionsSnapshot)
 		{
 			_mapper = mapper;
 			_unitOfWork = unitOfWork;
-			_configuration = configuration;
 			_userManager = userManager;
 			_userAccessor = userAccessor;
+			_optionsSnapshot = optionsSnapshot;
 			_random = new Random();
 		}
 
@@ -46,15 +44,12 @@ namespace SmartHub.Application.UseCases.Entity.Homes.Create
 				return new ServiceResponse<HomeDto>(false, $"[{nameof(HomeCreateHandler)}] There is already a home");
 			}
 
-			var solutionRootPath = Path.GetDirectoryName(Path.GetDirectoryName(Path.Combine(Directory.GetCurrentDirectory(), "Plugins")))
-								   ?? throw new SmartHubException("Could not determine solution root path");
-			var pluginPath = Path.Combine(solutionRootPath, "Plugins");
-			var absolutePath = Path.Combine(solutionRootPath, "Plugins");
-
 			var userName = _userAccessor.GetCurrentUsername();
 			var user = await _userManager.FindByNameAsync(userName);
 
-			var defaultSetting = new Setting($"default_Setting_{_random.Next()}", "this is a default setting", true, absolutePath, pluginPath, pluginPath, userName, SettingTypeEnum.Default);
+			var defaultSetting = new Setting($"default_Setting_{_random.Next()}", "this is a default setting", true,
+				_optionsSnapshot.Value.DefaultPluginpath, _optionsSnapshot.Value.DefaultPluginpath,
+				_optionsSnapshot.Value.DownloadServerUrl, userName, SettingTypeEnum.Default);
 
 			var homeEntity = new Home(request.Name, request.Description, defaultSetting);
 			homeEntity.AddUser(user);

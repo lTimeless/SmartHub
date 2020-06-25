@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace SmartHub.Application.Common.Interfaces
 {
-	public interface IHangfireDispatcher
+	public interface IHangfireDispatcher : IInitialize
 	{
 		/// <summary>
 		/// Adds an action

@@ -1,10 +1,8 @@
 ﻿using SmartHub.Domain.Common.EventTypes;
-using SmartHub.Domain.Common.Extensions;
 using SmartHub.Domain.Entities.Homes;
-using SmartHub.Domain.Entities.ValueObjects;
 using System;
 using System.Collections.Generic;
-using System.Text;
+using System.Threading.Tasks;
 using Serilog;
 using SmartHub.Domain.Enums;
 using SmartHub.Application.Common.Interfaces.Events;
@@ -23,13 +21,15 @@ namespace SmartHub.Infrastructure.Services.Dispatchers
 		{
 			_channelManager = channelManager;
 			_logger = logger;
-			if (_channelManager is null)
-			{
-				_channelManager = new ChannelManager();
-			}
+			_channelManager ??= new ChannelManager();
+		}
+
+		public Task Init()
+		{
 			_ = _channelManager
 				.GetChannel(ChannelEventEnum.Events)
 				.Subscribe(Dispatch);
+			return Task.CompletedTask;
 		}
 
 		private void Dispatch(object baseEvent)

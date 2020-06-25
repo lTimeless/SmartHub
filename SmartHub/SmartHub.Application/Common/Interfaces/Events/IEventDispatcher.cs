@@ -1,6 +1,6 @@
 ﻿namespace SmartHub.Application.Common.Interfaces.Events
 {
-	public interface IEventDispatcher
+	public interface IEventDispatcher : IInitialize
 	{
 	}
 }
