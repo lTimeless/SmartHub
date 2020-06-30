@@ -48,6 +48,7 @@ stages:
             command: 'restore'
             projects: '$(project)'
             feedsToUse: 'select'
+            verbosityRestore: 'Normal'
 
         - task: DotNetCoreCLI@2
           inputs:
