@@ -3,12 +3,18 @@ name: .NET Core
 on:
   push:
     branches: [ master, develop ]
+    paths: 
+    - 'SmartHub/**'
   pull_request:
     branches: [ master, develop ]
+    paths: 
+    - 'SmartHub/**'
 
+env:
+  folderName: 'SmartHub/SmartHub.Api'
+  csprojName: 'SmartHub/SmartHub.Api/SmartHub.Api.csproj'
 jobs:
   Restore_Build_Test:
-
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
