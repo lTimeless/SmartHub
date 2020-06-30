@@ -7,8 +7,6 @@ on:
     - 'SmartHub/**'
   pull_request:
     branches: [ master, develop ]
-    paths: 
-    - 'SmartHub/**'
 
 env:
   folderName: 'SmartHub/SmartHub.Api'
