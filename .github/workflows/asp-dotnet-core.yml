@@ -10,7 +10,7 @@ on:
 
 env:
   folderName: 'SmartHub/SmartHub.Api'
-  csprojName: 'SmartHub/SmartHub.Api/SmartHub.Api.csproj'
+  csprojName: 'SmartHub.Api.csproj'
   
 jobs:
   Restore_Build_Test:
