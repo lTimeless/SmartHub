@@ -30,13 +30,15 @@ stages:
     jobs:
       - job: Restore_and_Build
         steps:
-        - task: NuGetToolInstaller@1
-          displayName: Nuget Install
+        # - task: NuGetToolInstaller@1
+        #   displayName: Nuget Install
         - task: NuGetCommand@2
           displayName: Restore
           inputs:
+            command: 'restore'
             restoreSolution: '$(solution)'
-
+            verbosityRestore: 'Normal'
+            feedsToUse: 'select'
         - task: SonarCloudPrepare@1
           inputs:
             SonarCloud: 'SmartHub-SonarCloud'
