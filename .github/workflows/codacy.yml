@@ -1,0 +1,22 @@
+# This is a basic workflow to help you get started with Actions
+
+name: Codacy
+
+# Controls when the action will run. Triggers the workflow on push or pull request
+# events but only for the master branch
+on:
+  push:
+    branches: [ master, develop ]
+  pull_request:
+    branches: [ master, develop ]
+
+jobs:
+  codacy-analysis-cli:
+    runs-on: ubuntu-latest
+    name: codacy-analysis-cli
+    steps:
+      - uses: actions/checkout@master
+      - name: Run codacy-analysis-cli
+        uses: mrfyda/codacy-analysis-cli-action@master
+        with:
+          project-token: ${{ secrets.CODACY_PROJECT_TOKEN }}
