@@ -1,11 +1,6 @@
 name: Greetings
 
-on:
-  issues:
-    types:
-      [ opened ]
-  pull_request:
-    branches: [ master, develop ]
+on: [pull_request, issues]
 
 jobs:
   greeting:
