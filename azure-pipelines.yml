@@ -19,6 +19,7 @@ pool:
 
 variables:
   solution: '**/*.sln'
+  project: 'SmartHub/SmartHub.Api/SmartHub.Api.csproj'
   buildPlatform: 'Any CPU'
   buildConfiguration: 'Release'
   linx64: 'linux-x64'
@@ -28,12 +29,12 @@ stages:
     jobs:
       - job: Restore_and_Build
         steps:
-        - task: NuGetToolInstaller@1
-          displayName: Nuget Install
-        - task: NuGetCommand@2
-          displayName: Restore
-          inputs:
-            restoreSolution: '$(solution)'
+        # - task: NuGetToolInstaller@1
+        #   displayName: Nuget Install
+        # - task: NuGetCommand@2
+        #   displayName: Restore
+        #   inputs:
+        #     restoreSolution: '$(solution)'
 
         - task: SonarCloudPrepare@1
           inputs:
@@ -42,23 +43,40 @@ stages:
             scannerMode: 'MSBuild'
             projectKey: 'smarthub-io'
             projectName: 'SmartHub'
-
-        - task: VSBuild@1
-          displayName: Build
+        - task: DotNetCoreCLI@2
           inputs:
-            solution: '$(solution)'
-            msbuildArgs: '/p:DeployOnBuild=true /p:WebPublishMethod=Package /p:PackageAsSingleFile=true /p:SkipInvalidConfigurations=true /p:DesktopBuildPackageLocation="$(build.artifactStagingDirectory)\WebApp.zip" /p:DeployIisAppPath="Default Web Site"'
-            platform: '$(buildPlatform)'
-            configuration: '$(buildConfiguration)'
+            command: 'restore'
+            projects: '$(project)'
+            feedsToUse: 'select'
+
+        - task: DotNetCoreCLI@2
+          inputs:
+            command: 'build'
+            projects: '$(project)'
+            arguments: '--configuration $(buildConfiguration) --no-restore'
+
+        # - task: VSBuild@1
+        #   displayName: Build
+        #   inputs:
+        #     solution: '$(solution)'
+        #     msbuildArgs: '/p:DeployOnBuild=true /p:WebPublishMethod=Package /p:PackageAsSingleFile=true /p:SkipInvalidConfigurations=true /p:DesktopBuildPackageLocation="$(build.artifactStagingDirectory)\WebApp.zip" /p:DeployIisAppPath="Default Web Site"'
+        #     platform: '$(buildPlatform)'
+        #     configuration: '$(buildConfiguration)'
         # - task: Visual Studio IntelliCode Team Model Training@0
         #   inputs:
         #     branch: 'develop'
         #     intelliCodeServiceEndpoint: 'IntelliCode'
-        - task: VSTest@2
-          displayName: Test
+        # - task: VSTest@2
+        #   displayName: Test
+        #   inputs:
+        #     platform: '$(buildPlatform)'
+        #     configuration: '$(buildConfiguration)'
+        - task: DotNetCoreCLI@2
           inputs:
-            platform: '$(buildPlatform)'
-            configuration: '$(buildConfiguration)'
+            command: 'test'
+            projects: '$(project)'
+            arguments: '--no-restore --verbosity normal'
+
         - task: SonarCloudAnalyze@1
           displayName: Sonar Analyze
         - task: SonarCloudPublish@1
@@ -75,14 +93,6 @@ stages:
             linux:
               imageName: 'ubuntu-latest'
         steps:
-        - task: NuGetToolInstaller@1
-          displayName: Nuget Install
-          
-        - task: NuGetCommand@2
-          displayName: Restore
-          inputs:
-            restoreSolution: '$(solution)'
-
         - task: DotNetCoreCLI@2
           displayName: Publish
           inputs:
