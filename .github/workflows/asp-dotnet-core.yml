@@ -7,9 +7,12 @@ on:
     branches: [ master, develop ]
 
 jobs:
-  build:
+  Restore_Build_Test:
 
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest, macOS-latest]
 
     steps:
     - uses: actions/checkout@v2
@@ -17,9 +20,12 @@ jobs:
       uses: actions/setup-dotnet@v1
       with:
         dotnet-version: 3.1.301
+        
     - name: Install dependencies
       run: dotnet restore
-    - name: Build
+      
+    - name: Build with dotnet
       run: dotnet build --configuration Release --no-restore
-    - name: Test
+      
+    - name: Run Test
       run: dotnet test --no-restore --verbosity normal
