@@ -20,4 +20,3 @@ jobs:
           ado_new_state: "New"
           ado_close_state: "Closed"
           ado_bypassrules: true
-          labels: ""
