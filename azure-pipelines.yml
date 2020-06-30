@@ -23,63 +23,61 @@ variables:
   buildConfiguration: 'Release'
   linx64: 'linux-x64'
 
-stages:
-  - stage: RestoreBuild
-    jobs:
-      - job: Restore_Build_Test
-        steps:
-        - task: NuGetToolInstaller@1
-          displayName: Nuget Install
-        - task: NuGetCommand@2
-          displayName: Restore
-          inputs:
-            restoreSolution: '$(solution)'
+  jobs:
+    - job: Restore_Build_Test
+      steps:
+      - task: NuGetToolInstaller@1
+        displayName: Nuget Install
+      - task: NuGetCommand@2
+        displayName: Restore
+        inputs:
+          restoreSolution: '$(solution)'
 
-        - task: SonarCloudPrepare@1
-          inputs:
-            SonarCloud: 'SmartHub-SonarCloud'
-            organization: 'smarthub-io'
-            scannerMode: 'MSBuild'
-            projectKey: 'smarthub-io'
-            projectName: 'SmartHub'
+      - task: SonarCloudPrepare@1
+        inputs:
+          SonarCloud: 'SmartHub-SonarCloud'
+          organization: 'smarthub-io'
+          scannerMode: 'MSBuild'
+          projectKey: 'smarthub-io'
+          projectName: 'SmartHub'
 
-        - task: VSBuild@1
-          displayName: Build
-          inputs:
-            solution: '$(solution)'
-            msbuildArgs: '/p:DeployOnBuild=true /p:WebPublishMethod=Package /p:PackageAsSingleFile=true /p:SkipInvalidConfigurations=true /p:DesktopBuildPackageLocation="$(build.artifactStagingDirectory)\WebApp.zip" /p:DeployIisAppPath="Default Web Site"'
-            platform: '$(buildPlatform)'
-            configuration: '$(buildConfiguration)'
-        # - task: Visual Studio IntelliCode Team Model Training@0
-        #   inputs:
-        #     branch: 'develop'
-        #     intelliCodeServiceEndpoint: 'IntelliCode'
-        - task: VSTest@2
-          displayName: Test
-          inputs:
-            platform: '$(buildPlatform)'
-            configuration: '$(buildConfiguration)'
+      - task: VSBuild@1
+        displayName: Build
+        inputs:
+          solution: '$(solution)'
+          msbuildArgs: '/p:DeployOnBuild=true /p:WebPublishMethod=Package /p:PackageAsSingleFile=true /p:SkipInvalidConfigurations=true /p:DesktopBuildPackageLocation="$(build.artifactStagingDirectory)\WebApp.zip" /p:DeployIisAppPath="Default Web Site"'
+          platform: '$(buildPlatform)'
+          configuration: '$(buildConfiguration)'
+      # - task: Visual Studio IntelliCode Team Model Training@0
+      #   inputs:
+      #     branch: 'develop'
+      #     intelliCodeServiceEndpoint: 'IntelliCode'
+      - task: VSTest@2
+        displayName: Test
+        inputs:
+          platform: '$(buildPlatform)'
+          configuration: '$(buildConfiguration)'
 
-        - task: SonarCloudAnalyze@1
-          displayName: Sonar Analyze
-        - task: SonarCloudPublish@1
-          displayName: Sonar Publish
-          inputs:
-            pollingTimeoutSec: '200'
+      - task: SonarCloudAnalyze@1
+        displayName: Sonar Analyze
+      - task: SonarCloudPublish@1
+        displayName: Sonar Publish
+        inputs:
+          pollingTimeoutSec: '200'
 
-      - job: Publish_Upload
-        dependsOn: Restore_Build_Test
-        steps:
-        - task: DotNetCoreCLI@2
-          displayName: Publish
-          inputs:
-            command: 'publish'
-            publishWebProjects: true
-            arguments: '--configuration $(BuildConfiguration) --output $(Build.ArtifactStagingDirectory)'
-            zipAfterPublish: true
+    - job: Publish_Upload
+      dependsOn: Restore_Build_Test
+      steps:
+      - task: DotNetCoreCLI@2
+        displayName: Publish
+        inputs:
+          command: 'publish'
+          publishWebProjects: true
+          arguments: '--configuration $(BuildConfiguration) --output $(Build.ArtifactStagingDirectory)'
+          zipAfterPublish: true
 
-        - task: PublishBuildArtifacts@1
-          displayName: Publish Artifacts
-          inputs:
-            pathtoPublish: '$(Build.ArtifactStagingDirectory)' 
-            artifactName: 'SmartHub_$(imageName)'
+      - task: PublishBuildArtifacts@1
+        displayName: Publish Artifacts
+        inputs:
+          pathtoPublish: '$(Build.ArtifactStagingDirectory)' 
+          artifactName: 'SmartHub_$(imageName)'
