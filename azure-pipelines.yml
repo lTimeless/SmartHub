@@ -24,12 +24,12 @@ variables:
   linx64: 'linux-x64'
 
 steps:
-  - task: NuGetToolInstaller@1
-    displayName: Nuget Install
   - task: NuGetCommand@2
     displayName: Restore
     inputs:
       restoreSolution: '$(solution)'
+      verbosityRestore: 'Normal'
+      feedsToUse: 'select'
 
   - task: SonarCloudPrepare@1
     inputs:
