@@ -7,12 +7,11 @@ trigger: # when to trigger a build
   batch: true # means that if there are more changes when build is running, they will be waited for instead of starting a parallel build
   branches:
     include:
-      - master # trigger only on changes to master branch
-      - develop
+      - master
 pr:
   branches:
     include:
-    - '*'  # must quote since "*" is a YAML reserved character; we want a string
+    - master
 
 pool:
   vmImage: 'windows-latest'
