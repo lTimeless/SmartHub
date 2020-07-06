@@ -57,7 +57,7 @@
                           :rules="[rules.required, rules.retry]"
                           :type="'password'"
                           name="input-10-1"
-                          label="Password wiederholen"
+                          label="Retry password"
                           hint="Needs to be the same"
                           outlined
                         ></v-text-field>
