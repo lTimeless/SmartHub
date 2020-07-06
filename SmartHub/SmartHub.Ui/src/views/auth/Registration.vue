@@ -31,7 +31,7 @@
                       <v-col cols="14">
                         <v-text-field
                           :prepend-inner-icon="'mdi-account'"
-                          v-model="username"
+                          v-model="userName"
                           class="inputField"
                           outlined
                           label="Username"
@@ -64,7 +64,8 @@
                       </v-col>
                       <v-col cols="14">
                         <v-select
-                          :items="items"
+                          :items="roles"
+                          v-model="selectedRole"
                           :prepend-inner-icon="'mdi-shield-account'"
                           label="Role"
                           outlined
@@ -77,7 +78,16 @@
 
               <v-row>
                 <v-col cols="14" class="d-flex justify-end">
-                  <v-btn class="reg " color="primary" @click="startStep = 2"
+                  <v-btn
+                    class="reg "
+                    color="primary"
+                    @click="startStep = 2"
+                    :disabled="
+                      userName.length === 0 ||
+                        password.length < 4 ||
+                        passwordRetry.length < 4 ||
+                        selectedRole.length === 0
+                    "
                     >Continue</v-btn
                   >
                 </v-col>
@@ -85,18 +95,89 @@
             </v-stepper-content>
 
             <v-stepper-content step="2">
-              <v-card
-                class="mb-12"
-                color="grey lighten-1"
-                height="200px"
-              ></v-card>
+              <v-card class="mb-12 elevation-0" height="200px">
+                <v-form>
+                  <v-container class="form-centered">
+                    <v-row>
+                      <v-col cols="14">
+                        <v-text-field
+                          :prepend-inner-icon="'mdi-home'"
+                          v-model="homeName"
+                          class="inputField"
+                          outlined
+                          label="Home name"
+                          :disabled="selectedHome.length !== 0"
+                        >
+                        </v-text-field>
+                      </v-col>
+                      <v-divider vertical class="ml-2 mr-4"></v-divider>
+                      <v-col cols="14">
+                        <v-row>
+                          <v-select
+                            :items="homes"
+                            v-model="selectedHome"
+                            :prepend-inner-icon="'mdi-shield-account'"
+                            label="Existing Homes"
+                            :disabled="homeName.length > 1"
+                            outlined
+                          ></v-select>
+                          <v-tooltip bottom>
+                            <template v-slot:activator="{ on, attrs }">
+                              <v-btn
+                                icon
+                                color="red"
+                                class="mt-2"
+                                v-bind="attrs"
+                                v-on="on"
+                                @click="onClearSelection"
+                                :disabled="selectedHome.length === 0"
+                              >
+                                <v-icon>mdi-close</v-icon>
+                              </v-btn>
+                            </template>
+                            <span>Clear existing home selection</span>
+                          </v-tooltip>
+                        </v-row>
+                      </v-col>
+                    </v-row>
+                    <v-row>
+                      <v-col cols="14">
+                        <p>
+                          Modify default settings will be coming soon 🔥😉
+                        </p>
+                        <v-spacer></v-spacer>
+                      </v-col>
+                    </v-row>
+                  </v-container>
+                </v-form>
+              </v-card>
 
               <v-row>
                 <v-col cols="6" class="d-flex justify-start">
                   <v-btn @click="startStep = 1" text>Back</v-btn>
+                  <v-tooltip bottom>
+                    <template v-slot:activator="{ on, attrs }">
+                      <v-btn
+                        class="ml-2"
+                        text
+                        color="red"
+                        @click="onClearForm"
+                        v-bind="attrs"
+                        v-on="on"
+                        >Clear</v-btn
+                      >
+                    </template>
+                    <span>Clear complete home selection</span>
+                  </v-tooltip>
                 </v-col>
                 <v-col cols="6" class="d-flex justify-end">
-                  <v-btn class="reg" color="primary" @click="startStep = 3"
+                  <v-btn
+                    class="reg"
+                    color="primary"
+                    @click="startStep = 3"
+                    :disabled="
+                      homeName.length === 0 && selectedHome.length === 0
+                    "
                     >Continue</v-btn
                   >
                 </v-col>
@@ -104,21 +185,77 @@
             </v-stepper-content>
 
             <v-stepper-content step="3">
-              <v-card
-                class="mb-12"
-                color="grey lighten-1"
-                height="200px"
-              ></v-card>
+              <v-card class="mb-12 elevation-0" height="200px">
+                <v-container class="form-centered">
+                  <v-row>
+                    <v-col cols="14">
+                      <v-text-field
+                        :prepend-inner-icon="'mdi-account'"
+                        v-model="userName"
+                        class="inputField"
+                        outlined
+                        label="Username"
+                        :disabled="doneEdit"
+                      >
+                      </v-text-field>
+                      <v-text-field
+                        v-model="password"
+                        :prepend-inner-icon="'mdi-lock'"
+                        :append-icon="showPwd ? 'mdi-eye' : 'mdi-eye-off'"
+                        :rules="[rules.required, rules.min]"
+                        :type="showPwd ? 'text' : 'password'"
+                        name="input-10-1"
+                        label="Password"
+                        hint="At least 4 characters"
+                        counter
+                        @click:append="showPwd = !showPwd"
+                        outlined
+                        :disabled="doneEdit"
+                      ></v-text-field>
+                    </v-col>
+                    <v-col cols="14">
+                      <v-text-field
+                        :prepend-inner-icon="'mdi-home'"
+                        v-model="finalHome"
+                        class="inputField"
+                        outlined
+                        label="Home name"
+                        :disabled="doneEdit"
+                      >
+                      </v-text-field>
+                    </v-col>
+                  </v-row>
+                </v-container>
+              </v-card>
 
               <v-row>
                 <v-col cols="6" class="d-flex justify-start">
                   <v-btn @click="startStep = 2" text>Back</v-btn>
+                  <v-tooltip bottom>
+                    <template v-slot:activator="{ on, attrs }">
+                      <v-btn
+                        class="ml-2"
+                        text
+                        color="red"
+                        @click="onEditForm"
+                        v-bind="attrs"
+                        v-on="on"
+                        >Edit</v-btn
+                      >
+                    </template>
+                    <span>Edit</span>
+                  </v-tooltip>
                 </v-col>
                 <v-col cols="6" class="d-flex justify-end">
                   <v-btn
                     class="reg"
                     color="primary"
                     @click.prevent="onRegistrationClick"
+                    :disabled="
+                      userName.length === 0 ||
+                        password.length < 4 ||
+                        finalHome.length === 0
+                    "
                     >Register</v-btn
                   >
                 </v-col>
@@ -128,12 +265,12 @@
         </v-stepper>
 
         <v-card-actions class="actions">
-          <v-row class="pa-0">
-            <v-col cols="12" class="d-flex justify-center">
-              <p>
-                Bereits registriert?
-                <router-link to="/login">Hier</router-link>
-                einloggen.
+          <v-row>
+            <v-col cols="14">
+              <p class="login">
+                Already registered?
+                <router-link to="/login">Click</router-link>
+                here.
               </p>
               <v-spacer></v-spacer>
             </v-col>
@@ -151,20 +288,44 @@ import { InputMessage } from "vuetify";
 @Component
 export default class Registration extends Vue {
   welcomeToSmartHub = "Welcome to SmartHub";
-  startStep = 1;
+  startStep = 3;
   showPwd = false;
   password = "";
   passwordRetry = "";
-  username = "";
-  items = ["Guest", "User", "Admin"];
+  userName = "";
+  selectedRole = "";
+  selectedHome = "";
+  homeName = "";
+  doneEdit = true;
+
+  roles = ["Guest", "User", "Admin"];
+  homes = ["Test", "Test_1"];
 
   rules = {
     required: (value: InputEvent) => !!value || "Required.",
     min: (v: InputMessage) => v.length >= 4 || "Min 4 characters",
     retry: (v: InputMessage) => v !== "" || "Not the same passwords" // TODO: add matching logic with pwd
   };
+
+  get finalHome() {
+    return this.homeName.length !== 0 ? this.homeName : this.selectedHome;
+  }
+
   onRegistrationClick(): void {
     console.log("registration");
+  }
+
+  onClearSelection(): void {
+    this.selectedHome = "";
+  }
+
+  onClearForm(): void {
+    this.onClearSelection();
+    this.homeName = "";
+  }
+
+  onEditForm(): void {
+    this.doneEdit = !this.doneEdit;
   }
 }
 </script>
@@ -194,8 +355,8 @@ export default class Registration extends Vue {
   .reg {
     width: 14em;
   }
-  p {
-    margin: 0;
+  .login {
+    margin: 0 0 0 24px;
   }
 }
 </style>

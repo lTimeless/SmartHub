@@ -58,9 +58,8 @@
             </v-col>
             <v-col cols="12" class="d-flex justify-center">
               <p>
-                Du kann dich
-                <router-link to="/registration">hier</router-link>
-                registrieren.
+                You can register
+                <router-link to="/registration">here</router-link>.
               </p>
             </v-col>
           </v-row>
