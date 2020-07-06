@@ -73,6 +73,7 @@
 import Vue from "vue";
 import Component from "vue-class-component";
 import { InputMessage } from "vuetify";
+import router from "@/router";
 
 @Component
 export default class Login extends Vue {
@@ -87,6 +88,7 @@ export default class Login extends Vue {
 
   private onLoginClick(): void {
     console.log(this.password, this.username);
+    router.push("/");
   }
 }
 </script>
