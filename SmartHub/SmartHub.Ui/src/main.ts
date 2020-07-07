@@ -4,6 +4,8 @@ import router from "./router";
 import store from "./store";
 import vuetify from "./plugins/vuetify";
 
+import 'vue-class-component/hooks'
+
 Vue.config.productionTip = false;
 
 new Vue({
