@@ -10,10 +10,8 @@
 import Vue from "vue";
 
 export default Vue.extend({
-  name: "App",
-
-  components: {
-  },
+  name: "SmartHubUi",
+  components: {},
 
   data: () => ({
     //

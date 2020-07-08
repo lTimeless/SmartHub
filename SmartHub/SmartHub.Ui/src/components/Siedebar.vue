@@ -1,5 +1,5 @@
 <template>
-  <v-navigation-drawer v-model="drawer" app clipped>
+  <v-navigation-drawer :value="drawer" app clipped>
     <v-list dense>
       <v-list-item two-line>
         <v-list-item-avatar>
@@ -122,7 +122,6 @@ export default class Siedebar extends Vue {
   imageBgColor = "";
 
   allList = [{ title: "Dashboard", icon: "mdi-view-dashboard", route: "/" }];
-
   userList = [
     { title: "Plugins", icon: "mdi-toy-brick", route: "/plugins" },
     { title: "Routines", icon: "mdi-update", route: "/routines" },
