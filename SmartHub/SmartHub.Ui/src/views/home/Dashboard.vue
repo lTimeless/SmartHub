@@ -1,10 +1,14 @@
 <template>
-  <div>
-    This is dashboard
+  <v-container>
+    <v-row>
+      <v-col cols="12" md="8">
+
+      </v-col>
+    </v-row>
     <div>
       <apexchart width="500" :options="options" :series="series"></apexchart>
     </div>
-  </div>
+  </v-container>
 </template>
 
 <script lang="ts">
