@@ -1,5 +1,5 @@
 <template>
-  <v-card :width="width" :height="height" @click="onClick">
+  <v-card :width="width" :height="height" @click="onClick" outlined>
     <v-card-title class="justify-center pa-2">
       {{ title }}
     </v-card-title>
@@ -15,7 +15,7 @@ import { Prop } from "vue-property-decorator";
 export default class QuickActionButton extends Vue {
   @Prop({ type: String, required: true })
   private title!: string;
-  @Prop({ type: String, required: false, default: "250" })
+  @Prop({ type: String, required: false, default: "270" })
   private width?: string;
   @Prop({ type: String, required: false, default: "50" })
   private height?: string;

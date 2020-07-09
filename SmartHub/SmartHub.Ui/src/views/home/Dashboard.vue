@@ -1,8 +1,8 @@
 <template>
   <v-container>
     <v-subheader class="pa-1 grey--text text--darken-1">ACTIONS</v-subheader>
-    <v-col cols="12">
-      <v-row justify="space-between" align="center" class="ml-1">
+    <v-col cols="12" class="px-0">
+      <v-row justify="space-between" align="center" class="mx-0">
         <QuickActionButton title="Home"></QuickActionButton>
         <QuickActionButton title="Group"></QuickActionButton>
         <QuickActionButton title="Device"></QuickActionButton>

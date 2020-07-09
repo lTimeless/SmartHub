@@ -1,6 +1,6 @@
 <template>
   <v-app>
-    <v-main>
+    <v-main class="main">
       <router-view></router-view>
     </v-main>
   </v-app>
@@ -18,3 +18,8 @@ export default Vue.extend({
   })
 });
 </script>
+<style lang="scss" scoped>
+.main {
+  background-color: #fafafb;
+}
+</style>
