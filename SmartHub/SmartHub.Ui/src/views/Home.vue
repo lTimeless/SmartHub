@@ -48,7 +48,7 @@ import Sidebar from "../components/Siedebar.vue";
   }
 })
 export default class Home extends Vue {
-  drawer = true;
+  drawer = false;
   darkMode = false;
   get darkModeIcon() {
     return this.darkMode ? "mdi-white-balance-sunny" : "mdi-weather-night";

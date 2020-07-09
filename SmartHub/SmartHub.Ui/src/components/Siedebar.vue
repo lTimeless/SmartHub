@@ -1,7 +1,11 @@
 <template>
-  <v-navigation-drawer :value="drawer" app clipped>
+  <v-navigation-drawer
+    :mini-variant="drawer"
+    app
+    clipped
+  >
     <v-list dense>
-      <v-list-item two-line>
+      <v-list-item two-line class="pl-2">
         <v-list-item-avatar>
           <div class="dot" :style="{ 'background-color': imageBgColor }">
             {{ person.firstName.charAt(0) }}{{ person.lastName.charAt(0) }}

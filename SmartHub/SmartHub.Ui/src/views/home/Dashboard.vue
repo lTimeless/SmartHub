@@ -1,13 +1,22 @@
 <template>
   <v-container>
-    <v-row>
-      <v-col cols="12" md="8">
-
-      </v-col>
-    </v-row>
+    <v-subheader class="pa-1 grey--text text--darken-1">ACTIONS</v-subheader>
+    <v-col cols="12">
+      <v-row justify="space-between" align="center" class="ml-1">
+        <QuickActionButton title="Home"></QuickActionButton>
+        <QuickActionButton title="Group"></QuickActionButton>
+        <QuickActionButton title="Device"></QuickActionButton>
+        <QuickActionButton title="Routine"></QuickActionButton>
+      </v-row>
+    </v-col>
+    <v-divider></v-divider>
+    <v-subheader class="pa-1 grey--text text--darken-1">GRAPHS</v-subheader>
     <div>
       <apexchart width="500" :options="options" :series="series"></apexchart>
     </div>
+    <v-divider></v-divider>
+    <v-subheader class="pa-1 grey--text text--darken-1">TABLES</v-subheader>
+
   </v-container>
 </template>
 
@@ -15,8 +24,13 @@
 import Vue from "vue";
 import Component from "vue-class-component";
 import { ApexOptions } from "apexcharts";
+import QuickActionButton from "@/components/widgets/QuickActionButton.vue";
 
-@Component
+@Component({
+  components: {
+    QuickActionButton
+  }
+})
 export default class Dashboard extends Vue {
   options: ApexOptions = {
     chart: {
