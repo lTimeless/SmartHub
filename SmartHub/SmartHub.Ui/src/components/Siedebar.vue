@@ -7,7 +7,6 @@
             {{ person.firstName.charAt(0) }}{{ person.lastName.charAt(0) }}
           </div>
         </v-list-item-avatar>
-
         <v-list-item-content>
           <v-list-item-title>{{ person.userName }}</v-list-item-title>
           <v-list-item-subtitle v-if="isAdmin || isUser"
