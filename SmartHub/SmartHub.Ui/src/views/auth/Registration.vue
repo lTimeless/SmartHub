@@ -288,7 +288,7 @@ import { InputMessage } from "vuetify";
 @Component
 export default class Registration extends Vue {
   welcomeToSmartHub = "Welcome to SmartHub";
-  startStep = 3;
+  startStep = 1;
   showPwd = false;
   password = "";
   passwordRetry = "";

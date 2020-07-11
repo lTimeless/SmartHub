@@ -1,106 +1,185 @@
 <template>
-  <v-navigation-drawer
-    :mini-variant="drawer"
-    app
-    clipped
-  >
-    <v-list dense>
-      <v-list-item two-line class="pl-2">
-        <v-list-item-avatar>
-          <div class="dot" :style="{ 'background-color': imageBgColor }">
-            {{ person.firstName.charAt(0) }}{{ person.lastName.charAt(0) }}
-          </div>
-        </v-list-item-avatar>
-        <v-list-item-content>
-          <v-list-item-title>{{ person.userName }}</v-list-item-title>
-          <v-list-item-subtitle v-if="isAdmin || isUser"
-            >Logged In</v-list-item-subtitle
+  <v-navigation-drawer :mini-variant="drawer" app clipped>
+    <v-layout
+      align-start
+      justify-space-between
+      column
+      fill-height
+      class="layout"
+    >
+      <v-list width="100%" dense class="pa-0">
+        <v-list-item two-line class="pl-2 v-list-item">
+          <v-list-item-avatar>
+            <div class="dot" :style="{ 'background-color': imageBgColor }">
+              {{ person.firstName.charAt(0) }}{{ person.lastName.charAt(0) }}
+            </div>
+          </v-list-item-avatar>
+          <v-list-item-content>
+            <v-list-item-title>{{ person.userName }}</v-list-item-title>
+            <v-list-item-subtitle v-if="isAdmin || isUser"
+              >Logged In</v-list-item-subtitle
+            >
+            <v-list-item-subtitle v-if="isGuest"
+              >You are a guest</v-list-item-subtitle
+            >
+          </v-list-item-content>
+        </v-list-item>
+        <v-divider></v-divider>
+
+        <v-subheader class="mt-2 grey--text text--darken-1">USER</v-subheader>
+        <template v-if="isAdmin || isUser || isGuest">
+          <v-list-item
+            class="v-list-item"
+            color="primary"
+            v-for="item in allList"
+            :key="item.title"
+            :to="item.route"
+            link
           >
-          <v-list-item-subtitle v-if="isGuest"
-            >You are a guest</v-list-item-subtitle
+            <v-tooltip
+              right
+              nudge-right="10"
+              :open-delay="tooltipOptions.tooltipOpenDelay"
+              :transition="tooltipOptions.tooltipTransition"
+            >
+              <template v-slot:activator="{ on, attrs }">
+                <v-list-item-action v-bind="attrs" v-on="on">
+                  <v-icon>{{ item.icon }}</v-icon>
+                </v-list-item-action>
+                <v-list-item-content>
+                  <v-list-item-title>
+                    {{ item.title }}
+                  </v-list-item-title>
+                </v-list-item-content>
+              </template>
+              <span>{{ item.title }}</span>
+            </v-tooltip>
+          </v-list-item>
+        </template>
+
+        <template v-if="isUser || isAdmin">
+          <v-list-item
+            color="primary"
+            v-for="item in userList"
+            :key="item.title"
+            :to="item.route"
+            link
           >
-        </v-list-item-content>
-      </v-list-item>
+            <v-tooltip
+              right
+              nudge-right="10"
+              :open-delay="tooltipOptions.tooltipOpenDelay"
+              :transition="tooltipOptions.tooltipTransition"
+            >
+              <template v-slot:activator="{ on, attrs }">
+                <v-list-item-action v-bind="attrs" v-on="on">
+                  <v-icon>{{ item.icon }}</v-icon>
+                </v-list-item-action>
+                <v-list-item-content>
+                  <v-list-item-title>
+                    {{ item.title }}
+                  </v-list-item-title>
+                </v-list-item-content>
+              </template>
+              <span>{{ item.title }}</span>
+            </v-tooltip>
+          </v-list-item>
+        </template>
 
-      <v-divider></v-divider>
-      <v-subheader class="mt-4 grey--text text--darken-1">USER</v-subheader>
-      <template v-if="isAdmin || isUser || isGuest">
-        <v-list-item
-          color="primary"
-          v-for="item in allList"
-          :key="item.title"
-          :to="item.route"
-          link
-        >
-          <v-list-item-action>
-            <v-icon>{{ item.icon }}</v-icon>
-          </v-list-item-action>
-          <v-list-item-content>
-            <v-list-item-title>
-              {{ item.title }}
-            </v-list-item-title>
-          </v-list-item-content>
-        </v-list-item>
-      </template>
-      <template v-if="isUser || isAdmin">
-        <v-list-item
-          color="primary"
-          v-for="item in userList"
-          :key="item.title"
-          :to="item.route"
-          link
-        >
-          <v-list-item-action>
-            <v-icon>{{ item.icon }}</v-icon>
-          </v-list-item-action>
-          <v-list-item-content>
-            <v-list-item-title>
-              {{ item.title }}
-            </v-list-item-title>
-          </v-list-item-content>
-        </v-list-item>
-      </template>
+        <template v-if="isAdmin">
+          <v-subheader class="mt-2 grey--text text--darken-1"
+            >ADMIN</v-subheader
+          >
+          <v-list-item
+            class="v-list-item"
+            color="primary"
+            v-for="item in adminList"
+            :key="item.title"
+            :to="item.route"
+            link
+          >
+            <v-tooltip
+              right
+              nudge-right="10"
+              :open-delay="tooltipOptions.tooltipOpenDelay"
+              :transition="tooltipOptions.tooltipTransition"
+            >
+              <template v-slot:activator="{ on, attrs }">
+                <v-list-item-action v-bind="attrs" v-on="on">
+                  <v-icon>{{ item.icon }}</v-icon>
+                </v-list-item-action>
+                <v-list-item-content>
+                  <v-list-item-title>
+                    {{ item.title }}
+                  </v-list-item-title>
+                </v-list-item-content>
+              </template>
+              <span>{{ item.title }}</span>
+            </v-tooltip>
+          </v-list-item>
+        </template>
 
-      <template v-if="isAdmin">
-        <v-subheader class="mt-4 grey--text text--darken-1">ADMIN</v-subheader>
-        <v-list-item
-          color="primary"
-          v-for="item in adminList"
-          :key="item.title"
-          :to="item.route"
-          link
-        >
-          <v-list-item-action>
-            <v-icon>{{ item.icon }}</v-icon>
-          </v-list-item-action>
-          <v-list-item-content>
-            <v-list-item-title>
-              {{ item.title }}
-            </v-list-item-title>
-          </v-list-item-content>
-        </v-list-item>
-      </template>
+        <template v-if="isAdmin || isUser || isGuest">
+          <v-subheader class="mt-2 grey--text text--darken-1">HELP</v-subheader>
+          <v-list-item
+            class="v-list-item"
+            color="primary"
+            v-for="item in helpList"
+            :key="item.title"
+            :to="item.route"
+            link
+          >
+            <v-tooltip
+              right
+              nudge-right="10"
+              :open-delay="tooltipOptions.tooltipOpenDelay"
+              :transition="tooltipOptions.tooltipTransition"
+            >
+              <template v-slot:activator="{ on, attrs }">
+                <v-list-item-action v-bind="attrs" v-on="on">
+                  <v-icon>{{ item.icon }}</v-icon>
+                </v-list-item-action>
+                <v-list-item-content>
+                  <v-list-item-title>
+                    {{ item.title }}
+                  </v-list-item-title>
+                </v-list-item-content>
+              </template>
+              <span>{{ item.title }}</span>
+            </v-tooltip>
+          </v-list-item>
+        </template>
+      </v-list>
 
-      <template v-if="isAdmin || isUser || isGuest">
-        <v-subheader class="mt-4 grey--text text--darken-1">HELP</v-subheader>
+      <v-list width="100%" dense class="pa-0">
         <v-list-item
-          color="primary"
-          v-for="item in helpList"
-          :key="item.title"
-          :to="item.route"
           link
+          justify-end
+          color="primary"
+          class="v-list-item"
+          @click="logout"
         >
-          <v-list-item-action>
-            <v-icon>{{ item.icon }}</v-icon>
-          </v-list-item-action>
-          <v-list-item-content>
-            <v-list-item-title>
-              {{ item.title }}
-            </v-list-item-title>
-          </v-list-item-content>
+          <v-tooltip
+            right
+            nudge-right="10"
+            :open-delay="tooltipOptions.tooltipOpenDelay"
+            :transition="tooltipOptions.tooltipTransition"
+          >
+            <template v-slot:activator="{ on, attrs }">
+              <v-list-item-action v-bind="attrs" v-on="on">
+                <v-icon>mdi-logout-variant</v-icon>
+              </v-list-item-action>
+              <v-list-item-content>
+                <v-list-item-title>
+                  Logout
+                </v-list-item-title>
+              </v-list-item-content>
+            </template>
+            <span>Logout</span>
+          </v-tooltip>
         </v-list-item>
-      </template>
-    </v-list>
+      </v-list>
+    </v-layout>
   </v-navigation-drawer>
 </template>
 
@@ -108,6 +187,8 @@
 import Vue from "vue";
 import Component from "vue-class-component";
 import { Prop } from "vue-property-decorator";
+import { userAuth } from "@/services/auth/user";
+import router from "@/router";
 
 @Component
 export default class Siedebar extends Vue {
@@ -123,6 +204,10 @@ export default class Siedebar extends Vue {
     lastName: "ATestperson"
   };
   imageBgColor = "";
+  tooltipOptions = {
+    tooltipOpenDelay: 150,
+    tooltipTransition: "slide-x-transition"
+  };
 
   allList = [{ title: "Dashboard", icon: "mdi-view-dashboard", route: "/" }];
   userList = [
@@ -144,10 +229,27 @@ export default class Siedebar extends Vue {
     this.imageBgColor =
       "#" + ((Math.random() * 0xffffff) << 0).toString(16).padStart(6, "0");
   }
+
+  mounted() {
+    const { isAdmin, isUser, isGuest } = userAuth();
+    this.isAdmin = isAdmin;
+    this.isGuest = isGuest;
+    this.isUser = isUser;
+  }
+
+  logout() {
+    localStorage.removeItem("loginResponse");
+    router.push("Login");
+  }
 }
 </script>
 
 <style scoped>
+.layout {
+  max-height: 100%;
+  overflow: auto;
+}
+
 .dot {
   width: 50px;
   height: 50px;
@@ -156,5 +258,9 @@ export default class Siedebar extends Vue {
   color: #fff;
   line-height: 50px;
   text-align: center;
+}
+
+.v-list-item {
+  height: 4%;
 }
 </style>

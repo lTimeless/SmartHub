@@ -4,6 +4,7 @@ import Home from "../views/Home.vue";
 import Login from '@/views/auth/Login.vue';
 import Registration from '@/views/auth/Registration.vue';
 import Notfound from "@/views/NotFound.vue";
+import NotAuthorized from "@/views/NotAuthorized.vue";
 import Dashboard from "@/views/home/Dashboard.vue";
 import Settings from "@/views/home/Settings.vue";
 import Plugins from "@/views/home/Plugins.vue";
@@ -15,40 +16,53 @@ import Logs from "@/views/home/admin/Logs.vue";
 import System from "@/views/home/admin/System.vue";
 import Health from "@/views/home/admin/Health.vue";
 import Manager from "@/views/home/admin/Manager.vue";
+import { routeAuthGuard } from "@/router/guards/auth";
 
 
 Vue.use(VueRouter);
 
 const routes: Array<RouteConfig> = [
-
   {
     path: "/login",
     name: "Login",
-    component: Login
+    component: Login,
+    meta: {
+      requiresAuth: false,
+    }
   },
   {
     path: "/registration",
     name: "Registration",
-    component: Registration
+    component: Registration,
+    meta: {
+      requiresAuth: false,
+    }
   },
   {
     path: "",
     component: Home,
-    beforeEnter: (to, from, next) => {
-      console.log("beforeEnter Home", to , from);
-      //TODO: is Authenticated logic implementiren
-      next();
+    meta: {
+      requiresAuth: true,
+      isGuest: true
     },
     children: [
       {
         path: "/",
         name: "Home",
-        component: Dashboard
+        component: Dashboard,
+        meta: {
+          requiresAuth: true,
+          isGuest: true
+        }
       },
       {
         path: "/settings",
         name: "Settings",
-        component: Settings
+        component: Settings,
+        meta: {
+          requiresAuth: true,
+          isUser: true
+        }
       },
       {
         path: "/about",
@@ -57,47 +71,88 @@ const routes: Array<RouteConfig> = [
         // this generates a separate chunk (about.[hash].js) for this route
         // which is lazy-loaded when the route is visited.
         component: () =>
-            import(/* webpackChunkName: "about" */ "../views/home/About.vue")
+            import(/* webpackChunkName: "about" */ "../views/home/About.vue"),
+        meta: {
+          requiresAuth: true,
+          isGuest: true
+        }
       },
       {
         path: "/plugins",
         name: "Plugins",
-        component: Plugins
+        component: Plugins,
+        meta: {
+          requiresAuth: true,
+          isUser: true
+        }
       },
       {
         path: "/routines",
         name: "Routines",
-        component: Routines
+        component: Routines,
+        meta: {
+          requiresAuth: true,
+          isUser: true
+        }
       },
       {
         path: "/statistics",
         name: "Statistics",
-        component: Statistics
+        component: Statistics,
+        meta: {
+          requiresAuth: true,
+          isUser: true
+        }
       },
       {
         path: "/activity",
         name: "Activity",
-        component: Activity
+        component: Activity,
+        meta: {
+          requiresAuth: true,
+          isAdmin : true
+        }
       },
       {
         path: "/logs",
         name: "Logs",
-        component: Logs
+        component: Logs,
+        meta: {
+          requiresAuth: true,
+          isAdmin : true
+        }
       },
       {
         path: "/system",
         name: "System",
-        component: System
+        component: System,
+        meta: {
+          requiresAuth: true,
+          isAdmin : true
+        }
       },
       {
         path: "/health",
         name: "Health",
-        component: Health
+        component: Health,
+        meta: {
+          requiresAuth: true,
+          isAdmin : true
+        }
       },
       {
         path: "/manager",
         name: "Manager",
-        component: Manager
+        component: Manager,
+        meta: {
+          requiresAuth: true,
+          isAdmin : true
+        }
+      },
+      {
+        path: "/notauth",
+        name: "NotAuthorized",
+        component: NotAuthorized
       },
       {
         path: "*",
@@ -116,5 +171,10 @@ const router = new VueRouter({
   base: process.env.BASE_URL,
   routes
 });
+
+router.beforeEach((to, from, next) => {
+  routeAuthGuard(to , from, next);
+})
+
 
 export default router;

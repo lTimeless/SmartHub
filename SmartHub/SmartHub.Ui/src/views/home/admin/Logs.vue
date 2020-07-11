@@ -22,7 +22,6 @@ export default class Logs extends Vue {
       .get("https://api.spacexdata.com/v3/launches")
       .then((response: any) => {
         this.testData = response.data[0];
-        console.log(response);
       });
   }
 }

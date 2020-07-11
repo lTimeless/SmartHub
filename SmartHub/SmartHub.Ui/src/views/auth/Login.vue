@@ -40,6 +40,7 @@
                   counter
                   @click:append="showPwd = !showPwd"
                   outlined
+                  @keyup.enter="onLoginClick"
                 ></v-text-field>
               </v-col>
             </v-row>
@@ -48,6 +49,7 @@
         <v-card-actions class="actions">
           <v-row class="pa-0">
             <v-col cols="12" class="d-flex justify-center">
+              <p :class="messageClass">{{ message }}</p>
               <v-btn
                 class="log"
                 color="primary"
@@ -74,6 +76,8 @@ import Vue from "vue";
 import Component from "vue-class-component";
 import { InputMessage } from "vuetify";
 import router from "@/router";
+import { LOGIN } from "@/store/user/actions";
+import { LoginRequest } from "@/types/types";
 
 @Component
 export default class Login extends Vue {
@@ -81,14 +85,28 @@ export default class Login extends Vue {
   showPwd = false;
   password = "";
   username = "";
+  message = "";
+  messageClass = "successMessage";
+
   rules = {
     required: (value: InputEvent) => !!value || "Required.",
     min: (v: InputMessage) => v.length >= 4 || "Min 4 characters"
   };
 
-  private onLoginClick(): void {
-    console.log(this.password, this.username);
-    router.push("/");
+  private async onLoginClick(): Promise<void> {
+    const login: LoginRequest = {
+      username: this.username,
+      password: this.password
+    };
+    await this.$store.dispatch(LOGIN, login);
+    const { message, success, errors } = this.$store.getters.getLoginResponse;
+    this.message = message;
+    if (!success) {
+      this.messageClass = "error--text";
+      this.message = message + "Errors: " + errors;
+    }
+    this.message = message;
+    await router.push("/");
   }
 }
 </script>
@@ -116,6 +134,9 @@ export default class Login extends Vue {
   }
   .log {
     width: 50%;
+  }
+  .successMessage {
+    color: black;
   }
   p {
     margin: 0;

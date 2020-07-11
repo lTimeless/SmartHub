@@ -20,6 +20,7 @@ export default Vue.extend({
 </script>
 <style lang="scss" scoped>
 .main {
-  background-color: #fafafb;
+  /*background-color: #eceff1;*/
+  background-color: #eeeeee;
 }
 </style>

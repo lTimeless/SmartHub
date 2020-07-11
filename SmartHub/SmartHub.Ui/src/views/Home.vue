@@ -1,5 +1,5 @@
 <template>
-  <div class="home">
+  <div>
     <v-app-bar app clipped-left color="primary" dark dense>
       <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
       <v-toolbar-title class="mr-12 align-center">
@@ -31,7 +31,7 @@
       </v-row>
     </v-app-bar>
     <Sidebar :drawer="drawer"></Sidebar>
-    <v-container class="fill-height" fluid>
+    <v-container fill-height fluid>
       <router-view />
     </v-container>
   </div>
@@ -48,7 +48,7 @@ import Sidebar from "../components/Siedebar.vue";
   }
 })
 export default class Home extends Vue {
-  drawer = false;
+  drawer = true;
   darkMode = false;
   get darkModeIcon() {
     return this.darkMode ? "mdi-white-balance-sunny" : "mdi-weather-night";
@@ -64,8 +64,4 @@ export default class Home extends Vue {
   }
 }
 </script>
-<style lang="scss" scoped>
-.home {
-  background-color: #fafafb;
-}
-</style>
+<style lang="scss" scoped></style>
