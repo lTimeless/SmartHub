@@ -1,11 +1,11 @@
 module.exports = {
-  transpileDependencies: ["vuetify"],
+  transpileDependencies: ['vuetify'],
   devServer: {
     proxy: {
-      "^/api": {
-        target: "http://localhost:5000"
+      '^/api': {
+        target: 'http://localhost:5000'
       }
     }
   },
-  outputDir: "../SmartHub.Api/wwwroot"
+  outputDir: '../SmartHub.Api/wwwroot'
 };

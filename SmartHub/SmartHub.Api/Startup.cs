@@ -126,7 +126,7 @@ namespace SmartHub.Api
 
 				if (env.IsDevelopment())
 				{
-					// Start seperate FE server and Server listens to it 
+					// Start seperate FE server and Server listens to it
 					 spa.UseProxyToSpaDevelopmentServer("http://localhost:4200");
 					// To start its own FE server
 				}

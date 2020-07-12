@@ -6,7 +6,7 @@
 
 <script>
 export default {
-  name: "Plugins"
+  name: 'Plugins'
 };
 </script>
 

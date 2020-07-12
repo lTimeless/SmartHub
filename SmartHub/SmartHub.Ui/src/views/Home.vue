@@ -21,12 +21,7 @@
         </v-col>
         <v-spacer></v-spacer>
         <v-col cols="1" class="mt-4">
-          <v-switch
-            input-value="darkMode"
-            :append-icon="darkModeIcon"
-            inset
-            @change="switchDarkMode"
-          ></v-switch>
+          <v-switch input-value="darkMode" :append-icon="darkModeIcon" inset @change="switchDarkMode"></v-switch>
         </v-col>
       </v-row>
     </v-app-bar>
@@ -38,9 +33,9 @@
 </template>
 
 <script lang="ts">
-import Vue from "vue";
-import Component from "vue-class-component";
-import Sidebar from "../components/Siedebar.vue";
+import Vue from 'vue';
+import Component from 'vue-class-component';
+import Sidebar from '../components/Siedebar.vue';
 
 @Component({
   components: {
@@ -51,7 +46,7 @@ export default class Home extends Vue {
   drawer = true;
   darkMode = false;
   get darkModeIcon() {
-    return this.darkMode ? "mdi-white-balance-sunny" : "mdi-weather-night";
+    return this.darkMode ? 'mdi-white-balance-sunny' : 'mdi-weather-night';
   }
 
   switchDarkMode() {
@@ -60,7 +55,7 @@ export default class Home extends Vue {
   }
 
   onEnterSearch(): void {
-    console.log("Search");
+    console.log('Search', this.drawer);
   }
 }
 </script>

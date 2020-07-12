@@ -16,15 +16,14 @@
     </div>
     <v-divider></v-divider>
     <v-subheader class="pa-1 grey--text text--darken-1">TABLES</v-subheader>
-
   </v-container>
 </template>
 
 <script lang="ts">
-import Vue from "vue";
-import Component from "vue-class-component";
-import { ApexOptions } from "apexcharts";
-import QuickActionButton from "@/components/widgets/QuickActionButton.vue";
+import Vue from 'vue';
+import Component from 'vue-class-component';
+import { ApexOptions } from 'apexcharts';
+import QuickActionButton from '@/components/widgets/QuickActionButton.vue';
 
 @Component({
   components: {
@@ -34,8 +33,8 @@ import QuickActionButton from "@/components/widgets/QuickActionButton.vue";
 export default class Dashboard extends Vue {
   options: ApexOptions = {
     chart: {
-      id: "vuechart-example",
-      type: "bar",
+      id: 'vuechart-example',
+      type: 'bar',
       height: 600,
       width: 600,
       toolbar: {
@@ -46,9 +45,10 @@ export default class Dashboard extends Vue {
       categories: [1991, 1992, 1993, 1994, 1995, 1996, 1997, 1998]
     }
   };
+
   series = [
     {
-      name: "series-1",
+      name: 'series-1',
       data: [30, 40, 45, 50, 49, 60, 70, 91]
     }
   ];

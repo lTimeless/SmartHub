@@ -1,12 +1,7 @@
 <template>
   <v-col>
     <v-row align="center" justify="center">
-      <v-img
-        class="ma-0"
-        src="../assets/images/undraw_security_o890.svg"
-        max-width="700"
-        max-height="700"
-      ></v-img>
+      <v-img class="ma-0" src="../assets/images/undraw_security_o890.svg" max-width="700" max-height="700"></v-img>
     </v-row>
     <v-row align="center" justify="center">
       <p>
@@ -20,8 +15,8 @@
 </template>
 
 <script>
-import Component from "vue-class-component";
-import Vue from "vue";
+import Component from 'vue-class-component';
+import Vue from 'vue';
 
 @Component
 export default class NotAuthorized extends Vue {}

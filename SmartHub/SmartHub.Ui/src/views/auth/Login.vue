@@ -9,10 +9,7 @@
             </h2>
           </v-toolbar-title>
         </v-toolbar>
-        <v-img
-          class="mb-8"
-          src="../../assets/images/undraw_smart_home_28oy.svg"
-        ></v-img>
+        <v-img class="mb-8" src="../../assets/images/undraw_smart_home_28oy.svg"></v-img>
         <v-form>
           <v-container class="form-centered">
             <v-row class="d-flex justify-center">
@@ -72,25 +69,25 @@
 </template>
 
 <script lang="ts">
-import Vue from "vue";
-import Component from "vue-class-component";
-import { InputMessage } from "vuetify";
-import router from "@/router";
-import { LOGIN } from "@/store/user/actions";
-import { LoginRequest } from "@/types/types";
+import Vue from 'vue';
+import Component from 'vue-class-component';
+import { InputMessage } from 'vuetify';
+import router from '@/router';
+import { LOGIN } from '@/store/user/actions';
+import { LoginRequest } from '@/types/types';
 
 @Component
 export default class Login extends Vue {
-  welcomeToSmartHub = "Welcome to SmartHub";
+  welcomeToSmartHub = 'Welcome to SmartHub';
   showPwd = false;
-  password = "";
-  username = "";
-  message = "";
-  messageClass = "successMessage";
+  password = '';
+  username = '';
+  message = '';
+  messageClass = 'successMessage';
 
   rules = {
-    required: (value: InputEvent) => !!value || "Required.",
-    min: (v: InputMessage) => v.length >= 4 || "Min 4 characters"
+    required: (value: InputEvent) => !!value || 'Required.',
+    min: (v: InputMessage) => v.length >= 4 || 'Min 4 characters'
   };
 
   private async onLoginClick(): Promise<void> {
@@ -102,11 +99,11 @@ export default class Login extends Vue {
     const { message, success, errors } = this.$store.getters.getLoginResponse;
     this.message = message;
     if (!success) {
-      this.messageClass = "error--text";
-      this.message = message + "Errors: " + errors;
+      this.messageClass = 'error--text';
+      this.message = `${message}Errors: ${errors}`;
     }
     this.message = message;
-    await router.push("/");
+    await router.push('/');
   }
 }
 </script>
