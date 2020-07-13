@@ -15,20 +15,10 @@ namespace SmartHub.Infrastructure.Services.Auth
 			_httpContextAccessor = httpContextAccessor;
 		}
 
-		public string GetCurrentUsername()
-		{
-			return _httpContextAccessor
+		public string GetCurrentUsername() =>
+			_httpContextAccessor
 				.HttpContext?
 				.User?
 				.FindFirstValue(ClaimTypes.NameIdentifier) ?? System;
-		}
-
-		public string GetCurrentUserId()
-		{
-			return _httpContextAccessor
-				.HttpContext?
-				.User?
-				.FindFirstValue("Id") ?? System;
-		}
 	}
 }

@@ -6,12 +6,12 @@ using Serilog;
 
 namespace SmartHub.Application.Common.Behaviours
 {
-    public class RequestLogger<TRequest> : IRequestPreProcessor<TRequest>
+    public class RequestLoggerBehaviour<TRequest> : IRequestPreProcessor<TRequest>
     {
         private readonly ILogger _logger;
         private readonly IUserAccessor _userAccessor;
 
-        public RequestLogger(ILogger logger, IUserAccessor userAccessor)
+        public RequestLoggerBehaviour(ILogger logger, IUserAccessor userAccessor)
         {
             _logger = logger;
             _userAccessor = userAccessor;

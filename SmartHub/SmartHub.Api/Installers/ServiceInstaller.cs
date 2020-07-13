@@ -3,6 +3,7 @@ using Microsoft.Extensions.DependencyInjection;
 using SmartHub.Application.Common.Interfaces;
 using SmartHub.Application.Common.Interfaces.Events;
 using SmartHub.Application.Common.Interfaces.Repositories;
+using SmartHub.Application.Common.Models;
 using SmartHub.Application.UseCases.AppStartup;
 using SmartHub.Application.UseCases.HomeFolder;
 using SmartHub.Application.UseCases.Identity.Login;
@@ -58,6 +59,7 @@ namespace SmartHub.Api.Installers
 
 		private static void ConfigureAuthServices(IServiceCollection services)
 		{
+			services.AddScoped<CurrentUser>();
 			services.AddScoped<ITokenGenerator, TokenGenerator>();
 			services.AddScoped<ILoginService, LoginService>();
 			services.AddScoped<IRegistrationService, RegistrationService>();

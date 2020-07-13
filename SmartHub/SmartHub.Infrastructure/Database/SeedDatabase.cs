@@ -9,6 +9,7 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 using SmartHub.Application.Common.Interfaces.Repositories;
+using SmartHub.Domain.Enums;
 
 namespace SmartHub.Infrastructure.Database
 {
@@ -42,7 +43,7 @@ namespace SmartHub.Infrastructure.Database
 			{
 				CreatedBy = "Home", LastModifiedBy = "Home"
 			};
-			var guest = new User("Guest", null, new PersonName("Luci", "", "Test"), null)
+			var guest = new User("Guest", null, new PersonName("Guest", "Person", "Test"), null)
 			{
 				CreatedBy = "Home", LastModifiedBy = "home"
 			};
@@ -54,17 +55,17 @@ namespace SmartHub.Infrastructure.Database
 			if (!_userManager.Users.Any(x => x.UserName == admin.UserName))
 			{
 				await _userManager.CreateAsync(admin, "Test-123");
-				await _userManager.AddToRoleAsync(admin, "Admin");
+				await _userManager.AddToRoleAsync(admin, RoleEnum.Admin.ToString());
 			}
 			if (!_userManager.Users.Any(x => x.UserName == user.UserName))
 			{
 				await _userManager.CreateAsync(user, "Test-123");
-				await _userManager.AddToRoleAsync(user, "User");
+				await _userManager.AddToRoleAsync(user, RoleEnum.User.ToString());
 			}
 			if (!_userManager.Users.Any(x => x.UserName == guest.UserName))
 			{
 				await _userManager.CreateAsync(guest, "Test-123");
-				await _userManager.AddToRoleAsync(guest, "Guest");
+				await _userManager.AddToRoleAsync(guest, RoleEnum.Guest.ToString());
 			}
 		}
 
@@ -72,9 +73,9 @@ namespace SmartHub.Infrastructure.Database
 		{
 			using var serviceScope = _scopeFactory.CreateScope();
 			_roleManager = serviceScope.ServiceProvider.GetRequiredService<RoleManager<Role>>();
-			var admin = new Role("Admin", "Admin description") {CreatedBy = "Home", LastModifiedBy = "Home"};
-			var guest = new Role("Guest", "Guest description") {CreatedBy = "Home", LastModifiedBy = "home"};
-			var user = new Role("User", "User description") {CreatedBy = "Home", LastModifiedBy = "Home"};
+			var admin = new Role(RoleEnum.Admin.ToString(), "Admin description") {CreatedBy = "Home", LastModifiedBy = "Home"};
+			var guest = new Role(RoleEnum.Guest.ToString(), "Guest description") {CreatedBy = "Home", LastModifiedBy = "home"};
+			var user = new Role(RoleEnum.User.ToString(), "User description") {CreatedBy = "Home", LastModifiedBy = "Home"};
 
 			if (!_roleManager.Roles.Any(x => x.Name == admin.Name))
 			{
