@@ -5,7 +5,7 @@ using SmartHub.Domain.Enums;
 using System;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
-using SmartHub.Infrastructure.Utils;
+using SmartHub.Application.Common.Utils;
 
 namespace SmartHub.Infrastructure.Services.Dispatchers
 {

@@ -8,20 +8,21 @@ using System;
 using System.Collections.Generic;
 using System.Net;
 using System.Threading.Tasks;
+using SmartHub.Application.Common.Interfaces.Repositories;
 
 namespace SmartHub.Application.UseCases.Identity.Registration
 {
 	public class RegistrationService : IRegistrationService
 	{
 		private readonly UserManager<User> _userManager;
+		private readonly IUnitOfWork _unitOfWork;
 		private readonly ITokenGenerator _tokenGenerator;
-		private readonly IUserService _userService;
 
-		public RegistrationService(UserManager<User> userManager, ITokenGenerator tokenGenerator, IUserService userService)
+		public RegistrationService(UserManager<User> userManager, ITokenGenerator tokenGenerator, IUnitOfWork unitOfWork)
 		{
 			_userManager = userManager;
 			_tokenGenerator = tokenGenerator;
-			_userService = userService;
+			_unitOfWork = unitOfWork;
 		}
 
 		public async Task<AuthResponseDto> RegisterAsync(RegistrationCommand userInput)
@@ -33,7 +34,7 @@ namespace SmartHub.Application.UseCases.Identity.Registration
 			}
 			var user = new User(userInput.Username, null, new PersonName("", "", ""), null);
 
-			var created = await _userService.CreateUser(user, userInput.Password, userInput.Role);
+			var created = await _unitOfWork.UserRepository.CreateUser(user, userInput.Password, userInput.Role);
 			if (created)
 			{
 				return new AuthResponseDto(_tokenGenerator.CreateJwtToken(user),

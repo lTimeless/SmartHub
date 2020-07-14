@@ -1,5 +1,5 @@
 import { GetterTree } from 'vuex';
-import { LoginResponse, ServiceResponse, User } from '@/types/types';
+import { AuthResponse, ServiceResponse, User } from '@/types/types';
 import { RootState, UserState } from '@/store/index.types';
 
 export const getters: GetterTree<UserState, RootState> = {
@@ -7,12 +7,12 @@ export const getters: GetterTree<UserState, RootState> = {
     return state.user;
   },
   getRole(state): string[] | undefined {
-    return state.loginResponse?.data.roles;
+    return state.authResponse?.data.roles;
   },
-  getLogin(state): LoginResponse | undefined {
-    return state.loginResponse?.data;
+  getAuthData(state): AuthResponse | undefined {
+    return state.authResponse?.data;
   },
-  getLoginResponse(state): ServiceResponse<LoginResponse> | undefined {
-    return state.loginResponse;
+  getAuthResponse(state): ServiceResponse<AuthResponse> | undefined {
+    return state.authResponse;
   }
 };

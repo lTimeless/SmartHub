@@ -10,6 +10,7 @@ namespace SmartHub.Application.Common.Interfaces.Repositories
 	{
 		IHomeRepository HomeRepository { get; }
 		IBaseRepository<Group> GroupRepository { get; }
+		IUserRepository UserRepository { get; }
 
 		Task SaveAsync();
 

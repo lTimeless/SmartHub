@@ -13,7 +13,6 @@ using SmartHub.Application.UseCases.PluginAdapter.Creator;
 using SmartHub.Application.UseCases.PluginAdapter.Finder;
 using SmartHub.Application.UseCases.PluginAdapter.Host;
 using SmartHub.Application.UseCases.PluginAdapter.Loader;
-using SmartHub.Domain.Entities.Users;
 using SmartHub.Infrastructure.Database;
 using SmartHub.Infrastructure.Database.Repositories;
 using SmartHub.Infrastructure.Services.Auth;
@@ -37,6 +36,7 @@ namespace SmartHub.Api.Installers
 
 		private static void ConfigureRepositories(IServiceCollection services)
 		{
+			services.AddScoped<IUserRepository, UserRepository>();
 			services.AddScoped<IHomeRepository, HomeRepository>();
 			services.AddScoped<IUnitOfWork, UnitOfWork>();
 			services.AddTransient<SeedDatabase>();
@@ -64,7 +64,6 @@ namespace SmartHub.Api.Installers
 			services.AddScoped<ILoginService, LoginService>();
 			services.AddScoped<IRegistrationService, RegistrationService>();
 			services.AddScoped<IUserAccessor, UserAccessor>();
-			services.AddScoped<IUserService, UserService>();
 		}
 
 		private static void ConfigureHelpServices(IServiceCollection services)

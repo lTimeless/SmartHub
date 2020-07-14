@@ -96,7 +96,7 @@ export default class Login extends Vue {
       password: this.password
     };
     await this.$store.dispatch(LOGIN, login);
-    const { message, success, errors } = this.$store.getters.getLoginResponse;
+    const { message, success, errors } = this.$store.getters.getAuthResponse;
     this.message = message;
     if (!success) {
       this.messageClass = 'error--text';

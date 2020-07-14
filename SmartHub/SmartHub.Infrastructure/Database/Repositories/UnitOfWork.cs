@@ -7,8 +7,11 @@ using SmartHub.Domain.Enums;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Identity;
 using SmartHub.Application.Common.Interfaces.Repositories;
-using SmartHub.Infrastructure.Utils;
+using SmartHub.Application.Common.Utils;
+using SmartHub.Domain.Entities.Roles;
+using SmartHub.Domain.Entities.Users;
 
 namespace SmartHub.Infrastructure.Database.Repositories
 {
@@ -16,20 +19,27 @@ namespace SmartHub.Infrastructure.Database.Repositories
 	{
 		private IHomeRepository _homeRepository;
 		private IBaseRepository<Group> _groupRepository;
+		private IUserRepository _userRepository;
 		private readonly IChannelManager _channelManager;
 		private readonly IUserAccessor _userAccessor;
+		private readonly UserManager<User> _userManager;
+		private readonly RoleManager<Role> _roleManager;
 
 		public AppDbContext AppDbContext { get; }
 
-		public UnitOfWork(AppDbContext appDbContext, IChannelManager channelManager, IUserAccessor userAccessor)
+		public UnitOfWork(AppDbContext appDbContext, IChannelManager channelManager, IUserAccessor userAccessor,
+			UserManager<User> userManager, RoleManager<Role> roleManager)
 		{
 			AppDbContext = appDbContext;
 			_channelManager = channelManager;
 			_userAccessor = userAccessor;
+			_userManager = userManager;
+			_roleManager = roleManager;
 		}
 
 		public IHomeRepository HomeRepository => _homeRepository ??= new HomeRepository(AppDbContext);
 		public IBaseRepository<Group> GroupRepository => _groupRepository ??= new BaseRepository<Group>(AppDbContext);
+		public IUserRepository UserRepository => _userRepository ??= new UserRepository(_userManager, _roleManager);
 
 		public async Task SaveAsync()
 		{

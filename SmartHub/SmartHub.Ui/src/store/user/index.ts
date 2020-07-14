@@ -5,8 +5,7 @@ import { actions } from '@/store/user/actions';
 import { RootState, UserState } from '@/store/index.types';
 
 export const state: UserState = {
-  registrationResponse: undefined,
-  loginResponse: undefined,
+  authResponse: undefined,
   user: undefined
 };
 

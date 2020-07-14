@@ -88,7 +88,7 @@
                         passwordRetry.length < 4 ||
                         selectedRole.length === 0
                     "
-                    @click="startStep = 2"
+                    @click="onNextStep"
                   >
                     Continue
                   </v-btn>
@@ -158,7 +158,11 @@
                   <v-btn text @click="startStep = 1">
                     Back
                   </v-btn>
-                  <v-tooltip bottom>
+                  <v-tooltip
+                    bottom
+                    :open-delay="toolTipOptions.tooltipOpenDelay"
+                    :transition="toolTipOptions.tooltipTransition"
+                  >
                     <template v-slot:activator="{ on, attrs }">
                       <v-btn class="ml-2" text color="red" v-bind="attrs" @click="onClearForm" v-on="on">
                         Clear
@@ -172,7 +176,7 @@
                     class="reg"
                     color="primary"
                     :disabled="homeName.length === 0 && selectedHome.length === 0"
-                    @click="startStep = 3"
+                    @click="onNextStep"
                   >
                     Continue
                   </v-btn>
@@ -274,6 +278,9 @@
 import Component from 'vue-class-component';
 import Vue from 'vue';
 import { InputMessage } from 'vuetify';
+import { GET_HOME } from '@/store/home/actions';
+import { RegistrationRequest } from '@/types/types';
+import { REGISTRATION } from '@/store/user/actions';
 
 @Component
 export default class Registration extends Vue {
@@ -287,6 +294,11 @@ export default class Registration extends Vue {
   selectedHome = '';
   homeName = '';
   doneEdit = true;
+  toolTipOptions = {
+    tooltipOpenDelay: 150,
+    tooltipTransition: 'slide-y-transition'
+  };
+
   roles = ['Guest', 'User', 'Admin'];
   homes = ['Test', 'Test_1'];
   rules = {
@@ -299,8 +311,22 @@ export default class Registration extends Vue {
     return this.homeName.length !== 0 ? this.homeName : this.selectedHome;
   }
 
+  async onNextStep(): Promise<void> {
+    this.startStep += 1;
+    if (this.startStep === 2) {
+      const registrationRequest: RegistrationRequest = {
+        username: this.userName,
+        password: this.password,
+        role: this.selectedRole
+      };
+      const reg = await this.$store.dispatch(REGISTRATION, registrationRequest);
+      const home = await this.$store.dispatch(GET_HOME);
+      console.log(home, reg);
+    }
+  }
+
   onRegistrationClick(): void {
-    console.log('registration', this.homeName);
+    console.log('registration', this.userName);
   }
 
   onClearSelection(): void {

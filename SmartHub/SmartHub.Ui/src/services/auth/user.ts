@@ -1,16 +1,16 @@
-import { LoginResponse } from '@/types/types';
+import { AuthResponse } from '@/types/types';
 
 type AuthType = { isAdmin: boolean; isUser: boolean; isGuest: boolean };
 
 export const userAuth = (): AuthType => {
-  if (localStorage.getItem('loginResponse') == null) {
+  if (localStorage.getItem('authResponse') == null) {
     return { isAdmin: false, isUser: false, isGuest: false };
   }
-  const localStorageLoginResponse = localStorage.getItem('loginResponse');
+  const localStorageLoginResponse = localStorage.getItem('authResponse');
   if (localStorageLoginResponse === null) {
     return { isAdmin: false, isUser: false, isGuest: true };
   }
-  const loginResponse = JSON.parse(localStorageLoginResponse) as LoginResponse;
+  const loginResponse = JSON.parse(localStorageLoginResponse) as AuthResponse;
   if (loginResponse.roles.includes('Admin')) {
     return { isAdmin: true, isUser: false, isGuest: false };
   }

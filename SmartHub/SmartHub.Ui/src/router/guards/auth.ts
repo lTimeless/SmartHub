@@ -1,5 +1,5 @@
 import { NavigationGuardNext, Route } from 'vue-router';
-import { LoginResponse } from '@/types/types';
+import { AuthResponse } from '@/types/types';
 
 const validateUserRoleToRoute = (to: Route, roles: string[], next: NavigationGuardNext) => {
   if (to.matched.some((record) => record.meta.isAdmin)) {
@@ -29,7 +29,7 @@ export const routeAuthGuard = (to: Route, from: Route, next: NavigationGuardNext
     if (loginResponseLocalStorage === null) {
       next({ name: 'Login' });
     } else {
-      const loginResponse = JSON.parse(loginResponseLocalStorage) as LoginResponse;
+      const loginResponse = JSON.parse(loginResponseLocalStorage) as AuthResponse;
       if (loginResponse === null) {
         next({ name: 'Login' });
       } else {

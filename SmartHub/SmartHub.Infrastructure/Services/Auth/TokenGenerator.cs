@@ -10,7 +10,7 @@ using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
 using Microsoft.IdentityModel.Tokens;
-using SmartHub.Infrastructure.Utils;
+using SmartHub.Application.Common.Utils;
 
 namespace SmartHub.Infrastructure.Services.Auth
 {

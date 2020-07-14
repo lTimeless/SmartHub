@@ -29,8 +29,8 @@
             <v-tooltip
               right
               nudge-right="10"
-              :open-delay="tooltipOptions.tooltipOpenDelay"
-              :transition="tooltipOptions.tooltipTransition"
+              :open-delay="toolTipOptions.tooltipOpenDelay"
+              :transition="toolTipOptions.tooltipTransition"
             >
               <template v-slot:activator="{ on, attrs }">
                 <v-list-item-action v-bind="attrs" v-on="on">
@@ -52,8 +52,8 @@
             <v-tooltip
               right
               nudge-right="10"
-              :open-delay="tooltipOptions.tooltipOpenDelay"
-              :transition="tooltipOptions.tooltipTransition"
+              :open-delay="toolTipOptions.tooltipOpenDelay"
+              :transition="toolTipOptions.tooltipTransition"
             >
               <template v-slot:activator="{ on, attrs }">
                 <v-list-item-action v-bind="attrs" v-on="on">
@@ -83,8 +83,8 @@
             <v-tooltip
               right
               nudge-right="10"
-              :open-delay="tooltipOptions.tooltipOpenDelay"
-              :transition="tooltipOptions.tooltipTransition"
+              :open-delay="toolTipOptions.tooltipOpenDelay"
+              :transition="toolTipOptions.tooltipTransition"
             >
               <template v-slot:activator="{ on, attrs }">
                 <v-list-item-action v-bind="attrs" v-on="on">
@@ -114,8 +114,8 @@
             <v-tooltip
               right
               nudge-right="10"
-              :open-delay="tooltipOptions.tooltipOpenDelay"
-              :transition="tooltipOptions.tooltipTransition"
+              :open-delay="toolTipOptions.tooltipOpenDelay"
+              :transition="toolTipOptions.tooltipTransition"
             >
               <template v-slot:activator="{ on, attrs }">
                 <v-list-item-action v-bind="attrs" v-on="on">
@@ -138,8 +138,8 @@
           <v-tooltip
             right
             nudge-right="10"
-            :open-delay="tooltipOptions.tooltipOpenDelay"
-            :transition="tooltipOptions.tooltipTransition"
+            :open-delay="toolTipOptions.tooltipOpenDelay"
+            :transition="toolTipOptions.tooltipTransition"
           >
             <template v-slot:activator="{ on, attrs }">
               <v-list-item-action v-bind="attrs" v-on="on">
@@ -174,14 +174,14 @@ export default class Siedebar extends Vue {
   isAdmin = true;
   isUser = false;
   isGuest = false;
+  imageBgColor = '';
   person = {
     userName: 'MaxTime',
     firstName: 'Max',
     lastName: 'ATestperson'
   };
 
-  imageBgColor = '';
-  tooltipOptions = {
+  toolTipOptions = {
     tooltipOpenDelay: 150,
     tooltipTransition: 'slide-x-transition'
   };

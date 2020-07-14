@@ -1,4 +1,4 @@
-import { LoginResponse, RegistrationResponse, ServiceResponse, User } from '@/types/types';
+import { AuthResponse, Home, User } from '@/types/types';
 
 export interface RootState {
   version: number;
@@ -6,6 +6,9 @@ export interface RootState {
 
 export interface UserState {
   user?: User;
-  loginResponse?: ServiceResponse<LoginResponse>;
-  registrationResponse?: ServiceResponse<RegistrationResponse>;
+  authResponse?: AuthResponse;
+}
+
+export interface HomeState {
+  home?: Home;
 }
