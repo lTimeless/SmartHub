@@ -58,25 +58,25 @@ steps:
   - script: npm --prefix SmartHub/SmartHub.Ui run build
 
 ###### Test #####
-  - task: DotNetCoreCLI@2
-    displayName: "Test"
-    inputs:
-        command: test
-        projects: "$(solution)"
-        arguments: '"-p:CollectCoverage=true" "-p:CoverletOutputFormat=cobertura"'
-        nobuild: true
-  # - task: CmdLine@2
-  #   displayName: Merge code-coverage files
+  # - task: DotNetCoreCLI@2
+  #   displayName: "Test"
   #   inputs:
-  #       script: |
-  #           dotnet tool install -g dotnet-reportgenerator-globaltool
-  #           reportgenerator "-reports:./test/**/coverage.cobertura.xml" "-reporttypes:Cobertura" "-targetdir:./coverreport"
-  - task: PublishCodeCoverageResults@1
-    displayName: "Generate code-coverage HTML report"
-    inputs:
-        codeCoverageTool: "Cobertura"
-        summaryFileLocation: "./coverreport/Cobertura.xml"
-        failIfCoverageEmpty: false
+  #       command: test
+  #       projects: "$(solution)"
+  #       arguments: '"-p:CollectCoverage=true" "-p:CoverletOutputFormat=cobertura"'
+  #       nobuild: true
+  # # - task: CmdLine@2
+  # #   displayName: Merge code-coverage files
+  # #   inputs:
+  # #       script: |
+  # #           dotnet tool install -g dotnet-reportgenerator-globaltool
+  # #           reportgenerator "-reports:./test/**/coverage.cobertura.xml" "-reporttypes:Cobertura" "-targetdir:./coverreport"
+  # - task: PublishCodeCoverageResults@1
+  #   displayName: "Generate code-coverage HTML report"
+  #   inputs:
+  #       codeCoverageTool: "Cobertura"
+  #       summaryFileLocation: "./coverreport/Cobertura.xml"
+  #       failIfCoverageEmpty: false
 
 ###### Sonar publish #####
   - task: SonarCloudAnalyze@1
