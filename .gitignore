@@ -243,3 +243,9 @@ SmartHub/.idea
 SmartHub.configFolder-dev/
 
 
+
+SmartHub/SmartHub.Api/appsettings.Development.json
+
+SmartHub/SmartHub.Api/appsettings.json
+
+SmartHub/SmartHub.Api/appsettings.Production.json
