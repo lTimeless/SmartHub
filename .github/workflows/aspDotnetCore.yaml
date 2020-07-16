@@ -28,7 +28,7 @@ jobs:
       run: dotnet test ${{ format('{0}/{1}', '$folderName', '$solution') }} --no-restore --verbosity normal
       
     - name: SonarCloud for .NET Core
-      uses: highbyte/sonarscan-dotnet
+      uses: highbyte/sonarscan-dotnet@master
       with:
         # The key of the SonarQube project
         sonarProjectKey: smarthub-io
