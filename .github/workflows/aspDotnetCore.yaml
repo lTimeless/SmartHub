@@ -20,7 +20,7 @@ jobs:
         dotnet-version: 3.1.301
         
     - name: Install dependencies
-      run: dotnet restore $folderName/$csprojName
+      run: dotnet restore $folderName$solution
       
     - name: Build with dotnet
       run: dotnet build ${{ format('{0}/{1}', '$folderName', '$solution') }} --configuration Release --no-restore
@@ -37,7 +37,7 @@ jobs:
         sonarProjectName:  SmartHub
         # The name of the SonarQube organization in SonarCloud. For hosted SonarQube, skip this setting.
         sonarOrganization: smarthub-io
-        dotnetBuildArguments: ${{folderName}}${{solution}} --configuration Release --no-restore
+        dotnetBuildArguments: $folderName$solution --configuration Release --no-restore
     env:
       SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
