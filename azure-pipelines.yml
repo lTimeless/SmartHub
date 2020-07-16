@@ -8,12 +8,12 @@ trigger: # when to trigger a build
   branches:
     include:
       - master
-      - develop
+
 pr:
   branches:
     include:
     - master
-    - develop
+
 
 pool:
   vmImage: 'ubuntu-latest'
