@@ -20,11 +20,6 @@ jobs:
       
     - name: Use latest Node.js version
       uses: actions/setup-node@master
-    
-    - name: Move to src folder
-      run: | 
-            cd SmartHub/SmartHub.Ui
-            ls
           
     - name: Installing project dependencies
       run: npm --prefix '${SmartHubUipath}' install
