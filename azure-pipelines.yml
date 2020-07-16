@@ -24,40 +24,35 @@ variables:
   buildConfiguration: 'Release'
   linx64: 'linux-x64'
 
-steps:
-  - task: UseDotNet@2
-    inputs:
-      packageType: 'sdk'
-      version: '2.2.203'
-  - task: SonarCloudPrepare@1
-    inputs:
-      SonarCloud: 'SmartHub-SonarCloud'
-      organization: 'smarthub-io'
-      scannerMode: 'MSBuild'
-      projectKey: 'smarthub-io'
-      projectName: 'SmartHub'
+jobs:
+  - job: ".Net core"
+    steps:
+      - task: UseDotNet@2
+        inputs:
+          packageType: 'sdk'
+          version: '2.2.203'
+      - task: SonarCloudPrepare@1
+        inputs:
+          SonarCloud: 'SmartHub-SonarCloud'
+          organization: 'smarthub-io'
+          scannerMode: 'MSBuild'
+          projectKey: 'smarthub-io'
+          projectName: 'SmartHub'
 
-  - task: UseDotNet@2
-    displayName: "Use .NET Core sdk"
-    inputs:
-        packageType: sdk
-        version: 3.1.301
-        installationPath: $(Agent.ToolsDirectory)/dotnet
-
+      - task: UseDotNet@2
+        displayName: "Use .NET Core sdk"
+        inputs:
+            packageType: sdk
+            version: 3.1.301
+            installationPath: $(Agent.ToolsDirectory)/dotnet
   
-###### Build #####
-  - task: DotNetCoreCLI@2
-    displayName: "Build solution"
-    inputs:
-        command: "build"
-        projects: "$(solution)"
-        arguments: '--configuration "$(buildConfiguration)"'
+      - task: DotNetCoreCLI@2
+        displayName: "Build solution"
+        inputs:
+            command: "build"
+            projects: "$(solution)"
+            arguments: '--configuration "$(buildConfiguration)"'
 
-  - script: npm --prefix SmartHub/SmartHub.Ui install
-  
-  - script: npm --prefix SmartHub/SmartHub.Ui run build
-
-###### Test #####
   # - task: DotNetCoreCLI@2
   #   displayName: "Test"
   #   inputs:
@@ -78,26 +73,49 @@ steps:
   #       summaryFileLocation: "./coverreport/Cobertura.xml"
   #       failIfCoverageEmpty: false
 
-###### Sonar publish #####
-  - task: SonarCloudAnalyze@1
-    displayName: Sonar Analyze
-  - task: SonarCloudPublish@1
-    displayName: Sonar Publish
-    inputs:
-      pollingTimeoutSec: '200'
+      - task: SonarCloudAnalyze@1
+        displayName: Sonar Analyze
+      - task: SonarCloudPublish@1
+        displayName: Sonar Publish
+        inputs:
+          pollingTimeoutSec: '200'
+
+  - job: Vue.js
+    steps:
+      - task: SonarCloudPrepare@1
+        inputs:
+          SonarCloud: 'SmartHub-SonarCloud'
+          organization: 'smarthub-io'
+          scannerMode: 'MSBuild'
+          projectKey: 'smarthub-io'
+          projectName: 'SmartHub'
+
+      - script: npm --prefix SmartHub/SmartHub.Ui install
+        displayName: Npm install
+
+      - script: npm --prefix SmartHub/SmartHub.Ui run build
+        displayName: Npm build
+
+      - task: SonarCloudAnalyze@1
+        displayName: Sonar Analyze
+      - task: SonarCloudPublish@1
+        displayName: Sonar Publish
+        inputs:
+          pollingTimeoutSec: '200'
 
 
-###### Publish and upload Artifact #####
-  - task: DotNetCoreCLI@2
-    displayName: Publish
-    inputs:
-      command: 'publish'
-      publishWebProjects: true
-      arguments: '--configuration $(BuildConfiguration) --output $(Build.ArtifactStagingDirectory)'
-      zipAfterPublish: true
 
-  - task: PublishBuildArtifacts@1
-    displayName: Publish Artifacts
-    inputs:
-      pathtoPublish: '$(Build.ArtifactStagingDirectory)' 
-      artifactName: 'SmartHub_$(imageName)'
+# ###### Publish and upload Artifact #####
+#   - task: DotNetCoreCLI@2
+#     displayName: Publish
+#     inputs:
+#       command: 'publish'
+#       publishWebProjects: true
+#       arguments: '--configuration $(BuildConfiguration) --output $(Build.ArtifactStagingDirectory)'
+#       zipAfterPublish: true
+
+#   - task: PublishBuildArtifacts@1
+#     displayName: Publish Artifacts
+#     inputs:
+#       pathtoPublish: '$(Build.ArtifactStagingDirectory)' 
+#       artifactName: 'SmartHub_$(imageName)'
