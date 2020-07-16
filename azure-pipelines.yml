@@ -26,12 +26,9 @@ variables:
 
 steps:
   - task: UseDotNet@2
-    displayName: "Use .NET Core sdk"
     inputs:
-        packageType: sdk
-        version: 3.1.301
-        installationPath: $(Agent.ToolsDirectory)/dotnet
-
+      packageType: 'sdk'
+      version: '2.2.203'
   - task: SonarCloudPrepare@1
     inputs:
       SonarCloud: 'SmartHub-SonarCloud'
@@ -40,6 +37,12 @@ steps:
       projectKey: 'smarthub-io'
       projectName: 'SmartHub'
 
+  - task: UseDotNet@2
+    displayName: "Use .NET Core sdk"
+    inputs:
+        packageType: sdk
+        version: 3.1.301
+        installationPath: $(Agent.ToolsDirectory)/dotnet
 ###### Build #####
   - task: DotNetCoreCLI@2
     displayName: "Build solution"
