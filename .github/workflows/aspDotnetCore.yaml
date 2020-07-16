@@ -1,5 +1,3 @@
-name: .NET Core CI
-
 on:
   push:
     branches: [ master, develop ]
@@ -11,9 +9,8 @@ env:
   solution: 'SmartHub.sln'
   
 jobs:
-  Restore_Build_Test:
+  NetCore:
     runs-on: ubuntu-latest
-
     steps:
     - uses: actions/checkout@v2
     - name: Setup .NET Core
@@ -29,3 +26,16 @@ jobs:
       
     - name: Run Test
       run: dotnet test ${{ format('{0}/{1}', '$folderName', '$solution') }} --no-restore --verbosity normal
+      
+    - name: SonarCloud for .NET Core
+      uses: highbyte/sonarscan-dotnet
+      with:
+        # The key of the SonarQube project
+        sonarProjectKey: smarthub-io
+        # The name of the SonarQube project
+        sonarProjectName:  SmartHub
+        # The name of the SonarQube organization in SonarCloud. For hosted SonarQube, skip this setting.
+        sonarOrganization: smarthub-io
+    env:
+      SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
