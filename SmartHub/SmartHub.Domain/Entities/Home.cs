@@ -1,17 +1,56 @@
-﻿using SmartHub.Domain.Common.Extensions;
-using SmartHub.Domain.Entities.Devices;
-using SmartHub.Domain.Entities.Groups;
-using SmartHub.Domain.Entities.Plugins;
-using SmartHub.Domain.Entities.Settings;
-using SmartHub.Domain.Entities.Users;
-using SmartHub.Domain.Enums;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
+using SmartHub.Domain.Common.Extensions;
+using SmartHub.Domain.DomainEvents;
+using SmartHub.Domain.Entities.ValueObjects;
+using SmartHub.Domain.Enums;
 
-namespace SmartHub.Domain.Entities.Homes
+namespace SmartHub.Domain.Entities
 {
-	public partial class Home
+	public partial class Home : BaseEntity, IAggregateRoot
 	{
+		public virtual List<User> Users { get; internal set; }
+		public virtual List<Group> Groups { get; internal set; }
+
+		public virtual List<Plugin> Plugins { get; internal set; } // make it so that all plugins will be saved for backup /restore etc.
+
+		public virtual List<Device> Devices { get; internal set; }
+
+		public virtual List<Setting> Settings { get; internal set; }
+
+		public virtual Address Address { get; set; }
+		public virtual List<IDomainEvent> Events { get; set; }
+
+		protected Home()
+		{
+		}
+
+		public Home(string name, string description, Setting setting) : base(name, description)
+		{
+			Users = new List<User>();
+			Devices = new List<Device>();
+			Groups = new List<Group>();
+			Plugins = new List<Plugin>();
+			Settings = new List<Setting>() { setting };
+			Events = new List<IDomainEvent>();
+			Address = new Address("","","","",""); // TODO: add functionality
+		}
+
+		#region Methods
+		public void AddDomainEvent(IDomainEvent domainEvent)
+		{
+			if (Events.IsNullOrEmpty())
+			{
+				Events = new List<IDomainEvent>();
+			}
+			Events.Add(domainEvent);
+		}
+
+		public void ClearDomainEvents()
+		{
+			Events.Clear();
+		}
+
 		public Home AddUser(User user)
 		{
 			if (Users == null)
@@ -55,7 +94,7 @@ namespace SmartHub.Domain.Entities.Homes
 
 		public Home RemoveSetting(Setting setting)
 		{
-			if (setting.Type == SettingTypeEnum.Default)
+			if (setting.Type == SettingTypes.Default)
 			{
 				return this;
 			}
@@ -122,8 +161,11 @@ namespace SmartHub.Domain.Entities.Homes
 					Devices.Remove(found);
 				}
 			}
-
 			return this;
 		}
+
+
+		#endregion
+
 	}
 }

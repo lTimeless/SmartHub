@@ -19,6 +19,6 @@ namespace SmartHub.Infrastructure.Services.Auth
 			_httpContextAccessor
 				.HttpContext?
 				.User?
-				.FindFirstValue(ClaimTypes.NameIdentifier) ?? RoleEnum.System.ToString();
+				.FindFirstValue(ClaimTypes.NameIdentifier) ?? Role.System.ToString();
 	}
 }

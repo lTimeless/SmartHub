@@ -1,6 +1,6 @@
 ﻿namespace SmartHub.Domain.Enums
 {
-    public enum LoadStrategyEnum
+    public enum LoadStrategy
     {
         Multiple = 0,
         Single = 1

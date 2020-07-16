@@ -3,7 +3,7 @@
 namespace SmartHub.Domain.Enums
 {
 	[Flags]
-	public enum ConnectionTypeEnum
+	public enum ConnectionTypes
 	{
 		None = 0,
 		Http = 1,

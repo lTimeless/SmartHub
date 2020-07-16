@@ -1,8 +1,7 @@
-﻿using SmartHub.Domain.Common.EventTypes;
-using SmartHub.Domain.Entities.Homes;
+﻿using SmartHub.Domain.Entities;
 using SmartHub.Domain.Entities.ValueObjects;
 
-namespace SmartHub.Domain.Entities.Users
+namespace SmartHub.Domain.DomainEvents
 {
 	public class UserChangedEvent : IDomainEvent
 	{

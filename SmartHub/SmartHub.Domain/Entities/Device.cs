@@ -1,6 +1,7 @@
-﻿using SmartHub.Domain.Enums;
+﻿using SmartHub.Domain.Entities.Devices;
+using SmartHub.Domain.Enums;
 
-namespace SmartHub.Domain.Entities.Devices
+namespace SmartHub.Domain.Entities
 {
 	public class Device : BaseEntity
 	{
@@ -8,12 +9,12 @@ namespace SmartHub.Domain.Entities.Devices
 
 		public virtual Company Company { get; private set; }
 
-		public ConnectionTypeEnum PrimaryConnection { get; private set; }
+		public ConnectionTypes PrimaryConnection { get; private set; }
 
-		public ConnectionTypeEnum SecondaryConnection { get; private set; }
+		public ConnectionTypes SecondaryConnection { get; private set; }
 
 		public string PluginName { get; } // Equals the Name Property in the IPlugin
-		public PluginTypeEnum PluginType { get; }// Equals the PluginType Property in the IPlugin
+		public PluginTypes PluginTypes { get; }// Equals the PluginType Property in the IPlugin
 
 		protected Device()
 		{
@@ -24,11 +25,11 @@ namespace SmartHub.Domain.Entities.Devices
 			string description,
 			string ip,
 			string manufacturer,
-			ConnectionTypeEnum primaryConnection,
-			ConnectionTypeEnum secondaryConnection,
+			ConnectionTypes primaryConnection,
+			ConnectionTypes secondaryConnection,
 			string groupCreator,
 			string pluginName,
-			PluginTypeEnum? pluginType) :
+			PluginTypes? pluginType) :
 			base(name, description)
 		{
 			Ip = new IpAddress(ip);
@@ -37,7 +38,7 @@ namespace SmartHub.Domain.Entities.Devices
 			SecondaryConnection = secondaryConnection;
 			CreatedBy = groupCreator;
 			PluginName = pluginName;
-			PluginType = pluginType ?? PluginTypeEnum.None;
+			PluginTypes = pluginType ?? PluginTypes.None;
 		}
 	}
 }

@@ -1,5 +1,5 @@
 ﻿using System.Threading.Tasks;
-using SmartHub.Domain.Entities.Users;
+using SmartHub.Domain.Entities;
 
 namespace SmartHub.Application.Common.Interfaces.Repositories
 {

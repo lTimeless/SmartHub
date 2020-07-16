@@ -1,4 +1,4 @@
-﻿using SmartHub.Domain.Common.EventTypes;
+﻿using SmartHub.Domain.DomainEvents;
 
 namespace SmartHub.Application.Common.Interfaces.Events
 {

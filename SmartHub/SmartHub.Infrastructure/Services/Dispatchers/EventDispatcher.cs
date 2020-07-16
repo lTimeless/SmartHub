@@ -1,6 +1,4 @@
-﻿using SmartHub.Domain.Common.EventTypes;
-using SmartHub.Domain.Entities.Homes;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Serilog;
@@ -9,6 +7,7 @@ using SmartHub.Application.Common.Interfaces.Events;
 using SmartHub.Application.Common.Interfaces;
 using SmartHub.Application.UseCases.Identity.Login;
 using SmartHub.Application.Common.Exceptions;
+using SmartHub.Domain.DomainEvents;
 
 namespace SmartHub.Infrastructure.Services.Dispatchers
 {
@@ -27,7 +26,7 @@ namespace SmartHub.Infrastructure.Services.Dispatchers
 		public Task Init()
 		{
 			_ = _channelManager
-				.GetChannel(ChannelEventEnum.Events)
+				.GetChannel(ChannelEvent.Events)
 				.Subscribe(Dispatch);
 			return Task.CompletedTask;
 		}

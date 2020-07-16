@@ -6,9 +6,10 @@ using Microsoft.AspNetCore.Identity;
 using SmartHub.Application.Common.Exceptions;
 using SmartHub.Application.Common.Interfaces;
 using SmartHub.Application.Common.Interfaces.Repositories;
-using SmartHub.Domain.Entities.Users;
+using SmartHub.Domain.Entities;
 using SmartHub.Domain.Entities.ValueObjects;
 using SmartHub.Domain.Enums;
+using DateTime = System.DateTime;
 
 namespace SmartHub.Application.UseCases.Identity.Registration
 {
@@ -40,7 +41,7 @@ namespace SmartHub.Application.UseCases.Identity.Registration
 				return new AuthResponseDto(_tokenGenerator.CreateJwtToken(user),
 				user.UserName,
 				new List<string> { userInput.Role },
-				DateTime.Now.AddHours(JwtExpireTimeEnum.HoursToExpire.GetValue())
+				DateTime.Now.AddHours(JwtExpireTime.HoursToExpire.GetValue())
 				);
 			}
 			throw new SmartHubException("Problem Registering new User");

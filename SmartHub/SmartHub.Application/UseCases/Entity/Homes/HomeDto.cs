@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using SmartHub.Application.Common.Mappings;
 using SmartHub.Application.UseCases.Entity.Settings;
-using SmartHub.Domain.Entities.Homes;
+using SmartHub.Domain.Entities;
 
 namespace SmartHub.Application.UseCases.Entity.Homes
 {

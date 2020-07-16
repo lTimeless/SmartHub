@@ -16,35 +16,35 @@ namespace SmartHub.Application.UseCases.PluginAdapter.Util
 				.ToList();
 		}
 
-		public static PluginTypeEnum GetEnumType(string pluginName)
+		public static PluginTypes GetEnumType(string pluginName)
 		{
 			return pluginName switch
 			{
-				nameof(PluginTypeEnum.Base) => PluginTypeEnum.Base,
-				nameof(PluginTypeEnum.Mock) => PluginTypeEnum.Mock,
-				nameof(PluginTypeEnum.Door) => PluginTypeEnum.Door,
-				nameof(PluginTypeEnum.Light) => PluginTypeEnum.Light,
-				nameof(PluginTypeEnum.Ht) => PluginTypeEnum.Ht,
-				nameof(PluginTypeEnum.Sensor) => PluginTypeEnum.Sensor,
-				nameof(PluginTypeEnum.Rgb) => PluginTypeEnum.Rgb,
-				_ => PluginTypeEnum.None,
+				nameof(PluginTypes.Base) => PluginTypes.Base,
+				nameof(PluginTypes.Mock) => PluginTypes.Mock,
+				nameof(PluginTypes.Door) => PluginTypes.Door,
+				nameof(PluginTypes.Light) => PluginTypes.Light,
+				nameof(PluginTypes.Ht) => PluginTypes.Ht,
+				nameof(PluginTypes.Sensor) => PluginTypes.Sensor,
+				nameof(PluginTypes.Rgb) => PluginTypes.Rgb,
+				_ => PluginTypes.None,
 			};
 		}
 
-		public static ConnectionTypeEnum CombineConnectionTypes(IPlugin iPlugin)
+		public static ConnectionTypes CombineConnectionTypes(IPlugin iPlugin)
 		{
 			var interfaces = iPlugin.GetType().GetInterfaces();
-			var connectionTyp = ConnectionTypeEnum.None;
+			var connectionTyp = ConnectionTypes.None;
 			var httpSupport = interfaces.Any(x => x.Name.Contains("HttpSupport"));
 			var mqttSupport = interfaces.Any(x => x.Name.Contains("MqttSupport"));
 
 			if (httpSupport)
 			{
-				connectionTyp |= ConnectionTypeEnum.Http;
+				connectionTyp |= ConnectionTypes.Http;
 			}
 			if (mqttSupport)
 			{
-				connectionTyp |= ConnectionTypeEnum.Mqtt;
+				connectionTyp |= ConnectionTypes.Mqtt;
 			}
 
 			return connectionTyp;

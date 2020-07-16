@@ -3,7 +3,7 @@
 namespace SmartHub.Domain.Enums
 {
 	[Flags]
-	public enum SettingTypeEnum
+	public enum SettingTypes
 	{
 		Default = 0,
 		Plugin = 1,

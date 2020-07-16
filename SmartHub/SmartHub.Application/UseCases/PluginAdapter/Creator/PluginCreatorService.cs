@@ -1,11 +1,11 @@
 ﻿using SmartHub.Application.UseCases.PluginAdapter.Util;
 using SmartHub.BasePlugin;
 using SmartHub.Domain.Common.Extensions;
-using SmartHub.Domain.Entities.Plugins;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using SmartHub.Domain.Entities;
 using SmartHub.Domain.Enums;
 
 namespace SmartHub.Application.UseCases.PluginAdapter.Creator

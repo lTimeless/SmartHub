@@ -1,8 +1,7 @@
-﻿using SmartHub.Domain.Entities.Devices;
-using SmartHub.Domain.Entities.Homes;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using SmartHub.Domain.Entities.Devices;
 
-namespace SmartHub.Domain.Entities.Groups
+namespace SmartHub.Domain.Entities
 {
 	public class Group : BaseEntity
 	{

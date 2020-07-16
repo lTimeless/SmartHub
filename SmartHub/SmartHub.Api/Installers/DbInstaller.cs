@@ -2,8 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using SmartHub.Domain.Entities.Roles;
-using SmartHub.Domain.Entities.Users;
+using SmartHub.Domain.Entities;
 using SmartHub.Infrastructure.Database;
 
 namespace SmartHub.Api.Installers

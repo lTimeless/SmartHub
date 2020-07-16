@@ -2,7 +2,6 @@
 using Microsoft.EntityFrameworkCore;
 using SmartHub.Application.Common.Interfaces;
 using SmartHub.Domain.Entities;
-using SmartHub.Domain.Entities.Groups;
 using SmartHub.Domain.Enums;
 using System.Linq;
 using System.Reflection;
@@ -10,8 +9,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using SmartHub.Application.Common.Interfaces.Repositories;
 using SmartHub.Application.Common.Utils;
-using SmartHub.Domain.Entities.Roles;
-using SmartHub.Domain.Entities.Users;
+using Role = SmartHub.Domain.Entities.Role;
 
 namespace SmartHub.Infrastructure.Database.Repositories
 {
@@ -77,7 +75,7 @@ namespace SmartHub.Infrastructure.Database.Repositories
 
 			foreach (var item in aggregateRoots)
 			{
-				await _channelManager.PublishNextToChannel(ChannelEventEnum.Events, item.Events).ConfigureAwait(false);
+				await _channelManager.PublishNextToChannel(ChannelEvent.Events, item.Events).ConfigureAwait(false);
 				item.ClearDomainEvents();
 			}
 		}

@@ -34,14 +34,14 @@ namespace SmartHub.Api.Controllers
 		public async Task<IActionResult> LoadAllNew()
 		{
 
-			return Ok(await Mediator.Send(new PluginLoadCommand(LoadStrategyEnum.Multiple)));
+			return Ok(await Mediator.Send(new PluginLoadCommand(LoadStrategy.Multiple)));
 		}
 
 		// GET: api/Plugin/
 		[HttpGet("{pluginPath}", Name = "Get")]
 		public async Task<IActionResult> LoadNewBypath(string pluginPath)
 		{
-			return Ok(await Mediator.Send(new PluginLoadCommand(LoadStrategyEnum.Multiple, pluginPath)));
+			return Ok(await Mediator.Send(new PluginLoadCommand(LoadStrategy.Multiple, pluginPath)));
 		}
 	}
 }

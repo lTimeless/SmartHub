@@ -1,4 +1,4 @@
-﻿namespace SmartHub.Domain.Common.EventTypes
+﻿namespace SmartHub.Domain.DomainEvents
 {
 	public interface IDomainEvent : IEvent
 	{

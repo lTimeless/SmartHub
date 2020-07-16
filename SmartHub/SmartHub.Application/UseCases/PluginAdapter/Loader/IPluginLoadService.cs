@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using SmartHub.Domain.Entities.Homes;
+using SmartHub.Domain.Entities;
 using SmartHub.Domain.Enums;
 
 namespace SmartHub.Application.UseCases.PluginAdapter.Loader
@@ -29,7 +29,7 @@ namespace SmartHub.Application.UseCases.PluginAdapter.Loader
 		/// <param name="assemblyPaths">the assemblies where to load all plugin from</param>
 		/// <param name="multiple"></param>
 		/// <returns>task completed, returns, or throws en exception if it could not create new plugin entities</returns>
-		Task<bool> LoadAndAddToHomeAsync(IEnumerable<string> assemblyPaths, LoadStrategyEnum multiple);
+		Task<bool> LoadAndAddToHomeAsync(IEnumerable<string> assemblyPaths, LoadStrategy multiple);
 
 	}
 }

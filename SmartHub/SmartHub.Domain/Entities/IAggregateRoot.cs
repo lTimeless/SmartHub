@@ -1,5 +1,5 @@
-﻿using SmartHub.Domain.Common.EventTypes;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using SmartHub.Domain.DomainEvents;
 
 namespace SmartHub.Domain.Entities
 {

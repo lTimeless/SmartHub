@@ -1,13 +1,8 @@
-﻿using SmartHub.Domain.Common.EventTypes;
+﻿using SmartHub.Domain.Entities;
 using SmartHub.Domain.Entities.Devices;
-using SmartHub.Domain.Entities.Groups;
-using SmartHub.Domain.Entities.Plugins;
-using SmartHub.Domain.Entities.Settings;
-using SmartHub.Domain.Entities.Users;
-using System.Collections.Generic;
 using SmartHub.Domain.Entities.ValueObjects;
 
-namespace SmartHub.Domain.Entities.Homes
+namespace SmartHub.Domain.DomainEvents
 {
 	public sealed class HomeUpdatedEvent : IDomainEvent
 	{
@@ -15,16 +10,10 @@ namespace SmartHub.Domain.Entities.Homes
 		public string? Description { get; }
 		public User? NewUser { get; }
 		public Group? NewGroup { get; }
-
 		public Plugin? NewPlugin { get; }
-
 		public Device? NewDevice { get; }
-
 		public Setting? NewSetting { get; }
-
 		public Address? NewAddress { get;  }
-
-
 
 		public HomeUpdatedEvent(string name, string? description)
 		{

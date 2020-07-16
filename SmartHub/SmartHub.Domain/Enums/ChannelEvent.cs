@@ -1,6 +1,6 @@
 ﻿namespace SmartHub.Domain.Enums
 {
-	public enum ChannelEventEnum
+	public enum ChannelEvent
 	{
 		HomeEvents,
 		HttpEvents,

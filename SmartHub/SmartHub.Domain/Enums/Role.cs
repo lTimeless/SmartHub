@@ -1,6 +1,6 @@
 ﻿namespace SmartHub.Domain.Enums
 {
-    public enum RoleEnum
+    public enum Role
     {
         System = 0,
         Admin = 1,

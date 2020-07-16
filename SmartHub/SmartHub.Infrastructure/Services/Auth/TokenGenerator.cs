@@ -1,7 +1,6 @@
 ﻿using SmartHub.Application.Common.Exceptions;
 using SmartHub.Application.Common.Interfaces;
 using SmartHub.Domain.Common.Settings;
-using SmartHub.Domain.Entities.Users;
 using SmartHub.Domain.Enums;
 using System;
 using System.Collections.Generic;
@@ -11,6 +10,7 @@ using System.Security.Cryptography;
 using System.Text;
 using Microsoft.IdentityModel.Tokens;
 using SmartHub.Application.Common.Utils;
+using SmartHub.Domain.Entities;
 
 namespace SmartHub.Infrastructure.Services.Auth
 {
@@ -39,7 +39,7 @@ namespace SmartHub.Infrastructure.Services.Auth
 			var tokenDescriptor = new SecurityTokenDescriptor
 			{
 				Subject = new ClaimsIdentity(claims),
-				Expires = DateTimeUtils.Now.ToDateTimeUtc().AddHours(JwtExpireTimeEnum.HoursToExpire.GetValue()),
+				Expires = DateTimeUtils.Now.ToDateTimeUtc().AddHours(JwtExpireTime.HoursToExpire.GetValue()),
 				SigningCredentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256Signature)
 			};
 

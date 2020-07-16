@@ -1,6 +1,6 @@
 ﻿using System;
 using SmartHub.Application.Common.Mappings;
-using SmartHub.Domain.Entities.Users;
+using SmartHub.Domain.Entities;
 
 namespace SmartHub.Application.UseCases.Entity.Users
 {

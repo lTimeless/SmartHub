@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Identity;
 using NodaTime;
 
-namespace SmartHub.Domain.Entities.Roles
+namespace SmartHub.Domain.Entities
 {
 	public class Role : IdentityRole<string>, IEntity
 	{

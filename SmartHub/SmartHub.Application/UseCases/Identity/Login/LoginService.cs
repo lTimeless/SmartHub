@@ -1,12 +1,13 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using SmartHub.Application.Common.Exceptions;
 using SmartHub.Application.Common.Interfaces;
-using SmartHub.Domain.Entities.Users;
 using SmartHub.Domain.Enums;
 using System;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
+using SmartHub.Domain.Entities;
+using DateTime = System.DateTime;
 
 namespace SmartHub.Application.UseCases.Identity.Login
 {
@@ -37,11 +38,11 @@ namespace SmartHub.Application.UseCases.Identity.Login
 			if (result.Succeeded)
 			{
 				var rolesToUser = await _userManager.GetRolesAsync(foundUser);
-				await _channelManager.PublishNextToChannel(ChannelEventEnum.Events, new LoginEvent(foundUser.UserName, result.Succeeded));
+				await _channelManager.PublishNextToChannel(ChannelEvent.Events, new LoginEvent(foundUser.UserName, result.Succeeded));
 				return new AuthResponseDto(_tokenGenerator.CreateJwtToken(foundUser),
 							   foundUser.UserName,
 							   rolesToUser.ToList(),
-							   DateTime.Now.AddHours(JwtExpireTimeEnum.HoursToExpire.GetValue())
+							   DateTime.Now.AddHours(JwtExpireTime.HoursToExpire.GetValue())
 							   );
 			}
 

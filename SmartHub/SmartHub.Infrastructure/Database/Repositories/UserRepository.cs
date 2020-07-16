@@ -2,8 +2,7 @@
 using Microsoft.AspNetCore.Identity;
 using SmartHub.Application.Common.Interfaces.Repositories;
 using SmartHub.Application.Common.Utils;
-using SmartHub.Domain.Entities.Roles;
-using SmartHub.Domain.Entities.Users;
+using SmartHub.Domain.Entities;
 
 namespace SmartHub.Infrastructure.Database.Repositories
 {

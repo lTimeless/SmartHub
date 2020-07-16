@@ -4,7 +4,7 @@ using System.Text;
 
 namespace SmartHub.Domain.Enums
 {
-	public enum JwtExpireTimeEnum
+	public enum JwtExpireTime
 	{
 		HoursToExpire = 2,
 		DaysToExpire = 7,
@@ -13,7 +13,7 @@ namespace SmartHub.Domain.Enums
 
 	public static class JwtExpireTimeEnumExtension
 	{
-		public static int GetValue(this JwtExpireTimeEnum value)
+		public static int GetValue(this JwtExpireTime value)
 		{
 			return (int)value;
 		}

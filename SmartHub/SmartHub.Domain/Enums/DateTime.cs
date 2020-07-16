@@ -1,6 +1,6 @@
 ﻿namespace SmartHub.Domain.Enums
 {
-	public enum DateTimeEnum
+	public enum DateTime
 	{
 		Minute,
 		Hour,

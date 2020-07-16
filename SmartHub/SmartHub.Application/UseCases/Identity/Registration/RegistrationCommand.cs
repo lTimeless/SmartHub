@@ -5,7 +5,7 @@ using SmartHub.Domain.Common;
 
 namespace SmartHub.Application.UseCases.Identity.Registration
 {
-	public class RegistrationCommand : IRequest<ServiceResponse<AuthResponseDto>>
+	public class RegistrationCommand : IRequest<Response<AuthResponseDto>>
 	{
 		public string Username { get; set; }
 		public string Password { get; set; }

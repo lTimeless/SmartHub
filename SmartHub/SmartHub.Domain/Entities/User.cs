@@ -1,11 +1,9 @@
-﻿using Microsoft.AspNetCore.Identity;
-using SmartHub.Domain.Entities.Homes;
-using SmartHub.Domain.Entities.ValueObjects;
-using System;
+﻿using System;
+using Microsoft.AspNetCore.Identity;
 using NodaTime;
-using SmartHub.Domain.Common.EventTypes;
+using SmartHub.Domain.Entities.ValueObjects;
 
-namespace SmartHub.Domain.Entities.Users
+namespace SmartHub.Domain.Entities
 {
 	/// <inheritdoc cref="Microsoft.AspNetCore.Identity.IdentityUser" />
 	public class User : IdentityUser<string>, IEntity

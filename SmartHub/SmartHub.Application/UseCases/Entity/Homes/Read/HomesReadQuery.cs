@@ -5,7 +5,7 @@ using SmartHub.Application.Common.Models;
 
 namespace SmartHub.Application.UseCases.Entity.Homes.Read
 {
-	public class HomesReadQuery : IRequest<ServiceResponse<HomeDto>>
+	public class HomesReadQuery : IRequest<Response<HomeDto>>
 	{
 	}
 }

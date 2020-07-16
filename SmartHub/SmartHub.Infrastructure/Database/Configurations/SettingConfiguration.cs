@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using SmartHub.Domain.Entities.Settings;
+using SmartHub.Domain.Entities;
 using SmartHub.Domain.Enums;
 
 namespace SmartHub.Infrastructure.Database.Configurations
@@ -16,7 +16,7 @@ namespace SmartHub.Infrastructure.Database.Configurations
 			builder.HasIndex(x => x.Name).IsUnique();
 
 			builder.Property(x => x.Type)
-				.HasConversion<string>(new EnumToStringConverter<SettingTypeEnum>());
+				.HasConversion<string>(new EnumToStringConverter<SettingTypes>());
 		}
 	}
 }

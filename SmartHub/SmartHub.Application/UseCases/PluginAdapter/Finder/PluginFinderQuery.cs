@@ -5,7 +5,7 @@ using SmartHub.Application.Common.Models;
 
 namespace SmartHub.Application.UseCases.PluginAdapter.Finder
 {
-    public class PluginFinderQuery : IRequest<ServiceResponse<IReadOnlyDictionary<string, FoundPluginDto>>>
+    public class PluginFinderQuery : IRequest<Response<IReadOnlyDictionary<string, FoundPluginDto>>>
     {
         public bool OnlyNew { get; }
 
