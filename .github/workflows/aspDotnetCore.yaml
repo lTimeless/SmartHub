@@ -37,7 +37,7 @@ jobs:
         sonarProjectName:  SmartHub
         # The name of the SonarQube organization in SonarCloud. For hosted SonarQube, skip this setting.
         sonarOrganization: smarthub-io
-        dotnetBuildArguments: $folderName$solution --configuration Release --no-restore
+        dotnetBuildArguments: $folderName$solution
     env:
       SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
