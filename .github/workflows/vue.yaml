@@ -3,8 +3,6 @@ name: Vue CI
 on:
   push:
     branches: [ master, develop ]
-    paths: 
-      - 'SmartHub/SmartHub.Ui/**'
   pull_request:
     branches: [ master, develop  ]
 
