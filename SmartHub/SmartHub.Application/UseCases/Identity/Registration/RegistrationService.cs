@@ -1,14 +1,14 @@
-﻿using Microsoft.AspNetCore.Identity;
-using SmartHub.Application.Common.Exceptions;
-using SmartHub.Application.Common.Interfaces;
-using SmartHub.Domain.Entities.Users;
-using SmartHub.Domain.Entities.ValueObjects;
-using SmartHub.Domain.Enums;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Net;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Identity;
+using SmartHub.Application.Common.Exceptions;
+using SmartHub.Application.Common.Interfaces;
 using SmartHub.Application.Common.Interfaces.Repositories;
+using SmartHub.Domain.Entities.Users;
+using SmartHub.Domain.Entities.ValueObjects;
+using SmartHub.Domain.Enums;
 
 namespace SmartHub.Application.UseCases.Identity.Registration
 {

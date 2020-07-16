@@ -3,12 +3,9 @@ import { AuthResponse } from '@/types/types';
 type AuthType = { isAdmin: boolean; isUser: boolean; isGuest: boolean };
 
 export const userAuth = (): AuthType => {
-  if (localStorage.getItem('authResponse') == null) {
-    return { isAdmin: false, isUser: false, isGuest: false };
-  }
   const localStorageLoginResponse = localStorage.getItem('authResponse');
-  if (localStorageLoginResponse === null) {
-    return { isAdmin: false, isUser: false, isGuest: true };
+  if (localStorageLoginResponse == null) {
+    return { isAdmin: false, isUser: false, isGuest: false };
   }
   const loginResponse = JSON.parse(localStorageLoginResponse) as AuthResponse;
   if (loginResponse.roles.includes('Admin')) {

@@ -6,6 +6,8 @@ using Microsoft.IdentityModel.Tokens;
 using SmartHub.Domain.Common.Settings;
 using System;
 using System.Text;
+using SmartHub.Domain.Entities.Users;
+using SmartHub.Infrastructure.Database;
 
 namespace SmartHub.Api.Installers
 {
@@ -13,29 +15,17 @@ namespace SmartHub.Api.Installers
 	{
 		public void InstallServices(IServiceCollection services, IConfiguration configuration)
 		{
-			services.AddAuthentication()
-					.AddIdentityServerJwt();
-
 			ConfigureCors(services);
 			ConfigureAuth(services, configuration);
-		}
-
-		private static void ConfigureCors(IServiceCollection services)
-		{
-			services.AddCors(options =>
-			{
-				options.AddPolicy("CorsPolicy",
-					builder => builder
-						.WithOrigins("http://localhost:8080", "http://localhost:4200")
-						.AllowAnyMethod()
-						.AllowAnyHeader());
-			});
 		}
 
 		private static void ConfigureAuth(IServiceCollection services, IConfiguration configuration)
 		{
 			var jwtSettings = new JwtSettings(configuration["JWTSettings:Secret"], TimeSpan.Parse(configuration["JWTSettings:TokenLifeTime"]));
 			services.AddSingleton(jwtSettings);
+
+			services.AddIdentityServer()
+				.AddApiAuthorization<User, AppDbContext>();
 
 			services.AddAuthentication(x =>
 			{
@@ -54,7 +44,7 @@ namespace SmartHub.Api.Installers
 					//RequireExpirationTime = false,
 					//ValidateLifetime = true,
 				};
-			});
+			}).AddIdentityServerJwt();
 
 			services.AddAuthorization(options =>
 			{
@@ -66,6 +56,18 @@ namespace SmartHub.Api.Installers
 
 			// Handler for Authorization attribute and the "adminpolicy" on asp.net core routes
 			// services.AddSingleton<IAuthorizationHandler , UserAuthHandler>();
+		}
+
+		private static void ConfigureCors(IServiceCollection services)
+		{
+			services.AddCors(options =>
+			{
+				options.AddPolicy("CorsPolicy",
+					builder => builder
+						.WithOrigins("http://localhost:8080", "http://localhost:4200")
+						.AllowAnyMethod()
+						.AllowAnyHeader());
+			});
 		}
 	}
 }

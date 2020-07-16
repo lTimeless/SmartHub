@@ -25,7 +25,7 @@ const validateUserRoleToRoute = (to: Route, roles: string[], next: NavigationGua
 
 export const routeAuthGuard = (to: Route, from: Route, next: NavigationGuardNext) => {
   if (to.matched.some((record) => record.meta.requiresAuth)) {
-    const loginResponseLocalStorage = localStorage.getItem('loginResponse');
+    const loginResponseLocalStorage = localStorage.getItem('authResponse');
     if (loginResponseLocalStorage === null) {
       next({ name: 'Login' });
     } else {

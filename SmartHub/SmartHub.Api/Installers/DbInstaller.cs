@@ -34,9 +34,6 @@ namespace SmartHub.Api.Installers
 			})
 				.AddEntityFrameworkStores<AppDbContext>()
 				.AddDefaultTokenProviders();
-
-			services.AddIdentityServer()
-				.AddApiAuthorization<User, AppDbContext>();
 		}
 	}
 }

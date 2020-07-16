@@ -216,7 +216,7 @@ export default class Siedebar extends Vue {
   }
 
   logout = () => {
-    localStorage.removeItem('loginResponse');
+    localStorage.removeItem('authResponse');
     router.push('Login');
   };
 }
