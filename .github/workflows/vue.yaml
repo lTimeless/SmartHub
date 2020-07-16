@@ -17,10 +17,7 @@ jobs:
       
     - name: Use latest Node.js version
       uses: actions/setup-node@master
-    
-    - name: Install Vue cli global
-      run: npm install -g @vue/cli
-      
+          
     - name: Installing project dependencies
       run: npm install
     
