@@ -25,7 +25,7 @@ variables:
   linx64: 'linux-x64'
 
 jobs:
-  - job: ".Net core"
+  - job: dotnetCore
     steps:
       - task: UseDotNet@2
         inputs:
@@ -80,7 +80,7 @@ jobs:
         inputs:
           pollingTimeoutSec: '200'
 
-  - job: Vue.js
+  - job: VueJs
     steps:
       - task: SonarCloudPrepare@1
         inputs:
