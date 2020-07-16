@@ -17,6 +17,8 @@ jobs:
       
     - name: Use latest Node.js version
       uses: actions/setup-node@master
+    
+    - run: cd SmartHub/SmartHub.Ui
           
     - name: Installing project dependencies
       run: npm install
