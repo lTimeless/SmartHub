@@ -39,7 +39,7 @@ steps:
       configMode: 'manual'
       cliProjectKey: 'smarthub-io'
       cliProjectName: 'SmartHub'
-      cliSources: '.'
+      cliSources: 'SmartHub/'
 
 ###### Build #####
   - task: DotNetCoreCLI@2
