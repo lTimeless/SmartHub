@@ -43,6 +43,8 @@ steps:
         packageType: sdk
         version: 3.1.301
         installationPath: $(Agent.ToolsDirectory)/dotnet
+
+  
 ###### Build #####
   - task: DotNetCoreCLI@2
     displayName: "Build solution"
@@ -51,6 +53,14 @@ steps:
         projects: "$(solution)"
         arguments: '--configuration "$(buildConfiguration)"'
 
+  - task: NodeTool@0 
+
+  - task: Npm@1
+    inputs:
+      command: install
+      workingDir: 'SmartHub/SmartHub.Ui' 
+  
+  - script: npm --prefix SmartHub/SmartHub.Ui run build
 
 ###### Test #####
   - task: DotNetCoreCLI@2
