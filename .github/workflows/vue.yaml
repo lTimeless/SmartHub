@@ -9,11 +9,10 @@ on:
     branches: [ master, develop  ]
 
 jobs:
-  build:
+  Install_Build:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout Repository
     - uses: actions/checkout@v2
       
     - name: Use latest Node.js version
