@@ -54,9 +54,12 @@ steps:
         arguments: '--configuration "$(buildConfiguration)"'
 
   - task: NodeTool@0 
-  - script: ls
+  - script: | 
+              ls
+              cd SmartHub
+              ls
 
-  - script: npm --prefix SmartHub/SmartHub.Ui install
+  - script: npm --prefix SmartHub/SmartHub.Ui/ install
   
   - script: npm --prefix SmartHub/SmartHub.Ui run build
 
