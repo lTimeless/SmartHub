@@ -24,3 +24,6 @@ jobs:
     
     - name: Building the project
       run: npm --prefix ${SmartHubUipath} run build
+
+    - name: Super-Linter
+      uses: github/super-linter@v3.3.2
