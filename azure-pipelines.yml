@@ -8,13 +8,15 @@ trigger: # when to trigger a build
   branches:
     include:
       - master
+      - develop
 pr:
   branches:
     include:
     - master
+    - develop
 
 pool:
-  vmImage: 'windows-latest'
+  vmImage: 'ubuntu-latest'
 
 variables:
   solution: '**/*.sln'
@@ -23,12 +25,12 @@ variables:
   linx64: 'linux-x64'
 
 steps:
-  - task: NuGetCommand@2
-    displayName: Restore
+  - task: UseDotNet@2
+    displayName: "Use .NET Core sdk"
     inputs:
-      restoreSolution: '$(solution)'
-      verbosityRestore: 'Normal'
-      feedsToUse: 'select'
+        packageType: sdk
+        version: 3.1.301
+        installationPath: $(Agent.ToolsDirectory)/dotnet
 
   - task: SonarCloudPrepare@1
     inputs:
@@ -38,23 +40,28 @@ steps:
       projectKey: 'smarthub-io'
       projectName: 'SmartHub'
 
-  - task: VSBuild@1
-    displayName: Build
+###### Build #####
+  - task: DotNetCoreCLI@2
+    displayName: "Build solution"
     inputs:
-      solution: '$(solution)'
-      msbuildArgs: '/p:DeployOnBuild=true /p:WebPublishMethod=Package /p:PackageAsSingleFile=true /p:SkipInvalidConfigurations=true /p:DesktopBuildPackageLocation="$(build.artifactStagingDirectory)\WebApp.zip" /p:DeployIisAppPath="Default Web Site"'
-      platform: '$(buildPlatform)'
-      configuration: '$(buildConfiguration)'
+        command: "build"
+        projects: "$(solution)"
+        arguments: '--configuration "$(buildConfiguration)"'
+
+  # - task: VSBuild@1
+  #   displayName: Build
+  #   inputs:
+  #     solution: '$(solution)'
+  #     msbuildArgs: '/p:DeployOnBuild=true /p:WebPublishMethod=Package /p:PackageAsSingleFile=true /p:SkipInvalidConfigurations=true /p:DesktopBuildPackageLocation="$(build.artifactStagingDirectory)\WebApp.zip" /p:DeployIisAppPath="Default Web Site"'
+  #     platform: '$(buildPlatform)'
+  #     configuration: '$(buildConfiguration)'
+
   # - task: Visual Studio IntelliCode Team Model Training@0
   #   inputs:
   #     branch: 'develop'
   #     intelliCodeServiceEndpoint: 'IntelliCode'
-  - task: VSTest@2
-    displayName: Test
-    inputs:
-      platform: '$(buildPlatform)'
-      configuration: '$(buildConfiguration)'
 
+###### Sonar publish #####
   - task: SonarCloudAnalyze@1
     displayName: Sonar Analyze
   - task: SonarCloudPublish@1
@@ -62,6 +69,28 @@ steps:
     inputs:
       pollingTimeoutSec: '200'
 
+###### Test #####
+  - task: DotNetCoreCLI@2
+    displayName: "Test"
+    inputs:
+        command: test
+        projects: "$(solution)"
+        arguments: '"-p:CollectCoverage=true" "-p:CoverletOutputFormat=cobertura"'
+        nobuild: true
+  - task: CmdLine@2
+    displayName: Merge code-coverage files
+    inputs:
+        script: |
+            dotnet tool install -g dotnet-reportgenerator-globaltool
+            reportgenerator "-reports:./test/**/coverage.cobertura.xml" "-reporttypes:Cobertura" "-targetdir:./coverreport"
+  - task: PublishCodeCoverageResults@1
+    displayName: "Generate code-coverage HTML report"
+    inputs:
+        codeCoverageTool: "Cobertura"
+        summaryFileLocation: "./coverreport/Cobertura.xml"
+        failIfCoverageEmpty: true
+
+###### Publish and upload Artifact #####
   - task: DotNetCoreCLI@2
     displayName: Publish
     inputs:
