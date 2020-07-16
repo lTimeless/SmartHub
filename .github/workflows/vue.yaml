@@ -1,0 +1,26 @@
+name: Vue CI
+
+on:
+  push:
+    branches: [ master, develop ]
+    paths: 
+      - 'SmartHub/SmartHub.Ui'
+  pull_request:
+    branches: [ master, develop  ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Repository
+    - uses: actions/checkout@v2
+      
+    - name: Use latest Node.js version
+      uses: actions/setup-node@v1
+      
+    - name: Installing project dependencies
+    - run: npm install
+    
+    - name: Building the project
+    - run: npm run build
