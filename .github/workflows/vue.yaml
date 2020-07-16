@@ -19,7 +19,9 @@ jobs:
       uses: actions/setup-node@master
     
     - name: Move to src folder
-      run: cd SmartHub/SmartHub.Ui
+      run: | 
+            cd SmartHub/SmartHub.Ui
+            ls
           
     - name: Installing project dependencies
       run: npm install
