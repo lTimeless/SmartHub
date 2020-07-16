@@ -86,9 +86,11 @@ jobs:
         inputs:
           SonarCloud: 'SmartHub-SonarCloud'
           organization: 'smarthub-io'
-          scannerMode: 'MSBuild'
-          projectKey: 'smarthub-io'
-          projectName: 'SmartHub'
+          scannerMode: 'CLI'
+          configMode: 'manual'
+          cliProjectKey: 'smarthub-io'
+          cliProjectName: 'SmartHub'
+          cliSources: 'SmartHub/SmartHub.Ui'
 
       - script: npm --prefix SmartHub/SmartHub.Ui install
         displayName: Npm install
