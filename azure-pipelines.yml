@@ -31,14 +31,15 @@ steps:
         packageType: sdk
         version: 3.1.301
         installationPath: $(Agent.ToolsDirectory)/dotnet
-
   - task: SonarCloudPrepare@1
     inputs:
       SonarCloud: 'SmartHub-SonarCloud'
       organization: 'smarthub-io'
-      scannerMode: 'MSBuild'
-      projectKey: 'smarthub-io'
-      projectName: 'SmartHub'
+      scannerMode: 'CLI'
+      configMode: 'manual'
+      cliProjectKey: 'smarthub-io'
+      cliProjectName: 'SmartHub'
+      cliSources: '.'
 
 ###### Build #####
   - task: DotNetCoreCLI@2
