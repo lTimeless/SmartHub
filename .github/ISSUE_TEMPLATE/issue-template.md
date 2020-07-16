@@ -7,20 +7,22 @@ assignees: ''
 
 ---
 
-## Expected Behavior
+**Brief Descrition**
+
+**How to reproduce**
 
 
-## Actual Behavior
+
+**Expected Behavior**
 
 
-## Steps to Reproduce the Problem
+**Actual Behavior**
 
-  1.
-  1.
-  1.
 
-## Specifications
+**Specifications**
 
   - Version:
   - Platform:
   - Subsystem:
+
+**ScreenShots** (Optional)
