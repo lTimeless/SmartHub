@@ -3,13 +3,6 @@ name: .NET Core CI
 on:
   push:
     branches: [ master, develop ]
-    paths: 
-    - 'SmartHub/SmartHub.Api/**'
-    - 'SmartHub/SmartHub.Application/**'
-    - 'SmartHub/SmartHub.Domain/**'
-    - 'SmartHub/SmartHub.Infrastructure/**'
-    - 'SmartHub/SmartHub.BasePlugin/**'
-
   pull_request:
     branches: [ master, develop ]
 
