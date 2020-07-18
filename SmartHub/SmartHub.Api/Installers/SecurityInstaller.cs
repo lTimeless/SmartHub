@@ -6,8 +6,6 @@ using Microsoft.IdentityModel.Tokens;
 using SmartHub.Domain.Common.Settings;
 using System;
 using System.Text;
-using SmartHub.Domain.Entities;
-using SmartHub.Infrastructure.Database;
 
 namespace SmartHub.Api.Installers
 {
@@ -23,9 +21,6 @@ namespace SmartHub.Api.Installers
 		{
 			var jwtSettings = new JwtSettings(configuration["JWTSettings:Secret"], TimeSpan.Parse(configuration["JWTSettings:TokenLifeTime"]));
 			services.AddSingleton(jwtSettings);
-
-			services.AddIdentityServer()
-				.AddApiAuthorization<User, AppDbContext>();
 
 			services.AddAuthentication(x =>
 			{
@@ -44,7 +39,7 @@ namespace SmartHub.Api.Installers
 					//RequireExpirationTime = false,
 					//ValidateLifetime = true,
 				};
-			}).AddIdentityServerJwt();
+			});
 
 			services.AddAuthorization(options =>
 			{

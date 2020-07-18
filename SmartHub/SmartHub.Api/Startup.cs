@@ -101,7 +101,6 @@ namespace SmartHub.Api
 			// Auth
 			app.UseCors("CorsPolicy");
 			app.UseAuthentication();
-			app.UseIdentityServer();
 			app.UseAuthorization();
 
 			// Endpoints
