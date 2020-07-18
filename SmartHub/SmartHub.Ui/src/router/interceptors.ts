@@ -1,7 +1,7 @@
-import Vue from 'vue';
+import axios from 'axios';
 import { AuthResponse } from '@/types/types';
 
-Vue.axios.interceptors.request.use(
+axios.interceptors.request.use(
   (config) => {
     const localStorageLoginResponse = localStorage.getItem('authResponse');
     if (localStorageLoginResponse === null) {

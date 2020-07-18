@@ -15,15 +15,15 @@ namespace SmartHub.Application.UseCases.Identity.Login
 	{
 		private readonly UserManager<User> _userManager;
 		private readonly SignInManager<User> _signInManager;
-		private readonly ITokenGenerator _tokenGenerator;
 		private readonly IChannelManager _channelManager;
+		private readonly IdentityService _identityService;
 
-		public LoginService(UserManager<User> userManager, SignInManager<User> signInManager, ITokenGenerator tokenGenerator, IChannelManager channelManager)
+		public LoginService(UserManager<User> userManager, SignInManager<User> signInManager, IChannelManager channelManager, IdentityService identityService)
 		{
 			_userManager = userManager;
 			_signInManager = signInManager;
-			_tokenGenerator = tokenGenerator;
 			_channelManager = channelManager;
+			_identityService = identityService;
 		}
 
 		public async Task<AuthResponseDto> LoginAsync(LoginQuery userInput)
@@ -35,18 +35,15 @@ namespace SmartHub.Application.UseCases.Identity.Login
 			}
 			var result = await _signInManager.CheckPasswordSignInAsync(foundUser, userInput.Password, false);
 
-			if (result.Succeeded)
+			if (!result.Succeeded)
 			{
-				var rolesToUser = await _userManager.GetRolesAsync(foundUser);
-				await _channelManager.PublishNextToChannel(ChannelEvent.Events, new LoginEvent(foundUser.UserName, result.Succeeded));
-				return new AuthResponseDto(_tokenGenerator.CreateJwtToken(foundUser),
-							   foundUser.UserName,
-							   rolesToUser.ToList(),
-							   DateTime.Now.AddHours(JwtExpireTime.HoursToExpire.GetValue())
-							   );
+				throw new RestException(HttpStatusCode.Unauthorized);
 			}
+			var rolesToUser = await _userManager.GetRolesAsync(foundUser);
+			await _channelManager.PublishNextToChannel(ChannelEvent.Events, new LoginEvent(foundUser.UserName, result.Succeeded));
+			return _identityService.CreateAuthResponse(foundUser, rolesToUser.ToList());
 
-			throw new RestException(HttpStatusCode.Unauthorized);
+
 		}
 	}
 }

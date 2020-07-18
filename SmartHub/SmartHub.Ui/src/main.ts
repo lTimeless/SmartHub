@@ -8,6 +8,7 @@ import vuetify from './plugins/vuetify';
 
 import 'vue-class-component/hooks';
 import './plugins/apexcharts';
+import './router/interceptors';
 
 Vue.use(VueAxios, axios);
 Vue.config.productionTip = false;

@@ -1,5 +1,5 @@
 // ServiceResponse
-export interface ServiceResponse<T> {
+export interface Response<T> {
   data: T;
   success: boolean;
   message: string;
@@ -25,17 +25,37 @@ export interface RegistrationRequest {
   role: string;
 }
 
+export interface HomeCreateRequest {
+  name: string;
+  description?: string;
+}
+
 // User
-export interface User {}
+export interface User {
+  username: string;
+}
 
 // Home
-export interface Home {}
+export interface Home {
+  id: string;
+  createdAt: string;
+  modifiedDate: string;
+  name: string;
+  description?: string;
+  settings?: Setting[];
+}
 
 // Group
-export interface Group {}
+export interface Group {
+  name: string;
+}
 
 // Device
-export interface Device {}
+export interface Device {
+  name: string;
+}
 
 // Setting
-export interface Setting {}
+export interface Setting {
+  name: string;
+}

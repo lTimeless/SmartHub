@@ -96,6 +96,7 @@ export default class Login extends Vue {
       password: this.password
     };
     await this.$store.dispatch(LOGIN, login);
+    // TODO: das funktioniert nicht mehr das un der authresponse das authobject ist und nicht das Response object
     const { message, success, errors } = this.$store.getters.getAuthResponse;
     this.message = message;
     if (!success) {

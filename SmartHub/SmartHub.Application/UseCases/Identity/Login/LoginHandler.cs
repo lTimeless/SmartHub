@@ -1,5 +1,4 @@
 ﻿using MediatR;
-using SmartHub.Domain.Common;
 using System.Threading;
 using System.Threading.Tasks;
 using SmartHub.Application.Common.Models;
@@ -17,8 +16,8 @@ namespace SmartHub.Application.UseCases.Identity.Login
 
 		public async Task<Response<AuthResponseDto>> Handle(LoginQuery request, CancellationToken cancellationToken)
 		{
-			var result = await _loginService.LoginAsync(request).ConfigureAwait(false);
-			return new Response<AuthResponseDto>(result, true, "Successful");
+			var result = await _loginService.LoginAsync(request);
+			return Response.Ok( "Successful", result);
 		}
 	}
 }

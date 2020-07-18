@@ -11,11 +11,7 @@ import Vue from 'vue';
 
 export default Vue.extend({
   name: 'SmartHubUi',
-  components: {},
-
-  data: () => ({
-    //
-  })
+  components: {}
 });
 </script>
 <style lang="scss" scoped>

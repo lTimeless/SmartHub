@@ -82,7 +82,7 @@ namespace SmartHub.Infrastructure.Services.Dispatchers
 			switch (domainEvent)
 			{
 				case HomeUpdatedEvent homeUpdatedEvent:
-					_logger.Information("[DispatchDomainEvents] Dispatch HomeUpdatedEvent => Updated home {@homeUpdatedEvent} ", homeUpdatedEvent);
+					_logger.Information("[DispatchDomainEvents] Dispatch HomeUpdatedEvent => Updated home {@homeUpdatedEvent} ", homeUpdatedEvent.Name);
                     // hier an den jeweiligen service schicken der das event verarbeiten soll, z.B email, notification, signalr
 					break;
 

@@ -6,6 +6,7 @@ using SmartHub.Application.Common.Interfaces.Repositories;
 using SmartHub.Application.Common.Models;
 using SmartHub.Application.UseCases.AppStartup;
 using SmartHub.Application.UseCases.HomeFolder;
+using SmartHub.Application.UseCases.Identity;
 using SmartHub.Application.UseCases.Identity.Login;
 using SmartHub.Application.UseCases.Identity.Registration;
 using SmartHub.Application.UseCases.NetworkScanner;
@@ -64,6 +65,7 @@ namespace SmartHub.Api.Installers
 			services.AddScoped<ILoginService, LoginService>();
 			services.AddScoped<IRegistrationService, RegistrationService>();
 			services.AddScoped<IUserAccessor, UserAccessor>();
+			services.AddScoped<IdentityService>();
 		}
 
 		private static void ConfigureHelpServices(IServiceCollection services)

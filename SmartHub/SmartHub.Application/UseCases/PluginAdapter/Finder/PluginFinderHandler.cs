@@ -35,20 +35,14 @@ namespace SmartHub.Application.UseCases.PluginAdapter.Finder
             if (!request.OnlyNew)
             {
                 return foundPlugins.IsNullOrEmpty()
-                    ? new Response<IReadOnlyDictionary<string, FoundPluginDto>>(foundPlugins, false,
-                        "No plugins available")
-                    : new Response<IReadOnlyDictionary<string, FoundPluginDto>>(foundPlugins, true,
-                        "Plugins available");
+                    ? Response.Fail<IReadOnlyDictionary<string, FoundPluginDto>>("No plugins available")
+                    : Response.Ok("Plugins available", foundPlugins);
             }
 
             var filteredOrAllFoundPlugins = await _pluginFinder.FilterByPluginsInHome(foundPlugins);
             return filteredOrAllFoundPlugins.IsNullOrEmpty()
-                ? new Response<IReadOnlyDictionary<string, FoundPluginDto>>(filteredOrAllFoundPlugins,
-                    false,
-                    "No new plugins available")
-                : new Response<IReadOnlyDictionary<string, FoundPluginDto>>(foundPlugins,
-                    true,
-                    "New plugins available");
+                ? Response.Fail<IReadOnlyDictionary<string, FoundPluginDto>>("No new plugins available")
+                : Response.Ok("New plugins available", filteredOrAllFoundPlugins);
         }
     }
 }

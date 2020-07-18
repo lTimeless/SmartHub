@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Identity;
 using SmartHub.Application.Common.Exceptions;
 using SmartHub.Application.Common.Interfaces;
 using SmartHub.Application.Common.Interfaces.Repositories;
+using SmartHub.Application.Common.Utils;
 using SmartHub.Domain.Entities;
 using SmartHub.Domain.Entities.ValueObjects;
 using SmartHub.Domain.Enums;
@@ -17,13 +18,13 @@ namespace SmartHub.Application.UseCases.Identity.Registration
 	{
 		private readonly UserManager<User> _userManager;
 		private readonly IUnitOfWork _unitOfWork;
-		private readonly ITokenGenerator _tokenGenerator;
+		private readonly IdentityService _identityService;
 
-		public RegistrationService(UserManager<User> userManager, ITokenGenerator tokenGenerator, IUnitOfWork unitOfWork)
+		public RegistrationService(UserManager<User> userManager, IUnitOfWork unitOfWork, IdentityService identityService)
 		{
 			_userManager = userManager;
-			_tokenGenerator = tokenGenerator;
 			_unitOfWork = unitOfWork;
+			_identityService = identityService;
 		}
 
 		public async Task<AuthResponseDto> RegisterAsync(RegistrationCommand userInput)
@@ -38,11 +39,8 @@ namespace SmartHub.Application.UseCases.Identity.Registration
 			var created = await _unitOfWork.UserRepository.CreateUser(user, userInput.Password, userInput.Role);
 			if (created)
 			{
-				return new AuthResponseDto(_tokenGenerator.CreateJwtToken(user),
-				user.UserName,
-				new List<string> { userInput.Role },
-				DateTime.Now.AddHours(JwtExpireTime.HoursToExpire.GetValue())
-				);
+				return _identityService.CreateAuthResponse(user, new List<string> {userInput.Role});
+
 			}
 			throw new SmartHubException("Problem Registering new User");
 		}

@@ -32,7 +32,7 @@
                     <v-row>
                       <v-col cols="14">
                         <v-text-field
-                          v-model="userName"
+                          v-model="registrationRequest.username"
                           :prepend-inner-icon="'mdi-account'"
                           class="inputField"
                           outlined
@@ -40,7 +40,7 @@
                           required
                         />
                         <v-text-field
-                          v-model="password"
+                          v-model="registrationRequest.password"
                           :prepend-inner-icon="'mdi-lock'"
                           :append-icon="showPwd ? 'mdi-eye' : 'mdi-eye-off'"
                           :rules="[rules.required, rules.min]"
@@ -65,7 +65,7 @@
                       </v-col>
                       <v-col cols="14">
                         <v-select
-                          v-model="selectedRole"
+                          v-model="registrationRequest.role"
                           :items="roles"
                           :prepend-inner-icon="'mdi-shield-account'"
                           label="Role"
@@ -83,10 +83,10 @@
                     class="reg "
                     color="primary"
                     :disabled="
-                      userName.length === 0 ||
-                        password.length < 4 ||
+                      registrationRequest.username.length === 0 ||
+                        registrationRequest.password.length < 4 ||
                         passwordRetry.length < 4 ||
-                        selectedRole.length === 0
+                        registrationRequest.role.length === 0
                     "
                     @click="onNextStep"
                   >
@@ -103,7 +103,7 @@
                     <v-row>
                       <v-col cols="14">
                         <v-text-field
-                          v-model="homeName"
+                          v-model="homeCreateRequest.name"
                           :prepend-inner-icon="'mdi-home'"
                           class="inputField"
                           outlined
@@ -114,14 +114,8 @@
                       <v-divider vertical class="ml-2 mr-4" />
                       <v-col cols="14">
                         <v-row>
-                          <v-select
-                            v-model="selectedHome"
-                            :items="homes"
-                            :prepend-inner-icon="'mdi-shield-account'"
-                            label="Existing Homes"
-                            :disabled="homeName.length > 1"
-                            outlined
-                          />
+                          <span>{{ existingHome.name }}</span>
+                          <!-- TODO: hier eine checkbox -->
                           <v-tooltip bottom>
                             <template v-slot:activator="{ on, attrs }">
                               <v-btn
@@ -139,6 +133,7 @@
                             <span>Clear existing home selection</span>
                           </v-tooltip>
                         </v-row>
+                        <p class="ml-0" :class="messageClass">{{ message }}</p>
                       </v-col>
                     </v-row>
                     <v-row>
@@ -175,7 +170,7 @@
                   <v-btn
                     class="reg"
                     color="primary"
-                    :disabled="homeName.length === 0 && selectedHome.length === 0"
+                    :disabled="homeCreateRequest.name.length === 0 && selectedHome.length === 0"
                     @click="onNextStep"
                   >
                     Continue
@@ -190,7 +185,7 @@
                   <v-row>
                     <v-col cols="14">
                       <v-text-field
-                        v-model="userName"
+                        v-model="registrationRequest.username"
                         :prepend-inner-icon="'mdi-account'"
                         class="inputField"
                         outlined
@@ -198,7 +193,7 @@
                         :disabled="doneEdit"
                       />
                       <v-text-field
-                        v-model="password"
+                        v-model="registrationRequest.password"
                         :prepend-inner-icon="'mdi-lock'"
                         :append-icon="showPwd ? 'mdi-eye' : 'mdi-eye-off'"
                         :rules="[rules.required, rules.min]"
@@ -244,7 +239,11 @@
                   <v-btn
                     class="reg"
                     color="primary"
-                    :disabled="userName.length === 0 || password.length < 4 || finalHome.length === 0"
+                    :disabled="
+                      registrationRequest.username.length === 0 ||
+                        registrationRequest.password.length < 4 ||
+                        finalHome.length === 0
+                    "
                     @click.prevent="onRegistrationClick"
                   >
                     Register
@@ -278,64 +277,99 @@
 import Component from 'vue-class-component';
 import Vue from 'vue';
 import { InputMessage } from 'vuetify';
-import { GET_HOME } from '@/store/home/actions';
-import { RegistrationRequest } from '@/types/types';
+import { CREATE_HOME, GET_HOME } from '@/store/home/actions';
+import { HomeCreateRequest, RegistrationRequest } from '@/types/types';
 import { REGISTRATION } from '@/store/user/actions';
+import Home from '@/views/Home.vue';
+import router from '@/router';
 
 @Component
 export default class Registration extends Vue {
   welcomeToSmartHub = 'Welcome to SmartHub';
   startStep = 1;
   showPwd = false;
-  password = '';
   passwordRetry = '';
-  userName = '';
-  selectedRole = '';
   selectedHome = '';
-  homeName = '';
   doneEdit = true;
+  messageClass = 'successMessage';
+  message = '';
+  alreadyRegistered = false;
+  alreadyHomeCreated = false;
+  roles = ['Guest', 'User', 'Admin'];
+  homeCreateRequest: HomeCreateRequest = {
+    name: '',
+    description: ''
+  };
+
+  registrationRequest: RegistrationRequest = {
+    username: '',
+    password: '',
+    role: ''
+  };
+
   toolTipOptions = {
     tooltipOpenDelay: 150,
     tooltipTransition: 'slide-y-transition'
   };
 
-  roles = ['Guest', 'User', 'Admin'];
-  homes = ['Test', 'Test_1'];
   rules = {
     required: (value: InputEvent) => !!value || 'Required.',
     min: (v: InputMessage) => v.length >= 4 || 'Min 4 characters',
     retry: (v: InputMessage) => v !== '' || 'Not the same passwords' // TODO: add matching logic with pwd
   };
 
+  // eslint-disable-next-line class-methods-use-this
+  mounted() {
+    localStorage.removeItem('authResponse');
+  }
+
   get finalHome() {
-    return this.homeName.length !== 0 ? this.homeName : this.selectedHome;
+    return this.homeCreateRequest.name.length !== 0 ? this.homeCreateRequest.name : this.selectedHome;
+  }
+
+  get existingHome() {
+    const home = this.$store.getters.getHome as Home | undefined | null;
+    if (home === undefined || home === null) {
+      this.message = 'No home created yet';
+      this.messageClass = 'primary--text';
+    }
+    return this.$store.getters.getHome ?? ['-'];
+  }
+
+  get homeExistsSelect(): boolean {
+    return this.homeCreateRequest.name.length > 1 || this.selectedHome === '';
   }
 
   async onNextStep(): Promise<void> {
+    // TODO: erst einen step machen wenn die stores befüllt sind
+    // demnach den step erhöhen und zwischen speichern um zu schauen was die nächste zahl ist
+    // und wenn stores befüllt /nach dispatch/ dann überprüfen und step nun wirklich erhöhen
     this.startStep += 1;
-    if (this.startStep === 2) {
-      const registrationRequest: RegistrationRequest = {
-        username: this.userName,
-        password: this.password,
-        role: this.selectedRole
-      };
-      const reg = await this.$store.dispatch(REGISTRATION, registrationRequest);
-      const home = await this.$store.dispatch(GET_HOME);
-      console.log(home, reg);
+    if (this.startStep === 2 && !this.alreadyRegistered) {
+      await this.$store.dispatch(REGISTRATION, this.registrationRequest);
+      await this.$store.dispatch(GET_HOME);
+      this.alreadyRegistered = true;
+    }
+    if (this.startStep === 3 && !this.alreadyHomeCreated) {
+      console.log('home');
+      // TODO: Create Home
+      await this.$store.dispatch(CREATE_HOME, this.homeCreateRequest);
+      this.alreadyHomeCreated = true;
     }
   }
 
   onRegistrationClick(): void {
-    console.log('registration', this.userName);
+    console.log('registration', this.registrationRequest);
+    router.push('/');
   }
 
   onClearSelection(): void {
-    this.selectedHome = '';
+    this.selectedHome = '-';
   }
 
   onClearForm(): void {
     this.onClearSelection();
-    this.homeName = '';
+    this.homeCreateRequest.name = '';
   }
 
   onEditForm(): void {
@@ -376,6 +410,9 @@ export default class Registration extends Vue {
 
   .login {
     margin: 0 0 0 24px;
+  }
+  .successMessage {
+    color: black;
   }
 }
 </style>

@@ -18,9 +18,9 @@ namespace SmartHub.Application.UseCases.Entity.Homes.Create
 		private readonly IMapper _mapper;
 		private readonly Random _random;
 		private readonly CurrentUser _currentUser;
-		private readonly IOptionsSnapshot<ApplicationSettings> _optionsSnapshot;
+		private readonly IOptionsMonitor<ApplicationSettings> _optionsSnapshot;
 
-		public HomeCreateHandler(IMapper mapper, IUnitOfWork unitOfWork, IOptionsSnapshot<ApplicationSettings> optionsSnapshot, CurrentUser currentUser)
+		public HomeCreateHandler(IMapper mapper, IUnitOfWork unitOfWork, IOptionsMonitor<ApplicationSettings> optionsSnapshot, CurrentUser currentUser)
 		{
 			_mapper = mapper;
 			_unitOfWork = unitOfWork;
@@ -43,12 +43,13 @@ namespace SmartHub.Application.UseCases.Entity.Homes.Create
 			}
 
 			var defaultSetting = new Setting($"default_Setting_{_random.Next()}", "this is a default setting", true,
-				_optionsSnapshot.Value.DefaultPluginpath, _optionsSnapshot.Value.DefaultPluginpath,
-				_optionsSnapshot.Value.DownloadServerUrl, _currentUser.User.UserName, SettingTypes.Default);
+				_optionsSnapshot.CurrentValue.DefaultPluginpath, _optionsSnapshot.CurrentValue.DefaultPluginpath,
+				_optionsSnapshot.CurrentValue.DownloadServerUrl, _currentUser.User.UserName, SettingTypes.Default);
 
 			var homeEntity = new Home(request.Name, request.Description, defaultSetting);
 			homeEntity.AddUser(_currentUser.User);
 
+			// TODO: überprüfe das ich nur ein home erstellen kann
 			var result = await _unitOfWork.HomeRepository.AddAsync(homeEntity);
 			if (!result)
 			{

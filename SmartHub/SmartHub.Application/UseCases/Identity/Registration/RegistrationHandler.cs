@@ -17,8 +17,8 @@ namespace SmartHub.Application.UseCases.Identity.Registration
 
 		public async Task<Response<AuthResponseDto>> Handle(RegistrationCommand request, CancellationToken cancellationToken)
 		{
-			var result = await _registrationService.RegisterAsync(request).ConfigureAwait(false);
-			return new Response<AuthResponseDto>(result, true, "Successful");
+			var result = await _registrationService.RegisterAsync(request);
+			return Response.Ok("Successful", result);
 		}
 	}
 }
