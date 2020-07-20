@@ -5,8 +5,7 @@ import { actions } from '@/store/user/actions';
 import { RootState, UserState } from '@/store/index.types';
 
 export const state: UserState = {
-  authResponse: undefined,
-  user: undefined
+  user: null
 };
 
 export const user: Module<UserState, RootState> = {

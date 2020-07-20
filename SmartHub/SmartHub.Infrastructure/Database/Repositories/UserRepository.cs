@@ -60,5 +60,10 @@ namespace SmartHub.Infrastructure.Database.Repositories
 
         	return resultAdd.Succeeded;
         }
+
+        public Task<User> GetUserByName(string username)
+        {
+	        return _userManager.FindByNameAsync(username);
+        }
     }
 }

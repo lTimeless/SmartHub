@@ -5,10 +5,14 @@ export interface RootState {
 }
 
 export interface UserState {
-  user?: User;
-  authResponse?: AuthResponse;
+  user: User | null;
 }
 
 export interface HomeState {
-  home?: Home;
+  home: Home | null;
+}
+
+export interface AuthState {
+  authResponse: AuthResponse | null;
+  regStepIndex: number;
 }

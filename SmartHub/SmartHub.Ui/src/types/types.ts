@@ -1,6 +1,6 @@
 // ServiceResponse
 export interface Response<T> {
-  data: T;
+  data: T | null;
   success: boolean;
   message: string;
   errors: string[];
@@ -10,7 +10,7 @@ export interface Response<T> {
 export interface AuthResponse {
   token: string;
   expiresAt: string; // TODO: DateTime
-  username: string;
+  userName: string;
   roles: string[];
 }
 
@@ -27,7 +27,14 @@ export interface RegistrationRequest {
 
 export interface HomeCreateRequest {
   name: string;
-  description?: string;
+  description: string | null;
+}
+
+export interface HomeUpdateRequest {
+  name: string | null;
+  description: string | null;
+  userName: string | null;
+  settingName: string | null;
 }
 
 // User

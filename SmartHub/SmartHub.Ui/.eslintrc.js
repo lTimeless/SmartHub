@@ -25,7 +25,7 @@ module.exports = {
     'comma-dangle': ['error', 'never'],
     'object-curly-newline': [
       'error',
-      { ImportDeclaration: { multiline: true, minProperties: 5 }, ExportDeclaration: 'never' }
+      { ImportDeclaration: { multiline: true, minProperties: 6 }, ExportDeclaration: 'never' }
     ],
     'no-bitwise': ['error', { allow: ['~', '<<', '|'] }],
     'import/no-cycle': 0,

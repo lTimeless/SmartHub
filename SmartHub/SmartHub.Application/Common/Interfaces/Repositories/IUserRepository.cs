@@ -7,5 +7,6 @@ namespace SmartHub.Application.Common.Interfaces.Repositories
     {
         Task<bool> CreateUser(User user, string pw, string roleName);
         Task<bool> UserChangeRole(User user, string newRoleName);
+        Task<User> GetUserByName(string username);
     }
 }

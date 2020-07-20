@@ -9,13 +9,13 @@
             </h2>
           </v-toolbar-title>
         </v-toolbar>
-        <v-stepper v-model="startStep" class="elevation-0">
+        <v-stepper v-model="getStepperIndex" class="elevation-0">
           <v-stepper-header class="elevation-0">
-            <v-stepper-step :complete="startStep > 1" step="1">
+            <v-stepper-step :complete="getStepperIndex > 1" step="1">
               User
             </v-stepper-step>
             <v-divider />
-            <v-stepper-step :complete="startStep > 2" step="2">
+            <v-stepper-step :complete="getStepperIndex > 2" step="2">
               Home
             </v-stepper-step>
             <v-divider />
@@ -108,39 +108,34 @@
                           class="inputField"
                           outlined
                           label="Home name"
-                          :disabled="selectedHome.length !== 0"
+                          :disabled="getHome !== null"
                         />
                       </v-col>
                       <v-divider vertical class="ml-2 mr-4" />
                       <v-col cols="14">
                         <v-row>
-                          <span>{{ existingHome.name }}</span>
-                          <!-- TODO: hier eine checkbox -->
-                          <v-tooltip bottom>
-                            <template v-slot:activator="{ on, attrs }">
-                              <v-btn
-                                icon
-                                color="red"
-                                class="mt-2"
-                                v-bind="attrs"
-                                :disabled="selectedHome.length === 0"
-                                v-on="on"
-                                @click="onClearSelection"
-                              >
-                                <v-icon>mdi-close</v-icon>
-                              </v-btn>
-                            </template>
-                            <span>Clear existing home selection</span>
-                          </v-tooltip>
+                          <v-text-field
+                            v-model="existingHome"
+                            :prepend-inner-icon="'mdi-home'"
+                            class="inputField"
+                            outlined
+                            label="Home name"
+                            disabled
+                          />
                         </v-row>
-                        <p class="ml-0" :class="messageClass">{{ message }}</p>
                       </v-col>
                     </v-row>
                     <v-row>
                       <v-col cols="14">
-                        <p>
-                          Modify default settings will be coming soon 🔥😉
-                        </p>
+                        <template v-if="getHome === null">
+                          <p>
+                            Modifying default settings will be coming soon 🔥😉
+                          </p>
+                        </template>
+                        <template v-else>
+                          <p class="ml-0" :class="messageClass">{{ message }}.</p>
+                          <p class="ml-0" :class="messageClass">Please <b>click</b> continue.</p>
+                        </template>
                         <v-spacer />
                       </v-col>
                     </v-row>
@@ -150,7 +145,7 @@
 
               <v-row>
                 <v-col cols="6" class="d-flex justify-start">
-                  <v-btn text @click="startStep = 1">
+                  <v-btn text @click="onBackStep(1)">
                     Back
                   </v-btn>
                   <v-tooltip
@@ -170,7 +165,7 @@
                   <v-btn
                     class="reg"
                     color="primary"
-                    :disabled="homeCreateRequest.name.length === 0 && selectedHome.length === 0"
+                    :disabled="homeCreateRequest.name.length === 0 && getHome === null"
                     @click="onNextStep"
                   >
                     Continue
@@ -223,7 +218,7 @@
 
               <v-row>
                 <v-col cols="6" class="d-flex justify-start">
-                  <v-btn text @click="startStep = 2">
+                  <v-btn text @click="onBackStep(2)">
                     Back
                   </v-btn>
                   <v-tooltip bottom>
@@ -277,24 +272,23 @@
 import Component from 'vue-class-component';
 import Vue from 'vue';
 import { InputMessage } from 'vuetify';
-import { CREATE_HOME, GET_HOME } from '@/store/home/actions';
-import { HomeCreateRequest, RegistrationRequest } from '@/types/types';
-import { REGISTRATION } from '@/store/user/actions';
-import Home from '@/views/Home.vue';
+import { CREATE_HOME, FETCH_HOME, UPDATE_HOME } from '@/store/home/actions';
+import { AuthResponse, Home, HomeCreateRequest, HomeUpdateRequest, RegistrationRequest } from '@/types/types';
+import { REGISTRATION } from '@/store/auth/actions';
 import router from '@/router';
+import { Getter } from 'vuex-class';
+import { AUTH_USER, UPDATE_REG_STEP } from '@/store/auth/mutations';
 
 @Component
 export default class Registration extends Vue {
+  @Getter('getRegStepIndex') getStepperIndex!: number;
+  @Getter('getHome') getHome!: Home | null;
   welcomeToSmartHub = 'Welcome to SmartHub';
-  startStep = 1;
   showPwd = false;
   passwordRetry = '';
-  selectedHome = '';
   doneEdit = true;
   messageClass = 'successMessage';
   message = '';
-  alreadyRegistered = false;
-  alreadyHomeCreated = false;
   roles = ['Guest', 'User', 'Admin'];
   homeCreateRequest: HomeCreateRequest = {
     name: '',
@@ -320,56 +314,66 @@ export default class Registration extends Vue {
 
   // eslint-disable-next-line class-methods-use-this
   mounted() {
+    this.$store.commit(UPDATE_REG_STEP, 1);
     localStorage.removeItem('authResponse');
   }
 
   get finalHome() {
-    return this.homeCreateRequest.name.length !== 0 ? this.homeCreateRequest.name : this.selectedHome;
+    return this.getHome === null ? this.homeCreateRequest.name : this.getHome.name;
   }
 
   get existingHome() {
-    const home = this.$store.getters.getHome as Home | undefined | null;
-    if (home === undefined || home === null) {
+    if (this.getHome === null) {
       this.message = 'No home created yet';
-      this.messageClass = 'primary--text';
+      this.messageClass = 'secondary--text';
+      return '-';
     }
-    return this.$store.getters.getHome ?? ['-'];
+    this.message = 'Already a home created - this will be selected automatically';
+    this.messageClass = 'primary--text';
+    return this.getHome.name;
   }
 
-  get homeExistsSelect(): boolean {
-    return this.homeCreateRequest.name.length > 1 || this.selectedHome === '';
+  onBackStep(nextStep: number) {
+    this.$store.commit(UPDATE_REG_STEP, nextStep);
   }
 
   async onNextStep(): Promise<void> {
-    // TODO: erst einen step machen wenn die stores befüllt sind
-    // demnach den step erhöhen und zwischen speichern um zu schauen was die nächste zahl ist
-    // und wenn stores befüllt /nach dispatch/ dann überprüfen und step nun wirklich erhöhen
-    this.startStep += 1;
-    if (this.startStep === 2 && !this.alreadyRegistered) {
-      await this.$store.dispatch(REGISTRATION, this.registrationRequest);
-      await this.$store.dispatch(GET_HOME);
-      this.alreadyRegistered = true;
+    let shouldBeNextStep = this.getStepperIndex;
+    shouldBeNextStep += 1;
+
+    if (shouldBeNextStep === 2) {
+      await this.$store.dispatch(FETCH_HOME);
     }
-    if (this.startStep === 3 && !this.alreadyHomeCreated) {
-      console.log('home');
-      // TODO: Create Home
-      await this.$store.dispatch(CREATE_HOME, this.homeCreateRequest);
-      this.alreadyHomeCreated = true;
-    }
+    await this.$store.commit(UPDATE_REG_STEP, shouldBeNextStep);
   }
 
-  onRegistrationClick(): void {
-    console.log('registration', this.registrationRequest);
-    router.push('/');
-  }
-
-  onClearSelection(): void {
-    this.selectedHome = '-';
-  }
+  onRegistrationClick = async () => {
+    await this.$store
+      .dispatch(REGISTRATION, this.registrationRequest)
+      .then(async (response) => {
+        localStorage.setItem('authResponse', JSON.stringify(response.data.data));
+        await this.$store.commit(AUTH_USER, response.data.data);
+        if (this.getHome === null) {
+          await this.$store.dispatch(CREATE_HOME, this.homeCreateRequest);
+        } else {
+          const auth = response.data.data as AuthResponse;
+          const updateHomeRequest: HomeUpdateRequest = {
+            name: null,
+            description: null,
+            settingName: null,
+            userName: auth.userName
+          };
+          await this.$store.dispatch(UPDATE_HOME, updateHomeRequest);
+        }
+        await router.push('/');
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
 
   onClearForm(): void {
-    this.onClearSelection();
-    this.homeCreateRequest.name = '';
+    this.homeCreateRequest = { name: '', description: '' };
   }
 
   onEditForm(): void {

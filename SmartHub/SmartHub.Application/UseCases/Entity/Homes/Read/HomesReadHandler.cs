@@ -1,8 +1,5 @@
 ﻿using AutoMapper;
 using MediatR;
-using SmartHub.Application.Common.Interfaces;
-using SmartHub.Domain.Common;
-using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using SmartHub.Application.Common.Interfaces.Repositories;

@@ -1,15 +1,15 @@
 import { ActionTree } from 'vuex';
 import Vue from 'vue';
 import { RootState, HomeState } from '@/store/index.types';
-import { Home, HomeCreateRequest, Response } from '@/types/types';
-import { UPDATE_HOME } from '@/store/home/mutations';
+import { Home, HomeCreateRequest, HomeUpdateRequest, Response } from '@/types/types';
 
 // ActionType keys
-export const GET_HOME = 'GET_HOME';
+export const FETCH_HOME = 'GET_HOME';
 export const CREATE_HOME = 'CREATE_HOME';
+export const UPDATE_HOME = 'UPDATE_HOME';
 
 export const actions: ActionTree<HomeState, RootState> = {
-  async [GET_HOME]({ commit }): Promise<void> {
+  async [FETCH_HOME]({ commit }): Promise<void> {
     await Vue.axios
       .get<Response<Home>>('api/home')
       .then((response) => {
@@ -23,7 +23,16 @@ export const actions: ActionTree<HomeState, RootState> = {
     await Vue.axios
       .post<Response<Home>>('api/home', payload)
       .then((response) => {
-        console.log(response);
+        commit(UPDATE_HOME, response.data.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  },
+  async [UPDATE_HOME]({ commit }, payload: HomeUpdateRequest): Promise<void> {
+    await Vue.axios
+      .put<Response<Home>>('api/home', payload)
+      .then((response) => {
         commit(UPDATE_HOME, response.data.data);
       })
       .catch((err) => {

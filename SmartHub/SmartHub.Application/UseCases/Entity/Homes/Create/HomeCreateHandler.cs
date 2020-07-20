@@ -49,7 +49,6 @@ namespace SmartHub.Application.UseCases.Entity.Homes.Create
 			var homeEntity = new Home(request.Name, request.Description, defaultSetting);
 			homeEntity.AddUser(_currentUser.User);
 
-			// TODO: überprüfe das ich nur ein home erstellen kann
 			var result = await _unitOfWork.HomeRepository.AddAsync(homeEntity);
 			if (!result)
 			{

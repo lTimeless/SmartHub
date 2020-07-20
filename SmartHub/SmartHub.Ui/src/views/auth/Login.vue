@@ -73,9 +73,9 @@ import Vue from 'vue';
 import Component from 'vue-class-component';
 import { InputMessage } from 'vuetify';
 import router from '@/router';
-import { LOGIN } from '@/store/user/actions';
 import { LoginRequest } from '@/types/types';
-
+import { LOGIN } from '@/store/auth/actions';
+// TODO: vuex in here
 @Component
 export default class Login extends Vue {
   welcomeToSmartHub = 'Welcome to SmartHub';
@@ -96,14 +96,12 @@ export default class Login extends Vue {
       password: this.password
     };
     await this.$store.dispatch(LOGIN, login);
-    // TODO: das funktioniert nicht mehr das un der authresponse das authobject ist und nicht das Response object
-    const { message, success, errors } = this.$store.getters.getAuthResponse;
-    this.message = message;
-    if (!success) {
+    const { userName, token } = this.$store.getters.getAuthResponse;
+    this.message = '';
+    if (userName === null || token == null) {
       this.messageClass = 'error--text';
-      this.message = `${message}Errors: ${errors}`;
+      this.message = 'Error: Something went wrong, try again later';
     }
-    this.message = message;
     await router.push('/');
   }
 }
