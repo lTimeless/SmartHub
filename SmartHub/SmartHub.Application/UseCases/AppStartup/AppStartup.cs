@@ -55,7 +55,7 @@ namespace SmartHub.Application.UseCases.AppStartup
 
 		private async Task StartLoadPlugins()
 		{
-			_ = await _mediatR.Send(new PluginLoadCommand(LoadStrategyEnum.Multiple));
+			_ = await _mediatR.Send(new PluginLoadCommand(LoadStrategy.Multiple));
 		}
 	}
 }

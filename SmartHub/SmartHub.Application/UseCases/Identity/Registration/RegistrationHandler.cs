@@ -6,7 +6,7 @@ using SmartHub.Application.Common.Models;
 
 namespace SmartHub.Application.UseCases.Identity.Registration
 {
-	public class RegistrationHandler : IRequestHandler<RegistrationCommand, ServiceResponse<AuthResponseDto>>
+	public class RegistrationHandler : IRequestHandler<RegistrationCommand, Response<AuthResponseDto>>
 	{
 		private readonly IRegistrationService _registrationService;
 
@@ -15,10 +15,10 @@ namespace SmartHub.Application.UseCases.Identity.Registration
 			_registrationService = registrationService;
 		}
 
-		public async Task<ServiceResponse<AuthResponseDto>> Handle(RegistrationCommand request, CancellationToken cancellationToken)
+		public async Task<Response<AuthResponseDto>> Handle(RegistrationCommand request, CancellationToken cancellationToken)
 		{
-			var result = await _registrationService.RegisterAsync(request).ConfigureAwait(false);
-			return new ServiceResponse<AuthResponseDto>(result, true, "Successful");
+			var result = await _registrationService.RegisterAsync(request);
+			return Response.Ok("Successful", result);
 		}
 	}
 }

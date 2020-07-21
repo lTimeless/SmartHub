@@ -33,7 +33,8 @@ namespace SmartHub.Application.UseCases.HomeFolder
 
             if (!string.IsNullOrEmpty(homePath))
             {
-                _applicationSettings.CurrentValue.DefaultPluginpath = Path.Combine(homePath, folderName);
+                var pluginPath = Path.Combine(homePath, folderName);
+                _applicationSettings.CurrentValue.DefaultPluginpath = pluginPath; // TODO: add plugins folder
                 _directoryService.CreateDirectory(homePath, folderName);
                 Log.Information("[HomeFolderService] SmartHub folder is at {@homePath}\\{@folderName}",
                     homePath,

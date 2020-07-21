@@ -5,7 +5,8 @@ using SmartHub.Domain.Enums;
 using System;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
-using SmartHub.Infrastructure.Utils;
+using SmartHub.Application.Common.Utils;
+using DateTime = SmartHub.Domain.Enums.DateTime;
 
 namespace SmartHub.Infrastructure.Services.Dispatchers
 {
@@ -34,36 +35,36 @@ namespace SmartHub.Infrastructure.Services.Dispatchers
 			return Task.FromResult(BackgroundJob.Schedule(action, delay));
 		}
 
-		public Task AddRecurringJob(Expression<Action> action, DateTimeEnum recurring, int interval = Interval)
+		public Task AddRecurringJob(Expression<Action> action, DateTime recurring, int interval = Interval)
 		{
 			Log.Information($"[{nameof(AddRecurringJob)}] Add RecurringJob {action.Name}");
 			switch (recurring)
 			{
-				case DateTimeEnum.Minute:
+				case DateTime.Minute:
 					RecurringJob.AddOrUpdate(action, $"* 0/{interval} * ? * *");
 					break;
 
-				case DateTimeEnum.Hour:
+				case DateTime.Hour:
 					RecurringJob.AddOrUpdate(action, $"* * 0/{interval} ? * *");
 					break;
 
-				case DateTimeEnum.Day:
+				case DateTime.Day:
 					RecurringJob.AddOrUpdate(action, $"* * * ? * {DateTimeUtils.LocalNow.Day}/{interval} *");
 					break;
 
-				case DateTimeEnum.Week:
+				case DateTime.Week:
 					RecurringJob.AddOrUpdate(action, $"* * * ? * {DateTimeUtils.LocalNow.DayOfWeek.ToString().Substring(0, 2)} *");
 					break;
 
-				case DateTimeEnum.Month:
+				case DateTime.Month:
 					RecurringJob.AddOrUpdate(action, $"* * * ? 1/{interval} * *");
 					break;
 
-				case DateTimeEnum.Year:
+				case DateTime.Year:
 					RecurringJob.AddOrUpdate(action, $"* * * ? * * {DateTimeUtils.LocalNow.Year}/{interval}");
 					break;
 
-				case DateTimeEnum.Never:
+				case DateTime.Never:
 					RecurringJob.AddOrUpdate(action, Cron.Never);
 					break;
 
@@ -73,36 +74,36 @@ namespace SmartHub.Infrastructure.Services.Dispatchers
 			return Task.CompletedTask;
 		}
 
-		public Task UpdateRecurringJob(string jobId, Expression<Action> action, DateTimeEnum recurring, int interval = Interval)
+		public Task UpdateRecurringJob(string jobId, Expression<Action> action, DateTime recurring, int interval = Interval)
 		{
 			Log.Information($"[{nameof(AddRecurringJob)}] Update RecurringJob {nameof(action.Name)}");
 			switch (recurring)
 			{
-				case DateTimeEnum.Minute:
+				case DateTime.Minute:
 					RecurringJob.AddOrUpdate(jobId, action, $"* 0/{interval} * ? * *");
 					break;
 
-				case DateTimeEnum.Hour:
+				case DateTime.Hour:
 					RecurringJob.AddOrUpdate(jobId, action, $"* * 0/{interval} ? * *");
 					break;
 
-				case DateTimeEnum.Day:
+				case DateTime.Day:
 					RecurringJob.AddOrUpdate(jobId, action, $"* * * ? * {DateTimeUtils.LocalNow.Day}/{interval} *");
 					break;
 
-				case DateTimeEnum.Week:
+				case DateTime.Week:
 					RecurringJob.AddOrUpdate(jobId, action, $"* * * ? * {DateTimeUtils.LocalNow.DayOfWeek.ToString().Substring(0, 2)} *");
 					break;
 
-				case DateTimeEnum.Month:
+				case DateTime.Month:
 					RecurringJob.AddOrUpdate(jobId, action, $"* * * ? 1/{interval} * *");
 					break;
 
-				case DateTimeEnum.Year:
+				case DateTime.Year:
 					RecurringJob.AddOrUpdate(jobId, action, $"* * * ? * * {DateTimeUtils.LocalNow.Year}/{interval}");
 					break;
 
-				case DateTimeEnum.Never:
+				case DateTime.Never:
 					RecurringJob.AddOrUpdate(jobId, action, Cron.Never);
 					break;
 

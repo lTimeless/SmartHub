@@ -11,14 +11,14 @@ namespace SmartHub.Infrastructure.Services.Dispatchers
 {
 	public class ChannelManager : IChannelManager
 	{
-		private Dictionary<ChannelEventEnum, Subject<object>> ChannelMessageDictionary { get; }
+		private Dictionary<ChannelEvent, Subject<object>> ChannelMessageDictionary { get; }
 
 		public ChannelManager()
 		{
-			ChannelMessageDictionary = new Dictionary<ChannelEventEnum, Subject<object>>();
+			ChannelMessageDictionary = new Dictionary<ChannelEvent, Subject<object>>();
 		}
 
-		public Task RemoveChannel(ChannelEventEnum channelName)
+		public Task RemoveChannel(ChannelEvent channelName)
 		{
 			if (ChannelMessageDictionary.ContainsKey(channelName))
 			{
@@ -39,7 +39,7 @@ namespace SmartHub.Infrastructure.Services.Dispatchers
 			return Task.CompletedTask;
 		}
 
-		public IObservable<object> GetChannel(ChannelEventEnum channelName)
+		public IObservable<object> GetChannel(ChannelEvent channelName)
 		{
 			if (ChannelMessageDictionary.ContainsKey(channelName))
 			{
@@ -51,7 +51,7 @@ namespace SmartHub.Infrastructure.Services.Dispatchers
 			return ChannelMessageDictionary[channelName];
 		}
 
-		public Task AddChannel(ChannelEventEnum channelName)
+		public Task AddChannel(ChannelEvent channelName)
 		{
 			if (ChannelMessageDictionary.ContainsKey(channelName))
 			{
@@ -64,7 +64,7 @@ namespace SmartHub.Infrastructure.Services.Dispatchers
 			return Task.CompletedTask;
 		}
 
-		public Task PublishNextToChannel<T>(ChannelEventEnum channelName, T message)
+		public Task PublishNextToChannel<T>(ChannelEvent channelName, T message)
 		{
 			if (message is null)
 			{
@@ -79,7 +79,7 @@ namespace SmartHub.Infrastructure.Services.Dispatchers
 			return Task.CompletedTask;
 		}
 
-		public Task PublishErrorToChannel(ChannelEventEnum channelName, Exception exception)
+		public Task PublishErrorToChannel(ChannelEvent channelName, Exception exception)
 		{
 			var channel = ChannelMessageDictionary.GetValueOrDefault(channelName);
 			channel.OnError(exception);
@@ -87,7 +87,7 @@ namespace SmartHub.Infrastructure.Services.Dispatchers
 			return Task.CompletedTask;
 		}
 
-		public Task PublishCompleteToChannel(ChannelEventEnum channelName)
+		public Task PublishCompleteToChannel(ChannelEvent channelName)
 		{
 			var channel = ChannelMessageDictionary.GetValueOrDefault(channelName);
 			channel.OnCompleted();

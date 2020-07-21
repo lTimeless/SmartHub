@@ -32,7 +32,7 @@ namespace SmartHub.Api.Middleware
 		private async Task HandleExceptionAsync(HttpContext httpContext, Exception ex)
 		{
 			object? errors = null;
-
+			// TODO: call unitofWork callback function
 			switch (ex)
 			{
 				case RestException restException:

@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
+using SmartHub.Domain.Entities;
 using SmartHub.Domain.Entities.Devices;
 using SmartHub.Domain.Enums;
 
@@ -34,14 +35,14 @@ namespace SmartHub.Infrastructure.Database.Configurations
 			});
 
 			builder.Property(x => x.PrimaryConnection)
-				.HasConversion<string>(new EnumToStringConverter<ConnectionTypeEnum>());
+				.HasConversion<string>(new EnumToStringConverter<ConnectionTypes>());
 			builder.Property(x => x.SecondaryConnection)
-				.HasConversion<string>(new EnumToStringConverter<ConnectionTypeEnum>());
+				.HasConversion<string>(new EnumToStringConverter<ConnectionTypes>());
 
 			builder.Property(x => x.PluginName);
 
-			builder.Property(x => x.PluginType)
-				.HasConversion<string>(new EnumToStringConverter<PluginTypeEnum>());
+			builder.Property(x => x.PluginTypes)
+				.HasConversion<string>(new EnumToStringConverter<PluginTypes>());
 		}
 	}
 }

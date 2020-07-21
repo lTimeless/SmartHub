@@ -50,7 +50,7 @@ namespace SmartHub.Infrastructure.Database.Repositories
 		{
 			try
 			{
-				_entities.Add(entity);
+				await _entities.AddAsync(entity);
 				return await Task.FromResult(true);
 			}
 			catch (Exception)

@@ -1,8 +1,5 @@
 ﻿using AutoMapper;
 using MediatR;
-using SmartHub.Application.Common.Interfaces;
-using SmartHub.Domain.Common;
-using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using SmartHub.Application.Common.Interfaces.Repositories;
@@ -10,7 +7,7 @@ using SmartHub.Application.Common.Models;
 
 namespace SmartHub.Application.UseCases.Entity.Homes.Read
 {
-	public class HomesReadHandler : IRequestHandler<HomesReadQuery, ServiceResponse<HomeDto>>
+	public class HomesReadHandler : IRequestHandler<HomesReadQuery, Response<HomeDto>>
 	{
 		private readonly IUnitOfWork _unitOfWork;
 		private readonly IMapper _mapper;
@@ -21,11 +18,10 @@ namespace SmartHub.Application.UseCases.Entity.Homes.Read
 			_mapper = mapper;
 		}
 
-		public async Task<ServiceResponse<HomeDto>> Handle(HomesReadQuery request, CancellationToken cancellationToken)
+		public async Task<Response<HomeDto>> Handle(HomesReadQuery request, CancellationToken cancellationToken)
 		{
 			var home = await _unitOfWork.HomeRepository.GetHome();
-			var homeDto = _mapper.Map<HomeDto>(home);
-			return new ServiceResponse<HomeDto>(homeDto, true);
+			return Response.Ok(_mapper.Map<HomeDto>(home));
 		}
 	}
 }

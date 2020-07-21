@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using SmartHub.Domain.Entities.Users;
+using SmartHub.Domain.Entities;
 
 namespace SmartHub.Infrastructure.Database.Configurations
 {

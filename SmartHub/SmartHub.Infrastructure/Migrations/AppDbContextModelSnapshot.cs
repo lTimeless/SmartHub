@@ -20,88 +20,6 @@ namespace SmartHub.Infrastructure.Migrations
                 .HasAnnotation("ProductVersion", "3.1.4")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
-            modelBuilder.Entity("IdentityServer4.EntityFramework.Entities.DeviceFlowCodes", b =>
-                {
-                    b.Property<string>("UserCode")
-                        .HasColumnType("character varying(200)")
-                        .HasMaxLength(200);
-
-                    b.Property<string>("ClientId")
-                        .IsRequired()
-                        .HasColumnType("character varying(200)")
-                        .HasMaxLength(200);
-
-                    b.Property<DateTime>("CreationTime")
-                        .HasColumnType("timestamp without time zone");
-
-                    b.Property<string>("Data")
-                        .IsRequired()
-                        .HasColumnType("character varying(50000)")
-                        .HasMaxLength(50000);
-
-                    b.Property<string>("DeviceCode")
-                        .IsRequired()
-                        .HasColumnType("character varying(200)")
-                        .HasMaxLength(200);
-
-                    b.Property<DateTime?>("Expiration")
-                        .IsRequired()
-                        .HasColumnType("timestamp without time zone");
-
-                    b.Property<string>("SubjectId")
-                        .HasColumnType("character varying(200)")
-                        .HasMaxLength(200);
-
-                    b.HasKey("UserCode");
-
-                    b.HasIndex("DeviceCode")
-                        .IsUnique();
-
-                    b.HasIndex("Expiration");
-
-                    b.ToTable("DeviceCodes");
-                });
-
-            modelBuilder.Entity("IdentityServer4.EntityFramework.Entities.PersistedGrant", b =>
-                {
-                    b.Property<string>("Key")
-                        .HasColumnType("character varying(200)")
-                        .HasMaxLength(200);
-
-                    b.Property<string>("ClientId")
-                        .IsRequired()
-                        .HasColumnType("character varying(200)")
-                        .HasMaxLength(200);
-
-                    b.Property<DateTime>("CreationTime")
-                        .HasColumnType("timestamp without time zone");
-
-                    b.Property<string>("Data")
-                        .IsRequired()
-                        .HasColumnType("character varying(50000)")
-                        .HasMaxLength(50000);
-
-                    b.Property<DateTime?>("Expiration")
-                        .HasColumnType("timestamp without time zone");
-
-                    b.Property<string>("SubjectId")
-                        .HasColumnType("character varying(200)")
-                        .HasMaxLength(200);
-
-                    b.Property<string>("Type")
-                        .IsRequired()
-                        .HasColumnType("character varying(50)")
-                        .HasMaxLength(50);
-
-                    b.HasKey("Key");
-
-                    b.HasIndex("Expiration");
-
-                    b.HasIndex("SubjectId", "ClientId", "Type");
-
-                    b.ToTable("PersistedGrants");
-                });
-
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.Property<int>("Id")
@@ -206,7 +124,7 @@ namespace SmartHub.Infrastructure.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
-            modelBuilder.Entity("SmartHub.Domain.Entities.Devices.Device", b =>
+            modelBuilder.Entity("SmartHub.Domain.Entities.Device", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnType("text");
@@ -242,7 +160,7 @@ namespace SmartHub.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<string>("PluginType")
+                    b.Property<string>("PluginTypes")
                         .IsRequired()
                         .HasColumnType("text");
 
@@ -266,7 +184,7 @@ namespace SmartHub.Infrastructure.Migrations
                     b.ToTable("Devices");
                 });
 
-            modelBuilder.Entity("SmartHub.Domain.Entities.Groups.Group", b =>
+            modelBuilder.Entity("SmartHub.Domain.Entities.Group", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnType("text");
@@ -309,7 +227,7 @@ namespace SmartHub.Infrastructure.Migrations
                     b.ToTable("Groups");
                 });
 
-            modelBuilder.Entity("SmartHub.Domain.Entities.Homes.Home", b =>
+            modelBuilder.Entity("SmartHub.Domain.Entities.Home", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnType("text");
@@ -343,7 +261,7 @@ namespace SmartHub.Infrastructure.Migrations
                     b.ToTable("Homes");
                 });
 
-            modelBuilder.Entity("SmartHub.Domain.Entities.Plugins.Plugin", b =>
+            modelBuilder.Entity("SmartHub.Domain.Entities.Plugin", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnType("text");
@@ -358,7 +276,7 @@ namespace SmartHub.Infrastructure.Migrations
                     b.Property<double>("AssemblyVersion")
                         .HasColumnType("double precision");
 
-                    b.Property<string>("ConnectionTypeEnum")
+                    b.Property<string>("ConnectionTypes")
                         .IsRequired()
                         .HasColumnType("text");
 
@@ -389,7 +307,7 @@ namespace SmartHub.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<string>("PluginType")
+                    b.Property<string>("PluginTypes")
                         .IsRequired()
                         .HasColumnType("text");
 
@@ -403,7 +321,7 @@ namespace SmartHub.Infrastructure.Migrations
                     b.ToTable("Plugins");
                 });
 
-            modelBuilder.Entity("SmartHub.Domain.Entities.Roles.Role", b =>
+            modelBuilder.Entity("SmartHub.Domain.Entities.Role", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnType("text");
@@ -449,7 +367,7 @@ namespace SmartHub.Infrastructure.Migrations
                     b.ToTable("AspNetRoles");
                 });
 
-            modelBuilder.Entity("SmartHub.Domain.Entities.Settings.Setting", b =>
+            modelBuilder.Entity("SmartHub.Domain.Entities.Setting", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnType("text");
@@ -517,7 +435,7 @@ namespace SmartHub.Infrastructure.Migrations
                     b.ToTable("Settings");
                 });
 
-            modelBuilder.Entity("SmartHub.Domain.Entities.Users.User", b =>
+            modelBuilder.Entity("SmartHub.Domain.Entities.User", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnType("text");
@@ -605,7 +523,7 @@ namespace SmartHub.Infrastructure.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
-                    b.HasOne("SmartHub.Domain.Entities.Roles.Role", null)
+                    b.HasOne("SmartHub.Domain.Entities.Role", null)
                         .WithMany()
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -614,7 +532,7 @@ namespace SmartHub.Infrastructure.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
                 {
-                    b.HasOne("SmartHub.Domain.Entities.Users.User", null)
+                    b.HasOne("SmartHub.Domain.Entities.User", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -623,7 +541,7 @@ namespace SmartHub.Infrastructure.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
-                    b.HasOne("SmartHub.Domain.Entities.Users.User", null)
+                    b.HasOne("SmartHub.Domain.Entities.User", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -632,13 +550,13 @@ namespace SmartHub.Infrastructure.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<string>", b =>
                 {
-                    b.HasOne("SmartHub.Domain.Entities.Roles.Role", null)
+                    b.HasOne("SmartHub.Domain.Entities.Role", null)
                         .WithMany()
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("SmartHub.Domain.Entities.Users.User", null)
+                    b.HasOne("SmartHub.Domain.Entities.User", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -647,20 +565,20 @@ namespace SmartHub.Infrastructure.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
                 {
-                    b.HasOne("SmartHub.Domain.Entities.Users.User", null)
+                    b.HasOne("SmartHub.Domain.Entities.User", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("SmartHub.Domain.Entities.Devices.Device", b =>
+            modelBuilder.Entity("SmartHub.Domain.Entities.Device", b =>
                 {
-                    b.HasOne("SmartHub.Domain.Entities.Groups.Group", null)
+                    b.HasOne("SmartHub.Domain.Entities.Group", null)
                         .WithMany("Devices")
                         .HasForeignKey("GroupId");
 
-                    b.HasOne("SmartHub.Domain.Entities.Homes.Home", null)
+                    b.HasOne("SmartHub.Domain.Entities.Home", null)
                         .WithMany("Devices")
                         .HasForeignKey("HomeId")
                         .OnDelete(DeleteBehavior.Cascade);
@@ -713,15 +631,15 @@ namespace SmartHub.Infrastructure.Migrations
                         });
                 });
 
-            modelBuilder.Entity("SmartHub.Domain.Entities.Groups.Group", b =>
+            modelBuilder.Entity("SmartHub.Domain.Entities.Group", b =>
                 {
-                    b.HasOne("SmartHub.Domain.Entities.Homes.Home", "Home")
+                    b.HasOne("SmartHub.Domain.Entities.Home", "Home")
                         .WithMany("Groups")
                         .HasForeignKey("HomeId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("SmartHub.Domain.Entities.Homes.Home", b =>
+            modelBuilder.Entity("SmartHub.Domain.Entities.Home", b =>
                 {
                     b.OwnsOne("SmartHub.Domain.Entities.ValueObjects.Address", "Address", b1 =>
                         {
@@ -772,9 +690,9 @@ namespace SmartHub.Infrastructure.Migrations
                         });
                 });
 
-            modelBuilder.Entity("SmartHub.Domain.Entities.Plugins.Plugin", b =>
+            modelBuilder.Entity("SmartHub.Domain.Entities.Plugin", b =>
                 {
-                    b.HasOne("SmartHub.Domain.Entities.Homes.Home", null)
+                    b.HasOne("SmartHub.Domain.Entities.Home", null)
                         .WithMany("Plugins")
                         .HasForeignKey("HomeId")
                         .OnDelete(DeleteBehavior.Cascade);
@@ -807,17 +725,17 @@ namespace SmartHub.Infrastructure.Migrations
                         });
                 });
 
-            modelBuilder.Entity("SmartHub.Domain.Entities.Settings.Setting", b =>
+            modelBuilder.Entity("SmartHub.Domain.Entities.Setting", b =>
                 {
-                    b.HasOne("SmartHub.Domain.Entities.Homes.Home", null)
+                    b.HasOne("SmartHub.Domain.Entities.Home", null)
                         .WithMany("Settings")
                         .HasForeignKey("HomeId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("SmartHub.Domain.Entities.Users.User", b =>
+            modelBuilder.Entity("SmartHub.Domain.Entities.User", b =>
                 {
-                    b.HasOne("SmartHub.Domain.Entities.Homes.Home", "Home")
+                    b.HasOne("SmartHub.Domain.Entities.Home", "Home")
                         .WithMany("Users")
                         .HasForeignKey("HomeId")
                         .OnDelete(DeleteBehavior.Cascade);

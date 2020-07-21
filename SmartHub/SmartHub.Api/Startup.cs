@@ -8,7 +8,6 @@ using Serilog;
 using SmartHub.Api.Extensions;
 using SmartHub.Infrastructure.Database;
 using System.IO;
-using Microsoft.Extensions.Options;
 using SmartHub.Domain.Common.Settings;
 
 namespace SmartHub.Api
@@ -74,7 +73,7 @@ namespace SmartHub.Api
 				// The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
 				app.UseHsts();
 			}
-			Log.Information($"----------------------------------------------------------------");
+			Log.Information("----------------------------------------------------------------");
 			app.ShowLocalIpv4();
 
 			// Response Compression
@@ -88,11 +87,7 @@ namespace SmartHub.Api
 			app.ConfigureCustomExceptionMiddleware();
 
 			app.UseHttpsRedirection();
-			app.UseStaticFiles();
-			if (!env.IsDevelopment())
-			{
-				app.UseSpaStaticFiles();
-			}
+			app.UseSpaStaticFiles();
 
 			// Swagger
 			app.ConfigureSwagger();
@@ -106,7 +101,6 @@ namespace SmartHub.Api
 			// Auth
 			app.UseCors("CorsPolicy");
 			app.UseAuthentication();
-			app.UseIdentityServer();
 			app.UseAuthorization();
 
 			// Endpoints
@@ -122,12 +116,12 @@ namespace SmartHub.Api
 				// To learn more about options for serving an Angular SPA from ASP.NET Core,
 				// see https://go.microsoft.com/fwlink/?linkid=864501
 
-				spa.Options.SourcePath = "ClientApp";
+				spa.Options.SourcePath = "wwwroot";
 
 				if (env.IsDevelopment())
 				{
-					// Start seperate FE server and Server listens to it 
-					 spa.UseProxyToSpaDevelopmentServer("http://localhost:4200");
+					// Start seperate FE server and Server listens to it
+					 spa.UseProxyToSpaDevelopmentServer("http://localhost:8080");
 					// To start its own FE server
 				}
 			});

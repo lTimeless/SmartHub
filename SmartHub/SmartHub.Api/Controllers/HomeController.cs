@@ -4,6 +4,8 @@ using SmartHub.Application.UseCases.Entity.Homes.Create;
 using SmartHub.Application.UseCases.Entity.Homes.Read;
 using System;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
+using SmartHub.Application.UseCases.Entity.Homes.Update;
 
 namespace SmartHub.Api.Controllers
 {
@@ -13,6 +15,8 @@ namespace SmartHub.Api.Controllers
 		/// GET: api/Home
 		/// </summary>
 		/// <returns>List of Homes</returns>
+		[AllowAnonymous] // TODO: Create another endpoint which will just return less infos about the home
+		// only name
 		[HttpGet]
 		[ProducesResponseType(StatusCodes.Status200OK)]
 		[ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -20,13 +24,6 @@ namespace SmartHub.Api.Controllers
 		public async Task<IActionResult> Get()
 		{
 			return Ok(await Mediator.Send(new HomesReadQuery()));
-		}
-
-		// GET: api/Home/5
-		[HttpGet("{id}")]
-		public IActionResult Get(int id)
-		{
-			return Ok();
 		}
 
 		/// <summary>
@@ -55,11 +52,11 @@ namespace SmartHub.Api.Controllers
 			return Ok(await Mediator.Send(value).ConfigureAwait(false));
 		}
 
-		// PUT: api/Home/5
-		[HttpPut("{id}")]
-		public void Put(int id, [FromBody] string value)
+		// PUT: api/Home
+		[HttpPut]
+		public async Task<IActionResult> Put([FromBody] HomeUpdateCommand value)
 		{
-			throw new NotSupportedException($"[{nameof(Put)}]Not supported");
+			return Ok(await Mediator.Send(value).ConfigureAwait(false));
 		}
 
 		// DELETE: api/ApiWithActions/5

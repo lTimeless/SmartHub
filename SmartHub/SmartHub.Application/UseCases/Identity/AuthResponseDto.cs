@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using NodaTime;
 
 namespace SmartHub.Application.UseCases.Identity
 {
@@ -7,12 +8,12 @@ namespace SmartHub.Application.UseCases.Identity
 	{
 		public string Token { get; }
 
-		public DateTime? ExpiresAt { get; set; } // Is inside the token
+		public LocalDateTime? ExpiresAt { get; set; } // Is inside the token
 
 		public string UserName { get; }
 		public List<string> Roles { get; }
 
-		public AuthResponseDto(string token, string username, List<string> roles, DateTime expiresat)
+		public AuthResponseDto(string token, string username, List<string> roles, LocalDateTime expiresat)
 		{
 			Token = token;
 			UserName = username;

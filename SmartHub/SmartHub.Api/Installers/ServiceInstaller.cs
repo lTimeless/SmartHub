@@ -3,8 +3,10 @@ using Microsoft.Extensions.DependencyInjection;
 using SmartHub.Application.Common.Interfaces;
 using SmartHub.Application.Common.Interfaces.Events;
 using SmartHub.Application.Common.Interfaces.Repositories;
+using SmartHub.Application.Common.Models;
 using SmartHub.Application.UseCases.AppStartup;
 using SmartHub.Application.UseCases.HomeFolder;
+using SmartHub.Application.UseCases.Identity;
 using SmartHub.Application.UseCases.Identity.Login;
 using SmartHub.Application.UseCases.Identity.Registration;
 using SmartHub.Application.UseCases.NetworkScanner;
@@ -12,7 +14,6 @@ using SmartHub.Application.UseCases.PluginAdapter.Creator;
 using SmartHub.Application.UseCases.PluginAdapter.Finder;
 using SmartHub.Application.UseCases.PluginAdapter.Host;
 using SmartHub.Application.UseCases.PluginAdapter.Loader;
-using SmartHub.Domain.Entities.Users;
 using SmartHub.Infrastructure.Database;
 using SmartHub.Infrastructure.Database.Repositories;
 using SmartHub.Infrastructure.Services.Auth;
@@ -36,6 +37,7 @@ namespace SmartHub.Api.Installers
 
 		private static void ConfigureRepositories(IServiceCollection services)
 		{
+			services.AddScoped<IUserRepository, UserRepository>();
 			services.AddScoped<IHomeRepository, HomeRepository>();
 			services.AddScoped<IUnitOfWork, UnitOfWork>();
 			services.AddTransient<SeedDatabase>();
@@ -58,11 +60,12 @@ namespace SmartHub.Api.Installers
 
 		private static void ConfigureAuthServices(IServiceCollection services)
 		{
+			services.AddScoped<CurrentUser>();
 			services.AddScoped<ITokenGenerator, TokenGenerator>();
 			services.AddScoped<ILoginService, LoginService>();
 			services.AddScoped<IRegistrationService, RegistrationService>();
 			services.AddScoped<IUserAccessor, UserAccessor>();
-			services.AddScoped<IUserService, UserService>();
+			services.AddScoped<IdentityService>();
 		}
 
 		private static void ConfigureHelpServices(IServiceCollection services)

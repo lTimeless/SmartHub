@@ -1,22 +1,17 @@
-name: .NET Core
-
+name: .Net core CI
 on:
   push:
     branches: [ master, develop ]
-    paths: 
-    - 'SmartHub/**'
   pull_request:
     branches: [ master, develop ]
 
 env:
-  folderName: 'SmartHub/SmartHub.Api'
-  csprojName: 'SmartHub.Api.csproj'
+  folderName: 'SmartHub/'
+  solution: 'SmartHub.sln'
   
 jobs:
   Restore_Build_Test:
     runs-on: ubuntu-latest
-    
-
     steps:
     - uses: actions/checkout@v2
     - name: Setup .NET Core
@@ -25,10 +20,10 @@ jobs:
         dotnet-version: 3.1.301
         
     - name: Install dependencies
-      run: dotnet restore $folderName/$csprojName
+      run: dotnet restore $folderName$solution
       
     - name: Build with dotnet
-      run: dotnet build ${{ format('{0}/{1}', '$folderName', '$csprojName') }} --configuration Release --no-restore
+      run: dotnet build ${{ format('{0}/{1}', '$folderName', '$solution') }} --configuration Release --no-restore
       
     - name: Run Test
-      run: dotnet test ${{ format('{0}/{1}', '$folderName', '$csprojName') }} --no-restore --verbosity normal
+      run: dotnet test ${{ format('{0}/{1}', '$folderName', '$solution') }} --no-restore --verbosity normal

@@ -1,9 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using SmartHub.Domain.Entities.Homes;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using SmartHub.Domain.Entities;
 
 namespace SmartHub.Infrastructure.Database.Configurations
 {

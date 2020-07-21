@@ -1,14 +1,13 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
 using Serilog;
-using SmartHub.Application.Common.Interfaces;
-using SmartHub.Domain.Entities.Roles;
-using SmartHub.Domain.Entities.Users;
 using SmartHub.Domain.Entities.ValueObjects;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
 using SmartHub.Application.Common.Interfaces.Repositories;
+using SmartHub.Domain.Entities;
+using SmartHub.Domain.Enums;
 
 namespace SmartHub.Infrastructure.Database
 {
@@ -16,8 +15,6 @@ namespace SmartHub.Infrastructure.Database
 	{
 		private readonly IServiceScopeFactory _scopeFactory;
 		private readonly IUnitOfWork _unitOfWork;
-		private UserManager<User> _userManager;
-		private RoleManager<Role> _roleManager;
 
 		public SeedDatabase(IServiceProvider serviceProvider, IUnitOfWork unitOfWork)
 		{
@@ -37,12 +34,12 @@ namespace SmartHub.Infrastructure.Database
 		private async Task SeedUserData()
 		{
 			using var serviceScope = _scopeFactory.CreateScope();
-			_userManager = serviceScope.ServiceProvider.GetRequiredService<UserManager<User>>();
+			var userManager = serviceScope.ServiceProvider.GetRequiredService<UserManager<User>>();
 			var admin = new User("Admin", null, new PersonName("Max", "", "Test"), null)
 			{
 				CreatedBy = "Home", LastModifiedBy = "Home"
 			};
-			var guest = new User("Guest", null, new PersonName("Luci", "", "Test"), null)
+			var guest = new User("Guest", null, new PersonName("Guest", "Person", "Test"), null)
 			{
 				CreatedBy = "Home", LastModifiedBy = "home"
 			};
@@ -51,42 +48,42 @@ namespace SmartHub.Infrastructure.Database
 				CreatedBy = "Home", LastModifiedBy = "Home"
 			};
 
-			if (!_userManager.Users.Any(x => x.UserName == admin.UserName))
+			if (!userManager.Users.Any(x => x.UserName == admin.UserName))
 			{
-				await _userManager.CreateAsync(admin, "Test-123");
-				await _userManager.AddToRoleAsync(admin, "Admin");
+				await userManager.CreateAsync(admin, "Test-123");
+				await userManager.AddToRoleAsync(admin, Roles.Admin.ToString());
 			}
-			if (!_userManager.Users.Any(x => x.UserName == user.UserName))
+			if (!userManager.Users.Any(x => x.UserName == user.UserName))
 			{
-				await _userManager.CreateAsync(user, "Test-123");
-				await _userManager.AddToRoleAsync(user, "User");
+				await userManager.CreateAsync(user, "Test-123");
+				await userManager.AddToRoleAsync(user, Roles.User.ToString());
 			}
-			if (!_userManager.Users.Any(x => x.UserName == guest.UserName))
+			if (!userManager.Users.Any(x => x.UserName == guest.UserName))
 			{
-				await _userManager.CreateAsync(guest, "Test-123");
-				await _userManager.AddToRoleAsync(guest, "Guest");
+				await userManager.CreateAsync(guest, "Test-123");
+				await userManager.AddToRoleAsync(guest, Roles.Guest.ToString());
 			}
 		}
 
 		private async Task SeedRoleData()
 		{
 			using var serviceScope = _scopeFactory.CreateScope();
-			_roleManager = serviceScope.ServiceProvider.GetRequiredService<RoleManager<Role>>();
-			var admin = new Role("Admin", "Admin description") {CreatedBy = "Home", LastModifiedBy = "Home"};
-			var guest = new Role("Guest", "Guest description") {CreatedBy = "Home", LastModifiedBy = "home"};
-			var user = new Role("User", "User description") {CreatedBy = "Home", LastModifiedBy = "Home"};
+			var roleManager = serviceScope.ServiceProvider.GetRequiredService<RoleManager<Role>>();
+			var admin = new Role(Roles.Admin.ToString(), "Admin description") {CreatedBy = "Home", LastModifiedBy = "Home"};
+			var guest = new Role(Roles.Guest.ToString(), "Guest description") {CreatedBy = "Home", LastModifiedBy = "home"};
+			var user = new Role(Roles.User.ToString(), "User description") {CreatedBy = "Home", LastModifiedBy = "Home"};
 
-			if (!_roleManager.Roles.Any(x => x.Name == admin.Name))
+			if (!roleManager.Roles.Any(x => x.Name == admin.Name))
 			{
-				await _roleManager.CreateAsync(admin);
+				await roleManager.CreateAsync(admin);
 			}
-			if (!_roleManager.Roles.Any(x => x.Name == user.Name))
+			if (!roleManager.Roles.Any(x => x.Name == user.Name))
 			{
-				await _roleManager.CreateAsync(user);
+				await roleManager.CreateAsync(user);
 			}
-			if (!_roleManager.Roles.Any(x => x.Name == guest.Name))
+			if (!roleManager.Roles.Any(x => x.Name == guest.Name))
 			{
-				await _roleManager.CreateAsync(guest);
+				await roleManager.CreateAsync(guest);
 			}
 		}
 	}

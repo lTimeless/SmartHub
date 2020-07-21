@@ -1,7 +1,7 @@
 ﻿using SmartHub.BasePlugin;
-using SmartHub.Domain.Entities.Plugins;
 using System.Collections.Generic;
 using System.Reflection;
+using SmartHub.Domain.Entities;
 
 namespace SmartHub.Application.UseCases.PluginAdapter.Creator
 {

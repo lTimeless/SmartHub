@@ -1,17 +1,13 @@
-﻿using IdentityServer4.EntityFramework.Options;
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Options;
-using SmartHub.Domain.Entities.Groups;
-using SmartHub.Domain.Entities.Homes;
-using SmartHub.Domain.Entities.Roles;
-using SmartHub.Domain.Entities.Users;
+using SmartHub.Domain.Entities;
 using SmartHub.Infrastructure.Database.Configurations;
 
 namespace SmartHub.Infrastructure.Database
 {
-	public class AppDbContext : KeyApiAuthorizationDbContext<User, Role, string>
+	public class AppDbContext : IdentityDbContext<User, Role, string>
 	{
-		public AppDbContext(DbContextOptions options, IOptions<OperationalStoreOptions> operationalStoreOptions) : base(options, operationalStoreOptions)
+		public AppDbContext(DbContextOptions options) : base(options)
 		{
 		}
 

@@ -11,7 +11,7 @@ using SmartHub.Application.Common.Models;
 
 namespace SmartHub.Application.UseCases.PluginAdapter.Loader
 {
-    public class PluginLoadHandler : IRequestHandler<PluginLoadCommand, ServiceResponse<string>>
+    public class PluginLoadHandler : IRequestHandler<PluginLoadCommand, Response<string>>
     {
         private readonly IPluginHostService _pluginHostService;
         private readonly ILogger _logger;
@@ -26,13 +26,13 @@ namespace SmartHub.Application.UseCases.PluginAdapter.Loader
             _pluginHostService = pluginHostService;
         }
 
-        public async Task<ServiceResponse<string>> Handle(PluginLoadCommand request, CancellationToken cancellationToken)
+        public async Task<Response<string>> Handle(PluginLoadCommand request, CancellationToken cancellationToken)
         {
             var home = await _unitOfWork.HomeRepository.GetHome();
             if (home is null)
             {
                 Log.Warning($"[{nameof(PluginLoadHandler)}] No home created");
-                return new ServiceResponse<string>(false,"No home created");
+                return Response.Fail<string>("There is no home created yet");
             }
             var setting = home.Settings.FirstOrDefault(c => c.IsActive || c.PluginPath.Contains("_private"));
 
@@ -42,13 +42,14 @@ namespace SmartHub.Application.UseCases.PluginAdapter.Loader
             if (filteredOrAllFoundPlugins.IsNullOrEmpty())
             {
                 _logger.Warning($"[{nameof(PluginLoadHandler)}] No new plugins available");
-                return new ServiceResponse<string>(false,"No new plugins available");
+                return Response.Fail<string>("No new plugins available");
             }
             var path = request.Path.IsNullOrEmpty() ? setting.PluginPath : request.Path;
 
             var pluginsLoaded = await _pluginHostService.Plugins.LoadAndAddToHomeAsync(new []{ path }, request.LoadStrategyMultiple);
-            return new ServiceResponse<string>(pluginsLoaded ? "New Plugins loaded" : "Error loading new Plugins",
-                pluginsLoaded);
+            return pluginsLoaded
+                ? Response.Ok("New Plugins loaded")
+                : Response.Fail<string>("Error: Couldn't load new Plugins");
         }
     }
 }

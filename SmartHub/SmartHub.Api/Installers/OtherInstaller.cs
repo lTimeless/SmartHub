@@ -5,6 +5,7 @@ using MediatR;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System.Reflection;
+using MediatR.Pipeline;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.ResponseCompression;
 using Polly;
@@ -43,6 +44,8 @@ namespace SmartHub.Api.Installers
 		{
 			services.AddMediatR(Assembly.Load("SmartHub.Application"));
 			services.AddTransient(typeof(IPipelineBehavior<,>), typeof(RequestPerformanceBehaviour<,>));
+			services.AddTransient(typeof(IRequestPreProcessor<>), typeof(RequestLoggerBehaviour<>));
+			services.AddTransient(typeof(IPipelineBehavior<,>), typeof(CurrentUserBehaviour<,>));
 		}
 
 		private static void ConfigureAutoMapper(IServiceCollection services)

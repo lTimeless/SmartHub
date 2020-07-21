@@ -2,6 +2,7 @@
 using System;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
+using DateTime = SmartHub.Domain.Enums.DateTime;
 
 namespace SmartHub.Application.Common.Interfaces
 {
@@ -36,7 +37,7 @@ namespace SmartHub.Application.Common.Interfaces
 		/// <param name="recurring"></param>
 		/// <param name="interval"></param>
 		/// <returns>jobId</returns>
-		Task AddRecurringJob(Expression<Action> action, DateTimeEnum recurring, int interval);
+		Task AddRecurringJob(Expression<Action> action, DateTime recurring, int interval);
 
 		/// <summary>
 		/// Updates a job
@@ -46,7 +47,7 @@ namespace SmartHub.Application.Common.Interfaces
 		/// <param name="recurring"></param>
 		/// <param name="interval"></param>
 		/// <returns></returns>
-		Task UpdateRecurringJob(string jobId, Expression<Action> action, DateTimeEnum recurring, int interval);
+		Task UpdateRecurringJob(string jobId, Expression<Action> action, DateTime recurring, int interval);
 
 		/// <summary>
 		/// Sets a job continuation

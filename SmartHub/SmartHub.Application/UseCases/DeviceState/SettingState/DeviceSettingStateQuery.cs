@@ -4,7 +4,7 @@ using SmartHub.Domain.Common;
 
 namespace SmartHub.Application.UseCases.DeviceState.SettingState
 {
-	public class DeviceSettingStateQuery : IRequest<ServiceResponse<DeviceSettingStateRequestDto>>
+	public class DeviceSettingStateQuery : IRequest<Response<DeviceSettingStateRequestDto>>
 	{
 		public DeviceSettingStateRequestDto DeviceSettingsStateDto { get; }
 

@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using SmartHub.Domain.Entities.Plugins;
+using SmartHub.Domain.Entities;
 using SmartHub.Domain.Enums;
 
 namespace SmartHub.Infrastructure.Database.Configurations
@@ -15,11 +15,11 @@ namespace SmartHub.Infrastructure.Database.Configurations
 
 			builder.HasIndex(x => x.Name).IsUnique();
 
-			builder.Property(x => x.PluginType)
-				.HasConversion<string>(new EnumToStringConverter<PluginTypeEnum>());
+			builder.Property(x => x.PluginTypes)
+				.HasConversion<string>(new EnumToStringConverter<PluginTypes>());
 
-			builder.Property(x => x.ConnectionTypeEnum)
-				.HasConversion<string>(new EnumToStringConverter<ConnectionTypeEnum>());
+			builder.Property(x => x.ConnectionTypes)
+				.HasConversion<string>(new EnumToStringConverter<ConnectionTypes>());
 
 			builder.OwnsOne(x => x.Company, c =>
 			{

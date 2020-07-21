@@ -13,23 +13,8 @@ namespace SmartHub.Api.Installers
 	{
 		public void InstallServices(IServiceCollection services, IConfiguration configuration)
 		{
-			services.AddAuthentication()
-					.AddIdentityServerJwt();
-
 			ConfigureCors(services);
 			ConfigureAuth(services, configuration);
-		}
-
-		private static void ConfigureCors(IServiceCollection services)
-		{
-			services.AddCors(options =>
-			{
-				options.AddPolicy("CorsPolicy",
-					builder => builder
-						.WithOrigins("http://localhost:8080", "http://localhost:4200")
-						.AllowAnyMethod()
-						.AllowAnyHeader());
-			});
 		}
 
 		private static void ConfigureAuth(IServiceCollection services, IConfiguration configuration)
@@ -66,6 +51,18 @@ namespace SmartHub.Api.Installers
 
 			// Handler for Authorization attribute and the "adminpolicy" on asp.net core routes
 			// services.AddSingleton<IAuthorizationHandler , UserAuthHandler>();
+		}
+
+		private static void ConfigureCors(IServiceCollection services)
+		{
+			services.AddCors(options =>
+			{
+				options.AddPolicy("CorsPolicy",
+					builder => builder
+						.WithOrigins("http://localhost:8080", "http://localhost:4200")
+						.AllowAnyMethod()
+						.AllowAnyHeader());
+			});
 		}
 	}
 }

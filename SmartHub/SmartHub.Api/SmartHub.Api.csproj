@@ -4,8 +4,8 @@
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <TypeScriptCompileBlocked>true</TypeScriptCompileBlocked>
     <TypeScriptToolsVersion>Latest</TypeScriptToolsVersion>
-    <IsPackable>true</IsPackable>
-    <SpaRoot>ClientApp\</SpaRoot>
+    <IsPackable>false</IsPackable>
+    <SpaRoot>..\SmartHub.Ui\</SpaRoot>
     <DefaultItemExcludes>$(DefaultItemExcludes);$(SpaRoot)node_modules\**</DefaultItemExcludes>
 
     <!-- Set this to true if you enable server-side prerendering -->
@@ -20,6 +20,14 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+<!--  <ItemGroup>-->
+<!--    &lt;!&ndash; Don't publish the SPA source files, but do show them in the project files list &ndash;&gt;-->
+<!--    <Content Remove="$(SpaRoot)**" />-->
+<!--    <None Remove="$(SpaRoot)**" />-->
+<!--    <None Include="$(SpaRoot)**" Exclude="$(SpaRoot)node_modules\**" />-->
+<!--  </ItemGroup>-->
+
+
   <!-- Nuget packages -->
   <ItemGroup>
     <PackageReference Include="Autofac" Version="5.2.0" />
@@ -31,7 +39,7 @@
     <PackageReference Include="Hangfire.PostgreSql" Version="1.6.4.2" />
     <PackageReference Include="MediatR" Version="8.0.1" />
     <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="8.0.0" />
-    <PackageReference Include="Microsoft.AspNetCore.ApiAuthorization.IdentityServer" Version="3.1.4" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="3.1.6" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="3.1.4" />
     <PackageReference Include="Microsoft.AspNetCore.ResponseCompression" Version="2.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.SpaServices.Extensions" Version="3.1.4" />
@@ -69,26 +77,13 @@
     <PackageReference Include="Swashbuckle.AspNetCore.Swagger" Version="5.4.1" />
   </ItemGroup>
 
-  <!-- SpaRoot -->
-  <ItemGroup>
-    <!-- Don't publish the SPA source files, but do show them in the project files list -->
-    <Content Remove="$(SpaRoot)**" />
-    <None Remove="$(SpaRoot)**" />
-    <None Include="$(SpaRoot)**" Exclude="$(SpaRoot)node_modules\**" />
-    <Content Update="smarthub.config.json">
-      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-    </Content>
-  </ItemGroup>
-
   <!-- Referenced Projects -->
   <ItemGroup>
     <ProjectReference Include="..\SmartHub.Infrastructure\SmartHub.Infrastructure.csproj" />
   </ItemGroup>
 
+  <!-- Ensure Node.js is installed and install npm packages-->
   <Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)node_modules') ">
-    <!-- Ensure Node.js is installed -->
     <Exec Command="node --version" ContinueOnError="true">
       <Output TaskParameter="ExitCode" PropertyName="ErrorCode" />
     </Exec>
@@ -100,17 +95,14 @@
   <Target Name="PublishRunWebpack" AfterTargets="ComputeFilesToPublish">
     <!-- As part of publishing, ensure the JS resources are freshly built in production mode -->
     <Exec WorkingDirectory="$(SpaRoot)" Command="npm install" />
-    <Exec WorkingDirectory="$(SpaRoot)" Command="npm run build -- --prod" />
-    <Exec WorkingDirectory="$(SpaRoot)" Command="npm run build:ssr -- --prod" Condition=" '$(BuildServerSideRenderer)' == 'true' " />
+    <Exec WorkingDirectory="$(SpaRoot)" Command="npm run build" />
 
     <!-- Include the newly-built files in the publish output -->
     <ItemGroup>
-      <DistFiles Include="$(SpaRoot)dist\**; $(SpaRoot)dist-server\**" />
-      <DistFiles Include="$(SpaRoot)node_modules\**" Condition="'$(BuildServerSideRenderer)' == 'true'" />
+      <DistFiles Include="wwwroot\**" />
       <ResolvedFileToPublish Include="@(DistFiles->'%(FullPath)')" Exclude="@(ResolvedFileToPublish)">
         <RelativePath>%(DistFiles.Identity)</RelativePath>
         <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-        <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
       </ResolvedFileToPublish>
     </ItemGroup>
   </Target>

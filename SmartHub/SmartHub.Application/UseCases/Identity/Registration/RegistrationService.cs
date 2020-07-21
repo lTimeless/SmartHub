@@ -1,27 +1,30 @@
-﻿using Microsoft.AspNetCore.Identity;
-using SmartHub.Application.Common.Exceptions;
-using SmartHub.Application.Common.Interfaces;
-using SmartHub.Domain.Entities.Users;
-using SmartHub.Domain.Entities.ValueObjects;
-using SmartHub.Domain.Enums;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Net;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Identity;
+using SmartHub.Application.Common.Exceptions;
+using SmartHub.Application.Common.Interfaces;
+using SmartHub.Application.Common.Interfaces.Repositories;
+using SmartHub.Application.Common.Utils;
+using SmartHub.Domain.Entities;
+using SmartHub.Domain.Entities.ValueObjects;
+using SmartHub.Domain.Enums;
+using DateTime = System.DateTime;
 
 namespace SmartHub.Application.UseCases.Identity.Registration
 {
 	public class RegistrationService : IRegistrationService
 	{
 		private readonly UserManager<User> _userManager;
-		private readonly ITokenGenerator _tokenGenerator;
-		private readonly IUserService _userService;
+		private readonly IUnitOfWork _unitOfWork;
+		private readonly IdentityService _identityService;
 
-		public RegistrationService(UserManager<User> userManager, ITokenGenerator tokenGenerator, IUserService userService)
+		public RegistrationService(UserManager<User> userManager, IUnitOfWork unitOfWork, IdentityService identityService)
 		{
 			_userManager = userManager;
-			_tokenGenerator = tokenGenerator;
-			_userService = userService;
+			_unitOfWork = unitOfWork;
+			_identityService = identityService;
 		}
 
 		public async Task<AuthResponseDto> RegisterAsync(RegistrationCommand userInput)
@@ -33,14 +36,11 @@ namespace SmartHub.Application.UseCases.Identity.Registration
 			}
 			var user = new User(userInput.Username, null, new PersonName("", "", ""), null);
 
-			var created = await _userService.CreateUser(user, userInput.Password, userInput.Role);
+			var created = await _unitOfWork.UserRepository.CreateUser(user, userInput.Password, userInput.Role);
 			if (created)
 			{
-				return new AuthResponseDto(_tokenGenerator.CreateJwtToken(user),
-				user.UserName,
-				new List<string> { userInput.Role },
-				DateTime.Now.AddHours(JwtExpireTimeEnum.HoursToExpire.GetValue())
-				);
+				return _identityService.CreateAuthResponse(user, new List<string> {userInput.Role});
+
 			}
 			throw new SmartHubException("Problem Registering new User");
 		}
