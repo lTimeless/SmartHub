@@ -64,6 +64,7 @@ namespace SmartHub.Api.Installers
 				var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
 				c.IncludeXmlComments(xmlPath);
 			});
+			services.AddSwaggerGenNewtonsoftSupport();
 		}
 	}
 }

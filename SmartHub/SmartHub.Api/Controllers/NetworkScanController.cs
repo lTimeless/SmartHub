@@ -11,10 +11,6 @@ namespace SmartHub.Api.Controllers
 		/// <summary>
 		/// Scans your natweork for devices
 		/// </summary>
-		/// /// <remarks>
-		/// Sample request:
-		/// GET: api/NetworkScan
-		/// </remarks>
 		/// <returns>A List of Devices connected to your home network</returns>
 		/// <response code="200">Returns connected devices</response>
 		/// <response code="400">Returns connected devices</response>

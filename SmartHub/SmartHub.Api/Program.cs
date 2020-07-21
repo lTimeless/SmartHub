@@ -1,6 +1,7 @@
 using System.Threading.Tasks;
 using Autofac.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Serilog;
@@ -23,6 +24,7 @@ namespace SmartHub.Api
 
 		private static IHostBuilder CreateHostBuilder(string[] args) =>
 			Host.CreateDefaultBuilder(args)
+				// .ConfigureAppConfiguration(b => b.AddCommandLine(args))
 				.ConfigureWebHostDefaults(webBuilder =>
 				{
 					webBuilder.UseKestrel();

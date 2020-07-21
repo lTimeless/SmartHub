@@ -7,8 +7,8 @@ namespace SmartHub.Application.UseCases.Identity.Registration
 {
 	public class RegistrationCommand : IRequest<Response<AuthResponseDto>>
 	{
-		public string Username { get; }
-		public string Password { get; }
+		public string Username { get; set; }
+		public string Password { get; set; }
 		public string Role { get; }
 
 		public RegistrationCommand(string username, string password, string role)

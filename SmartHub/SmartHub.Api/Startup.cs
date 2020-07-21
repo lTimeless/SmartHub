@@ -87,6 +87,7 @@ namespace SmartHub.Api
 			app.ConfigureCustomExceptionMiddleware();
 
 			app.UseHttpsRedirection();
+			app.UseStaticFiles();
 			app.UseSpaStaticFiles();
 
 			// Swagger

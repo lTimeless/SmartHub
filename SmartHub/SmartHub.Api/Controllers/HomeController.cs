@@ -42,10 +42,8 @@ namespace SmartHub.Api.Controllers
 		/// <param name="value"></param>
 		/// <returns>A newly created Home and default Setting Object</returns>
 		/// <response code="201">Returns the newly created item</response>
-		/// <response code="400">If the item is null</response>
 		[HttpPost]
 		[ProducesResponseType(StatusCodes.Status200OK)]
-		[ProducesResponseType(StatusCodes.Status400BadRequest)]
 		[ProducesResponseType(StatusCodes.Status401Unauthorized)]
 		public async Task<IActionResult> Post([FromBody] HomeCreateCommand value)
 		{
