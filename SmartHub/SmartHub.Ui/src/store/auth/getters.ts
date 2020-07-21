@@ -3,13 +3,13 @@ import { AuthResponse } from '@/types/types';
 import { RootState, AuthState } from '@/store/index.types';
 
 export const getters: GetterTree<AuthState, RootState> = {
-  getRole(state): string[] | undefined {
+  getRole(state: AuthState): string[] | undefined {
     return state.authResponse?.roles;
   },
-  getAuthResponse(state): AuthResponse | null {
+  getAuthResponse(state: AuthState): AuthResponse | null {
     return state.authResponse;
   },
-  getRegStepIndex(state): number {
+  getRegStepIndex(state: AuthState): number {
     return state.regStepIndex;
   }
 };

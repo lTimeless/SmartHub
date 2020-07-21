@@ -11,10 +11,5 @@ namespace SmartHub.Application.UseCases.Entity.Homes
     {
         public List<SettingDto> Settings { get; set; }
         public List<UserDto> Users { get; set; }
-
-        // public List<GroupDto> Groups { get; internal set; }
-        // public List<PluginDto> Plugins { get; internal set; }
-        // public List<DeviceDto> Devices { get; internal set; }
-
     }
 }

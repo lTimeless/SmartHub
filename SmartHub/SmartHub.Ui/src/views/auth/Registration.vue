@@ -273,11 +273,20 @@ import Component from 'vue-class-component';
 import Vue from 'vue';
 import { InputMessage } from 'vuetify';
 import { CREATE_HOME, FETCH_HOME, UPDATE_HOME } from '@/store/home/actions';
-import { AuthResponse, Home, HomeCreateRequest, HomeUpdateRequest, RegistrationRequest } from '@/types/types';
+import {
+  AuthResponse,
+  Home,
+  HomeCreateRequest,
+  HomeUpdateRequest,
+  RegistrationRequest,
+  ServerResponse
+} from '@/types/types';
 import { REGISTRATION } from '@/store/auth/actions';
 import router from '@/router';
 import { Getter } from 'vuex-class';
 import { AUTH_USER, UPDATE_REG_STEP } from '@/store/auth/mutations';
+import { AxiosResponse } from 'axios';
+import { clearStorage, storeAuthResponse, storeToken } from '@/services/auth/tokenService';
 
 @Component
 export default class Registration extends Vue {
@@ -315,7 +324,7 @@ export default class Registration extends Vue {
   // eslint-disable-next-line class-methods-use-this
   mounted() {
     this.$store.commit(UPDATE_REG_STEP, 1);
-    localStorage.removeItem('authResponse');
+    clearStorage();
   }
 
   get finalHome() {
@@ -350,22 +359,25 @@ export default class Registration extends Vue {
   onRegistrationClick = async () => {
     await this.$store
       .dispatch(REGISTRATION, this.registrationRequest)
-      .then(async (response) => {
-        localStorage.setItem('authResponse', JSON.stringify(response.data.data));
-        await this.$store.commit(AUTH_USER, response.data.data);
-        if (this.getHome === null) {
-          await this.$store.dispatch(CREATE_HOME, this.homeCreateRequest);
-        } else {
+      .then(async (response: AxiosResponse<ServerResponse<AuthResponse>>) => {
+        if (response.data.success) {
           const auth = response.data.data as AuthResponse;
-          const updateHomeRequest: HomeUpdateRequest = {
-            name: null,
-            description: null,
-            settingName: null,
-            userName: auth.userName
-          };
-          await this.$store.dispatch(UPDATE_HOME, updateHomeRequest);
+          storeToken(auth.token);
+          storeAuthResponse(auth);
+          await this.$store.commit(AUTH_USER, auth);
+          if (this.getHome === null) {
+            await this.$store.dispatch(CREATE_HOME, this.homeCreateRequest);
+          } else {
+            const updateHomeRequest: HomeUpdateRequest = {
+              name: null,
+              description: null,
+              settingName: null,
+              userName: auth.userName
+            };
+            await this.$store.dispatch(UPDATE_HOME, updateHomeRequest);
+          }
+          await router.push('/');
         }
-        await router.push('/');
       })
       .catch((error) => {
         console.log(error);

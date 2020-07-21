@@ -1,20 +1,20 @@
 import { AuthResponse } from '@/types/types';
+import store from '@/store/index';
 
 type AuthType = { isAdmin: boolean; isUser: boolean; isGuest: boolean };
 
-export const userAuth = (): AuthType => {
-  const localStorageLoginResponse = localStorage.getItem('authResponse');
-  if (localStorageLoginResponse == null) {
+export const getUserRole = (): AuthType => {
+  const authResponse = store.getters.getAuthResponse as AuthResponse;
+  if (authResponse == null) {
     return { isAdmin: false, isUser: false, isGuest: false };
   }
-  const loginResponse = JSON.parse(localStorageLoginResponse) as AuthResponse;
-  if (loginResponse.roles.includes('Admin')) {
+  if (authResponse.roles.includes('Admin')) {
     return { isAdmin: true, isUser: false, isGuest: false };
   }
-  if (loginResponse.roles.includes('User')) {
+  if (authResponse.roles.includes('User')) {
     return { isAdmin: false, isUser: true, isGuest: false };
   }
-  if (loginResponse.roles.includes('Guest')) {
+  if (authResponse.roles.includes('Guest')) {
     return { isAdmin: false, isUser: false, isGuest: true };
   }
   return { isAdmin: false, isUser: false, isGuest: false };

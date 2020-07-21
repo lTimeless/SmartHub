@@ -7,18 +7,18 @@ using SmartHub.Domain.Enums;
 
 namespace SmartHub.Domain.Entities
 {
-	public partial class Home : BaseEntity, IAggregateRoot
+	public class Home : BaseEntity, IAggregateRoot
 	{
-		public virtual List<User> Users { get; internal set; }
-		public virtual List<Group> Groups { get; internal set; }
+		public virtual List<User> Users { get; protected set; }
+		public virtual List<Group> Groups { get; protected set; }
 
-		public virtual List<Plugin> Plugins { get; internal set; } // make it so that all plugins will be saved for backup /restore etc.
+		public virtual List<Plugin> Plugins { get; protected set; } // make it so that all plugins will be saved for backup /restore etc.
 
-		public virtual List<Device> Devices { get; internal set; }
+		public virtual List<Device> Devices { get; protected set; }
 
-		public virtual List<Setting> Settings { get; internal set; }
+		public virtual List<Setting> Settings { get; protected set; }
 
-		public virtual Address Address { get; set; }
+		public virtual Address Address { get; }
 		public virtual List<IDomainEvent> Events { get; set; }
 
 		protected Home()
@@ -69,7 +69,7 @@ namespace SmartHub.Domain.Entities
 		{
 			if (Groups is null)
 			{
-				Groups = new List<Group>() { group };
+				Groups = new List<Group> { group };
 			}
 			else
 			{
@@ -82,7 +82,7 @@ namespace SmartHub.Domain.Entities
 		{
 			if (Settings is null)
 			{
-				Settings = new List<Setting>() { setting };
+				Settings = new List<Setting> { setting };
 			}
 			else
 			{
@@ -101,7 +101,7 @@ namespace SmartHub.Domain.Entities
 
 			if (Settings is null)
 			{
-				Settings = new List<Setting>() { setting };
+				Settings = new List<Setting> { setting };
 			}
 			else
 			{
@@ -135,7 +135,7 @@ namespace SmartHub.Domain.Entities
 		{
 			if (Devices == null)
 			{
-				Devices = new List<Device>() { device };
+				Devices = new List<Device> { device };
 			}
 			else
 			{
@@ -148,10 +148,7 @@ namespace SmartHub.Domain.Entities
 		{
 			if (device != null)
 			{
-				if (Devices != null)
-				{
-					Devices.Remove(device);
-				}
+				Devices?.Remove(device);
 			}
 			else if (string.IsNullOrEmpty(deviceName))
 			{

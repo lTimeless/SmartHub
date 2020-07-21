@@ -1,5 +1,5 @@
 // ServiceResponse
-export interface Response<T> {
+export interface ServerResponse<T> {
   data: T | null;
   success: boolean;
   message: string;

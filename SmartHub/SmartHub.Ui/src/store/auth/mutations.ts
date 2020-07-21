@@ -7,10 +7,10 @@ export const AUTH_USER = 'AUTH_USER';
 export const UPDATE_REG_STEP = 'UPDATE_REG_STEP';
 
 export const mutations: MutationTree<AuthState> = {
-  [AUTH_USER](state, payload: AuthResponse) {
+  [AUTH_USER](state: AuthState, payload: AuthResponse) {
     state.authResponse = payload;
   },
-  [UPDATE_REG_STEP](state, payload: number) {
+  [UPDATE_REG_STEP](state: AuthState, payload: number) {
     state.regStepIndex = payload;
   }
 };

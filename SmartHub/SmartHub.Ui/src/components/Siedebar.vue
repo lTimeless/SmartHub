@@ -163,8 +163,9 @@
 import Vue from 'vue';
 import Component from 'vue-class-component';
 import { Prop } from 'vue-property-decorator';
-import { userAuth } from '@/services/auth/user';
+import { clearStorage } from '@/services/auth/tokenService';
 import router from '@/router';
+import { getUserRole } from '@/services/auth/userAuthService';
 
 @Component
 export default class Siedebar extends Vue {
@@ -209,14 +210,14 @@ export default class Siedebar extends Vue {
   }
 
   mounted() {
-    const { isAdmin, isUser, isGuest } = userAuth();
+    const { isAdmin, isUser, isGuest } = getUserRole();
     this.isAdmin = isAdmin;
     this.isGuest = isGuest;
     this.isUser = isUser;
   }
 
   logout = () => {
-    localStorage.removeItem('authResponse');
+    clearStorage();
     router.push('Login');
   };
 }

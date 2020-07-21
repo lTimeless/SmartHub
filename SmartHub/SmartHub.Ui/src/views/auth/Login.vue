@@ -96,9 +96,9 @@ export default class Login extends Vue {
       password: this.password
     };
     await this.$store.dispatch(LOGIN, login);
-    const { userName, token } = this.$store.getters.getAuthResponse;
+    const { token } = this.$store.getters.getAuthResponse;
     this.message = '';
-    if (userName === null || token == null) {
+    if (token == null) {
       this.messageClass = 'error--text';
       this.message = 'Error: Something went wrong, try again later';
     }

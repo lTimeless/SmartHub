@@ -1,5 +1,5 @@
 import { NavigationGuardNext, Route } from 'vue-router';
-import { AuthResponse } from '@/types/types';
+import { getAuthResponse, isAuthenticated } from '@/services/auth/tokenService';
 
 const validateUserRoleToRoute = (to: Route, roles: string[], next: NavigationGuardNext) => {
   if (to.matched.some((record) => record.meta.isAdmin)) {
@@ -25,15 +25,16 @@ const validateUserRoleToRoute = (to: Route, roles: string[], next: NavigationGua
 
 export const routeAuthGuard = (to: Route, from: Route, next: NavigationGuardNext) => {
   if (to.matched.some((record) => record.meta.requiresAuth)) {
-    const loginResponseLocalStorage = localStorage.getItem('authResponse');
-    if (loginResponseLocalStorage === null) {
+    if (!isAuthenticated()) {
       next({ name: 'Login' });
     } else {
-      const loginResponse = JSON.parse(loginResponseLocalStorage) as AuthResponse;
-      if (loginResponse === null) {
+      // TODO: anstatt den authresponse zu nehmen un die rollen zu prüfen
+      // vlt den token nehmen ans BE schicken- prüfen lassen und darauf dann userberechtigungen bekommen
+      const authResponse = getAuthResponse();
+      if (authResponse === null) {
         next({ name: 'Login' });
       } else {
-        validateUserRoleToRoute(to, loginResponse.roles, next);
+        validateUserRoleToRoute(to, authResponse.roles, next);
       }
     }
   } else {

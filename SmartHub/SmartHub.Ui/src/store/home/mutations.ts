@@ -6,7 +6,7 @@ import { HomeState } from '@/store/index.types';
 export const UPDATE_HOME = 'UPDATE_HOME';
 
 export const mutations: MutationTree<HomeState> = {
-  [UPDATE_HOME](state, payload: Home) {
+  [UPDATE_HOME](state: HomeState, payload: Home) {
     state.home = payload;
   }
 };
