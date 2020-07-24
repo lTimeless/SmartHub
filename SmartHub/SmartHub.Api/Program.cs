@@ -47,7 +47,7 @@ namespace SmartHub.Api
 					loggerConfig
 						.ReadFrom.Configuration(hostingContext.Configuration)
 						.Enrich.FromLogContext()
-						.WriteTo.SignalrSink(LogEventLevel.Debug, service );
+						.WriteTo.SignalrSink<LogHub, IServerHub>(LogEventLevel.Debug, service );
 				})
 				.ConfigureLogging((_, config) => config.ClearProviders());
 	}
