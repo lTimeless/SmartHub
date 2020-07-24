@@ -286,7 +286,7 @@ import router from '@/router';
 import { Getter } from 'vuex-class';
 import { AUTH_USER, UPDATE_REG_STEP } from '@/store/auth/mutations';
 import { AxiosResponse } from 'axios';
-import { clearStorage, storeAuthResponse, storeToken } from '@/services/auth/tokenService';
+import { clearStorage, storeAuthResponse, storeToken } from '@/services/auth/authService';
 
 @Component
 export default class Registration extends Vue {

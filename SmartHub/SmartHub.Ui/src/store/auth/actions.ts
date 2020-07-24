@@ -3,7 +3,7 @@ import { LoginRequest, AuthResponse, RegistrationRequest, ServerResponse } from 
 import Vue from 'vue';
 import { RootState, AuthState } from '@/store/index.types';
 import { AUTH_USER } from '@/store/auth/mutations';
-import { storeAuthResponse, storeToken } from '@/services/auth/tokenService';
+import { storeAuthResponse, storeToken } from '@/services/auth/authService';
 
 // ActionType keys
 export const LOGIN = 'LOGIN';

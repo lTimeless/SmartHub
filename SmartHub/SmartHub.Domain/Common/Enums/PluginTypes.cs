@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace SmartHub.Domain.Enums
+namespace SmartHub.Domain.Common.Enums
 {
 	[Flags]
 	public enum PluginTypes
@@ -12,7 +12,7 @@ namespace SmartHub.Domain.Enums
 		Light = 8,
 		Ht = 16, // humidity and temperature sensor
 		Sensor = 32, //  default if it is not defined
-		Rgb = 64, // red green blue
+		Rgb = 64 // red green blue
 
 	}
 }

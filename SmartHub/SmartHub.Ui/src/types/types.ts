@@ -6,6 +6,20 @@ export interface ServerResponse<T> {
   errors: string[];
 }
 
+export interface ServerEvent {
+  id: string;
+  eventType: string;
+  data: object;
+}
+
+export interface ServerLog {
+  id: string;
+  dateTime: string;
+  level: string;
+  message: string;
+  exception: string;
+}
+
 // Auth
 export interface AuthResponse {
   token: string;

@@ -6,8 +6,8 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 using SmartHub.Application.Common.Interfaces.Repositories;
+using SmartHub.Domain.Common.Enums;
 using SmartHub.Domain.Entities;
-using SmartHub.Domain.Enums;
 
 namespace SmartHub.Infrastructure.Database
 {

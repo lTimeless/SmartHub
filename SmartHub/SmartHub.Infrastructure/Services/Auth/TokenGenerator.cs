@@ -1,7 +1,6 @@
 ﻿using SmartHub.Application.Common.Exceptions;
 using SmartHub.Application.Common.Interfaces;
 using SmartHub.Domain.Common.Settings;
-using SmartHub.Domain.Enums;
 using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
@@ -10,6 +9,7 @@ using System.Security.Cryptography;
 using System.Text;
 using Microsoft.IdentityModel.Tokens;
 using SmartHub.Application.Common.Utils;
+using SmartHub.Domain.Common.Enums;
 using SmartHub.Domain.Entities;
 
 namespace SmartHub.Infrastructure.Services.Auth

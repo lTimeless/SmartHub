@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Serilog;
 
 namespace SmartHub.Api.Installers
 {
@@ -12,6 +13,7 @@ namespace SmartHub.Api.Installers
 			{
 				options.RootPath = "wwwroot";
 			});
+
 		}
 	}
 }

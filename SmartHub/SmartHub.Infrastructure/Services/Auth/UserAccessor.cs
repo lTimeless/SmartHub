@@ -1,8 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using SmartHub.Application.Common.Interfaces;
-using System.Linq;
 using System.Security.Claims;
-using SmartHub.Domain.Enums;
+using SmartHub.Domain.Common.Enums;
 
 namespace SmartHub.Infrastructure.Services.Auth
 {

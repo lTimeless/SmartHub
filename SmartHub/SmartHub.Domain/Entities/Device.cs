@@ -1,5 +1,5 @@
-﻿using SmartHub.Domain.Entities.Devices;
-using SmartHub.Domain.Enums;
+﻿using SmartHub.Domain.Common.Enums;
+using SmartHub.Domain.Entities.Devices;
 
 namespace SmartHub.Domain.Entities
 {

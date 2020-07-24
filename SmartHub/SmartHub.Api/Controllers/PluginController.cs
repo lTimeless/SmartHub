@@ -2,7 +2,7 @@
 using SmartHub.Application.UseCases.PluginAdapter.Finder;
 using SmartHub.Application.UseCases.PluginAdapter.Loader;
 using System.Threading.Tasks;
-using SmartHub.Domain.Enums;
+using SmartHub.Domain.Common.Enums;
 
 namespace SmartHub.Api.Controllers
 {

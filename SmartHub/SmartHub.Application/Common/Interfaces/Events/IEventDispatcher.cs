@@ -1,6 +1,10 @@
-﻿namespace SmartHub.Application.Common.Interfaces.Events
+﻿
+using System;
+using Microsoft.Extensions.Hosting;
+
+namespace SmartHub.Application.Common.Interfaces.Events
 {
-	public interface IEventDispatcher : IInitialize
+	public interface IEventDispatcher : IInitialize, IHostedService, IDisposable
 	{
 	}
 }

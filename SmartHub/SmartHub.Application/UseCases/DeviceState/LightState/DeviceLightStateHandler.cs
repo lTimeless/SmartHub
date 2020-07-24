@@ -9,7 +9,7 @@ using SmartHub.Application.Common.Interfaces.Repositories;
 using SmartHub.Application.Common.Models;
 using SmartHub.Application.UseCases.PluginAdapter.Host;
 using SmartHub.Application.UseCases.PluginAdapter.Util;
-using SmartHub.Domain.Enums;
+using SmartHub.Domain.Common.Enums;
 
 namespace SmartHub.Application.UseCases.DeviceState.LightState
 {

@@ -1,9 +1,9 @@
 ﻿using SmartHub.BasePlugin;
-using SmartHub.Domain.Enums;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using SmartHub.Domain.Common.Enums;
 
 namespace SmartHub.Application.UseCases.PluginAdapter.Util
 {
@@ -27,7 +27,7 @@ namespace SmartHub.Application.UseCases.PluginAdapter.Util
 				nameof(PluginTypes.Ht) => PluginTypes.Ht,
 				nameof(PluginTypes.Sensor) => PluginTypes.Sensor,
 				nameof(PluginTypes.Rgb) => PluginTypes.Rgb,
-				_ => PluginTypes.None,
+				_ => PluginTypes.None
 			};
 		}
 

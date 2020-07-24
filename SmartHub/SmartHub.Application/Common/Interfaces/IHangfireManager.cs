@@ -1,8 +1,7 @@
-﻿using SmartHub.Domain.Enums;
-using System;
+﻿using System;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
-using DateTime = SmartHub.Domain.Enums.DateTime;
+using DateTime = SmartHub.Domain.Common.Enums.DateTime;
 
 namespace SmartHub.Application.Common.Interfaces
 {

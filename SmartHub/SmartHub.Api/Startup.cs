@@ -8,6 +8,8 @@ using Serilog;
 using SmartHub.Api.Extensions;
 using SmartHub.Infrastructure.Database;
 using System.IO;
+using Microsoft.Extensions.Options;
+using SmartHub.Application.UseCases.SignalR;
 using SmartHub.Domain.Common.Settings;
 
 namespace SmartHub.Api
@@ -15,17 +17,18 @@ namespace SmartHub.Api
 	public class Startup
 	{
 		public IConfiguration Configuration { get; }
-		private IHostEnvironment AppEnvironment { get; set; }
-		public Startup(IHostEnvironment env)
+		private IHostEnvironment AppEnvironment { get; }
+		public Startup(IHostEnvironment env, IConfiguration configuration)
 		{
 			var builder = new ConfigurationBuilder()
-							.SetBasePath(Directory.GetCurrentDirectory())
-							.AddJsonFile("Properties/launchSettings.json", optional: true)
-							.AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
-							.AddJsonFile("appsettings.Development.json", optional: true, reloadOnChange: true)
-							.AddJsonFile("appsettings.Production.json", optional: true)
-							.AddJsonFile("smartHub.config.json", optional: false)
-							.AddEnvironmentVariables();
+					.AddConfiguration(configuration)
+					.SetBasePath(Directory.GetCurrentDirectory())
+					.AddJsonFile("Properties/launchSettings.json", optional: true)
+					.AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
+					.AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true, reloadOnChange: true)
+					.AddJsonFile("smartHub.config.json", optional: false)
+					;
+
 			if (env.IsDevelopment())
 			{
 				builder.AddUserSecrets<Startup>();
@@ -110,6 +113,9 @@ namespace SmartHub.Api
 				endpoints.MapControllerRoute(
 					name: "default",
 					pattern: "{controller}/{action=Index}/{id?}");
+
+				endpoints.MapHub<EventHub>("/api/hub");
+				endpoints.MapHub<LogHub>("/api/hub/logs");
 			});
 
 			app.UseSpa(spa =>
@@ -119,8 +125,9 @@ namespace SmartHub.Api
 
 				spa.Options.SourcePath = "wwwroot";
 
-				if (env.IsDevelopment())
+				if (!Configuration.GetValue<bool>("Use_Staticfiles_DEV"))
 				{
+					Log.Warning("Not serving frontend from staticfiles");
 					// Start seperate FE server and Server listens to it
 					 spa.UseProxyToSpaDevelopmentServer("http://localhost:8080");
 					// To start its own FE server

@@ -1,14 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace SmartHub.Domain.Enums
+﻿namespace SmartHub.Domain.Common.Enums
 {
 	public enum JwtExpireTime
 	{
 		HoursToExpire = 2,
 		DaysToExpire = 7,
-		MonthToExpire = 6,
+		MonthToExpire = 6
 	}
 
 	public static class JwtExpireTimeEnumExtension

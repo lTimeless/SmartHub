@@ -1,5 +1,4 @@
-﻿using EnvironmentName = Microsoft.Extensions.Hosting.EnvironmentName;
-
+﻿
 namespace SmartHub.Domain.Common.Settings
 {
     public class ApplicationSettings
@@ -10,6 +9,5 @@ namespace SmartHub.Domain.Common.Settings
         public string FolderName { get; set; }
         public string DefaultPluginFolderName { get; set; }
         public string DefaultName { get; set; }
-
     }
 }

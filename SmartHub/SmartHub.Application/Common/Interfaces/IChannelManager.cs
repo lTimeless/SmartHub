@@ -1,41 +1,37 @@
-﻿using SmartHub.Domain.Enums;
-using System;
+﻿using System;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Hosting;
+using SmartHub.Domain.Common.Enums;
+using SmartHub.Domain.DomainEvents;
 
 namespace SmartHub.Application.Common.Interfaces
 {
-	public interface IChannelManager
+	public interface IChannelManager : IInitialize, IHostedService, IDisposable
 	{
 		/// <summary>
 		/// Gets the given Channel observable
 		/// if channel does not exists it will create a new channel
 		/// </summary>
-		/// <param name="channelName"></param>
+		/// <param name="eventType"></param>
 		/// <returns></returns>
-		public IObservable<object> GetChannel(ChannelEvent channelName);
-
-		/// <summary>
-		/// Creates a new channel with given name
-		/// </summary>
-		/// <param name="channelName"></param>
-		public Task AddChannel(ChannelEvent channelName);
+		public IObservable<IEvent> GetChannel(EventTypes eventType);
 
 		/// <summary>
 		/// Publish object to the channel
 		/// </summary>
-		/// <param name="channelName"></param>
+		/// <param name="eventType"></param>
 		/// <param name="message">any object</param>
-		public Task PublishNextToChannel<T>(ChannelEvent channelName, T message);
+		public Task PublishNextToChannel(EventTypes eventType, IEvent message);
 
-		public Task PublishErrorToChannel(ChannelEvent channelName, Exception exception);
+		public Task PublishErrorToChannel(EventTypes eventType, Exception exception);
 
-		public Task PublishCompleteToChannel(ChannelEvent channelName);
+		public Task PublishCompleteToChannel(EventTypes eventType);
 
 		/// <summary>
 		/// Removes given channel
 		/// </summary>
-		/// <param name="channelName"></param>
-		public Task RemoveChannel(ChannelEvent channelName);
+		/// <param name="eventType"></param>
+		public Task RemoveChannel(EventTypes eventType);
 
 		/// <summary>
 		/// Clears all channels

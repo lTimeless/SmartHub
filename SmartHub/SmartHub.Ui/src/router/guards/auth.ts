@@ -1,5 +1,5 @@
 import { NavigationGuardNext, Route } from 'vue-router';
-import { getAuthResponse, isAuthenticated } from '@/services/auth/tokenService';
+import { getAuthResponse, isAuthenticated } from '@/services/auth/authService';
 
 const validateUserRoleToRoute = (to: Route, roles: string[], next: NavigationGuardNext) => {
   if (to.matched.some((record) => record.meta.isAdmin)) {
