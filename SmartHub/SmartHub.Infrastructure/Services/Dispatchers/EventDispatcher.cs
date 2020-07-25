@@ -57,7 +57,10 @@ namespace SmartHub.Infrastructure.Services.Dispatchers
 
 		private void Dispatch(IEvent baseEvent)
 		{
-			if (baseEvent == null) return;
+			if (baseEvent == null)
+			{
+				return;
+			}
 			_hubContext.Clients.All.SendEvent(baseEvent);
 			switch (baseEvent.EventType)
 			{
