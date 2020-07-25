@@ -11,6 +11,7 @@ using DateTime = System.DateTime;
 
 namespace SmartHub.Application.UseCases.Identity.Login
 {
+	/// <inheritdoc cref="ILoginService"/>
 	public class LoginService : ILoginService
 	{
 		private readonly UserManager<User> _userManager;
@@ -26,6 +27,7 @@ namespace SmartHub.Application.UseCases.Identity.Login
 			_identityService = identityService;
 		}
 
+		/// <inheritdoc cref="ILoginService.LoginAsync"/>
 		public async Task<AuthResponseDto> LoginAsync(LoginQuery userInput)
 		{
 			var foundUser = await _userManager.FindByNameAsync(userInput.UserName);

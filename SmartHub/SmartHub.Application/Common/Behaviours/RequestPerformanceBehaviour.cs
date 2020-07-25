@@ -25,7 +25,6 @@ namespace SmartHub.Application.Common.Behaviours
             _timer.Start();
             var response = await next();
             _timer.Stop();
-
             if (_timer.ElapsedMilliseconds > 500)
             {
                 var name = typeof(TRequest).Name;

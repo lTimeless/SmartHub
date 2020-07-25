@@ -26,7 +26,7 @@ export default class Logs extends Vue {
   itemsPerPage = 12;
   connectionEstablished = false;
   headers = [
-    { text: 'Timestamp', sortable: true, value: 'dateTime' },
+    { text: 'Timestamp', sortable: true, value: 'timestamp' },
     { text: 'Level', sortable: true, value: 'level' },
     { text: 'Message', sortable: false, value: 'message' },
     { text: 'Exception', sortable: false, value: 'exception' }
@@ -48,7 +48,8 @@ export default class Logs extends Vue {
       .start()
       .then(() => {
         this.connectionEstablished = true;
-        this.connection.on('SendLog', (data: ServerLog) => {
+        this.connection.on('SendLogAsObject', (data: any) => {
+          console.log(data);
           this.eventsDictionary.push(data);
         });
       })

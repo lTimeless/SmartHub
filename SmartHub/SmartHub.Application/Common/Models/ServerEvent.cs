@@ -2,6 +2,9 @@
 
 namespace SmartHub.Application.Common.Models
 {
+    /// <summary>
+    /// The Model for sending Events over SignalR to the clients
+    /// </summary>
     public class ServerEvent
     {
         public string Id { get; }

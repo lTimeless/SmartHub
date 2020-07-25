@@ -26,8 +26,7 @@ namespace SmartHub.Application.UseCases.AppStartup
 
 		public async Task StartAsync(CancellationToken cancellationToken)
 		{
-			//StartHangfireJobs();
-			await _hangfireManager.Init().ConfigureAwait(false);
+			// StartHangfireJobs();
 			await _homeFolderService.Init().ConfigureAwait(false);
 			await StartLoadPlugins().ConfigureAwait(false);
 		}

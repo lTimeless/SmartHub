@@ -5,7 +5,10 @@ using DateTime = SmartHub.Domain.Common.Enums.DateTime;
 
 namespace SmartHub.Application.Common.Interfaces
 {
-	public interface IHangfireDispatcher : IInitialize
+	/// <summary>
+	/// This Service handles all hangfire jobs
+	/// </summary>
+	public interface IHangfireDispatcher
 	{
 		/// <summary>
 		/// Adds an action

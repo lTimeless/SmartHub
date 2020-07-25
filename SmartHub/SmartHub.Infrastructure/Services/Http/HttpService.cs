@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 
 namespace SmartHub.Infrastructure.Services.Http
 {
+	/// <inheritdoc cref="IHttpService"/>
 	public class HttpService : IHttpService
 	{
 		private readonly HttpClient _httpClient;
@@ -13,6 +14,7 @@ namespace SmartHub.Infrastructure.Services.Http
 			_httpClient = clientFactory.CreateClient("SmartDevices");
 		}
 
+		/// <inheritdoc cref="IHttpService.SendAsync"/>
 		public async Task<bool> SendAsync(string ipAddress, string query)
 		{
 			var uri = new UriBuilder
@@ -27,16 +29,19 @@ namespace SmartHub.Infrastructure.Services.Http
 			return response.IsSuccessStatusCode;
 		}
 
+		/// <inheritdoc cref="IHttpService.GetAsync"/>
 		public Task GetAsync(string ipAddress, string query)
 		{
 			throw new System.NotImplementedException();
 		}
 
+		/// <inheritdoc cref="IHttpService.PostAsync"/>
 		public Task PostAsync(string ipAddress, string query)
 		{
 			throw new System.NotImplementedException();
 		}
 
+		/// <inheritdoc cref="IHttpService.PutAsync"/>
 		public Task PutAsync(string ipAddress, string query)
 		{
 			throw new System.NotImplementedException();

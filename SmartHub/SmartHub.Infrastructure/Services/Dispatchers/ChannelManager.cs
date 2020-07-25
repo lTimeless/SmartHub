@@ -10,18 +10,15 @@ using SmartHub.Domain.DomainEvents;
 
 namespace SmartHub.Infrastructure.Services.Dispatchers
 {
+	/// <inheritdoc cref="IChannelManager"/>
 	public class ChannelManager : IChannelManager
 	{
 		private Dictionary<EventTypes, Subject<IEvent>> ChannelMessageDictionary { get; set; }
 
-		public ChannelManager()
-		{
-		}
-
 		public async Task StartAsync(CancellationToken cancellationToken)
 		{
 			Log.Information("[ChannelManager] ChannelManager started in background");
-			await Init();
+			await Init().ConfigureAwait(false);
 		}
 
 		public Task StopAsync(CancellationToken cancellationToken)
@@ -31,7 +28,7 @@ namespace SmartHub.Infrastructure.Services.Dispatchers
 			return Task.CompletedTask;
 		}
 
-		private Task Init()
+		public Task Init()
 		{
 			ChannelMessageDictionary = new Dictionary<EventTypes, Subject<IEvent>>();
 
@@ -104,17 +101,15 @@ namespace SmartHub.Infrastructure.Services.Dispatchers
 			return Task.CompletedTask;
 		}
 
-		private Task AddChannel(EventTypes eventType)
+		private void AddChannel(EventTypes eventType)
 		{
 			if (ChannelMessageDictionary.ContainsKey(eventType))
 			{
-				return Task.CompletedTask;
+				return;
 			}
-
 			var newChannel = new Subject<IEvent>();
 			ChannelMessageDictionary.Add(eventType, newChannel);
 			Log.Information($"[{nameof(AddChannel)}] Added new channel => {eventType}");
-			return Task.CompletedTask;
 		}
 	}
 }

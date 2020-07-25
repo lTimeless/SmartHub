@@ -5,6 +5,10 @@ using SmartHub.Domain.Entities;
 
 namespace SmartHub.Application.UseCases.PluginAdapter.Loader
 {
+	/// <summary>
+	/// Service for loading Plugins
+	/// </summary>
+	/// <typeparam name="T">The type to load.</typeparam>
 	public interface IPluginLoadService<T> where T : class
 	{
 		/// <summary>

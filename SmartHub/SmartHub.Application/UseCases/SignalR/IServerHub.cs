@@ -1,16 +1,19 @@
 ﻿using System.Threading.Tasks;
-using SmartHub.Application.Common.Models;
+using Serilog.Sinks.AspNetCore.SignalR.Interfaces;
 using SmartHub.Domain.DomainEvents;
 
 namespace SmartHub.Application.UseCases.SignalR
 {
     // Diese Funktionen werden vom Server aufgerufen um Daten an den Client zu schicken
     // im client mit: connection.on("<SendMessage>",data);
-    public interface IServerHub
+    public interface IServerHub : IHub
     {
-        Task SendAsString(string eventMessage);
+        /// <summary>
+        /// Sends an event to the clients
+        /// </summary>
+        /// <param name="eventObject">The event to send.</param>
+        /// <returns>Task.</returns>
         Task SendEvent(IEvent eventObject);
 
-        Task SendLog(ServerLog serverLog);
     }
 }

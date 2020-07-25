@@ -9,20 +9,25 @@ namespace SmartHub.Application.Common.Interfaces
 	public interface IChannelManager : IInitialize, IHostedService, IDisposable
 	{
 		/// <summary>
-		/// Gets the given Channel observable
-		/// if channel does not exists it will create a new channel
+		/// Gets the given Channel observable.
+		/// if channel does not exists it will create a new channel.
 		/// </summary>
-		/// <param name="eventType"></param>
+		/// <param name="eventType">The channel eventType.</param>
 		/// <returns></returns>
 		public IObservable<IEvent> GetChannel(EventTypes eventType);
 
 		/// <summary>
-		/// Publish object to the channel
+		/// Publishes an object to the channel.
 		/// </summary>
-		/// <param name="eventType"></param>
-		/// <param name="message">any object</param>
+		/// <param name="eventType">The channel eventType.</param>
+		/// <param name="message">Any event object.</param>
 		public Task PublishNextToChannel(EventTypes eventType, IEvent message);
 
+		/// <summary>
+		/// Publishes an error to the channel.
+		/// </summary>
+		/// <param name="eventType">The channel eventType.</param>
+		/// <param name="exception">Any exception that gets throws during the subscription.</param>
 		public Task PublishErrorToChannel(EventTypes eventType, Exception exception);
 
 		public Task PublishCompleteToChannel(EventTypes eventType);
@@ -30,7 +35,7 @@ namespace SmartHub.Application.Common.Interfaces
 		/// <summary>
 		/// Removes given channel
 		/// </summary>
-		/// <param name="eventType"></param>
+		/// <param name="eventType">The channel eventType.</param>
 		public Task RemoveChannel(EventTypes eventType);
 
 		/// <summary>

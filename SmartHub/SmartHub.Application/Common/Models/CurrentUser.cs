@@ -2,6 +2,9 @@
 
 namespace SmartHub.Application.Common.Models
 {
+    /// <summary>
+    /// The user who made the request
+    /// </summary>
     public class CurrentUser
     {
         /// <summary>

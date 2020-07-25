@@ -53,12 +53,10 @@ namespace SmartHub.Api.Installers
 
 		private static void ConfigureBackgroundServices(IServiceCollection services)
 		{
-			// services.AddHostedService<EventHub>();
 			services.AddSingleton(typeof(IChannelManager), typeof(ChannelManager));
 			services.AddHostedService<BackgroundServiceStarter<IChannelManager>>();
 			services.AddSingleton<IEventDispatcher, EventDispatcher>();
 			services.AddHostedService<BackgroundServiceStarter<IEventDispatcher>>();
-			// services.AddHostedService<BackgroundServiceStarter<HomeFolderService>>();
 		}
 
 		private static void ConfigureAuthServices(IServiceCollection services)

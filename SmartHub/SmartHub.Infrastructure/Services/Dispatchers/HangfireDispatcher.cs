@@ -9,9 +9,7 @@ using DateTime = SmartHub.Domain.Common.Enums.DateTime;
 
 namespace SmartHub.Infrastructure.Services.Dispatchers
 {
-	/// <summary>
-	/// This class will handles all hangfire Jobs and starts/updates/deletes them
-	/// </summary>
+	/// <inheritdoc cref="IHangfireDispatcher"/>
 	public class HangfireDispatcher : IHangfireDispatcher
 	{
 		private const int Interval = 10;

@@ -4,6 +4,10 @@ using Microsoft.Extensions.Hosting;
 
 namespace SmartHub.Infrastructure.Services.Background
 {
+    /// <summary>
+    /// This Service handles background services
+    /// </summary>
+    /// <typeparam name="T">The Service the start in Background</typeparam>
     public class BackgroundServiceStarter<T> : IHostedService where T : IHostedService
     {
         private readonly T _backgroundService;

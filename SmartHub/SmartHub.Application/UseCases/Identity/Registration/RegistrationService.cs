@@ -11,6 +11,7 @@ using SmartHub.Domain.Entities.ValueObjects;
 
 namespace SmartHub.Application.UseCases.Identity.Registration
 {
+	/// <inheritdoc cref="IRegistrationService"/>
 	public class RegistrationService : IRegistrationService
 	{
 		private readonly UserManager<User> _userManager;
@@ -26,6 +27,7 @@ namespace SmartHub.Application.UseCases.Identity.Registration
 			_channelManager = channelManager;
 		}
 
+		/// <inheritdoc cref="IRegistrationService.RegisterAsync"/>
 		public async Task<AuthResponseDto> RegisterAsync(RegistrationCommand userInput)
 		{
 			var userFound = await _userManager.FindByNameAsync(userInput.Username);

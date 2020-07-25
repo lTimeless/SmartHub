@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.SignalR;
@@ -14,6 +13,7 @@ using SmartHub.Domain.DomainEvents;
 
 namespace SmartHub.Infrastructure.Services.Dispatchers
 {
+	/// <inheritdoc cref="IEventDispatcher"/>
 	public class EventDispatcher : IEventDispatcher
 	{
 		private readonly IChannelManager _channelManager;
@@ -32,7 +32,7 @@ namespace SmartHub.Infrastructure.Services.Dispatchers
 		public async Task StartAsync(CancellationToken cancellationToken)
 		{
 			Log.Information("[EventDispatcher] EventDispatcher started in background");
-			await Init();
+			await Init().ConfigureAwait(false);
 		}
 
 		public Task StopAsync(CancellationToken cancellationToken)
@@ -42,7 +42,7 @@ namespace SmartHub.Infrastructure.Services.Dispatchers
 			return Task.CompletedTask;
 		}
 
-		private Task Init()
+		public Task Init()
 		{
 			_disposable = _channelManager
 				.GetChannel(EventTypes.All)

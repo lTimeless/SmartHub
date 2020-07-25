@@ -1,15 +1,12 @@
-using System.IO;
-using System.Threading;
 using System.Threading.Tasks;
 using Autofac.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Serilog;
 using Serilog.Events;
+using Serilog.Sinks.AspNetCore.SignalR.Extensions;
 using SmartHub.Api.Extensions;
 using SmartHub.Application.UseCases.SignalR;
 
@@ -47,7 +44,15 @@ namespace SmartHub.Api
 					loggerConfig
 						.ReadFrom.Configuration(hostingContext.Configuration)
 						.Enrich.FromLogContext()
-						.WriteTo.SignalrSink<LogHub, IServerHub>(LogEventLevel.Debug, service );
+						.Enrich.WithProcessId()
+						.WriteTo.SignalRSink<LogHub, IServerHub>(
+							LogEventLevel.Information,
+							service,
+							null,
+							new string[] {},
+							new string[] {},
+							new string[] {}
+							);
 				})
 				.ConfigureLogging((_, config) => config.ClearProviders());
 	}

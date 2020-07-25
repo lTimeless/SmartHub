@@ -11,14 +11,15 @@ using System.Threading.Tasks;
 
 namespace SmartHub.Application.UseCases.NetworkScanner
 {
+	/// <inheritdoc cref="INetworkScannerService"/>
 	public class NetworkScannerService : INetworkScannerService
 	{
-		private const int _startIpNumber = 1;
-		private const int _stopIpNumber = 255;
-		private const int _timeout = 500;
+		private const int StartIpNumber = 1;
+		private const int StopIpNumber = 255;
+		private const int Timeout = 500;
 
-		private List<NetworkDeviceResponseDto> _foundDevices;
-		private Stopwatch _stopwatch;
+		private readonly List<NetworkDeviceResponseDto> _foundDevices;
+		private readonly Stopwatch _stopwatch;
 		private readonly IPingService _pingService;
 
 		public NetworkScannerService(IPingService pingService)
@@ -28,6 +29,7 @@ namespace SmartHub.Application.UseCases.NetworkScanner
 			_stopwatch = new Stopwatch();
 		}
 
+		/// <inheritdoc cref="INetworkScannerService.SearchNetworkDevicesAsync"/>
 		public async Task<List<NetworkDeviceResponseDto>> SearchNetworkDevicesAsync()
 		{
 			var ownIp = FindMyNetworkGateway();
@@ -43,7 +45,7 @@ namespace SmartHub.Application.UseCases.NetworkScanner
 		{
 			var tasks = new List<Task>();
 			_stopwatch.Start();
-			for (var i = _startIpNumber; i <= _stopIpNumber; i++)
+			for (var i = StartIpNumber; i <= StopIpNumber; i++)
 			{
 				var newIp = baseIp + i;
 				var task = PingAndUpdateAsync(newIp);
@@ -60,7 +62,7 @@ namespace SmartHub.Application.UseCases.NetworkScanner
 
 		private async Task PingAndUpdateAsync(string ip)
 		{
-			var reply = await _pingService.Ping(ip, _timeout).ConfigureAwait(false);
+			var reply = await _pingService.Ping(ip, Timeout).ConfigureAwait(false);
 			if (reply.Status == IPStatus.Success)
 			{
 				var hostName = await GetHostnameAsync(ip).ConfigureAwait(false);

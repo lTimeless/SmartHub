@@ -4,6 +4,10 @@ using SmartHub.BasePlugin.Interfaces.DeviceTypes;
 
 namespace SmartHub.Application.UseCases.PluginAdapter.Host
 {
+	/// <summary>
+	/// Service for holding infos about available plugins
+	/// Here you can load a specific plugin
+	/// </summary>
 	public interface IPluginHostService
 	{
 		/// <summary>
