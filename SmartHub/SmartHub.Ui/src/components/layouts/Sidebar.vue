@@ -15,7 +15,7 @@
           v-for="page in section.items"
           :id="page.path"
           :key="page.path"
-          :class="this.getClassesForAnchor(page)"
+          :class="this.getClassesForAnchor(page.path)"
           class="hover:text-ui-primary"
         >
           <router-link :to="page.path" class="flex items-center py-1 ">
@@ -44,9 +44,10 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import { computed, defineComponent, onMounted, ref } from 'vue';
 import { useRouter } from 'vue-router';
+import { getUserRole } from '@/services/auth/authService';
 
 export default defineComponent({
   name: 'Sidebar',
@@ -62,7 +63,7 @@ export default defineComponent({
       lastName: 'ATestperson'
     };
     const imageBgColor = `#${((Math.random() * 0xffffff) << 0).toString(16).padStart(6, '0')}`;
-    const isRole = ['Admin'];
+    const isRole = ref('');
 
     const sidebarLists = {
       sections: [
@@ -85,7 +86,7 @@ export default defineComponent({
           name: 'Admin',
           roleNeeded: ['Admin'],
           items: [
-            { title: 'Activity', icon: 'mdi-calendar-alert', path: '/activity' },
+            { title: 'Events', icon: 'mdi-calendar-alert', path: '/events' },
             { title: 'Logs', icon: 'mdi-file-document', path: 'logs' },
             { title: 'System', icon: 'mdi-desktop-classic', path: '/system' },
             { title: 'Health', icon: 'mdi-clipboard-pulse', path: '/health' },
@@ -102,18 +103,15 @@ export default defineComponent({
 
     const openSidebar = ref(props.showSidebar);
 
-    const getClassesForAnchor = ({ path }) => ({
+    const getClassesForAnchor = (path: string) => ({
       'text-ui-primary': router.currentRoute.value.path === path,
-      'transition transform hover:translate-x-1 hover:text-ui-primary': !router.currentRoute.value.path === path
+      'transition transform hover:translate-x-1 hover:text-ui-primary': router.currentRoute.value.path !== path
     });
 
     const currentPath = computed(() => router.currentRoute.value.path);
 
     onMounted(() => {
-      // const { isAdmin, isUser, isGuest } = getUserRole();
-      // this.isAdmin = isAdmin;
-      // this.isGuest = isGuest;
-      // this.isUser = isUser;
+      isRole.value = getUserRole();
     });
 
     const logout = () => {

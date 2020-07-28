@@ -7,4 +7,5 @@ import './assets/tailwind.css';
 createApp(App)
   .use(store)
   .use(router)
+  // .use(axios)
   .mount('#app');

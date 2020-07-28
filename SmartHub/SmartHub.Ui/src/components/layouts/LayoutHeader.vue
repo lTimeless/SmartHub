@@ -16,17 +16,9 @@
         </div>
 
         <div class="flex items-center justify-end px-2 sm:px-4">
-          <!--          <a-->
-          <!--            v-if="settings.github"-->
-          <!--            :href="settings.URL_GITHUB"-->
-          <!--            class="sm:ml-3"-->
-          <!--            target="_blank"-->
-          <!--            rel="noopener noreferrer"-->
-          <!--            title="Github"-->
-          <!--            name="Github"-->
-          <!--          >-->
-          <!--            <GithubIcon size="1.5x" />-->
-          <!--          </a>-->
+          <a href="www.github.com" class="sm:ml-3" target="_blank" rel="noopener noreferrer" title="Github" name="Github">
+            <!--            <GithubIcon size="1.5x" />-->
+          </a>
 
           <!--          <ToggleDarkMode class="ml-2 sm:ml-8">-->
           <!--            <template v-slot:default="{ dark }">-->
@@ -45,7 +37,7 @@
 import Search from '@/components/layouts/Search.vue';
 import Logo from '@/components/svgs/Logo.vue';
 import { defineComponent } from 'vue';
-// import { SunIcon, MoonIcon } from 'vue-feather-icons';
+// import { GithubIcon } from 'vue-feather-icons';
 
 // const Search = () =>
 //   import(/* webpackChunkName: "search" */ '@/components/layouts/Search.vue').catch((error) => console.warn(error));
@@ -55,6 +47,7 @@ export default defineComponent({
   components: {
     Logo,
     Search
+    // GithubIcon
     // ToggleDarkMode,
     // SunIcon,
     // MoonIcon
