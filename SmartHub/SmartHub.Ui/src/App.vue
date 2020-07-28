@@ -1,22 +1,310 @@
 <template>
-  <v-app>
-    <v-main class="main">
-      <router-view />
-    </v-main>
-  </v-app>
+  <div id="app" class="font-sans antialiased text-ui-typo bg-ui-background">
+    <div class="flex flex-col justify-start min-h-screen">
+      <header
+        ref="headerRef"
+        class="sticky top-0 z-10 w-full border-b bg-ui-background border-ui-border"
+        @resize="setHeaderHeight"
+      >
+        <LayoutHeader />
+      </header>
+
+      <main class="container ml-0 pb-0 mb-0 relative flex flex-wrap justify-start flex-1 w-full bg-ui-background overflow-auto">
+        <aside v-if="hasSidebar" class="sidebar overflow-auto w-2/12" :class="{ open: sidebarOpen }" :style="sidebarStyle">
+          <div class="w-full bg-ui-background">
+            <Sidebar :show-sidebar="this.sidebarOpen" />
+          </div>
+        </aside>
+
+        <div class="w-full pb-6">
+          <router-view />
+        </div>
+      </main>
+    </div>
+
+    <!--      <div v-if="hasSidebar" class="fixed bottom-0 right-0 z-50 p-6 lg:hidden">-->
+    <!--        <button class="p-3 text-white rounded-full shadow-lg bg-ui-primary
+      hover:text-white" @click="sidebarOpen = !sidebarOpen">-->
+    <!--          <XIcon v-if="sidebarOpen" />-->
+    <!--          <MenuIcon v-else />-->
+    <!--        </button>-->
+    <!--      </div>-->
+  </div>
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
+import { defineComponent, ref, nextTick, onMounted, computed } from 'vue';
+import LayoutHeader from '@/components/layouts/LayoutHeader.vue';
+import Sidebar from '@/components/layouts/Sidebar.vue';
+// import { MenuIcon, XIcon } from 'vue-feather-icons';
 
-export default Vue.extend({
-  name: 'SmartHubUi',
-  components: {}
+export default defineComponent({
+  name: 'App',
+  components: {
+    LayoutHeader,
+    Sidebar
+    // MenuIcon,
+    // XIcon
+  },
+  setup() {
+    const headerHeight = ref(0);
+    const headerRef = ref();
+    const sidebarOpen = ref(true);
+
+    const setHeaderHeight = () => {
+      nextTick(() => {
+        headerHeight.value = headerRef.value.offsetHeight;
+      });
+    };
+
+    const hasSidebar = computed(() => headerHeight.value > 0);
+
+    const sidebarStyle = computed(() => ({
+      top: `${headerHeight.value}px`,
+      height: `calc(100vh - ${headerHeight.value}px)`
+    }));
+
+    onMounted(() => {
+      setHeaderHeight();
+    });
+
+    return {
+      hasSidebar,
+      sidebarOpen,
+      headerHeight,
+      headerRef,
+      setHeaderHeight,
+      sidebarStyle
+    };
+  }
 });
 </script>
-<style lang="scss" scoped>
-.main {
-  /*background-color: #eceff1;*/
-  background-color: #eeeeee;
+
+<style lang="scss">
+#app {
+  font-family: Avenir, Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-align: center;
+  color: #2c3e50;
+}
+:root {
+  --color-ui-background: theme('colors.white');
+  --color-ui-typo: theme('colors.gray.700');
+  --color-ui-sidebar: theme('colors.gray.200');
+  --color-ui-border: theme('colors.gray.300');
+  --color-ui-primary: theme('colors.indigo.600');
+}
+/*Scrollbar*/
+/* width */
+::-webkit-scrollbar {
+  width: 12px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  border-radius: 100vh;
+  background: var(--color-ui-sidebar);
+}
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: var(--color-ui-border);
+  border-radius: 100vh;
+  border: 3px solid #edf2f7;
+}
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #c1cacb;
+}
+
+html[lights-out] {
+  --color-ui-background: theme('colors.gray.900');
+  --color-ui-typo: theme('colors.gray.100');
+  --color-ui-sidebar: theme('colors.gray.800');
+  --color-ui-border: theme('colors.gray.800');
+  --color-ui-primary: theme('colors.indigo.500');
+
+  pre[class*='language-'],
+  code[class*='language-'] {
+    @apply bg-ui-border;
+  }
+}
+
+* {
+  transition-property: color, background-color, border-color;
+  transition-duration: 200ms;
+  transition-timing-function: ease-in-out;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  @apply leading-snug font-black mb-4 text-ui-typo;
+
+  &:hover {
+    a::before {
+      @apply opacity-100;
+    }
+  }
+
+  a {
+    &::before {
+      content: '#';
+      margin-left: -1em;
+      padding-right: 1em;
+      @apply text-ui-primary absolute opacity-0 float-left;
+    }
+  }
+}
+
+h1 {
+  @apply text-4xl;
+}
+
+h2 {
+  @apply text-2xl;
+}
+
+h3 {
+  @apply text-xl;
+}
+
+h4 {
+  @apply text-lg;
+}
+
+a:not(.active):not(.text-ui-primary):not(.text-white) {
+  @apply text-ui-typo;
+}
+
+p,
+ol,
+ul,
+pre,
+strong,
+blockquote {
+  @apply mb-4 text-base text-ui-typo;
+}
+
+.content {
+  a {
+    @apply text-ui-primary underline;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    @apply -mt-12 pt-20;
+  }
+
+  h2 + h3,
+  h2 + h2,
+  h3 + h3 {
+    @apply border-none -mt-20;
+  }
+
+  h2,
+  h3 {
+    @apply border-b border-ui-border pb-1 mb-3;
+  }
+
+  ul {
+    @apply list-disc;
+
+    ul {
+      list-style: circle;
+    }
+  }
+
+  ol {
+    @apply list-decimal;
+  }
+
+  ol,
+  ul {
+    @apply pl-5 py-1;
+
+    li {
+      @apply mb-2;
+
+      p {
+        @apply mb-0;
+      }
+
+      &:last-child {
+        @apply mb-0;
+      }
+    }
+  }
+}
+
+blockquote {
+  @apply border-l-4 border-ui-border py-2 pl-4;
+
+  p:last-child {
+    @apply mb-0;
+  }
+}
+
+code {
+  @apply px-1 py-1 text-ui-typo bg-ui-sidebar font-mono border-b border-r border-ui-border text-sm rounded;
+}
+
+pre[class*='language-'] {
+  @apply max-w-full overflow-x-auto rounded;
+
+  & + p {
+    @apply mt-4;
+  }
+
+  & > code[class*='language-'] {
+    @apply border-none leading-relaxed;
+  }
+}
+
+header {
+  background-color: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(4px);
+}
+
+table {
+  @apply text-left mb-6;
+
+  td,
+  th {
+    @apply py-3 px-4;
+    &:first-child {
+      @apply pl-0;
+    }
+    &:last-child {
+      @apply pr-0;
+    }
+  }
+
+  tr {
+    @apply border-b border-ui-border;
+    &:last-child {
+      @apply border-b-0;
+    }
+  }
+}
+
+.sidebar {
+  overflow: auto;
+  @apply fixed bg-ui-background px-4 inset-x-0 bottom-0 w-full border-r border-ui-border overflow-y-auto transition-all z-40;
+  transform: translateX(-100%);
+
+  &.open {
+    transform: translateX(0);
+  }
+
+  @screen lg {
+    @apply w-1/4 px-0 bg-transparent top-0 bottom-auto inset-x-auto sticky z-0;
+    transform: translateX(0);
+  }
 }
 </style>

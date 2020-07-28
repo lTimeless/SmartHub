@@ -5,22 +5,23 @@ module.exports = {
   },
   extends: [
     'plugin:prettier/recommended',
-    'plugin:vue/essential',
+    "plugin:vue/vue3-essential",
     '@vue/airbnb',
-    '@vue/typescript/recommended',
-    '@vue/prettier/@typescript-eslint'
+    // "eslint:recommended",
+    "@vue/typescript/recommended",
+    "@vue/prettier/@typescript-eslint"
   ],
   parserOptions: {
-    parser: '@typescript-eslint/parser', // the typescript-parser for eslint, instead of tslint
-    sourceType: 'module', // allow the use of imports statements
+    parser: "@typescript-eslint/parser", // the typescript-parser for eslint, instead of tslint
+    sourceType: "module", // allow the use of imports statements
     ecmaVersion: 2020
   },
-  ignorePatterns: ['**/*.svg'],
+  ignorePatterns: ["**/*.svg", "**/svgs/*.vue"],
   rules: {
     'no-console': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
     'no-debugger': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
     'import/prefer-default-export': 'off',
-    'max-len': [2, 120, 2],
+    'max-len': [2, 130, 2],
     'lines-between-class-members': ['error', 'always', { exceptAfterSingleLine: true }],
     'comma-dangle': ['error', 'never'],
     'object-curly-newline': [
