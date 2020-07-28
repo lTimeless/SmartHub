@@ -12,6 +12,9 @@
 
 > This is a smarthome project based on asp.net core(3.1),ef core(3.1), postgreSql,angular9 -later maybe Vue3-
 
+Visit the official [documentation](https://smarthub-io.github.io/SmartHub-Docs/) for more information.
+
+This project and the docs are still __WIP__.
 ## Author
 
 👤 **Maximilian Stümpfl**
@@ -25,6 +28,9 @@ Contributions, issues and feature requests are welcome!<br />Feel free to check 
 ## Show your support
 
 Give a ⭐️ if this project helped you!
+Or buy me a coffee ☕
+
+<a href="https://www.buymeacoffee.com/maxStuempfl" target="_blank"><img src="https://www.buymeacoffee.com/assets/img/custom_images/orange_img.png" alt="Buy Me A Coffee" style="height: 41px !important;width: 174px !important;box-shadow: 0px 3px 2px 0px rgba(190, 190, 190, 0.5) !important;-webkit-box-shadow: 0px 3px 2px 0px rgba(190, 190, 190, 0.5) !important;" ></a>
 
 ## 📝 License
 

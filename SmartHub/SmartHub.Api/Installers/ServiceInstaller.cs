@@ -17,6 +17,7 @@ using SmartHub.Application.UseCases.PluginAdapter.Loader;
 using SmartHub.Infrastructure.Database;
 using SmartHub.Infrastructure.Database.Repositories;
 using SmartHub.Infrastructure.Services.Auth;
+using SmartHub.Infrastructure.Services.Background;
 using SmartHub.Infrastructure.Services.Dispatchers;
 using SmartHub.Infrastructure.Services.FileSystem;
 using SmartHub.Infrastructure.Services.Http;
@@ -28,8 +29,8 @@ namespace SmartHub.Api.Installers
 		public void InstallServices(IServiceCollection services, IConfiguration configuration)
 		{
 			ConfigureRepositories(services);
-			ConfigureApplicationStartupServices(services);
 			ConfigureBackgroundServices(services);
+			ConfigureApplicationStartupServices(services);
 			ConfigureAuthServices(services);
 			ConfigureHelpServices(services);
 			ConfigureServices(services);
@@ -45,8 +46,6 @@ namespace SmartHub.Api.Installers
 
 		private static void ConfigureApplicationStartupServices(IServiceCollection services)
 		{
-			services.AddSingleton(typeof(IChannelManager), typeof(ChannelManager));
-			services.AddSingleton<IEventDispatcher, EventDispatcher>();
 			services.AddScoped<IHangfireDispatcher, HangfireDispatcher>();
 			services.AddScoped<IHomeFolderService, HomeFolderService>();
 			services.AddHostedService<AppStartup>();
@@ -54,8 +53,10 @@ namespace SmartHub.Api.Installers
 
 		private static void ConfigureBackgroundServices(IServiceCollection services)
 		{
-			//services.AddHostedService<HubBackgroundService>();
-			// services.AddHostedService<ConnectionBackgroundService>();
+			services.AddSingleton(typeof(IChannelManager), typeof(ChannelManager));
+			services.AddHostedService<BackgroundServiceStarter<IChannelManager>>();
+			services.AddSingleton<IEventDispatcher, EventDispatcher>();
+			services.AddHostedService<BackgroundServiceStarter<IEventDispatcher>>();
 		}
 
 		private static void ConfigureAuthServices(IServiceCollection services)

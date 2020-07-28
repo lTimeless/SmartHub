@@ -1,4 +1,4 @@
-﻿namespace SmartHub.Domain.Enums
+﻿namespace SmartHub.Domain.Common.Enums
 {
     public enum LoadStrategy
     {

@@ -5,6 +5,10 @@ using SmartHub.Domain.Entities;
 
 namespace SmartHub.Application.UseCases.PluginAdapter.Creator
 {
+	/// <summary>
+	/// Service for creating Plugins
+	/// </summary>
+	/// <typeparam name="T">The type to create</typeparam>
 	public interface IPluginCreatorService<T>
 	{
 		/// <summary>

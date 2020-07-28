@@ -11,8 +11,8 @@ using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using SmartHub.Application.Common.Interfaces.Repositories;
+using SmartHub.Domain.Common.Enums;
 using SmartHub.Domain.Entities;
-using SmartHub.Domain.Enums;
 
 namespace SmartHub.Application.UseCases.PluginAdapter.Loader
 {

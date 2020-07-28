@@ -1,12 +1,14 @@
-﻿using SmartHub.Domain.Enums;
-using System;
+﻿using System;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
-using DateTime = SmartHub.Domain.Enums.DateTime;
+using DateTime = SmartHub.Domain.Common.Enums.DateTime;
 
 namespace SmartHub.Application.Common.Interfaces
 {
-	public interface IHangfireDispatcher : IInitialize
+	/// <summary>
+	/// This Service handles all hangfire jobs
+	/// </summary>
+	public interface IHangfireDispatcher
 	{
 		/// <summary>
 		/// Adds an action

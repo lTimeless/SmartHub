@@ -163,9 +163,8 @@
 import Vue from 'vue';
 import Component from 'vue-class-component';
 import { Prop } from 'vue-property-decorator';
-import { clearStorage } from '@/services/auth/tokenService';
+import { clearStorage, getUserRole } from '@/services/auth/authService';
 import router from '@/router';
-import { getUserRole } from '@/services/auth/userAuthService';
 
 @Component
 export default class Siedebar extends Vue {

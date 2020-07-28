@@ -1,6 +1,6 @@
 ﻿using MediatR;
 using SmartHub.Application.Common.Models;
-using SmartHub.Domain.Enums;
+using SmartHub.Domain.Common.Enums;
 
 namespace SmartHub.Application.UseCases.PluginAdapter.Loader
 {

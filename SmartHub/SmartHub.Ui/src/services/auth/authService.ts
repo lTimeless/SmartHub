@@ -1,6 +1,8 @@
 import { AxiosRequestConfig } from 'axios';
 import { AuthResponse } from '@/types/types';
 
+type AuthType = { isAdmin: boolean; isUser: boolean; isGuest: boolean };
+
 // Storage keys
 const LOCAL_STORAGE_TOKEN = 'token';
 const LOCAL_STORAGE_AUTHRESPONSE = 'authResponse';
@@ -56,4 +58,21 @@ export const clearStorage = (): void => {
   localStorage.removeItem(LOCAL_STORAGE_REFRESH_TOKEN);
 };
 
-export const getRefreshToken = (): string | null => localStorage.getItem(LOCAL_STORAGE_REFRESH_TOKEN);
+// export const getRefreshToken = (): string | null => localStorage.getItem(LOCAL_STORAGE_REFRESH_TOKEN);
+
+export const getUserRole = (): AuthType => {
+  const authResponse = getAuthResponse();
+  if (authResponse == null) {
+    return { isAdmin: false, isUser: false, isGuest: false };
+  }
+  if (authResponse.roles.includes('Admin')) {
+    return { isAdmin: true, isUser: false, isGuest: false };
+  }
+  if (authResponse.roles.includes('User')) {
+    return { isAdmin: false, isUser: true, isGuest: false };
+  }
+  if (authResponse.roles.includes('Guest')) {
+    return { isAdmin: false, isUser: false, isGuest: true };
+  }
+  return { isAdmin: false, isUser: false, isGuest: false };
+};

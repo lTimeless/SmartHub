@@ -3,7 +3,7 @@ using SmartHub.Domain.Entities.ValueObjects;
 
 namespace SmartHub.Domain.DomainEvents
 {
-	public class UserChangedEvent : IDomainEvent
+	public class UserChangedEvent : DomainEvent
 	{
 		public string UserId { get; }
 		public string? PersonInfo { get; }

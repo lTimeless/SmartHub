@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { getAuthentication, isAuthenticated } from '@/services/auth/tokenService';
+import { getAuthentication, isAuthenticated } from '@/services/auth/authService';
 
 axios.interceptors.request.use(
   (config) => {

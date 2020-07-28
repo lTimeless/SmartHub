@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace SmartHub.Domain.Enums
+namespace SmartHub.Domain.Common.Enums
 {
 	[Flags]
 	public enum ConnectionTypes

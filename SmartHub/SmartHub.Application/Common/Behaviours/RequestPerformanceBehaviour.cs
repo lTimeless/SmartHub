@@ -16,7 +16,6 @@ namespace SmartHub.Application.Common.Behaviours
         public RequestPerformanceBehaviour(ILogger logger, IUserAccessor currentUserService)
         {
             _timer = new Stopwatch();
-
             _logger = logger;
             _currentUserService = currentUserService;
         }
@@ -24,22 +23,15 @@ namespace SmartHub.Application.Common.Behaviours
         public async Task<TResponse> Handle(TRequest request, CancellationToken cancellationToken, RequestHandlerDelegate<TResponse> next)
         {
             _timer.Start();
-
             var response = await next();
-
             _timer.Stop();
-
             if (_timer.ElapsedMilliseconds > 500)
             {
                 var name = typeof(TRequest).Name;
-
                 _logger.Information(
                     "SmartHub Long Running Request: {Name} ({ElapsedMilliseconds} milliseconds) {@UserName} {@Request}",
                     name, _timer.ElapsedMilliseconds, _currentUserService.GetCurrentUsername(), request);
-
-                return response;
             }
-
             return response;
         }
     }

@@ -42,7 +42,7 @@ namespace SmartHub.Api.Middleware
 					break;
 
 				case SmartHubException smartHubException:
-					Log.Warning($"[{nameof(HandleExceptionAsync)}] SmartHub ERROR: {smartHubException.Message} -- {smartHubException.Source}");
+					Log.Warning($"[{nameof(HandleExceptionAsync)}] SmartHub ERROR: {smartHubException.Message} -- {smartHubException.Source} -- {smartHubException.StackTrace}");
 					errors = string.IsNullOrWhiteSpace(smartHubException.Message) ? "Error" : smartHubException.Message;
 					httpContext.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
 					break;

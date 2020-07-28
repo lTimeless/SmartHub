@@ -1,30 +1,30 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
-using MediatR.Pipeline;
-using SmartHub.Application.Common.Interfaces;
+using MediatR;
 using Serilog;
+using SmartHub.Application.Common.Models;
 
 namespace SmartHub.Application.Common.Behaviours
 {
-    public class RequestLoggerBehaviour<TRequest> : IRequestPreProcessor<TRequest>
+    public class RequestLoggerBehaviour<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse>
     {
         private readonly ILogger _logger;
-        private readonly IUserAccessor _userAccessor;
+        private readonly CurrentUser _currentUser;
 
-        public RequestLoggerBehaviour(ILogger logger, IUserAccessor userAccessor)
+        public RequestLoggerBehaviour(ILogger logger, CurrentUser currentUser)
         {
             _logger = logger;
-            _userAccessor = userAccessor;
+            _currentUser = currentUser;
         }
 
-        public Task Process(TRequest request, CancellationToken cancellationToken)
+        public async Task<TResponse> Handle(TRequest request, CancellationToken cancellationToken, RequestHandlerDelegate<TResponse> next)
         {
             var name = typeof(TRequest).Name;
 
-            _logger.Information("SmartHub Request: {Name} - {@UserId} - {@Request}",
-                name, _userAccessor.GetCurrentUsername(), request);
+            _logger.Information("SmartHub Request: {Name} - {@UserName} - {@Request}",
+                name, _currentUser.User == null ? _currentUser.RequesterName : _currentUser.User.UserName, request);
 
-            return Task.CompletedTask;
+            return await next();
         }
     }
 }

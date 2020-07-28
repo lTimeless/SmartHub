@@ -4,8 +4,10 @@ using System.Threading.Tasks;
 
 namespace SmartHub.Infrastructure.Services.Http
 {
+	/// <inheritdoc cref="IPingService"/>
 	public class PingService : IPingService
 	{
+		/// <inheritdoc cref="IPingService.Ping"/>
 		public async Task<PingReply> Ping(string ip, int timeout)
 		{
 			var ping = new Ping();

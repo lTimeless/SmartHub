@@ -43,9 +43,9 @@ namespace SmartHub.Api.Installers
 		private static void ConfigureMediatr(IServiceCollection services)
 		{
 			services.AddMediatR(Assembly.Load("SmartHub.Application"));
-			services.AddTransient(typeof(IPipelineBehavior<,>), typeof(RequestPerformanceBehaviour<,>));
-			services.AddTransient(typeof(IRequestPreProcessor<>), typeof(RequestLoggerBehaviour<>));
 			services.AddTransient(typeof(IPipelineBehavior<,>), typeof(CurrentUserBehaviour<,>));
+			services.AddTransient(typeof(IPipelineBehavior<,>), typeof(RequestPerformanceBehaviour<,>));
+			services.AddTransient(typeof(IPipelineBehavior<,>), typeof(RequestLoggerBehaviour<,>));
 		}
 
 		private static void ConfigureAutoMapper(IServiceCollection services)

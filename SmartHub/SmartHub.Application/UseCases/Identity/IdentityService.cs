@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using SmartHub.Application.Common.Interfaces;
 using SmartHub.Application.Common.Utils;
+using SmartHub.Domain.Common.Enums;
 using SmartHub.Domain.Entities;
-using SmartHub.Domain.Enums;
 
 namespace SmartHub.Application.UseCases.Identity
 {

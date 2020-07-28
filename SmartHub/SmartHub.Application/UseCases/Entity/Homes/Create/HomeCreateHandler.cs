@@ -1,12 +1,12 @@
 ﻿using AutoMapper;
 using MediatR;
-using SmartHub.Domain.Enums;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Options;
 using SmartHub.Application.Common.Interfaces.Repositories;
 using SmartHub.Application.Common.Models;
+using SmartHub.Domain.Common.Enums;
 using SmartHub.Domain.Common.Settings;
 using SmartHub.Domain.Entities;
 

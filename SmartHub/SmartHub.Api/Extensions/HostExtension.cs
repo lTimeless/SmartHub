@@ -34,10 +34,10 @@ namespace SmartHub.Api.Extensions
 			return host;
 		}
 
-		public static async Task<IHost> MigrateDatabase(this IHost host, bool deleteMode)
+		public static IHost MigrateDatabase(this IHost host, bool deleteMode)
 		{
 			using var scope = host.Services.CreateScope();
-			await using var appContext = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+			using var appContext = scope.ServiceProvider.GetRequiredService<AppDbContext>();
 			var env = host.Services.GetRequiredService<IWebHostEnvironment>();
 			try
 			{

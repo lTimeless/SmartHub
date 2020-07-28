@@ -4,7 +4,7 @@ using SmartHub.Domain.Entities.ValueObjects;
 
 namespace SmartHub.Domain.DomainEvents
 {
-	public sealed class HomeUpdatedEvent : IDomainEvent
+	public sealed class HomeUpdatedEvent : DomainEvent
 	{
 		public string? Name { get; }
 		public string? Description { get; }

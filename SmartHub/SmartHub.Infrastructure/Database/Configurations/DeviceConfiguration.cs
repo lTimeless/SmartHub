@@ -1,9 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
+using SmartHub.Domain.Common.Enums;
 using SmartHub.Domain.Entities;
 using SmartHub.Domain.Entities.Devices;
-using SmartHub.Domain.Enums;
 
 namespace SmartHub.Infrastructure.Database.Configurations
 {

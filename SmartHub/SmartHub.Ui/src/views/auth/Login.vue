@@ -75,7 +75,7 @@ import { InputMessage } from 'vuetify';
 import router from '@/router';
 import { LoginRequest } from '@/types/types';
 import { LOGIN } from '@/store/auth/actions';
-// TODO: vuex in here
+
 @Component
 export default class Login extends Vue {
   welcomeToSmartHub = 'Welcome to SmartHub';

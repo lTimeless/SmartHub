@@ -10,6 +10,7 @@ using SmartHub.Domain.Common.Settings;
 
 namespace SmartHub.Application.UseCases.HomeFolder
 {
+    /// <inheritdoc cref="IHomeFolderService"/>
     public class HomeFolderService : IHomeFolderService
     {
         private readonly IDirectoryService _directoryService;
@@ -22,6 +23,8 @@ namespace SmartHub.Application.UseCases.HomeFolder
             _directoryService = directoryService;
             _applicationSettings = applicationSettings;
         }
+
+        /// <inheritdoc cref="IInitialize.Init"/>
         public Task Init()
         {
             // If environment dev => path == parentfolder
@@ -46,6 +49,14 @@ namespace SmartHub.Application.UseCases.HomeFolder
             return Task.CompletedTask;
         }
 
+        /// <inheritdoc cref="IHomeFolderService.GetHomeFolderPath"/>
+        public Tuple<string, string> GetHomeFolderPath()
+        {
+            return  _applicationSettings.CurrentValue.EnvironmentName != "Development"
+                ? GetSystemHomeFolderLocation()
+                : GetDevEnvironmentFolderLocation();
+        }
+
         private void CreatePluginFolderInHomeFolder()
         {
             var (path, folderName) = GetHomeFolderPath();
@@ -53,13 +64,6 @@ namespace SmartHub.Application.UseCases.HomeFolder
             var pluginPath = Path.Combine(homePath, _applicationSettings.CurrentValue.DefaultPluginFolderName);
             _directoryService.CreateDirectory(pluginPath);
             _applicationSettings.CurrentValue.DefaultPluginpath = pluginPath;
-        }
-
-        public Tuple<string, string> GetHomeFolderPath()
-        {
-            return  _applicationSettings.CurrentValue.EnvironmentName != "Development"
-                ? GetSystemHomeFolderLocation()
-                : GetDevEnvironmentFolderLocation();
         }
 
         private Tuple<string, string> GetSystemHomeFolderLocation()

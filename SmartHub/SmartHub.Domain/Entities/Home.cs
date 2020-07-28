@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using SmartHub.Domain.Common.Enums;
 using SmartHub.Domain.Common.Extensions;
 using SmartHub.Domain.DomainEvents;
 using SmartHub.Domain.Entities.ValueObjects;
-using SmartHub.Domain.Enums;
 
 namespace SmartHub.Domain.Entities
 {
@@ -19,7 +19,7 @@ namespace SmartHub.Domain.Entities
 		public virtual List<Setting> Settings { get; protected set; }
 
 		public virtual Address Address { get; }
-		public virtual List<IDomainEvent> Events { get; set; }
+		public virtual List<DomainEvent> Events { get; set; }
 
 		protected Home()
 		{
@@ -32,16 +32,16 @@ namespace SmartHub.Domain.Entities
 			Groups = new List<Group>();
 			Plugins = new List<Plugin>();
 			Settings = new List<Setting>() { setting };
-			Events = new List<IDomainEvent>();
+			Events = new List<DomainEvent>();
 			Address = new Address("","","","",""); // TODO: add functionality
 		}
 
 		#region Methods
-		public void AddDomainEvent(IDomainEvent domainEvent)
+		public void AddDomainEvent(DomainEvent domainEvent)
 		{
 			if (Events.IsNullOrEmpty())
 			{
-				Events = new List<IDomainEvent>();
+				Events = new List<DomainEvent>();
 			}
 			Events.Add(domainEvent);
 		}
