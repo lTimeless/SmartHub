@@ -35,9 +35,9 @@ namespace SmartHub.Application.Common.Models
 
     public class Response<T>
     {
-        private T Data { get; }
-        private bool? Success { get; }
-        private string? Message { get; }
+        public T Data { get; set; }
+        public bool? Success { get; set; }
+        public string? Message { get; set; }
 
 
         public Response(T data,  bool success, string? message)

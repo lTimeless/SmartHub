@@ -30,8 +30,6 @@ namespace SmartHub.Api.Installers
 			})
 				.SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
 
-
-
 			// HttpContext Accessor
 			services.AddHttpContextAccessor();
 		}
