@@ -80,7 +80,6 @@ namespace SmartHub.Api
 			app.ShowLocalIpv4();
 
 			// Response Compression
-			// needs to be called before 'UseStaticFiles' otherwise these wont be compressed
 			app.UseResponseCompression();
 
 			// Serilog
