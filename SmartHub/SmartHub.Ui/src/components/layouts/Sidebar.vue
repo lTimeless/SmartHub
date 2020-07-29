@@ -117,7 +117,7 @@ export default defineComponent({
     const logout = () => {
       console.log('logout');
       // clearStorage();
-      router.push('Login');
+      router.push('/login');
     };
 
     return {

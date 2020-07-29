@@ -37,8 +37,8 @@ const routes: Array<RouteRecordRaw> = [
     path: '',
     component: Home,
     meta: {
-      // requiresAuth: true,
-      // isGuest: true
+      requiresAuth: true,
+      isGuest: true
     },
     children: [
       {
@@ -149,13 +149,13 @@ const routes: Array<RouteRecordRaw> = [
         component: NotAuthorized
       },
       {
-        path: '/*',
+        path: '/:catchAll(.*)',
         component: NotFound
       }
     ]
   },
   {
-    path: '/*',
+    path: '/:catchAll(.*)',
     component: NotFound
   }
 ];
@@ -164,8 +164,8 @@ const router = createRouter({
   routes
 });
 
-router.beforeEach((to, from, next) => {
-  useRouteAuthGuard(to, from, next);
-});
+// router.beforeEach((to, from, next) => {
+//   useRouteAuthGuard(to, from, next);
+// });
 
 export default router;
