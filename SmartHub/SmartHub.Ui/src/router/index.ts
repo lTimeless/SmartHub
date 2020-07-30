@@ -1,4 +1,4 @@
-import { createRouter, createWebHashHistory, RouteRecordRaw } from 'vue-router';
+import { createRouter, createWebHashHistory, createWebHistory, RouteRecordRaw } from 'vue-router';
 import { useRouteAuthGuard } from '@/router/guards/userAuth';
 import NotAuthorized from '@/views/NotAuthorized.vue';
 import NotFound from '@/views/NotFound.vue';
@@ -160,12 +160,12 @@ const routes: Array<RouteRecordRaw> = [
   }
 ];
 const router = createRouter({
-  history: createWebHashHistory(),
+  history: createWebHistory(),
   routes
 });
 
-// router.beforeEach((to, from, next) => {
-//   useRouteAuthGuard(to, from, next);
-// });
+router.beforeEach((to, from, next) => {
+  useRouteAuthGuard(to, from, next);
+});
 
 export default router;

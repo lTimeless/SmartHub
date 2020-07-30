@@ -5,7 +5,6 @@
         <h2 class="font-bold text-3xl">{{ welcomeToSmartHub }}</h2>
         <div class="ma-0">
           <img class="img" src="../../assets/images/undraw_smart_home_28oy.svg" alt="Test" width="500" />
-          <!--      <Images src="./assets/images/undraw_smart_home_28oy.svg"></Images>-->
         </div>
         <form class="px-5">
           <div class="mb-4">
@@ -42,9 +41,10 @@
           <div class="flex flex-col items-center justify-between">
             <button
               @click="onLoginClick"
-              :disabled="username.length === 0 || password.length < 4"
+              :disabled="signInDisabled"
               class="flex items-center text-white font-bold px-10 py-2 border border-ui-border rounded-lg
                       bg-ui-primary hover:bg-indigo-500 hover:text-white transition-colors"
+              :class="signInDisabled ? 'opacity-50 focus:outline-none cursor-not-allowed hover:bg-indigo-600' : ''"
               type="button"
             >
               Sign In
@@ -62,44 +62,39 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from 'vue';
+import { computed, defineComponent, ref } from 'vue';
 import { LoginRequest } from '@/types/types';
 import { useRouter } from 'vue-router';
-// import Images from '@/components/svgs/Images.vue';
+import { useStore } from 'vuex';
+import { LOGIN } from '@/store/auth/actions';
 
 export default defineComponent({
   name: 'Login',
-  components: {
-    // Images
-  },
+  components: {},
   setup() {
+    const store = useStore();
+    const router = useRouter();
     const welcomeToSmartHub = 'Welcome to SmartHub';
     const password = ref('');
     const username = ref('');
-    const message = ref('');
-    const messageClass = ref('successMessage');
 
     const onLoginClick = async () => {
       const login: LoginRequest = {
         username: username.value,
         password: password.value
       };
-      await this.$store.dispatch(LOGIN, login);
-      const { token } = this.$store.getters.getAuthResponse;
-      message.value = '';
-      if (token == null) {
-        messageClass.value = 'error--text';
-        message.value = 'Error: Something went wrong, try again later';
-      }
-      await useRouter().push('/');
+      await store.dispatch(LOGIN, login);
+      await router.push('/');
     };
+
+    const signInDisabled = computed(() => username.value.length === 0 || password.value.length < 4);
+
     return {
       welcomeToSmartHub,
       onLoginClick,
       password,
       username,
-      message,
-      messageClass
+      signInDisabled
     };
   }
 });
@@ -124,9 +119,6 @@ export default defineComponent({
     }
   }
 
-  .successMessage {
-    color: black;
-  }
   p {
     margin: 0;
     a {
