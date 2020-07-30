@@ -1,6 +1,9 @@
 <template>
   <div class="w-full login">
-    <div class="container fully-centered bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
+    <div
+      class="container fully-centered bg-white shadow-md rounded px-8 pt-6 pb-8
+              md:8/12 lg:w-6/12 xl:w-5/12"
+    >
       <div class="h-full flex flex-col justify-between">
         <h2 class="font-bold text-3xl">{{ welcomeToSmartHub }}</h2>
         <div class="ma-0">
@@ -12,6 +15,8 @@
               Username
             </label>
             <input
+              required
+              name="current-password"
               v-model="username"
               class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight
           focus:outline-none focus:shadow-outline"
@@ -26,6 +31,7 @@
             </label>
             <input
               v-model="password"
+              required
               @keyup.enter="onLoginClick"
               class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3
           leading-tight focus:outline-none focus:shadow-outline"
@@ -43,8 +49,8 @@
               @click="onLoginClick"
               :disabled="signInDisabled"
               class="flex items-center text-white font-bold px-10 py-2 border border-ui-border rounded-lg
-                      bg-ui-primary hover:bg-indigo-500 hover:text-white transition-colors"
-              :class="signInDisabled ? 'opacity-50 focus:outline-none cursor-not-allowed hover:bg-indigo-600' : ''"
+                      bg-ui-primary active:bg-indigo-800 hover:bg-indigo-400 focus:outline-none"
+              :class="signInDisabled ? 'opacity-50 hover:bg-ui-primary focus:outline-none cursor-not-allowed' : ''"
               type="button"
             >
               Sign In
@@ -77,6 +83,7 @@ export default defineComponent({
     const welcomeToSmartHub = 'Welcome to SmartHub';
     const password = ref('');
     const username = ref('');
+    const isSignInBtnClicked = ref(store.state.auth.isSignInBtnClicked);
 
     const onLoginClick = async () => {
       const login: LoginRequest = {
@@ -87,7 +94,7 @@ export default defineComponent({
       await router.push('/');
     };
 
-    const signInDisabled = computed(() => username.value.length === 0 || password.value.length < 4);
+    const signInDisabled = computed(() => isSignInBtnClicked.value || username.value.length === 0 || password.value.length < 4);
 
     return {
       welcomeToSmartHub,
@@ -108,8 +115,7 @@ export default defineComponent({
   background-color: var(--color-ui-login-background);
   .fully-centered {
     align-self: center;
-    width: 40%;
-    height: 75%;
+    height: 80%;
 
     .img {
       max-width: 90%;

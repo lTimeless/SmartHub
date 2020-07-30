@@ -1,34 +1,47 @@
 <template>
   <div ref="sidebar" v-if="this.openSidebar" class="px-4 pt-6 lg:pt-6">
-    <div
-      v-for="(section, index) in this.sidebarLists.sections"
-      :key="section.name"
-      class="pb-4 mb-4 border-ui-border"
-      :class="{ 'border-b': index < this.sidebarLists.sections.length - 1 }"
-    >
-      <h3 class="flex pt-0 mt-0 mb-1 font-bold text-sm tracking-tight uppercase border-none">
-        {{ section.name }}
-      </h3>
-
-      <ul class="max-w-full pl-2 mb-0">
-        <li
-          v-for="page in section.items"
-          :id="page.path"
-          :key="page.path"
-          :class="this.getClassesForAnchor(page.path)"
-          class="hover:text-ui-primary"
+    <div class="pb-4 mb-1">
+      <div class="md:flex">
+        <div
+          class="dot h-16 w-16 md:h-24 md:w-24 rounded-full mx-auto md:mx-0 md:mr-6"
+          :style="{ 'background-color': imageBgColor }"
         >
-          <router-link :to="page.path" class="flex items-center py-1 ">
-            <span
-              class="absolute w-2 h-2 -ml-3 rounded-full opacity-0 bg-ui-primary transition transform scale-0 origin-center"
-              :class="{
-                'opacity-100 scale-100': this.currentPath === page.path
-              }"
-            ></span>
-            {{ page.title }}
-          </router-link>
-        </li>
-      </ul>
+          {{ person.firstName.charAt(0) }}{{ person.lastName.charAt(0) }}
+        </div>
+        <div class="text-center md:text-left">
+          <h2 class="text-lg">{{ person.userName }}</h2>
+          <div class="text-gray-500">Logged in</div>
+        </div>
+      </div>
+    </div>
+
+    <div v-for="section in this.sidebarLists.sections" :key="section.name" class="pb-4 mb-1">
+      <template v-if="roleIncluded(section.roleNeeded)">
+        <div class="border-ui-border border-t mb-2"></div>
+        <h3 class="flex pt-0 mt-0 mb-1 font-bold text-sm tracking-tight uppercase">
+          {{ section.name }}
+        </h3>
+
+        <ul class="max-w-full pl-2 mb-0">
+          <li
+            v-for="page in section.items"
+            :id="page.path"
+            :key="page.path"
+            :class="this.getClassesForAnchor(page.path)"
+            class="hover:text-ui-primary"
+          >
+            <router-link :to="page.path" class="flex items-center py-1 ">
+              <span
+                class="absolute w-2 h-2 -ml-3 rounded-full opacity-0 bg-ui-primary transition transform scale-0 origin-center"
+                :class="{
+                  'opacity-100 scale-100': this.currentPath === page.path
+                }"
+              ></span>
+              {{ page.title }}
+            </router-link>
+          </li>
+        </ul>
+      </template>
     </div>
 
     <div class="flex justify-center mt-7 mb-8">
@@ -47,7 +60,9 @@
 <script lang="ts">
 import { computed, defineComponent, onMounted, ref } from 'vue';
 import { useRouter } from 'vue-router';
-import { getUserRole } from '@/services/auth/authService';
+import { clearStorage, getUserRole } from '@/services/auth/authService';
+import { useStore } from 'vuex';
+import { UPDATE_SIGNIN_BTN } from '@/store/auth/mutations';
 
 export default defineComponent({
   name: 'Sidebar',
@@ -57,6 +72,7 @@ export default defineComponent({
   },
   setup(props) {
     const router = useRouter();
+    const store = useStore();
     const person = {
       userName: 'MaxTime',
       firstName: 'Max',
@@ -69,12 +85,12 @@ export default defineComponent({
       sections: [
         {
           name: 'All',
-          roleNeeded: ['Guest, User, Admin'],
+          roleNeeded: ['Guest', 'User', 'Admin'],
           items: [{ title: 'Dashboard', icon: 'mdi-view-dashboard', path: '/' }]
         },
         {
           name: 'User',
-          roleNeeded: ['Guest, User'],
+          roleNeeded: ['User', 'Admin'],
           items: [
             { title: 'Plugins', icon: 'mdi-toy-brick', path: '/plugins' },
             { title: 'Routines', icon: 'mdi-update', path: '/routines' },
@@ -95,7 +111,7 @@ export default defineComponent({
         },
         {
           name: 'Help',
-          roleNeeded: ['Guest, User, Admin'],
+          roleNeeded: ['Guest', 'User', 'Admin'],
           items: [{ title: 'About', icon: 'mdi-information', path: '/about' }]
         }
       ]
@@ -109,14 +125,15 @@ export default defineComponent({
     });
 
     const currentPath = computed(() => router.currentRoute.value.path);
+    const roleIncluded = (rolesNeeded: string[]) => rolesNeeded.includes(isRole.value);
 
     onMounted(() => {
       isRole.value = getUserRole();
     });
 
     const logout = () => {
-      console.log('logout');
-      // clearStorage();
+      store.commit(UPDATE_SIGNIN_BTN);
+      clearStorage();
       router.push('/login');
     };
 
@@ -124,13 +141,24 @@ export default defineComponent({
       logout,
       currentPath,
       sidebarLists,
-      isRole,
+      roleIncluded,
       imageBgColor,
       getClassesForAnchor,
-      openSidebar
+      openSidebar,
+      person
     };
   }
 });
 </script>
 
-<style scoped></style>
+<style scoped>
+.dot {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  font-size: 19px;
+  color: #fff;
+  line-height: 50px;
+  text-align: center;
+}
+</style>

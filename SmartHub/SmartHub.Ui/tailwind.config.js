@@ -23,6 +23,8 @@ module.exports = {
       padding: '1rem'
     }
   },
-  variants: {},
+  variants: {
+    backgroundColor: ['responsive', 'hover', 'focus', 'active']
+  },
   plugins: []
 };

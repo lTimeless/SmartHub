@@ -6,7 +6,8 @@ import { mutations } from '@/store/auth/mutations';
 
 export const state: AuthState = {
   authResponse: null,
-  regStepIndex: 1
+  regStepIndex: 1,
+  isSignInBtnClicked: false
 };
 
 export const auth: Module<AuthState, RootState> = {
