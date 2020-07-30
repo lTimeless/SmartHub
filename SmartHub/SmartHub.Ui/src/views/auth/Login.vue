@@ -9,34 +9,42 @@
         </div>
         <form class="px-5">
           <div class="mb-4">
-            <label class="block text-gray-700 text-sm font-bold mb-2" for="username">
+            <label class="block text-gray-500 md:text-left mb-1 md:mb-0 pr-4" for="username">
               Username
             </label>
             <input
+              v-model="username"
               class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight
           focus:outline-none focus:shadow-outline"
               id="username"
               type="text"
-              placeholder="Username"
+              placeholder="JonDoe"
             />
           </div>
-          <div class="mb-6">
-            <label class="block text-gray-700 text-sm font-bold mb-2" for="password">
+          <div class="mb-5 mt-8">
+            <label class="block text-gray-500 md:text-left mb-1 md:mb-0 pr-4" for="password">
               Password
             </label>
             <input
+              v-model="password"
+              @keyup.enter="onLoginClick"
               class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3
           leading-tight focus:outline-none focus:shadow-outline"
               id="password"
               type="password"
-              placeholder="Password"
+              placeholder="*******"
             />
             <p class="text-red-500 text-xs italic"></p>
+            <router-link to="/forgotpassword" class="block text-gray-500 md:text-left mb-1 md:mb-0 pr-4">
+              Forgot Password?
+            </router-link>
           </div>
           <div class="flex flex-col items-center justify-between">
             <button
+              @click="onLoginClick"
+              :disabled="username.length === 0 || password.length < 4"
               class="flex items-center text-white font-bold px-10 py-2 border border-ui-border rounded-lg
-                      bg-ui-primary hover:bg-indigo-800 hover:text-white transition-colors"
+                      bg-ui-primary hover:bg-indigo-500 hover:text-white transition-colors"
               type="button"
             >
               Sign In
@@ -46,10 +54,6 @@
               You can register
               <router-link to="/registration">here</router-link>.
             </p>
-            <!-- <router-link to="/forgotpassword" class="inline-block align-baseline font-bold text-sm
-            hover:text-blue-800" href="#">-->
-            <!--  Forgot Password?-->
-            <!-- </router-link>-->
           </div>
         </form>
       </div>
@@ -58,7 +62,9 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
+import { defineComponent, ref } from 'vue';
+import { LoginRequest } from '@/types/types';
+import { useRouter } from 'vue-router';
 // import Images from '@/components/svgs/Images.vue';
 
 export default defineComponent({
@@ -68,9 +74,32 @@ export default defineComponent({
   },
   setup() {
     const welcomeToSmartHub = 'Welcome to SmartHub';
+    const password = ref('');
+    const username = ref('');
+    const message = ref('');
+    const messageClass = ref('successMessage');
 
+    const onLoginClick = async () => {
+      const login: LoginRequest = {
+        username: username.value,
+        password: password.value
+      };
+      await this.$store.dispatch(LOGIN, login);
+      const { token } = this.$store.getters.getAuthResponse;
+      message.value = '';
+      if (token == null) {
+        messageClass.value = 'error--text';
+        message.value = 'Error: Something went wrong, try again later';
+      }
+      await useRouter().push('/');
+    };
     return {
-      welcomeToSmartHub
+      welcomeToSmartHub,
+      onLoginClick,
+      password,
+      username,
+      message,
+      messageClass
     };
   }
 });
@@ -102,7 +131,7 @@ export default defineComponent({
     margin: 0;
     a {
       text-decoration: underline;
-      color: var(--color-ui-background);
+      /*color: var(--color-ui-background);*/
     }
   }
 }

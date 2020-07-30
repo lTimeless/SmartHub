@@ -105,10 +105,6 @@ h4 {
   @apply text-lg;
 }
 
-a:not(.active):not(.text-ui-primary):not(.text-white) {
-  @apply text-ui-typo;
-}
-
 p,
 ol,
 ul,
