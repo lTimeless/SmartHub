@@ -1,5 +1,5 @@
 module.exports = {
-  printWidth: 130,
+  printWidth: 150,
   tabWidth: 2,
   tabs: false,
   semi: true,

@@ -2,10 +2,7 @@
   <div ref="sidebar" v-if="this.openSidebar" class="px-4 pt-6 lg:pt-6">
     <div class="pb-4 mb-1">
       <div class="md:flex">
-        <div
-          class="dot h-16 w-16 md:h-24 md:w-24 rounded-full mx-auto md:mx-0 md:mr-6"
-          :style="{ 'background-color': imageBgColor }"
-        >
+        <div class="dot h-16 w-16 md:h-24 md:w-24 rounded-full mx-auto md:mx-0 md:mr-6" :style="{ 'background-color': imageBgColor }">
           {{ person.firstName.charAt(0) }}{{ person.lastName.charAt(0) }}
         </div>
         <div class="text-center md:text-left">

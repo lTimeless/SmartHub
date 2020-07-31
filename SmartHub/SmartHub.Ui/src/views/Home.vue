@@ -1,11 +1,7 @@
 <template>
   <div class="font-sans antialiased text-ui-typo bg-ui-background">
     <div class="flex flex-col justify-start min-h-screen">
-      <header
-        ref="headerRef"
-        class="sticky top-0 z-10 w-full border-b bg-ui-background border-ui-border"
-        @resize="setHeaderHeight"
-      >
+      <header ref="headerRef" class="sticky top-0 z-10 w-full border-b bg-ui-background border-ui-border" @resize="setHeaderHeight">
         <LayoutHeader />
       </header>
 

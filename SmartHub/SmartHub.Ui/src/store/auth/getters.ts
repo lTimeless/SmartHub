@@ -8,8 +8,5 @@ export const getters: GetterTree<AuthState, RootState> = {
   },
   getAuthResponse(state: AuthState): AuthResponse | null {
     return state.authResponse;
-  },
-  getRegStepIndex(state: AuthState): number {
-    return state.regStepIndex;
   }
 };

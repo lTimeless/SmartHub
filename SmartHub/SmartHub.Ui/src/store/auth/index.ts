@@ -6,11 +6,10 @@ import { mutations } from '@/store/auth/mutations';
 
 export const state: AuthState = {
   authResponse: null,
-  regStepIndex: 1,
   isSignInBtnClicked: false
 };
 
-export const auth: Module<AuthState, RootState> = {
+export const authModule: Module<AuthState, RootState> = {
   state,
   getters,
   actions,

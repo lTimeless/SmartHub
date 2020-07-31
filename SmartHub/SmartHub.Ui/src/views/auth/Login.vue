@@ -11,12 +11,11 @@
         </div>
         <form class="px-5">
           <div class="mb-4">
-            <label class="block text-gray-500 md:text-left mb-1 md:mb-0 pr-4" for="username">
+            <label class="block text-gray-600 md:text-left mb-1 md:mb-0 pr-4" for="username">
               Username
             </label>
             <input
               required
-              name="current-password"
               v-model="username"
               class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight
           focus:outline-none focus:shadow-outline"
@@ -26,12 +25,13 @@
             />
           </div>
           <div class="mb-5 mt-8">
-            <label class="block text-gray-500 md:text-left mb-1 md:mb-0 pr-4" for="password">
+            <label class="block text-gray-600 md:text-left mb-1 md:mb-0 pr-4" for="password">
               Password
             </label>
             <input
               v-model="password"
               required
+              name="password"
               @keyup.enter="onLoginClick"
               class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3
           leading-tight focus:outline-none focus:shadow-outline"
@@ -83,8 +83,7 @@ export default defineComponent({
     const welcomeToSmartHub = 'Welcome to SmartHub';
     const password = ref('');
     const username = ref('');
-    const isSignInBtnClicked = ref(store.state.auth.isSignInBtnClicked);
-
+    const isSignInBtnClicked = ref(store.state.authModule.isSignInBtnClicked);
     const onLoginClick = async () => {
       const login: LoginRequest = {
         username: username.value,

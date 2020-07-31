@@ -21,7 +21,7 @@ module.exports = {
     'no-console': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
     'no-debugger': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
     'import/prefer-default-export': 'off',
-    'max-len': [2, 130, 2],
+    'max-len': [2, 150, 2],
     'lines-between-class-members': ['error', 'always', { exceptAfterSingleLine: true }],
     'comma-dangle': ['error', 'never'],
     'object-curly-newline': ['error', { ImportDeclaration: { multiline: true, minProperties: 6 }, ExportDeclaration: 'never' }],
