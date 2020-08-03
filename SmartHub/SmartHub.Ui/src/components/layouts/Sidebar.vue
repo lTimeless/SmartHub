@@ -2,7 +2,11 @@
   <div ref="sidebar" v-if="this.openSidebar" class="px-4 pt-6 lg:pt-6">
     <div class="pb-4 mb-1">
       <div class="md:flex">
-        <div class="dot h-16 w-16 md:h-24 md:w-24 rounded-full mx-auto md:mx-0 md:mr-6" :style="{ 'background-color': imageBgColor }">
+        <div
+          class="text-white text-center pt-2 text-xl lg:h-12 lg:w-12 md:h-10 md:w-10 sm:w-8 sm:h-8 rounded-full md:mx-0 md:mr-1
+                xl:mr-6"
+          :style="{ 'background-color': imageBgColor }"
+        >
           {{ person.firstName.charAt(0) }}{{ person.lastName.charAt(0) }}
         </div>
         <div class="text-center md:text-left">
@@ -148,14 +152,4 @@ export default defineComponent({
 });
 </script>
 
-<style scoped>
-.dot {
-  width: 50px;
-  height: 50px;
-  border-radius: 50%;
-  font-size: 19px;
-  color: #fff;
-  line-height: 50px;
-  text-align: center;
-}
-</style>
+<style scoped></style>

@@ -18,10 +18,11 @@
             </svg>
             <h2 class="text-2xl mb-4 text-gray-800 text-center font-bold">Registration Success</h2>
             <div class="text-gray-600 mb-8">
-              Thank you. We have sent you an email to demo@demo.test. Please click the link in the message to activate your account.
+              Thank you. We have sent you an email to ... . Please click the link in the message to activate your account.
             </div>
-            <!--  TODO: link to -->
+            <!--  TODO: Email activation -->
             <button
+              @click="registrationComplete"
               class="w-40 block mx-auto focus:outline-none py-2 px-5 rounded-lg shadow-sm text-center
                       text-gray-600 bg-white hover:bg-gray-100 font-medium border"
             >
@@ -36,10 +37,12 @@
           <div class="progress flex justify-center">
             <div class="progress-step ml-5" :class="{ active: index === activeStep }" v-for="(step, index) in steps" :key="step.step + index"></div>
           </div>
-          <div v-for="(step, index) in steps" :key="step.step + index" class="mt-1">
-            <div v-if="index === activeStep" class="pl-4 mt-0 text-xl font-bold text-gray-500 leading-tight">
-              {{ step.title }}
-            </div>
+          <div class="mt-1">
+            <template v-for="(step, index) in steps">
+              <p :key="step.step + index" v-if="step.step === activeStep" class="pl-4 mt-0 text-xl font-bold text-gray-500 leading-tight">
+                {{ step.title }}
+              </p>
+            </template>
           </div>
         </div>
 
@@ -209,7 +212,38 @@
                 </div>
               </div>
             </template>
-            <template v-if="activeStep === 2">3</template>
+            <template v-if="activeStep === 2">
+              <div class="-mx-3 md:flex mt-4">
+                <div class="md:w-full px-3 md:mb-0">
+                  <label class="block text-gray-600 md:text-left mb-1 md:mb-0 pr-4" for="home-name">
+                    Home name
+                  </label>
+                  <input
+                    :disabled="checkHomeExists"
+                    class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight
+                            focus:outline-none focus:shadow-outline bg-ui-background"
+                    :class="checkHomeExists ? 'opacity-50 focus:outline-none cursor-not-allowed' : 'hover:text-white'"
+                    type="text"
+                    id="home-name"
+                    v-model="homeCreateRequest.name"
+                    placeholder="SmartHub"
+                  />
+                  <template v-if="checkHomeExists">
+                    <p class="ml-0 mt-4" :class="messageClass">{{ message }}.</p>
+                    <p class="ml-0 mt-2" :class="messageClass">
+                      Please
+                      <b :class="checkHomeExists ? 'text-ui-primary' : 'text-black'">click complete</b>
+                      to continue.
+                    </p>
+                  </template>
+                  <template v-else>
+                    <p class="mt-4">
+                      Modifying default settings will be coming soon 🔥😉
+                    </p>
+                  </template>
+                </div>
+              </div>
+            </template>
           </div>
           <!-- Actions -->
           <div class="grid grid-cols-2 gap-6 py-10">
@@ -277,6 +311,7 @@ export default defineComponent({
     const messageClass = ref('successMessage');
     const message = ref('');
     const activeStep = ref(0);
+    const getHome = reactive(store.state.homeModule.home);
     const steps = [
       { title: 'Your Profile', step: 0 },
       { title: 'Your Password', step: 1 },
@@ -284,7 +319,7 @@ export default defineComponent({
     ];
     const passwordStrengthText = ref('');
     const togglePassword = ref(false);
-    let homeCreateRequest: HomeCreateRequest = reactive({
+    const homeCreateRequest: HomeCreateRequest = reactive({
       name: '',
       description: ''
     });
@@ -301,6 +336,10 @@ export default defineComponent({
       clearStorage();
     });
 
+    const checkFinalStepHome = computed(() => (getHome === null ? homeCreateRequest.name !== '' : getHome.name !== ''));
+    const checkHomeExists = computed(() => store.state.homeModule.home !== null);
+    const checkInputs = computed(() => registrationRequest.username !== '' && registrationRequest.password !== '' && checkFinalStepHome.value);
+
     const checkPasswordStrength = () => {
       const strongRegex = new RegExp('^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])(?=.{8,})');
       const mediumRegex = new RegExp('^(((?=.*[a-z])(?=.*[A-Z]))|((?=.*[a-z])(?=.*[0-9]))|((?=.*[A-Z])(?=.*[0-9])))(?=.{6,})');
@@ -313,66 +352,58 @@ export default defineComponent({
         passwordStrengthText.value = 'Too weak';
       }
     };
+    const existingHome = () => {
+      if (getHome === null) {
+        message.value = 'No home created yet';
+        messageClass.value = 'secondary--text';
+      }
+      message.value = `Already a home created with name ${store.state.homeModule.home.name}  - this will be selected automatically`;
+      messageClass.value = 'primary--text';
+    };
 
-    const checkFinalStepHome = computed(() => (store.state.homeModule.home === null ? homeCreateRequest.name : store.state.homeState.home.name));
-
-    const checkInputs = computed(() => registrationRequest.username !== '' && registrationRequest.password !== '' && checkFinalStepHome.value);
     const onBackStep = (nextStep: number) => {
       activeStep.value = nextStep;
     };
-
     const onNextStep = async (): Promise<void> => {
       let shouldBeNextStep = activeStep.value;
       shouldBeNextStep += 1;
-      // if (shouldBeNextStep === 2) {
-      //   await store.dispatch(FETCH_HOME);
-      // }
+      if (shouldBeNextStep === 2) {
+        await store.dispatch(FETCH_HOME);
+        await existingHome();
+      }
       activeStep.value = shouldBeNextStep;
     };
 
-    const existingHome = () => {
-      if (store.state.homeModule.home?.name === null) {
-        message.value = 'No home created yet';
-        messageClass.value = 'secondary--text';
-        return '-';
-      }
-      message.value = 'Already a home created - this will be selected automatically';
-      messageClass.value = 'primary--text';
-      return !store.state.homeModule.home ? '-' : store.state.homeModule.home.name;
-    };
-
-    const onClearForm = (): void => {
-      homeCreateRequest = { name: '', description: '' };
-    };
-
     const onRegistrationClick = async () => {
-      // await store
-      //   .dispatch(REGISTRATION, registrationRequest)
-      //   .then(async (response: AxiosResponse<ServerResponse<AuthResponse>>) => {
-      //     if (response.data.success) {
-      //       const auth = response.data.data as AuthResponse;
-      //       storeToken(auth.token);
-      //       storeAuthResponse(auth);
-      //       await store.commit(AUTH_USER, auth);
-      //       if (store.state.homeModule.home === null) {
-      //         await store.dispatch(CREATE_HOME, homeCreateRequest);
-      //       } else {
-      //         const updateHomeRequest: HomeUpdateRequest = {
-      //           name: null,
-      //           description: null,
-      //           settingName: null,
-      //           userName: auth.userName
-      //         };
-      //         await store.dispatch(UPDATE_HOME, updateHomeRequest);
-      //       }
-      //       await router.push('/');
-      //     }
-      //   })
-      //   .catch((error) => {
-      //     console.log(error);
-      //   });
-      doneRegistration.value = true;
-      console.log(doneRegistration.value);
+      await store
+        .dispatch(REGISTRATION, registrationRequest)
+        .then(async (response: AxiosResponse<ServerResponse<AuthResponse>>) => {
+          if (response.data.success) {
+            const auth = response.data.data as AuthResponse;
+            await storeToken(auth.token);
+            await storeAuthResponse(auth);
+            await store.commit(AUTH_USER, auth);
+            if (!checkHomeExists.value && homeCreateRequest.name !== '') {
+              await store.dispatch(CREATE_HOME, homeCreateRequest);
+            } else {
+              const updateHomeRequest: HomeUpdateRequest = {
+                name: null,
+                description: null,
+                settingName: null,
+                userName: auth.userName
+              };
+              await store.dispatch(UPDATE_HOME, updateHomeRequest);
+              doneRegistration.value = true;
+            }
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    };
+
+    const registrationComplete = () => {
+      router.push('/');
     };
 
     return {
@@ -380,13 +411,18 @@ export default defineComponent({
       steps,
       registrationRequest,
       togglePassword,
+      message,
+      messageClass,
+      homeCreateRequest,
       onBackStep,
       onNextStep,
       doneRegistration,
       checkPasswordStrength,
       passwordStrengthText,
       checkInputs,
-      onRegistrationClick
+      onRegistrationClick,
+      checkHomeExists,
+      registrationComplete
     };
   }
 });
@@ -443,7 +479,6 @@ export default defineComponent({
   }
 
   p {
-    margin: 0;
     a {
       text-decoration: underline;
       /*color: var(--color-ui-background);*/

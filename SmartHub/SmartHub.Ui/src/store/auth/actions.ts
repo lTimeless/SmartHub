@@ -3,7 +3,7 @@ import { LoginRequest, AuthResponse, RegistrationRequest, ServerResponse } from 
 import { RootState, AuthState } from '@/store/index.types';
 import { AUTH_USER, UPDATE_SIGNIN_BTN } from '@/store/auth/mutations';
 import { storeAuthResponse, storeToken } from '@/services/auth/authService';
-import axios from 'axios';
+import axiosInstance from '@/router/axios/axios';
 
 // ActionType keys
 export const LOGIN = 'LOGIN';
@@ -13,7 +13,7 @@ export const REGISTRATION = 'REGISTRATION';
 export const actions: ActionTree<AuthState, RootState> = {
   async [LOGIN]({ commit }, payload: LoginRequest): Promise<void> {
     commit(UPDATE_SIGNIN_BTN);
-    await axios
+    await axiosInstance
       .post<ServerResponse<AuthResponse>>('api/Identity/login', payload)
       .then((response) => {
         const authResponse = response.data.data as AuthResponse;
@@ -27,7 +27,7 @@ export const actions: ActionTree<AuthState, RootState> = {
       });
   },
   async [REGISTRATION](state, payload: RegistrationRequest): Promise<any> {
-    return axios.post<ServerResponse<AuthResponse>>('api/Identity/registration', payload);
+    return axiosInstance.post<ServerResponse<AuthResponse>>('api/Identity/registration', payload);
   },
   async [LOGOUT]({ commit }) {
     commit(UPDATE_SIGNIN_BTN);

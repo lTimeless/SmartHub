@@ -55,6 +55,7 @@ export const storeRefreshToken = (refreshToken: string): void => {
 export const clearStorage = (): void => {
   localStorage.removeItem(LOCAL_STORAGE_TOKEN);
   localStorage.removeItem(LOCAL_STORAGE_REFRESH_TOKEN);
+  localStorage.removeItem(LOCAL_STORAGE_AUTHRESPONSE);
 };
 
 // export const getRefreshToken = (): string | null => localStorage.getItem(LOCAL_STORAGE_REFRESH_TOKEN);

@@ -1,7 +1,7 @@
-import axios from 'axios';
 import { getAuthentication, isAuthenticated } from '@/services/auth/authService';
+import axiosInstance from '@/router/axios/axios';
 
-axios.interceptors.request.use(
+axiosInstance.interceptors.request.use(
   (config) => {
     if (isAuthenticated()) {
       config.headers = getAuthentication().headers;

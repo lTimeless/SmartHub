@@ -93,7 +93,7 @@ export default defineComponent({
       await router.push('/');
     };
 
-    const signInDisabled = computed(() => isSignInBtnClicked.value || username.value.length === 0 || password.value.length < 4);
+    const signInDisabled = computed(() => isSignInBtnClicked.value && (username.value.length === 0 || password.value.length < 4));
 
     return {
       welcomeToSmartHub,

@@ -28,8 +28,8 @@ export const useRouteAuthGuard = (to: RouteLocationNormalized, from: RouteLocati
     if (!isAuthenticated()) {
       next({ name: 'Login' });
     } else {
-      // TODO: anstatt den authresponse zu nehmen un die rollen zu prüfen
-      // vlt den token nehmen ans BE schicken- prüfen lassen und darauf dann userberechtigungen bekommen
+      //  anstatt den authresponse zu nehmen um die rollen zu prüfen
+      // TODO: vlt den token nehmen ans BE schicken- prüfen lassen ob es noch valide ist und darauf dann userberechtigungen/authresponse bekommen
       const authResponse = getAuthResponse();
       if (authResponse === null) {
         next({ name: 'Login' });

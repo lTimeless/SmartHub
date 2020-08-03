@@ -24,7 +24,7 @@ module.exports = {
     'max-len': [2, 150, 2],
     'lines-between-class-members': ['error', 'always', { exceptAfterSingleLine: true }],
     'comma-dangle': ['error', 'never'],
-    'object-curly-newline': ['error', { ImportDeclaration: { multiline: true, minProperties: 6 }, ExportDeclaration: 'never' }],
+    'object-curly-newline': ['error', { ImportDeclaration: { multiline: true, minProperties: 10 }, ExportDeclaration: 'never' }],
     'no-bitwise': ['error', { allow: ['~', '<<', '|'] }],
     'import/no-cycle': 0,
     'no-param-reassign': [2, { props: false }]
