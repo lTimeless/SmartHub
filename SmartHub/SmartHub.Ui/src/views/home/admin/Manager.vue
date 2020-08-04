@@ -1,4 +1,8 @@
-<template> <div></div></template>
+<template>
+  <div>
+    Manager
+  </div>
+</template>
 
 <script lang="ts">
 import { defineComponent } from 'vue';

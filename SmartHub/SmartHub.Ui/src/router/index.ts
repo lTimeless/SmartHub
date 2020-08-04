@@ -34,7 +34,7 @@ const routes: Array<RouteRecordRaw> = [
     }
   },
   {
-    path: '',
+    path: '/',
     component: Home,
     meta: {
       requiresAuth: true,
@@ -42,8 +42,8 @@ const routes: Array<RouteRecordRaw> = [
     },
     children: [
       {
-        path: '/',
-        name: 'Home',
+        path: '',
+        name: 'Dashboard',
         component: Dashboard,
         meta: {
           requiresAuth: true,

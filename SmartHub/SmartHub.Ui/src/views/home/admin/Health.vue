@@ -1,5 +1,7 @@
 <template>
-  <div></div>
+  <div>
+    Health
+  </div>
 </template>
 
 <script lang="ts">

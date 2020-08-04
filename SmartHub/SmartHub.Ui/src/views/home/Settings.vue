@@ -1,5 +1,7 @@
 <template>
-  <div></div>
+  <div>
+    Settings
+  </div>
 </template>
 
 <script lang="ts">

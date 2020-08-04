@@ -1,6 +1,6 @@
 <template>
   <div class="w-full">
-    <h1 class="text-3xl py-4 border-b mb-4">Events</h1>
+    <h1 class="text-3xl text-gray-500 font-bold mb-6">Events</h1>
     <div class="flex justify-between items-center">
       <Search :data="eventsArray" :search-keys="searchKeys" @search-result="getSearchResult" @toggle-table="toggleTable" />
       <div class="w-1/3 flex justify-end">

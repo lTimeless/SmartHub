@@ -1,5 +1,7 @@
 <template>
-  <div></div>
+  <div>
+    Routines
+  </div>
 </template>
 
 <script lang="ts">
