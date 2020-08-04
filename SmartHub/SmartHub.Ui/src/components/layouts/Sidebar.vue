@@ -104,7 +104,7 @@ export default defineComponent({
           roleNeeded: ['Admin'],
           items: [
             { title: 'Events', icon: 'mdi-calendar-alert', path: '/events' },
-            { title: 'Logs', icon: 'mdi-file-document', path: 'logs' },
+            { title: 'Logs', icon: 'mdi-file-document', path: '/logs' },
             { title: 'System', icon: 'mdi-desktop-classic', path: '/system' },
             { title: 'Health', icon: 'mdi-clipboard-pulse', path: '/health' },
             { title: 'Manager', icon: 'mdi-monitor-edit', path: '/manager' }

@@ -5,14 +5,12 @@
         <LayoutHeader />
       </header>
 
-      <main class="container ml-0 pb-0 mb-0 relative flex flex-wrap justify-start flex-1 w-full bg-ui-background overflow-auto">
-        <aside v-if="hasSidebar" class="sidebar overflow-auto w-2/12" :class="{ open: sidebarOpen }" :style="sidebarStyle">
-          <div class="w-full bg-ui-background">
-            <Sidebar :show-sidebar="this.sidebarOpen" />
-          </div>
+      <main class="relative flex flex-wrap justify-start flex-1 w-full bg-ui-background overflow-auto">
+        <aside v-if="hasSidebar" class="px-4 sidebar overflow-auto w-56 bg-ui-background" :class="{ open: sidebarOpen }" :style="sidebarStyle">
+          <Sidebar :show-sidebar="this.sidebarOpen" />
         </aside>
 
-        <div class="w-full pb-6">
+        <div class="container w-10/12 pb-6 flex justify-around">
           <router-view />
         </div>
       </main>

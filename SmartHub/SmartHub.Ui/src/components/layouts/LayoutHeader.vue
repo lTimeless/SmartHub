@@ -12,7 +12,7 @@
         </div>
 
         <div class="w-5/12 px-2 sm:px-4 max-w-screen-xs">
-          <Search />
+          <SearchWithDropdown />
         </div>
 
         <div class="flex items-center justify-end px-2 sm:px-4">
@@ -34,19 +34,19 @@
 
 <script lang="ts">
 // import ToggleDarkMode from '@/components/layouts/ToggleColorMode.vue';
-import Search from '@/components/layouts/Search.vue';
+import SearchWithDropdown from '@/components/layouts/SearchWithDropdown.vue';
 import Logo from '@/components/svgs/Logo.vue';
 import { defineComponent } from 'vue';
 // import { GithubIcon } from 'vue-feather-icons';
 
 // const Search = () =>
-//   import(/* webpackChunkName: "search" */ '@/components/layouts/Search.vue').catch((error) => console.warn(error));
+//   import(/* webpackChunkName: "search" */ '@/components/layouts/SearchWithDropdown.vue').catch((error) => console.warn(error));
 
 export default defineComponent({
   name: 'LayoutHeader',
   components: {
     Logo,
-    Search
+    SearchWithDropdown
     // GithubIcon
     // ToggleDarkMode,
     // SunIcon,

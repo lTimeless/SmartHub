@@ -1,3 +1,4 @@
+// ########## Interfaces ##########
 // ServiceResponse
 export interface ServerResponse<T> {
   data: T | null;
@@ -14,7 +15,7 @@ export interface ServerEvent {
 
 export interface ServerLog {
   id: string;
-  dateTime: string;
+  timestamp: string;
   level: string;
   message: string;
   exception: string;
@@ -82,3 +83,10 @@ export interface Device {
 export interface Setting {
   name: string;
 }
+
+// ########## Types ##########
+export type ModifiedEvent = {
+  id: string;
+  eventType: string;
+  data: string;
+};

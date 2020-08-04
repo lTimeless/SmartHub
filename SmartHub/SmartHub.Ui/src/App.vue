@@ -200,21 +200,21 @@ header {
 table {
   @apply text-left mb-6;
 
-  td,
   th {
-    @apply py-3 px-4;
-    &:first-child {
-      @apply pl-0;
-    }
-    &:last-child {
-      @apply pr-0;
-    }
+    @apply py-3 px-4 bg-gray-400 border-white uppercase text-sm text-gray-600 font-bold tracking-wider;
+  }
+
+  td {
+    @apply px-4 py-2 border-white border-b text-sm text-gray-600 font-semibold tracking-wider;
   }
 
   tr {
     @apply border-b border-ui-border;
-    &:last-child {
-      @apply border-b-0;
+    &:nth-child(even) {
+      @apply bg-gray-200;
+    }
+    &:nth-child(odd) {
+      @apply bg-white;
     }
   }
 }

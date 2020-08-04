@@ -113,7 +113,7 @@ namespace SmartHub.Api
 					name: "default",
 					pattern: "{controller}/{action=Index}/{id?}");
 
-				endpoints.MapHub<EventHub>("/api/hub");
+				endpoints.MapHub<EventHub>("/api/hub/events");
 				endpoints.MapHub<LogHub>("/api/hub/logs");
 			});
 

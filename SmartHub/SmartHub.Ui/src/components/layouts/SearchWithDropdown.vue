@@ -23,8 +23,8 @@
     <!--    </label>-->
     <!--    <div-->
     <!--      v-if="showResult"-->
-    <!--      class="fixed inset-x-0 z-50 overflow-y-auto border-2 border-t-0 rounded-lg rounded-t-none shadow-lg results
-    bg-ui-background bottom:0 sm:bottom-auto sm:absolute border-ui-sidebar"-->
+    <!--      class="fixed inset-x-0 z-50 overflow-y-auto border-2 border-t-0 rounded-lg
+    rounded-t-none shadow-lg results bg-ui-background bottom:0 sm:bottom-auto sm:absolute border-ui-sidebar"-->
     <!--      style="max-height: calc(100vh - 120px)"-->
     <!--    >-->
     <!--      <ul class="px-4 py-2 m-0">-->
@@ -44,7 +44,7 @@
     <!--            'border-b': index + 1 !== results.length-->
     <!--          }"-->
     <!--        >-->
-    <!--          <router-link-->
+    <!--          <g-link-->
     <!--            :to="result.item.path + result.item.anchor"-->
     <!--            class="block p-2 -mx-2 text-base font-bold rounded-lg"-->
     <!--            :class="{-->
@@ -60,7 +60,7 @@
     <!--              <ChevronRightIcon size="1x" class="mx-1" />-->
     <!--              <span class="font-normal opacity-75">{{ result.item.value }}</span>-->
     <!--            </span>-->
-    <!--          </router-link>-->
+    <!--          </g-link>-->
     <!--        </li>-->
     <!--      </ul>-->
     <!--    </div>-->
@@ -68,9 +68,11 @@
 </template>
 
 <script>
-export default {
-  name: 'Search'
-};
+import { defineComponent } from 'vue';
+
+export default defineComponent({
+  name: 'SearchWithDropdown'
+});
 </script>
 
 <style scoped></style>
