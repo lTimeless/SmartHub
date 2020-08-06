@@ -2,10 +2,10 @@
   <div class="container">
     <h1 class="text-3xl text-gray-500 font-bold mb-6">Dashboard</h1>
     <div class="flex justify-between align-middle mx-0 my-4">
-      <action-button title="Home"></action-button>
-      <action-button title="Group" color="orange"></action-button>
-      <action-button title="Device" color="green"></action-button>
-      <action-button title="Routine" color="teal"></action-button>
+      <action-button title="Home" :callback="onClick" />
+      <action-button title="Group" color="orange" :callback="onClick" />
+      <action-button title="Device" color="green" :callback="onClick" />
+      <action-button title="Routine" color="teal" :callback="onClick" />
     </div>
     <div class="grid grid-cols-2 gap-6">
       <div class="border-b border-ui-border col-span-2 mb-3">
@@ -26,6 +26,14 @@ export default defineComponent({
   name: 'Dashboard',
   components: {
     ActionButton
+  },
+  setup() {
+    const onClick = () => {
+      console.log('Click button');
+    };
+    return {
+      onClick
+    };
   }
 });
 </script>

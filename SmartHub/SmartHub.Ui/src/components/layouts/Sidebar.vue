@@ -46,14 +46,7 @@
     </div>
 
     <div class="flex justify-center mt-7 mb-8">
-      <button
-        @click="logout"
-        class="flex items-center text-ui-primary font-bold px-10 py-2 border border-ui-border rounded-lg
-        hover:bg-ui-primary hover:text-white transition-colors"
-      >
-        Logout
-        <!--        <ArrowRightCircleIcon class="ml-4" size="1x" />-->
-      </button>
+      <action-button color="indigo" :height="35" :width="150" title="Logout" :callback="logout" />
     </div>
   </div>
 </template>
@@ -64,10 +57,13 @@ import { useRouter } from 'vue-router';
 import { clearStorage, getUserRole } from '@/services/auth/authService';
 import { useStore } from 'vuex';
 import { UPDATE_SIGNIN_BTN } from '@/store/auth/mutations';
+import ActionButton from '@/components/widgets/ActionButton.vue';
 
 export default defineComponent({
   name: 'Sidebar',
-  components: {},
+  components: {
+    ActionButton
+  },
   props: {
     showSidebar: { type: Boolean, required: true }
   },

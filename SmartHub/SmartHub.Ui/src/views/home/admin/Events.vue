@@ -1,7 +1,7 @@
 <template>
   <div class="w-full">
     <h1 class="text-3xl text-gray-500 font-bold mb-6">Events</h1>
-    <div class="flex justify-between items-center">
+    <div class="flex justify-between items-center mb-4">
       <Search :data="eventsArray" :search-keys="searchKeys" @search-result="getSearchResult" @toggle-table="toggleTable" />
       <div class="w-1/3 flex justify-end">
         <span
@@ -82,7 +82,7 @@
 import { defineComponent, onUnmounted, ref, reactive } from 'vue';
 import { HubConnectionBuilder, LogLevel, HubConnection } from '@microsoft/signalr';
 import { ModifiedEvent, ServerEvent } from '@/types/types';
-import Search from '@/components/Search.vue';
+import Search from '@/components/widgets/Search.vue';
 
 export default defineComponent({
   name: 'Events',

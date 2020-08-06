@@ -1,7 +1,7 @@
 <template>
   <div class="flex justify-center mt-7 mb-8">
     <button
-      @click="onClick"
+      @click="callback"
       class="flex justify-center items-center text-ui-primary font-bold border border-ui-border rounded-lg
         hover:text-white transition-colors"
       :class="`hover:bg-${color}-${colorSaturation}`"
@@ -13,7 +13,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
+import { defineComponent, PropType } from 'vue';
 
 export default defineComponent({
   name: 'ActionButton',
@@ -42,15 +42,15 @@ export default defineComponent({
       type: Number,
       required: false,
       default: 50
+    },
+    callback: {
+      type: Function as PropType<() => void>,
+      required: true
     }
   },
   setup(props) {
-    const onClick = () => {
-      console.log('action click', props.title);
-    };
     return {
-      ...props,
-      onClick
+      ...props
     };
   }
 });

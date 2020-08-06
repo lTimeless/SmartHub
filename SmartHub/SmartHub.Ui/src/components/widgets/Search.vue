@@ -1,21 +1,23 @@
 <template>
-  <div class="flex-1 mb-4">
+  <div class="flex-1" :class="`w-${width}`">
     <div class="relative">
       <label>
         <input
           type="search"
           v-model="searchInput"
           class="w-full pl-10 pr-4 py-2 rounded-lg shadow focus:outline-none focus:shadow-outline text-gray-600 font-medium"
+          :class="`h-${height}`"
           placeholder="Search... (press enter)"
           @keydown.enter="searchData"
           @focus="toggleTable(true)"
           @blur="toggleTable(false)"
         />
       </label>
-      <div class="absolute top-0 left-0 inline-flex items-center p-2">
+      <div class="absolute top-0 left-0 inline-flex items-center" :class="`p-${getIconPadding}`">
         <svg
           xmlns="http://www.w3.org/2000/svg"
-          class="w-6 h-6 text-gray-400"
+          class="text-gray-400"
+          :class="`w-${getIconSize} h-${getIconSize}`"
           viewBox="0 0 24 24"
           stroke-width="2"
           stroke="currentColor"
@@ -33,7 +35,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, computed, ref } from 'vue';
+import { defineComponent, ref, computed } from 'vue';
 import Fuse from 'fuse.js';
 
 export default defineComponent({
@@ -47,10 +49,30 @@ export default defineComponent({
       type: Array,
       required: true,
       validator: (prop: any) => prop.every((e: any) => typeof e === 'string')
+    },
+    withDropdown: {
+      type: Boolean,
+      required: false
+    },
+    width: {
+      type: String,
+      required: false,
+      default: 'full'
+    },
+    height: {
+      type: String,
+      required: false,
+      default: '10'
+    },
+    iconSize: {
+      type: String,
+      required: false,
+      default: '6'
     }
   },
   setup(props, context) {
     const searchInput = ref('');
+    const iconPadding = ref(2);
     const searchData = () => {
       const fuse = new Fuse(props.data, {
         keys: props.searchKeys as string[],
@@ -64,10 +86,21 @@ export default defineComponent({
       context.emit('toggle-table', value);
     };
 
+    const getIconSize = computed(() => {
+      if (typeof props.iconSize === 'string') {
+        return props.iconSize;
+      }
+      return props.iconSize - 2;
+    });
+
+    const getIconPadding = computed(() => iconPadding.value);
+
     return {
       searchInput,
       searchData,
-      toggleTable
+      toggleTable,
+      getIconSize,
+      getIconPadding
     };
   }
 });
