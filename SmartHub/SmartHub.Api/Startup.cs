@@ -26,7 +26,7 @@ namespace SmartHub.Api
 					.AddJsonFile("Properties/launchSettings.json", optional: true)
 					.AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
 					.AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true, reloadOnChange: true)
-					.AddJsonFile("smartHub.config.json", optional: false)
+					.AddJsonFile("smarthub.config.json", optional: false)
 					;
 
 			if (env.IsDevelopment())

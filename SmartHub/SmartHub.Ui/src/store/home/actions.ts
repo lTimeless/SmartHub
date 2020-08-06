@@ -1,13 +1,29 @@
-import { ActionTree } from 'vuex';
+import { ActionContext, ActionTree } from 'vuex';
 import axiosInstance from '@/router/axios/axios';
-import { RootState, HomeState } from '@/store/index.types';
+import { RootState, HomeState, AuthState } from '@/store/index.types';
 import { Home, HomeCreateRequest, HomeUpdateRequest, ServerResponse } from '@/types/types';
 import { getAuthentication } from '@/services/auth/authService';
+import { HomeMutations } from '@/store/home/mutations';
 
-// ActionType keys
-export const FETCH_HOME = 'GET_HOME';
+// Keys
+export const FETCH_HOME = 'FETCH_HOME';
 export const CREATE_HOME = 'CREATE_HOME';
 export const UPDATE_HOME = 'UPDATE_HOME';
+
+// actions
+type AugmentedActionContext = {
+  commit<K extends keyof HomeMutations<AuthState>>(
+    key: K,
+    payload: Parameters<HomeMutations<AuthState>[K]>[1]
+  ): ReturnType<HomeMutations<AuthState>[K]>;
+} & Omit<ActionContext<AuthState, RootState>, 'commit'>;
+
+// Action Interface
+export interface HomeActions {
+  [FETCH_HOME]({ commit }: AugmentedActionContext): Promise<void>;
+  [CREATE_HOME]({ commit }: AugmentedActionContext, payload: HomeCreateRequest): Promise<void>;
+  [UPDATE_HOME]({ commit }: AugmentedActionContext, payload: HomeUpdateRequest): Promise<void>;
+}
 
 export const actions: ActionTree<HomeState, RootState> = {
   async [FETCH_HOME]({ commit }): Promise<void> {

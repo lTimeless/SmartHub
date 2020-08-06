@@ -71,8 +71,7 @@
 import { computed, defineComponent, ref } from 'vue';
 import { LoginRequest } from '@/types/types';
 import { useRouter } from 'vue-router';
-import { useStore } from 'vuex';
-import { LOGIN } from '@/store/auth/actions';
+import { useStore } from '@/store';
 
 export default defineComponent({
   name: 'Login',
@@ -89,7 +88,7 @@ export default defineComponent({
         username: username.value,
         password: password.value
       };
-      await store.dispatch(LOGIN, login);
+      await store.dispatch('LOGIN', login);
       await router.push('/');
     };
 

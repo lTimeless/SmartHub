@@ -2,6 +2,9 @@ import { AuthResponse, Home, User } from '@/types/types';
 
 export interface RootState {
   version: number;
+  authModule: AuthState;
+  homeModule: HomeState;
+  userModule: UserState;
 }
 
 export interface UserState {

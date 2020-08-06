@@ -12,7 +12,7 @@
         </div>
 
         <div class="w-4/12 md:ml-32">
-          <Search search-keys="" data="" width="full" height="10" />
+          <Search :search-keys="[]" :data="[]" width="full" height="10" />
         </div>
 
         <div class="flex items-center justify-end px-2 sm:px-4">
