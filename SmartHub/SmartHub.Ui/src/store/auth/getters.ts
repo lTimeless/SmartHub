@@ -5,6 +5,7 @@ import { RootState, AuthState } from '@/store/index.types';
 // Getter Types
 export type AuthGetters = {
   getRole(state: AuthState): string[] | undefined;
+  getAuthResponse(state: AuthState): AuthResponse | null;
 };
 
 // Define Getters

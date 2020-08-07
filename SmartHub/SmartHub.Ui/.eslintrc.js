@@ -27,6 +27,7 @@ module.exports = {
     'object-curly-newline': ['error', { ImportDeclaration: { multiline: true, minProperties: 10 }, ExportDeclaration: 'never' }],
     'no-bitwise': ['error', { allow: ['~', '<<', '|'] }],
     'import/no-cycle': 0,
-    'no-param-reassign': [2, { props: false }]
+    'no-param-reassign': [2, { props: false }],
+    "arrow-body-style": ['error', 'as-needed']
   }
 };

@@ -57,6 +57,7 @@ import { useRouter } from 'vue-router';
 import { clearStorage, getUserRole } from '@/services/auth/authService';
 import ActionButton from '@/components/widgets/ActionButton.vue';
 import { useStore } from '@/store';
+import { A_LOGOUT } from '@/store/auth/actions';
 
 export default defineComponent({
   name: 'Sidebar',
@@ -128,7 +129,7 @@ export default defineComponent({
     });
 
     const logout = () => {
-      store.commit('UPDATE_SIGNIN_BTN');
+      store.dispatch(A_LOGOUT);
       clearStorage();
       router.push('/login');
     };

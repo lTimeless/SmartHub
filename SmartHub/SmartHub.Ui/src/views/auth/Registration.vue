@@ -292,14 +292,12 @@
 
 <script lang="ts">
 import { defineComponent, onMounted, ref, reactive, computed } from 'vue';
-import { AuthResponse, HomeCreateRequest, HomeUpdateRequest, RegistrationRequest, ServerResponse } from '@/types/types';
-import { clearStorage, storeAuthResponse, storeToken } from '@/services/auth/authService';
-import { useStore } from 'vuex';
+import { HomeCreateRequest, HomeUpdateRequest, RegistrationRequest } from '@/types/types';
+import { clearStorage } from '@/services/auth/authService';
 import { useRouter } from 'vue-router';
-import { AUTH_USER } from '@/store/auth/mutations';
-import { REGISTRATION } from '@/store/auth/actions';
-import { AxiosResponse } from 'axios';
-import { CREATE_HOME, FETCH_HOME, UPDATE_HOME } from '@/store/home/actions';
+import { A_CREATE_HOME, A_FETCH_HOME, A_UPDATE_HOME } from '@/store/home/actions';
+import { A_REGISTRATION } from '@/store/auth/actions';
+import { useStore } from '@/store';
 
 export default defineComponent({
   name: 'Registration',
@@ -311,7 +309,7 @@ export default defineComponent({
     const messageClass = ref('successMessage');
     const message = ref('');
     const activeStep = ref(0);
-    const getHome = reactive(store.state.homeModule.home);
+    const getHomeState = ref(store.state.homeModule);
     const steps = [
       { title: 'Your Profile', step: 0 },
       { title: 'Your Password', step: 1 },
@@ -336,7 +334,7 @@ export default defineComponent({
       clearStorage();
     });
 
-    const checkFinalStepHome = computed(() => (getHome === null ? homeCreateRequest.name !== '' : getHome.name !== ''));
+    const checkFinalStepHome = computed(() => getHomeState.value.home?.name ?? homeCreateRequest.name);
     const checkHomeExists = computed(() => store.state.homeModule.home !== null);
     const checkInputs = computed(() => registrationRequest.username !== '' && registrationRequest.password !== '' && checkFinalStepHome.value);
 
@@ -353,11 +351,11 @@ export default defineComponent({
       }
     };
     const existingHome = () => {
-      if (getHome === null) {
+      if (getHomeState.value.home === null) {
         message.value = 'No home created yet';
         messageClass.value = 'secondary--text';
       }
-      message.value = `Already a home created with name ${store.state.homeModule.home.name}  - this will be selected automatically`;
+      message.value = `Already a home created with name ${getHomeState.value.home?.name}  - this will be selected automatically`;
       messageClass.value = 'primary--text';
     };
 
@@ -368,33 +366,27 @@ export default defineComponent({
       let shouldBeNextStep = activeStep.value;
       shouldBeNextStep += 1;
       if (shouldBeNextStep === 2) {
-        await store.dispatch(FETCH_HOME);
+        await store.dispatch(A_FETCH_HOME);
         await existingHome();
       }
       activeStep.value = shouldBeNextStep;
     };
-
     const onRegistrationClick = async () => {
       await store
-        .dispatch(REGISTRATION, registrationRequest)
-        .then(async (response: AxiosResponse<ServerResponse<AuthResponse>>) => {
-          if (response.data.success) {
-            const auth = response.data.data as AuthResponse;
-            await storeToken(auth.token);
-            await storeAuthResponse(auth);
-            await store.commit(AUTH_USER, auth);
-            if (!checkHomeExists.value && homeCreateRequest.name !== '') {
-              await store.dispatch(CREATE_HOME, homeCreateRequest);
-            } else {
-              const updateHomeRequest: HomeUpdateRequest = {
-                name: null,
-                description: null,
-                settingName: null,
-                userName: auth.userName
-              };
-              await store.dispatch(UPDATE_HOME, updateHomeRequest);
-              doneRegistration.value = true;
-            }
+        .dispatch(A_REGISTRATION, registrationRequest)
+        .then(() => {
+          if (!checkHomeExists.value && homeCreateRequest.name !== '') {
+            store.dispatch(A_CREATE_HOME, homeCreateRequest);
+          } else {
+            const auth = store.state.authModule.authResponse;
+            const updateHomeRequest: HomeUpdateRequest = {
+              name: null,
+              description: null,
+              settingName: null,
+              userName: auth.userName
+            };
+            store.dispatch(A_UPDATE_HOME, updateHomeRequest);
+            doneRegistration.value = true;
           }
         })
         .catch((error) => {
