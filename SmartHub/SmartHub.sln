@@ -27,7 +27,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Shared", "Shared", "{5982C7
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SmartHub.BasePlugin", "SmartHub.BasePlugin\SmartHub.BasePlugin.csproj", "{B1FC6183-41B0-439E-BA46-53B1DE88DF17}"
 EndProject
-Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{55F417A9-C3FD-4222-8E05-A53FF920F73D}"
+Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{26357E53-7C60-4778-8280-AC153BFBB840}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -55,10 +55,10 @@ Global
 		{B1FC6183-41B0-439E-BA46-53B1DE88DF17}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B1FC6183-41B0-439E-BA46-53B1DE88DF17}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B1FC6183-41B0-439E-BA46-53B1DE88DF17}.Release|Any CPU.Build.0 = Release|Any CPU
-		{55F417A9-C3FD-4222-8E05-A53FF920F73D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{55F417A9-C3FD-4222-8E05-A53FF920F73D}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{55F417A9-C3FD-4222-8E05-A53FF920F73D}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{55F417A9-C3FD-4222-8E05-A53FF920F73D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{26357E53-7C60-4778-8280-AC153BFBB840}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{26357E53-7C60-4778-8280-AC153BFBB840}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{26357E53-7C60-4778-8280-AC153BFBB840}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{26357E53-7C60-4778-8280-AC153BFBB840}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
