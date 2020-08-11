@@ -23,9 +23,8 @@ namespace SmartHub.Api
 			var builder = new ConfigurationBuilder()
 					.AddConfiguration(configuration)
 					.SetBasePath(Directory.GetCurrentDirectory())
-					.AddJsonFile("Properties/launchSettings.json", optional: true)
-					.AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
-					.AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true, reloadOnChange: true)
+					.AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+					.AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: false, reloadOnChange: true)
 					.AddJsonFile("smarthub.config.json", optional: false)
 					;
 
