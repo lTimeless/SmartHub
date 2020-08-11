@@ -1,62 +1,75 @@
 <template>
-  <div>
-    <v-app-bar app clipped-left color="primary" dark dense>
-      <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
-      <v-toolbar-title class="mr-12 align-center">
-        <span class="title">SmartHub</span>
-      </v-toolbar-title>
-      <v-row>
-        <v-spacer></v-spacer>
-        <v-col cols="4" class="mt-2">
-          <v-text-field
-            :append-icon-cb="() => {}"
-            @keydown.enter="onEnterSearch"
-            placeholder="Search..."
-            outlined
-            dense
-            append-icon="mdi-magnify"
-            color="white"
-            hide-details
-          ></v-text-field>
-        </v-col>
-        <v-spacer></v-spacer>
-        <v-col cols="1" class="mt-4">
-          <v-switch input-value="darkMode" :append-icon="darkModeIcon" inset @change="switchDarkMode"></v-switch>
-        </v-col>
-      </v-row>
-    </v-app-bar>
-    <Sidebar :drawer="drawer"></Sidebar>
-    <v-container fill-height fluid>
-      <router-view />
-    </v-container>
+  <div class="font-sans antialiased text-ui-typo bg-ui-background">
+    <div class="flex flex-col justify-start min-h-screen">
+      <header ref="headerRef" class="sticky top-0 z-10 w-full border-b bg-ui-background border-ui-border" @resize="setHeaderHeight">
+        <LayoutHeader />
+      </header>
+
+      <main class="relative flex flex-wrap justify-start flex-1 w-full bg-ui-background overflow-auto">
+        <aside v-if="hasSidebar" class="px-4 sidebar overflow-auto w-56 bg-ui-background" :class="{ open: sidebarOpen }" :style="sidebarStyle">
+          <Sidebar :show-sidebar="this.sidebarOpen" />
+        </aside>
+
+        <div class="container w-10/12 pb-6 flex justify-around">
+          <router-view />
+        </div>
+      </main>
+    </div>
+
+    <!--    <div v-if="hasSidebar" class="fixed bottom-0 right-0 z-50 p-6 lg:hidden">-->
+    <!--      <button-->
+    <!--        class="p-3 text-white rounded-full shadow-lg bg-ui-primary-->
+    <!--      hover:text-white"-->
+    <!--        @click="sidebarOpen = !sidebarOpen"-->
+    <!--      >-->
+    <!--        <XIcon v-if="sidebarOpen" />-->
+    <!--        <MenuIcon v-else />-->
+    <!--      </button>-->
+    <!--    </div>-->
   </div>
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
-import Component from 'vue-class-component';
-import Sidebar from '../components/Siedebar.vue';
+import { computed, defineComponent, nextTick, onMounted, ref } from 'vue';
+import LayoutHeader from '@/components/layouts/LayoutHeader.vue';
+import Sidebar from '@/components/layouts/Sidebar.vue';
 
-@Component({
+export default defineComponent({
+  name: 'Home',
   components: {
+    LayoutHeader,
     Sidebar
-  }
-})
-export default class Home extends Vue {
-  drawer = true;
-  darkMode = false;
-  get darkModeIcon() {
-    return this.darkMode ? 'mdi-white-balance-sunny' : 'mdi-weather-night';
-  }
+  },
+  setup() {
+    const headerHeight = ref(0);
+    const headerRef = ref();
+    const sidebarOpen = ref(true);
 
-  switchDarkMode() {
-    this.darkMode = !this.darkMode;
-    this.$vuetify.theme.dark = !this.$vuetify.theme.dark;
-  }
+    const setHeaderHeight = () => {
+      nextTick(() => {
+        headerHeight.value = headerRef.value.offsetHeight;
+      });
+    };
 
-  onEnterSearch(): void {
-    console.log('Search', this.drawer);
+    const hasSidebar = computed(() => headerHeight.value > 0);
+
+    const sidebarStyle = computed(() => ({
+      top: `${headerHeight.value}px`,
+      height: `calc(100vh - ${headerHeight.value}px)`
+    }));
+
+    onMounted(() => {
+      setHeaderHeight();
+    });
+
+    return {
+      hasSidebar,
+      sidebarOpen,
+      headerHeight,
+      headerRef,
+      setHeaderHeight,
+      sidebarStyle
+    };
   }
-}
+});
 </script>
-<style lang="scss" scoped></style>

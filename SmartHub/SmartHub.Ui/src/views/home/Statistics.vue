@@ -1,13 +1,16 @@
 <template>
   <div>
-    This is statistics
+    Statistics
   </div>
 </template>
 
-<script>
-export default {
-  name: 'Statistics'
-};
+<script lang="ts">
+import { defineComponent } from 'vue';
+
+export default defineComponent({
+  name: 'Statistics',
+  components: {}
+});
 </script>
 
 <style scoped></style>

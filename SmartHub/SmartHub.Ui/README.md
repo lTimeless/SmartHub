@@ -1,4 +1,4 @@
-# smarthub.ui
+# smarthub
 
 ## Project setup
 ```

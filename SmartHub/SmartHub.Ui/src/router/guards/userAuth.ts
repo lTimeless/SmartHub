@@ -1,7 +1,7 @@
-import { NavigationGuardNext, Route } from 'vue-router';
+import { NavigationGuardNext, RouteLocationNormalized } from 'vue-router';
 import { getAuthResponse, isAuthenticated } from '@/services/auth/authService';
 
-const validateUserRoleToRoute = (to: Route, roles: string[], next: NavigationGuardNext) => {
+const validateUserRoleToRoute = (to: RouteLocationNormalized, roles: string[], next: NavigationGuardNext) => {
   if (to.matched.some((record) => record.meta.isAdmin)) {
     if (roles.includes('Admin')) {
       next();
@@ -23,13 +23,13 @@ const validateUserRoleToRoute = (to: Route, roles: string[], next: NavigationGua
   }
 };
 
-export const routeAuthGuard = (to: Route, from: Route, next: NavigationGuardNext) => {
+export const useRouteAuthGuard = (to: RouteLocationNormalized, from: RouteLocationNormalized, next: NavigationGuardNext) => {
   if (to.matched.some((record) => record.meta.requiresAuth)) {
     if (!isAuthenticated()) {
       next({ name: 'Login' });
     } else {
-      // TODO: anstatt den authresponse zu nehmen un die rollen zu prüfen
-      // vlt den token nehmen ans BE schicken- prüfen lassen und darauf dann userberechtigungen bekommen
+      //  anstatt den authresponse zu nehmen um die rollen zu prüfen
+      // TODO: vlt den token nehmen ans BE schicken- prüfen lassen ob es noch valide ist und darauf dann userberechtigungen/authresponse bekommen
       const authResponse = getAuthResponse();
       if (authResponse === null) {
         next({ name: 'Login' });

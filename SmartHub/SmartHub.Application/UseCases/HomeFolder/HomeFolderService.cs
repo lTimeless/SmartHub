@@ -18,7 +18,8 @@ namespace SmartHub.Application.UseCases.HomeFolder
 
         // The overlaying service for creating the SmartHub config folder
         // with functions to create, delete and update it
-        public HomeFolderService(IDirectoryService directoryService, IOptionsMonitor<ApplicationSettings> applicationSettings)
+        public HomeFolderService(IDirectoryService directoryService,
+            IOptionsMonitor<ApplicationSettings> applicationSettings)
         {
             _directoryService = directoryService;
             _applicationSettings = applicationSettings;
@@ -52,7 +53,7 @@ namespace SmartHub.Application.UseCases.HomeFolder
         /// <inheritdoc cref="IHomeFolderService.GetHomeFolderPath"/>
         public Tuple<string, string> GetHomeFolderPath()
         {
-            return  _applicationSettings.CurrentValue.EnvironmentName != "Development"
+            return _applicationSettings.CurrentValue.EnvironmentName != "Development"
                 ? GetSystemHomeFolderLocation()
                 : GetDevEnvironmentFolderLocation();
         }
@@ -68,22 +69,26 @@ namespace SmartHub.Application.UseCases.HomeFolder
 
         private Tuple<string, string> GetSystemHomeFolderLocation()
         {
-            return new Tuple<string, string>((Environment.OSVersion.Platform == PlatformID.Unix || Environment.OSVersion.Platform == PlatformID.MacOSX
-                ? Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments).IsNullOrEmpty()
-                    ? Environment.GetEnvironmentVariable("HOME")
-                    : Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments, Environment.SpecialFolderOption.DoNotVerify)
-                : Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData, Environment.SpecialFolderOption.DoNotVerify))
-                   ?? throw new SmartHubException("Could not find system path"),
+            return new Tuple<string, string>(
+                (Environment.OSVersion.Platform == PlatformID.Unix ||
+                 Environment.OSVersion.Platform == PlatformID.MacOSX
+                    ? Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments).IsNullOrEmpty()
+                        ? Environment.GetEnvironmentVariable("HOME")
+                        : Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments,
+                            Environment.SpecialFolderOption.DoNotVerify)
+                    : Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData,
+                        Environment.SpecialFolderOption.DoNotVerify))
+                ?? throw new SmartHubException("Could not find system path"),
                 _applicationSettings.CurrentValue.FolderName);
         }
 
         private Tuple<string, string> GetDevEnvironmentFolderLocation()
         {
             return new Tuple<string, string>(Path.Combine(
-                Path.GetDirectoryName(
-                    Path.GetDirectoryName(Path.Combine(Directory.GetCurrentDirectory()))) ??
-                throw new SmartHubException("Could not find development system path")),
-                _applicationSettings.CurrentValue.FolderName+".configFolder-dev");
+                    Path.GetDirectoryName(
+                        Path.GetDirectoryName(Path.Combine(Directory.GetCurrentDirectory()))) ??
+                    throw new SmartHubException("Could not find development system path")),
+                _applicationSettings.CurrentValue.FolderName + ".configFolder-dev");
         }
     }
 }

@@ -2,15 +2,22 @@ import { MutationTree } from 'vuex';
 import { AuthResponse } from '@/types/types';
 import { AuthState } from '@/store/index.types';
 
-// MutationType keys
-export const AUTH_USER = 'AUTH_USER';
-export const UPDATE_REG_STEP = 'UPDATE_REG_STEP';
+// keys
+export const M_AUTH_USER = 'M_AUTH_USER';
+export const M_UPDATE_LOGIN_BTN = 'M_UPDATE_LOGIN_BTN';
 
-export const mutations: MutationTree<AuthState> = {
-  [AUTH_USER](state: AuthState, payload: AuthResponse) {
+// Mutations Interface
+export interface AuthMutations<A = AuthState> {
+  [M_AUTH_USER](state: A, payload: AuthResponse): void;
+  [M_UPDATE_LOGIN_BTN](state: A): void;
+}
+
+// Define Mutations
+export const mutations: MutationTree<AuthState> & AuthMutations = {
+  [M_AUTH_USER](state: AuthState, payload: AuthResponse) {
     state.authResponse = payload;
   },
-  [UPDATE_REG_STEP](state: AuthState, payload: number) {
-    state.regStepIndex = payload;
+  [M_UPDATE_LOGIN_BTN](state: AuthState) {
+    state.isSignInBtnClicked = !state.isSignInBtnClicked;
   }
 };

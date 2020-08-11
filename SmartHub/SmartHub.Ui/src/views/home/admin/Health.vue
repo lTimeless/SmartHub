@@ -1,13 +1,16 @@
 <template>
   <div>
-    Hier kann man die Gesundheit des system sehen und später auch verwalten
+    Health
   </div>
 </template>
 
-<script>
-export default {
-  name: 'Health'
-};
+<script lang="ts">
+import { defineComponent } from 'vue';
+
+export default defineComponent({
+  name: 'Health',
+  components: {}
+});
 </script>
 
 <style scoped></style>

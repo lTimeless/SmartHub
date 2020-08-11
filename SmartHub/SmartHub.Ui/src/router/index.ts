@@ -1,26 +1,23 @@
-import Vue from 'vue';
-import VueRouter, { RouteConfig } from 'vue-router';
+import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router';
+import { useRouteAuthGuard } from '@/router/guards/userAuth';
+import NotAuthorized from '@/views/NotAuthorized.vue';
+import NotFound from '@/views/NotFound.vue';
 import Login from '@/views/auth/Login.vue';
 import Registration from '@/views/auth/Registration.vue';
-import Notfound from '@/views/NotFound.vue';
-import NotAuthorized from '@/views/NotAuthorized.vue';
-import Dashboard from '@/views/home/Dashboard.vue';
-import Settings from '@/views/home/Settings.vue';
-import Plugins from '@/views/home/Plugins.vue';
-import Routines from '@/views/home/Routines.vue';
-import Statistics from '@/views/home/Statistics.vue';
-
-import Activity from '@/views/home/admin/Activity.vue';
+import Events from '@/views/home/admin/Events.vue';
 import Logs from '@/views/home/admin/Logs.vue';
 import System from '@/views/home/admin/System.vue';
 import Health from '@/views/home/admin/Health.vue';
 import Manager from '@/views/home/admin/Manager.vue';
-import { routeAuthGuard } from '@/router/guards/auth';
+import Plugins from '@/views/home/Plugins.vue';
+import Routines from '@/views/home/Routines.vue';
+import Statistics from '@/views/home/Statistics.vue';
+import Settings from '@/views/home/Settings.vue';
+import Dashboard from '@/views/home/Dashboard.vue';
 import Home from '../views/Home.vue';
+import MyUser from '../views/home/MyUser.vue';
 
-Vue.use(VueRouter);
-
-const routes: Array<RouteConfig> = [
+const routes: Array<RouteRecordRaw> = [
   {
     path: '/login',
     name: 'Login',
@@ -38,7 +35,7 @@ const routes: Array<RouteConfig> = [
     }
   },
   {
-    path: '',
+    path: '/',
     component: Home,
     meta: {
       requiresAuth: true,
@@ -46,8 +43,13 @@ const routes: Array<RouteConfig> = [
     },
     children: [
       {
-        path: '/',
-        name: 'Home',
+        path: '/user',
+        name: 'User',
+        component: MyUser
+      },
+      {
+        path: '',
+        name: 'Dashboard',
         component: Dashboard,
         meta: {
           requiresAuth: true,
@@ -103,9 +105,9 @@ const routes: Array<RouteConfig> = [
         }
       },
       {
-        path: '/activity',
-        name: 'Activity',
-        component: Activity,
+        path: '/events',
+        name: 'events',
+        component: Events,
         meta: {
           requiresAuth: true,
           isAdmin: true
@@ -153,24 +155,23 @@ const routes: Array<RouteConfig> = [
         component: NotAuthorized
       },
       {
-        path: '*',
-        component: Notfound
+        path: '/:catchAll(.*)',
+        component: NotFound
       }
     ]
   },
   {
-    path: '*',
-    component: Notfound
+    path: '/:catchAll(.*)',
+    component: NotFound
   }
 ];
-
-const router = new VueRouter({
-  base: process.env.BASE_URL,
+const router = createRouter({
+  history: createWebHistory(),
   routes
 });
 
 router.beforeEach((to, from, next) => {
-  routeAuthGuard(to, from, next);
+  useRouteAuthGuard(to, from, next);
 });
 
 export default router;

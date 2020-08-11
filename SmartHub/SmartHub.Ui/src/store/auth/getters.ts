@@ -1,15 +1,8 @@
 import { GetterTree } from 'vuex';
-import { AuthResponse } from '@/types/types';
 import { RootState, AuthState } from '@/store/index.types';
 
-export const getters: GetterTree<AuthState, RootState> = {
-  getRole(state: AuthState): string[] | undefined {
-    return state.authResponse?.roles;
-  },
-  getAuthResponse(state: AuthState): AuthResponse | null {
-    return state.authResponse;
-  },
-  getRegStepIndex(state: AuthState): number {
-    return state.regStepIndex;
-  }
-};
+// Getter Types
+export type AuthGetters = {};
+
+// Define Getters
+export const getters: GetterTree<AuthState, RootState> & AuthGetters = {};

@@ -2,6 +2,9 @@ import { AuthResponse, Home, User } from '@/types/types';
 
 export interface RootState {
   version: number;
+  authModule: AuthState;
+  homeModule: HomeState;
+  userModule: UserState;
 }
 
 export interface UserState {
@@ -14,5 +17,5 @@ export interface HomeState {
 
 export interface AuthState {
   authResponse: AuthResponse | null;
-  regStepIndex: number;
+  isSignInBtnClicked: boolean;
 }

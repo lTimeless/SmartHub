@@ -1,13 +1,16 @@
 <template>
   <div>
-    This is plugins
+    Plugins
   </div>
 </template>
 
-<script>
-export default {
-  name: 'Plugins'
-};
+<script lang="ts">
+import { defineComponent } from 'vue';
+
+export default defineComponent({
+  name: 'Plugins',
+  components: {}
+});
 </script>
 
 <style scoped></style>

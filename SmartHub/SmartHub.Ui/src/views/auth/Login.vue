@@ -1,110 +1,109 @@
 <template>
-  <div class="login">
-    <v-container class="fully-centered">
-      <v-card class="card" max-width="500px">
-        <v-toolbar class="d-flex justify-center mb-6" flat>
-          <v-toolbar-title>
-            <h2>
-              {{ welcomeToSmartHub }}
-            </h2>
-          </v-toolbar-title>
-        </v-toolbar>
-        <v-img class="mb-8" src="../../assets/images/undraw_smart_home_28oy.svg"></v-img>
-        <v-form>
-          <v-container class="form-centered">
-            <v-row class="d-flex justify-center">
-              <v-col cols="12" md="10">
-                <v-text-field
-                  :prepend-inner-icon="'mdi-account'"
-                  v-model="username"
-                  class="inputField"
-                  outlined
-                  label="Username"
-                  required
-                >
-                </v-text-field>
-              </v-col>
-              <v-col cols="12" sm="10">
-                <v-text-field
-                  v-model="password"
-                  :prepend-inner-icon="'mdi-lock'"
-                  :append-icon="showPwd ? 'mdi-eye' : 'mdi-eye-off'"
-                  :rules="[rules.required, rules.min]"
-                  :type="showPwd ? 'text' : 'password'"
-                  name="input-10-1"
-                  label="Password"
-                  hint="At least 4 characters"
-                  counter
-                  @click:append="showPwd = !showPwd"
-                  outlined
-                  @keyup.enter="onLoginClick"
-                ></v-text-field>
-              </v-col>
-            </v-row>
-          </v-container>
-        </v-form>
-        <v-card-actions class="actions">
-          <v-row class="pa-0">
-            <v-col cols="12" class="d-flex justify-center">
-              <p :class="messageClass">{{ message }}</p>
-              <v-btn
-                class="log"
-                color="primary"
-                @click.prevent="onLoginClick"
-                :disabled="username.length === 0 || password.length < 4"
-                >Login</v-btn
-              >
-            </v-col>
-            <v-col cols="12" class="d-flex justify-center">
-              <p>
-                You can register
-                <router-link to="/registration">here</router-link>.
-              </p>
-            </v-col>
-          </v-row>
-        </v-card-actions>
-      </v-card>
-    </v-container>
+  <div class="w-full login">
+    <div
+      class="container fully-centered bg-white shadow-md rounded px-8 pt-6 pb-8
+              md:8/12 lg:w-6/12 xl:w-5/12"
+    >
+      <div class="h-full flex flex-col justify-between">
+        <h2 class="font-bold text-3xl">{{ welcomeToSmartHub }}</h2>
+        <div class="ma-0">
+          <img class="img" src="../../assets/images/undraw_smart_home_28oy.svg" alt="Test" width="500" />
+        </div>
+        <form class="px-5">
+          <div class="mb-4">
+            <label class="block text-gray-600 md:text-left mb-1 md:mb-0 pr-4" for="username">
+              Username
+            </label>
+            <input
+              required
+              v-model="username"
+              class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight
+          focus:outline-none focus:shadow-outline"
+              id="username"
+              type="text"
+              placeholder="JonDoe"
+            />
+          </div>
+          <div class="mb-5 mt-8">
+            <label class="block text-gray-600 md:text-left mb-1 md:mb-0 pr-4" for="password">
+              Password
+            </label>
+            <input
+              v-model="password"
+              required
+              name="password"
+              @keyup.enter="onLoginClick"
+              class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3
+          leading-tight focus:outline-none focus:shadow-outline"
+              id="password"
+              type="password"
+              placeholder="*******"
+            />
+            <p class="text-red-500 text-xs italic"></p>
+            <router-link to="/forgotpassword" class="block text-gray-500 md:text-left mb-1 md:mb-0 pr-4">
+              Forgot Password?
+            </router-link>
+          </div>
+          <div class="flex flex-col items-center justify-between">
+            <button
+              @click="onLoginClick"
+              :disabled="signInDisabled"
+              class="flex items-center text-white font-bold px-10 py-2 border border-ui-border rounded-lg
+                      bg-ui-primary active:bg-indigo-800 hover:bg-indigo-400 focus:outline-none"
+              :class="signInDisabled ? 'opacity-50 hover:bg-ui-primary focus:outline-none cursor-not-allowed' : ''"
+              type="button"
+            >
+              Sign In
+            </button>
+
+            <p class="pt-2">
+              You can register
+              <router-link to="/registration">here</router-link>.
+            </p>
+          </div>
+        </form>
+      </div>
+    </div>
   </div>
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
-import Component from 'vue-class-component';
-import { InputMessage } from 'vuetify';
-import router from '@/router';
+import { computed, defineComponent, ref } from 'vue';
 import { LoginRequest } from '@/types/types';
-import { LOGIN } from '@/store/auth/actions';
+import { useRouter } from 'vue-router';
+import { useStore } from '@/store';
+import { A_LOGIN } from '@/store/auth/actions';
 
-@Component
-export default class Login extends Vue {
-  welcomeToSmartHub = 'Welcome to SmartHub';
-  showPwd = false;
-  password = '';
-  username = '';
-  message = '';
-  messageClass = 'successMessage';
-
-  rules = {
-    required: (value: InputEvent) => !!value || 'Required.',
-    min: (v: InputMessage) => v.length >= 4 || 'Min 4 characters'
-  };
-
-  private async onLoginClick(): Promise<void> {
-    const login: LoginRequest = {
-      username: this.username,
-      password: this.password
+export default defineComponent({
+  name: 'Login',
+  components: {},
+  setup() {
+    const store = useStore();
+    const router = useRouter();
+    const welcomeToSmartHub = 'Welcome to SmartHub';
+    const password = ref('');
+    const username = ref('');
+    const isSignInBtnClicked = ref(store.state.authModule.isSignInBtnClicked);
+    const onLoginClick = async () => {
+      const login: LoginRequest = {
+        username: username.value,
+        password: password.value
+      };
+      await store.dispatch(A_LOGIN, login);
+      await router.push('/');
     };
-    await this.$store.dispatch(LOGIN, login);
-    const { token } = this.$store.getters.getAuthResponse;
-    this.message = '';
-    if (token == null) {
-      this.messageClass = 'error--text';
-      this.message = 'Error: Something went wrong, try again later';
-    }
-    await router.push('/');
+
+    const signInDisabled = computed(() => isSignInBtnClicked.value && (username.value.length === 0 || password.value.length < 4));
+
+    return {
+      welcomeToSmartHub,
+      onLoginClick,
+      password,
+      username,
+      signInDisabled
+    };
   }
-}
+});
 </script>
 
 <style lang="scss" scoped>
@@ -112,33 +111,24 @@ export default class Login extends Vue {
   width: 100%;
   height: 100vh;
   display: flex;
-  background-color: #fafafb;
+  background-color: var(--color-ui-login-background);
   .fully-centered {
     align-self: center;
+    height: 80%;
+
+    .img {
+      max-width: 90%;
+      display: flex;
+      justify-items: center;
+      margin: auto;
+    }
   }
 
-  .card {
-    margin-left: auto;
-    margin-right: auto;
-  }
-  .form-centered {
-    align-self: center;
-    padding: 0 2em;
-  }
-  .inputField {
-    width: 100%;
-  }
-  .log {
-    width: 50%;
-  }
-  .successMessage {
-    color: black;
-  }
   p {
     margin: 0;
     a {
-      text-decoration: none;
-      color: #3f51b5;
+      text-decoration: underline;
+      /*color: var(--color-ui-background);*/
     }
   }
 }

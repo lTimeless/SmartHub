@@ -1,10 +1,8 @@
-<template>
-  <div></div>
-</template>
+<template> </template>
 
 <script>
 export default {
-  name: 'HomeDetail'
+  name: 'ToggleColorMode'
 };
 </script>
 

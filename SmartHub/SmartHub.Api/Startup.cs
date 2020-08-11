@@ -23,10 +23,9 @@ namespace SmartHub.Api
 			var builder = new ConfigurationBuilder()
 					.AddConfiguration(configuration)
 					.SetBasePath(Directory.GetCurrentDirectory())
-					.AddJsonFile("Properties/launchSettings.json", optional: true)
-					.AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
-					.AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true, reloadOnChange: true)
-					.AddJsonFile("smartHub.config.json", optional: false)
+					.AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+					.AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: false, reloadOnChange: true)
+					.AddJsonFile("smarthub.config.json", optional: false)
 					;
 
 			if (env.IsDevelopment())
@@ -113,7 +112,7 @@ namespace SmartHub.Api
 					name: "default",
 					pattern: "{controller}/{action=Index}/{id?}");
 
-				endpoints.MapHub<EventHub>("/api/hub");
+				endpoints.MapHub<EventHub>("/api/hub/events");
 				endpoints.MapHub<LogHub>("/api/hub/logs");
 			});
 

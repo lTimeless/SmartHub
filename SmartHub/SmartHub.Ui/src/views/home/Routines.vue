@@ -1,13 +1,16 @@
 <template>
   <div>
-    This is Routines
+    Routines
   </div>
 </template>
 
-<script>
-export default {
-  name: 'Routines'
-};
+<script lang="ts">
+import { defineComponent } from 'vue';
+
+export default defineComponent({
+  name: 'Routines',
+  components: {}
+});
 </script>
 
 <style scoped></style>

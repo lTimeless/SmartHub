@@ -1,58 +1,41 @@
 <template>
-  <v-container>
-    <v-subheader class="pa-1 grey--text text--darken-1">ACTIONS</v-subheader>
-    <v-col cols="12" class="px-0">
-      <v-row justify="space-between" align="center" class="mx-0">
-        <QuickActionButton title="Home"></QuickActionButton>
-        <QuickActionButton title="Group"></QuickActionButton>
-        <QuickActionButton title="Device"></QuickActionButton>
-        <QuickActionButton title="Routine"></QuickActionButton>
-      </v-row>
-    </v-col>
-    <v-divider></v-divider>
-    <v-subheader class="pa-1 grey--text text--darken-1">GRAPHS</v-subheader>
-    <div>
-      <apexchart width="500" :options="options" :series="series"></apexchart>
+  <div class="container">
+    <h1 class="text-3xl text-gray-500 font-bold mb-6">Dashboard</h1>
+    <div class="flex justify-between align-middle mx-0 my-4">
+      <action-button title="Home" :callback="onClick" />
+      <action-button title="Group" color="orange" :callback="onClick" />
+      <action-button title="Device" color="green" :callback="onClick" />
+      <action-button title="Routine" color="teal" :callback="onClick" />
     </div>
-    <v-divider></v-divider>
-    <v-subheader class="pa-1 grey--text text--darken-1">TABLES</v-subheader>
-  </v-container>
+    <div class="grid grid-cols-2 gap-6">
+      <div class="border-b border-ui-border col-span-2 mb-3">
+        <h2 class="flex justify-start pt-0 mt-0 mb-1 font-bold text-sm tracking-tight uppercase text-gray-500">Graphs</h2>
+      </div>
+      <div class="border-b border-ui-border col-span-2">
+        <h2 class="flex justify-start pt-0 mt-0 mb-1 font-bold text-sm tracking-tight uppercase text-gray-500">Tables</h2>
+      </div>
+    </div>
+  </div>
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
-import Component from 'vue-class-component';
-import { ApexOptions } from 'apexcharts';
-import QuickActionButton from '@/components/widgets/QuickActionButton.vue';
+import { defineComponent } from 'vue';
+import ActionButton from '@/components/widgets/ActionButton.vue';
 
-@Component({
+export default defineComponent({
+  name: 'Dashboard',
   components: {
-    QuickActionButton
+    ActionButton
+  },
+  setup() {
+    const onClick = () => {
+      console.log('Click button');
+    };
+    return {
+      onClick
+    };
   }
-})
-export default class Dashboard extends Vue {
-  options: ApexOptions = {
-    chart: {
-      id: 'vuechart-example',
-      type: 'bar',
-      height: 600,
-      width: 600,
-      toolbar: {
-        show: false
-      }
-    },
-    xaxis: {
-      categories: [1991, 1992, 1993, 1994, 1995, 1996, 1997, 1998]
-    }
-  };
-
-  series = [
-    {
-      name: 'series-1',
-      data: [30, 40, 45, 50, 49, 60, 70, 91]
-    }
-  ];
-}
+});
 </script>
 
 <style scoped></style>

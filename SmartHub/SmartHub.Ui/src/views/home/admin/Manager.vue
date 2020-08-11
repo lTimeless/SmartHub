@@ -1,13 +1,16 @@
 <template>
   <div>
-    Hier kann man user, roles usw managen
+    Manager
   </div>
 </template>
 
-<script>
-export default {
-  name: 'Manager'
-};
+<script lang="ts">
+import { defineComponent } from 'vue';
+
+export default defineComponent({
+  name: 'Manager',
+  components: {}
+});
 </script>
 
 <style scoped></style>

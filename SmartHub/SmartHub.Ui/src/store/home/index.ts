@@ -8,7 +8,7 @@ export const state: HomeState = {
   home: null
 };
 
-export const home: Module<HomeState, RootState> = {
+export const homeModule: Module<HomeState, RootState> = {
   state,
   getters,
   actions,
