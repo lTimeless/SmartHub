@@ -2,6 +2,7 @@
 using Hangfire.PostgreSql;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using SmartHub.Application.Common.Utils;
 
 namespace SmartHub.Api.Installers
 {
@@ -9,7 +10,8 @@ namespace SmartHub.Api.Installers
 	{
 		public void InstallServices(IServiceCollection services, IConfiguration configuration)
 		{
-			services.AddHangfire(x => x.UsePostgreSqlStorage(configuration.GetConnectionString("sqlConnection")));
+			var connectionString = StringUtils.CreateConnectionString(configuration);
+			services.AddHangfire(x => x.UsePostgreSqlStorage(connectionString));
 			services.AddHangfireServer();
 		}
 	}

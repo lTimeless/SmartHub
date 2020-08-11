@@ -30,7 +30,13 @@
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       },
-      "commandLineArgs": "Use_Staticfiles_DEV=false"
+      "commandLineArgs": "Use_Staticfiles_DEV=false Pgsql_User=postgres Pgsql_pwd=1234"
+    },
+    "Docker": {
+      "commandName": "Docker",
+      "launchUrl": "{Scheme}://{ServiceHost}:{ServicePort}",
+      "publishAllPorts": true,
+      "useSSL": true
     }
   }
 }

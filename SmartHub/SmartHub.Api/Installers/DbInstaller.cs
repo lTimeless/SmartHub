@@ -1,7 +1,10 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using System.Collections.Generic;
+using System.Linq;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using SmartHub.Application.Common.Utils;
 using SmartHub.Domain.Entities;
 using SmartHub.Infrastructure.Database;
 
@@ -11,7 +14,7 @@ namespace SmartHub.Api.Installers
 	{
 		public void InstallServices(IServiceCollection services, IConfiguration configuration)
 		{
-			var connectionString = configuration["ConnectionStrings:sqlConnection"];
+			var connectionString = StringUtils.CreateConnectionString(configuration);
 
 			services.AddDbContext<AppDbContext>(builder =>
 			{
@@ -34,5 +37,6 @@ namespace SmartHub.Api.Installers
 				.AddEntityFrameworkStores<AppDbContext>()
 				.AddDefaultTokenProviders();
 		}
+
 	}
 }
