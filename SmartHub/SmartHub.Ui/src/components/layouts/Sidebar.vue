@@ -1,19 +1,21 @@
 <template>
   <div ref="sidebar" v-if="this.openSidebar" class="px-4 pt-6 lg:pt-6">
     <div class="pb-4 mb-1">
-      <div class="md:flex">
-        <div
-          class="text-white text-center pt-2 text-xl lg:h-12 lg:w-12 md:h-10 md:w-10 sm:w-8 sm:h-8 rounded-full md:mx-0 md:mr-1
+      <router-link :to="person.path">
+        <div class="md:flex">
+          <div
+            class="text-white text-center pt-2 text-xl lg:h-12 lg:w-12 md:h-10 md:w-10 sm:w-8 sm:h-8 rounded-full md:mx-0 md:mr-1
                 xl:mr-6"
-          :style="{ 'background-color': imageBgColor }"
-        >
-          {{ person.firstName.charAt(0) }}{{ person.lastName.charAt(0) }}
+            :style="{ 'background-color': imageBgColor }"
+          >
+            {{ person.firstName.charAt(0) }}{{ person.lastName.charAt(0) }}
+          </div>
+          <div class="text-center md:text-left">
+            <h2 class="text-lg">{{ person.userName }}</h2>
+            <div class="text-gray-500">Logged in</div>
+          </div>
         </div>
-        <div class="text-center md:text-left">
-          <h2 class="text-lg">{{ person.userName }}</h2>
-          <div class="text-gray-500">Logged in</div>
-        </div>
-      </div>
+      </router-link>
     </div>
 
     <div v-for="section in this.sidebarLists.sections" :key="section.name" class="pb-4 mb-1">
@@ -73,7 +75,8 @@ export default defineComponent({
     const person = {
       userName: 'MaxTime',
       firstName: 'Max',
-      lastName: 'ATestperson'
+      lastName: 'ATestperson',
+      path: '/user'
     };
     const imageBgColor = `#${((Math.random() * 0xffffff) << 0).toString(16).padStart(6, '0')}`;
     const isRole = ref('');

@@ -1,4 +1,4 @@
-import { createRouter, createWebHashHistory, createWebHistory, RouteRecordRaw } from 'vue-router';
+import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router';
 import { useRouteAuthGuard } from '@/router/guards/userAuth';
 import NotAuthorized from '@/views/NotAuthorized.vue';
 import NotFound from '@/views/NotFound.vue';
@@ -15,6 +15,7 @@ import Statistics from '@/views/home/Statistics.vue';
 import Settings from '@/views/home/Settings.vue';
 import Dashboard from '@/views/home/Dashboard.vue';
 import Home from '../views/Home.vue';
+import MyUser from '../views/home/MyUser.vue';
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -41,6 +42,11 @@ const routes: Array<RouteRecordRaw> = [
       isGuest: true
     },
     children: [
+      {
+        path: '/user',
+        name: 'User',
+        component: MyUser
+      },
       {
         path: '',
         name: 'Dashboard',
