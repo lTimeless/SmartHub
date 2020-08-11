@@ -1,5 +1,5 @@
 ### Features and Fixes
 
-Tickets: <if available> 
+Tickets: Add ticket number if available here
 
-- <added stuff>
+-  Add new features text here
