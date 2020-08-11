@@ -1,0 +1,19 @@
+version: '3.4'
+
+services:
+  #  smarthub.api:
+  #    image: ${DOCKER_REGISTRY-}smarthubapi
+  #    build:
+  #      context: .
+  #      dockerfile: SmartHub.Api/Dockerfile
+  postgres_database:
+    image: postgres:alpine
+    restart: unless-stopped
+
+  pgadmin:
+    image: dpage/pgadmin4
+    restart: unless-stopped
+
+volumes:
+  database-data:
+  pgadmin:

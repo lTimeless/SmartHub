@@ -1,0 +1,33 @@
+version: '3.4'
+
+services:
+  #  smarthub.api:
+  #    environment:
+  #      - ASPNETCORE_ENVIRONMENT=Development
+  #      - ASPNETCORE_URLS=https://+:5001;http://+:5000;https://+:5003;http://+:5002
+  #    ports:
+  #      - "5000"
+  #      - "5001"
+  #      - "5002"
+  #      - "5003"
+  #    volumes:
+  #      - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
+  #      - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
+
+  postgres_database:
+    environment:
+      - POSTGRES_PASSWORD=1234
+      - POSTGRES_USER=postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - database-data:/var/lib/postgresql/data
+
+  pgadmin:
+    ports:
+      - "5050:80"
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=pgadmin4@pgadmin.org
+    volumes:
+      - pgadmin:/root/.pgadmin
+
