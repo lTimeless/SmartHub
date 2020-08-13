@@ -50,6 +50,14 @@ namespace SmartHub.Api.Controllers
 			return Ok(await Mediator.Send(value).ConfigureAwait(false));
 		}
 
+		// PATCH: api/Home
+		[HttpPatch]
+		public async Task<IActionResult> Patch([FromBody] HomeUpdateCommand value)
+		{
+			return Ok();
+		}
+
+
 		// PUT: api/Home
 		[HttpPut]
 		public async Task<IActionResult> Put([FromBody] HomeUpdateCommand value)

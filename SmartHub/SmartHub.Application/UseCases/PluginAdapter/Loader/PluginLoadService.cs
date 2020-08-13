@@ -129,7 +129,7 @@ namespace SmartHub.Application.UseCases.PluginAdapter.Loader
 			{
 				var listOfIPlugins = iPluginDictionary.Values.ToList() as IEnumerable<IPlugin>
 									 ?? throw new PluginException(
-										 $"[{nameof(AddToHome)}] Error converting list of {name} to list of IPlugin");
+										 $"[AddToHome] Error converting list of {name} to list of IPlugin");
 
 				var listOfPlugins = _pluginCreator.CreatePluginsFromIPlugins(listOfIPlugins, assembly.Location);
 				var home = await _unitOfWork.HomeRepository.GetHome();
@@ -140,7 +140,6 @@ namespace SmartHub.Application.UseCases.PluginAdapter.Loader
 				}
 
 				home.AddPlugins(listOfPlugins);
-				await _unitOfWork.SaveAsync();
 			}
 		}
 	}

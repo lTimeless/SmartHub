@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Threading;
+﻿using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
 using MediatR;
@@ -37,7 +34,6 @@ namespace SmartHub.Application.UseCases.Entity.Homes.Update
 			}
 			homeEntity.UpdateHome(request.Name, request.Description, settingEntity, userEntity);
 			await _unitOfWork.HomeRepository.UpdateAsync(homeEntity);
-			await _unitOfWork.SaveAsync();
 			return Response.Ok("Updated home", _mapper.Map<HomeDto>(homeEntity));
 
 		}

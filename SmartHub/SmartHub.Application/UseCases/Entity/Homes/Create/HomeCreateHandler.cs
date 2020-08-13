@@ -54,7 +54,6 @@ namespace SmartHub.Application.UseCases.Entity.Homes.Create
 			{
 				return Response.Fail<HomeDto>( $"[{nameof(Handle)}] Could not create Home");
 			}
-			await _unitOfWork.SaveAsync();
 
 			return Response.Ok("Created new Home", _mapper.Map<HomeDto>(homeEntity));
 		}

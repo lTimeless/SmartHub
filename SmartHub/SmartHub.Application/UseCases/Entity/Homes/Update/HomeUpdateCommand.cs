@@ -1,5 +1,4 @@
-﻿using System.Text.Json.Serialization;
-using MediatR;
+﻿using MediatR;
 using SmartHub.Application.Common.Models;
 
 namespace SmartHub.Application.UseCases.Entity.Homes.Update
