@@ -6,15 +6,13 @@
       <div class="w-1/3 flex justify-end">
         <span
           v-if="connectionEstablished"
-          class="w-1/3 text-xs font-semibold inline-block py-2 px-3 uppercase rounded text-indigo-600 bg-indigo-200 uppercase ml-3
-                  mb-3"
+          class="w-1/3 text-xs font-semibold inline-block py-2 px-2 uppercase rounded text-indigo-600 bg-indigo-200 uppercase ml-3"
         >
           Connected
         </span>
         <span
           v-if="!connectionEstablished"
-          class="w-1/3 text-xs font-semibold inline-block py-2 px-3 uppercase rounded text-red-600 bg-red-200 uppercase ml-3
-                     mb-3"
+          class="w-1/3 text-xs font-semibold inline-block py-2 px-2 uppercase rounded text-red-600 bg-red-200 uppercase ml-3"
         >
           Not connected
         </span>
@@ -22,70 +20,40 @@
     </div>
 
     <template v-if="!showSearchTable">
-      <div class="tableContainer">
-        <table class="border-collapse table-auto w-full whitespace-no-wrap bg-white table-striped relative">
-          <thead>
-            <tr class="text-left">
-              <th
-                v-for="heading in headers"
-                :key="heading.value"
-                class="sticky top-0 border-b py-2"
-                v-text="heading.text"
-                :class="{ [heading.value]: true }"
-              ></th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr v-for="log in logsArray" :key="log.id" class="hover:bg-indigo-200">
-              <td>
-                <span class="text-gray-700 flex items-center" v-text="log.timestamp"></span>
-              </td>
-              <td>
-                <span class="text-gray-700 flex items-center" v-text="log.level"></span>
-              </td>
-              <td>
-                <span class="text-gray-700 flex items-center" v-text="log.message"></span>
-              </td>
-              <td>
-                <span class="text-gray-700 flex items-center" v-text="log.exception"></span>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
+      <Table :headers="headers">
+        <tr v-for="log in logsArray" :key="log.id" class="hover:bg-indigo-200">
+          <td>
+            <span class="text-gray-700 flex items-center" v-text="log.timestamp"></span>
+          </td>
+          <td>
+            <span class="text-gray-700 flex items-center" v-text="log.level"></span>
+          </td>
+          <td>
+            <span class="text-gray-700 flex items-center" v-text="log.message"></span>
+          </td>
+          <td>
+            <span class="text-gray-700 flex items-center" v-text="log.exception"></span>
+          </td>
+        </tr>
+      </Table>
     </template>
     <template v-else>
-      <div class="tableContainer">
-        <table class="border-collapse table-auto w-full whitespace-no-wrap bg-white table-striped relative">
-          <thead>
-            <tr class="text-left">
-              <th
-                v-for="heading in headers"
-                :key="heading.value"
-                class="sticky top-0 border-b py-2"
-                v-text="heading.text"
-                :class="{ [heading.value]: true }"
-              ></th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr v-for="log in searchResultArray" :key="log.id" class="hover:bg-indigo-200">
-              <td>
-                <span class="text-gray-700 flex items-center" v-text="log.item.timestamp"></span>
-              </td>
-              <td>
-                <span class="text-gray-700 flex items-center" v-text="log.item.level"></span>
-              </td>
-              <td>
-                <span class="text-gray-700 flex items-center" v-text="log.item.message"></span>
-              </td>
-              <td>
-                <span class="text-gray-700 flex items-center" v-text="log.item.exception"></span>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
+      <Table :headers="headers">
+        <tr v-for="log in searchResultArray" :key="log.id" class="hover:bg-indigo-200">
+          <td>
+            <span class="text-gray-700 flex items-center" v-text="log.item.timestamp"></span>
+          </td>
+          <td>
+            <span class="text-gray-700 flex items-center" v-text="log.item.level"></span>
+          </td>
+          <td>
+            <span class="text-gray-700 flex items-center" v-text="log.item.message"></span>
+          </td>
+          <td>
+            <span class="text-gray-700 flex items-center" v-text="log.item.exception"></span>
+          </td>
+        </tr>
+      </Table>
     </template>
   </div>
 </template>
@@ -95,11 +63,13 @@ import { defineComponent, onUnmounted, ref, reactive } from 'vue';
 import { HubConnectionBuilder, LogLevel, HubConnection } from '@microsoft/signalr';
 import { ServerLog } from '@/types/types';
 import Search from '@/components/widgets/Search.vue';
+import Table from '@/components/widgets/Table.vue';
 
 export default defineComponent({
   name: 'Logs',
   components: {
-    Search
+    Search,
+    Table
   },
   setup() {
     const connection: HubConnection = new HubConnectionBuilder()

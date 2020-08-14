@@ -17,11 +17,11 @@ namespace SmartHub.Application.Common.Utils
                 .ToDictionary(x => x[0], x => x[1]);
             if (dictionary.ContainsKey("User ID"))
             {
-                dictionary["User ID"] ??= argsUser;
+                dictionary["User ID"] = argsUser;
             }
             if (dictionary.ContainsKey("Password"))
             {
-                dictionary["Password"] ??= argsPwd;
+                dictionary["Password"] = argsPwd;
             }
             return string.Concat(
                 string.Join(";",dictionary.Select(x => x.Key + "=" + x.Value)),
