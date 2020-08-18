@@ -1,13 +1,11 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using SmartHub.Application.Common.Exceptions;
 using SmartHub.Application.Common.Interfaces;
-using System;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using SmartHub.Domain.Common.Enums;
 using SmartHub.Domain.Entities;
-using DateTime = System.DateTime;
 
 namespace SmartHub.Application.UseCases.Identity.Login
 {

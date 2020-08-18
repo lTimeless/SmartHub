@@ -1,4 +1,6 @@
 ﻿using System.Collections.Generic;
+using System.Security.Claims;
+using Microsoft.AspNetCore.Identity;
 using SmartHub.Application.Common.Interfaces;
 using SmartHub.Application.Common.Utils;
 using SmartHub.Domain.Common.Enums;
@@ -12,10 +14,12 @@ namespace SmartHub.Application.UseCases.Identity
     public class IdentityService
     {
         private readonly ITokenGenerator _tokenGenerator;
+        private readonly UserManager<User> _userManager;
 
-        public IdentityService(ITokenGenerator tokenGenerator)
+        public IdentityService(ITokenGenerator tokenGenerator, UserManager<User> userManager)
         {
             _tokenGenerator = tokenGenerator;
+            _userManager = userManager;
         }
 
         /// <summary>
@@ -26,12 +30,8 @@ namespace SmartHub.Application.UseCases.Identity
         /// <returns></returns>
         internal AuthResponseDto CreateAuthResponse(User user, List<string> roles)
         {
-            return	new AuthResponseDto(
-                _tokenGenerator.CreateJwtToken(user),
-                user.UserName,
-                roles,
-                DateTimeUtils.LocalNow.PlusHours(JwtExpireTime.HoursToExpire.GetValue())
-            );
+            var claims = _userManager.GetClaimsAsync(user).GetAwaiter().GetResult() as List<Claim>;
+            return	new AuthResponseDto(_tokenGenerator.CreateJwtToken(user, roles, claims ?? new List<Claim>()));
         }
     }
 }

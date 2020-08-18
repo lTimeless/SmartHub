@@ -24,9 +24,6 @@ export interface ServerLog {
 // Auth
 export interface AuthResponse {
   token: string;
-  expiresAt: string; // TODO: DateTime
-  userName: string;
-  roles: string[];
 }
 
 export interface LoginRequest {

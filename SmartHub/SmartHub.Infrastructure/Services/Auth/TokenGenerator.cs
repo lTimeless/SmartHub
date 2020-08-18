@@ -4,6 +4,7 @@ using SmartHub.Domain.Common.Settings;
 using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
+using System.Linq;
 using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
@@ -23,16 +24,18 @@ namespace SmartHub.Infrastructure.Services.Auth
 			_jwtSettings = jwtSettings;
 		}
 
-		public string CreateJwtToken(User user)
+		public string CreateJwtToken(User user, List<string> roles, List<Claim> claims)
 		{
 			if (user == null)
 			{
 				throw new SmartHubException(nameof(CreateJwtToken), "The given user is null");
 			}
-			var claims = new List<Claim>
+			claims.AddRange(new List<Claim>
 			{
-				new Claim(JwtRegisteredClaimNames.NameId, user.UserName),
-			};
+				new Claim(ClaimTypes.Name, user.UserName),
+				new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
+			});
+			claims.AddRange(roles.Select(role => new Claim("roles", role)));
 
 			var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtSettings.Secret));
 

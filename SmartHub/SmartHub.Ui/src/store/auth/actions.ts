@@ -1,7 +1,7 @@
 import { ActionContext, ActionTree } from 'vuex';
 import { LoginRequest, AuthResponse, RegistrationRequest, ServerResponse } from '@/types/types';
 import { RootState, AuthState } from '@/store/index.types';
-import { storeAuthResponse, storeToken } from '@/services/auth/authService';
+import { storeAuthResponse } from '@/services/auth/authService';
 import axiosInstance from '@/router/axios/axios';
 import { AuthMutations, M_AUTH_USER, M_UPDATE_LOGIN_BTN } from '@/store/auth/mutations';
 import { AxiosResponse } from 'axios';
@@ -31,7 +31,6 @@ export const actions: ActionTree<AuthState, RootState> & AuthActions = {
       .post<ServerResponse<AuthResponse>>('api/Identity/login', payload)
       .then((response) => {
         const authResponse = response.data.data as AuthResponse;
-        storeToken(authResponse.token);
         storeAuthResponse(authResponse);
         commit(M_AUTH_USER, authResponse);
       })
@@ -45,7 +44,6 @@ export const actions: ActionTree<AuthState, RootState> & AuthActions = {
       .post<ServerResponse<AuthResponse>>('api/Identity/registration', payload)
       .then(async (response) => {
         const auth = response.data.data as AuthResponse;
-        await storeToken(auth.token);
         await storeAuthResponse(auth);
         await state.commit(M_AUTH_USER, auth);
       })
