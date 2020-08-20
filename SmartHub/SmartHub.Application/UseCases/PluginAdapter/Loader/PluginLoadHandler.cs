@@ -14,13 +14,12 @@ namespace SmartHub.Application.UseCases.PluginAdapter.Loader
     public class PluginLoadHandler : IRequestHandler<PluginLoadCommand, Response<string>>
     {
         private readonly IPluginHostService _pluginHostService;
-        private readonly ILogger _logger;
+        private readonly ILogger _log = Log.ForContext(typeof(PluginLoadHandler));
         private readonly IUnitOfWork _unitOfWork;
         private readonly IPluginFinderService _pluginFinderService;
 
-        public PluginLoadHandler(ILogger logger, IUnitOfWork unitOfWork, IPluginFinderService pluginFinderService, IPluginHostService pluginHostService)
+        public PluginLoadHandler(IUnitOfWork unitOfWork, IPluginFinderService pluginFinderService, IPluginHostService pluginHostService)
         {
-            _logger = logger;
             _unitOfWork = unitOfWork;
             _pluginFinderService = pluginFinderService;
             _pluginHostService = pluginHostService;
@@ -31,7 +30,7 @@ namespace SmartHub.Application.UseCases.PluginAdapter.Loader
             var home = await _unitOfWork.HomeRepository.GetHome();
             if (home is null)
             {
-                Log.Warning($"[{nameof(PluginLoadHandler)}] No home created");
+                _log.Warning($"[{nameof(PluginLoadHandler)}] No home created");
                 return Response.Fail<string>("There is no home created yet");
             }
             var setting = home.Settings.FirstOrDefault(c => c.IsActive || c.PluginPath.Contains("_private"));
@@ -41,7 +40,7 @@ namespace SmartHub.Application.UseCases.PluginAdapter.Loader
 
             if (filteredOrAllFoundPlugins.IsNullOrEmpty())
             {
-                _logger.Warning($"[{nameof(PluginLoadHandler)}] No new plugins available");
+                _log.Warning($"[{nameof(PluginLoadHandler)}] No new plugins available");
                 return Response.Fail<string>("No new plugins available");
             }
             var path = request.Path.IsNullOrEmpty() ? setting.PluginPath : request.Path;

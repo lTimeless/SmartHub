@@ -10,6 +10,7 @@ namespace SmartHub.Api.Middleware
 {
 	public class ExceptionMiddleware
 	{
+		private readonly ILogger _log = Log.ForContext(typeof(ExceptionMiddleware));
 		private readonly RequestDelegate _next;
 
 		public ExceptionMiddleware(RequestDelegate next)
@@ -36,25 +37,25 @@ namespace SmartHub.Api.Middleware
 			switch (ex)
 			{
 				case RestException restException:
-					Log.Warning($"[{nameof(HandleExceptionAsync)}] Rest ERROR: {restException.Code} -- {restException.Errors}");
+					_log.Warning($"[{nameof(HandleExceptionAsync)}] Rest ERROR: {restException.Code} -- {restException.Errors}");
 					httpContext.Response.StatusCode = (int)restException.Code;
 					errors = restException.Errors;
 					break;
 
 				case SmartHubException smartHubException:
-					Log.Warning($"[{nameof(HandleExceptionAsync)}] SmartHub ERROR: {smartHubException.Message} -- {smartHubException.Source} -- {smartHubException.StackTrace}");
+					_log.Warning($"[{nameof(HandleExceptionAsync)}] SmartHub ERROR: {smartHubException.Message} -- {smartHubException.Source} -- {smartHubException.StackTrace}");
 					errors = string.IsNullOrWhiteSpace(smartHubException.Message) ? "Error" : smartHubException.Message;
 					httpContext.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
 					break;
 
 				case Exception exception:
-					Log.Warning($"[{nameof(HandleExceptionAsync)}] Server ERROR: {exception}");
+					_log.Warning($"[{nameof(HandleExceptionAsync)}] Server ERROR: {exception}");
 					errors = string.IsNullOrWhiteSpace(exception.Message) ? "Error" : exception.Message;
 					httpContext.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
 					break;
 
 				default:
-					Log.Warning($"[{nameof(HandleExceptionAsync)}] Unknown Server ERROR");
+					_log.Warning($"[{nameof(HandleExceptionAsync)}] Unknown Server ERROR");
 					break;
 			}
 

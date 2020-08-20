@@ -32,19 +32,11 @@ namespace SmartHub.Api
 					b.AddCommandLine(args)
 						.AddEnvironmentVariables();
 				})
-				.ConfigureWebHostDefaults(webBuilder =>
-				{
-					webBuilder.UseKestrel();
-					webBuilder.UseStartup<Startup>();
-				})
-
 				.UseServiceProviderFactory(new AutofacServiceProviderFactory())
 				.UseSerilog((hostingContext, service, loggerConfig) =>
 				{
 					loggerConfig
 						.ReadFrom.Configuration(hostingContext.Configuration)
-						.Enrich.FromLogContext()
-						.Enrich.WithProcessId()
 						.WriteTo.SignalRSink<LogHub, IServerHub>(
 							LogEventLevel.Information,
 							service,
@@ -54,6 +46,11 @@ namespace SmartHub.Api
 							new string[] {}
 							);
 				})
-				.ConfigureLogging((_, config) => config.ClearProviders());
+				.ConfigureLogging((_, config) => config.ClearProviders())
+				.ConfigureWebHostDefaults(webBuilder =>
+				{
+					webBuilder.UseKestrel();
+					webBuilder.UseStartup<Startup>();
+				});
 	}
 }

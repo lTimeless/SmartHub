@@ -12,29 +12,31 @@ namespace SmartHub.Infrastructure.Services.Dispatchers
 	/// <inheritdoc cref="IHangfireDispatcher"/>
 	public class HangfireDispatcher : IHangfireDispatcher
 	{
+		private readonly ILogger _log = Log.ForContext(typeof(HangfireDispatcher));
+
 		private const int Interval = 10;
 
 		public Task<string> AddJob(Expression<Action> action)
 		{
-			Log.Information($"[{nameof(AddJob)}] Add Job {nameof(action.Name)}");
+			_log.Information($"[{nameof(AddJob)}] Add Job {nameof(action.Name)}");
 			return Task.FromResult(BackgroundJob.Enqueue(action));
 		}
 
 		public Task<string> AddJob(Expression<Func<Task, Task>> action)
 		{
-			Log.Information($"[{nameof(AddJob)}] Add Job {nameof(action.Name)}");
+			_log.Information($"[{nameof(AddJob)}] Add Job {nameof(action.Name)}");
 			return Task.FromResult(BackgroundJob.Enqueue(action));
 		}
 
 		public Task<string> AddJob(Expression<Action> action, TimeSpan delay)
 		{
-			Log.Information($"[{nameof(AddJob)}] Add Job {nameof(action.Name)}");
+			_log.Information($"[{nameof(AddJob)}] Add Job {nameof(action.Name)}");
 			return Task.FromResult(BackgroundJob.Schedule(action, delay));
 		}
 
 		public Task AddRecurringJob(Expression<Action> action, DateTime recurring, int interval = Interval)
 		{
-			Log.Information($"[{nameof(AddRecurringJob)}] Add RecurringJob {action.Name}");
+			_log.Information($"[{nameof(AddRecurringJob)}] Add RecurringJob {action.Name}");
 			switch (recurring)
 			{
 				case DateTime.Minute:
@@ -73,7 +75,7 @@ namespace SmartHub.Infrastructure.Services.Dispatchers
 
 		public Task UpdateRecurringJob(string jobId, Expression<Action> action, DateTime recurring, int interval = Interval)
 		{
-			Log.Information($"[{nameof(AddRecurringJob)}] Update RecurringJob {nameof(action.Name)}");
+			_log.Information($"[{nameof(AddRecurringJob)}] Update RecurringJob {nameof(action.Name)}");
 			switch (recurring)
 			{
 				case DateTime.Minute:

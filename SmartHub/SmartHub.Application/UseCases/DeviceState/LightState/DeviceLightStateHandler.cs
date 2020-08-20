@@ -19,7 +19,7 @@ namespace SmartHub.Application.UseCases.DeviceState.LightState
 		private readonly IPluginHostService _pluginHostService;
 		private readonly IHttpService _httpService;
 		private string _query = "";
-
+		private readonly ILogger _log = Log.ForContext(typeof(DeviceLightStateHandler));
 		public DeviceLightStateHandler(IUnitOfWork unitOfWork, IPluginHostService pluginHostService, IHttpService httpService)
 		{
 			_unitOfWork = unitOfWork;
@@ -48,12 +48,12 @@ namespace SmartHub.Application.UseCases.DeviceState.LightState
 			else if ((connectionType & ConnectionTypes.Mqtt) != 0 && foundDevice.PrimaryConnection == ConnectionTypes.Mqtt)
 			{
 				// TODO: implement later when Mqtt is useable
-				Log.Information($"[{nameof(DeviceLightStateHandler)}] {connectionType}");
+				_log.Information($"[{nameof(DeviceLightStateHandler)}] {connectionType}");
 			}
 			else
 			{
 				// TODO: implement later -> error path
-				Log.Information($"[{nameof(DeviceLightStateHandler)}] {connectionType}");
+				_log.Information($"[{nameof(DeviceLightStateHandler)}] {connectionType}");
 
 			}
 			var response = await _httpService.SendAsync(foundDevice.Ip.Ipv4, _query);

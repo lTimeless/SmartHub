@@ -17,27 +17,25 @@ namespace SmartHub.Infrastructure.Services.Dispatchers
 	public class EventDispatcher : IEventDispatcher
 	{
 		private readonly IChannelManager _channelManager;
-		private readonly ILogger _logger;
 		private IDisposable _disposable;
 		private readonly IHubContext<EventHub, IServerHub> _hubContext;
-
-		public EventDispatcher(IChannelManager channelManager, ILogger logger, IHubContext<EventHub, IServerHub> hubContext)
+		private readonly ILogger _log = Log.ForContext(typeof(EventDispatcher));
+		public EventDispatcher(IChannelManager channelManager, IHubContext<EventHub, IServerHub> hubContext)
 		{
 			_channelManager = channelManager;
-			_logger = logger;
 			_hubContext = hubContext;
 			_channelManager ??= new ChannelManager();
 		}
 
 		public async Task StartAsync(CancellationToken cancellationToken)
 		{
-			Log.Information("[EventDispatcher] EventDispatcher started in background");
+			_log.Information("[EventDispatcher] EventDispatcher started in background");
 			await Init().ConfigureAwait(false);
 		}
 
 		public Task StopAsync(CancellationToken cancellationToken)
 		{
-			Log.Information("[EventDispatcher] EventDispatcher stopped");
+			_log.Information("[EventDispatcher] EventDispatcher stopped");
 			Dispose();
 			return Task.CompletedTask;
 		}
@@ -92,7 +90,7 @@ namespace SmartHub.Infrastructure.Services.Dispatchers
 
 		private void DispatchGeneralEvent(IEvent baseEvent)
 		{
-			_logger.Information("[(DispatchGeneralEvent)] Dispatch Event => {@Name} - {EventType}",
+			_log.Information("[(DispatchGeneralEvent)] Dispatch Event => {@Name} - {EventType}",
 				baseEvent?.GetType().Name, baseEvent.EventType);
 			// hier dann alle aus den events Evententitys bauen und in die db speichern
 		}
@@ -112,7 +110,7 @@ namespace SmartHub.Infrastructure.Services.Dispatchers
 			{
 				case LoginEvent loginEvent:
 					var message = $"[DispatchApplicationEvent] Dispatch LoginEvent =>  UserName: {loginEvent.UserName}; Login state: {loginEvent.Successful} ";
-					_logger.Information(message);
+					_log.Information(message);
 					break;
 				default:
 					throw new SmartHubException("Unknown event error");
@@ -126,7 +124,7 @@ namespace SmartHub.Infrastructure.Services.Dispatchers
 				case HomeUpdatedEvent homeUpdatedEvent:
 					var message =
 						$"[DispatchDomainEvents] Dispatch HomeUpdatedEvent => Updated home {homeUpdatedEvent.Name} ";
-					_logger.Information(message);
+					_log.Information(message);
 					break;
 				default:
 					throw new SmartHubException("Unknown event error");

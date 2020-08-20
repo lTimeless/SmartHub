@@ -53,7 +53,7 @@ namespace SmartHub.Api.Extensions
 				.Where(t => t.ip.Address.ToString().Contains("192."))
 				.Select(t => t.ip))
 			{
-				Log.Information($"Your server ip is : {ip.Address}");
+				Log.ForContext(typeof(AppExtension)).Information($"Your server ip is : {ip.Address}");
 			}
 		}
 	}

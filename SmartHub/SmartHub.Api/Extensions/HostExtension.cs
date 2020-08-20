@@ -46,10 +46,10 @@ namespace SmartHub.Api.Extensions
 				{
 					if (deleteMode)
 					{
-						Log.Information("[MigrationManager] Deletedatabase");
+						Log.ForContext(typeof(HostExtension)).Information("[MigrationManager] Deletedatabase");
 						appContext.Database.EnsureDeleted();
 					}
-					Log.Information("[MigrationManager] Update or Create database if needed");
+					Log.ForContext(typeof(HostExtension)).Information("[MigrationManager] Update or Create database if needed");
 
 					// adds the current Entity structure
 					// appContext.Database.EnsureCreated(); //creates or updates the db if neccassary
@@ -57,7 +57,7 @@ namespace SmartHub.Api.Extensions
 				// prod mode
 				else
 				{
-					Log.Information("[MigrationManager] Update or Create database if needed");
+					Log.ForContext(typeof(HostExtension)).Information("[MigrationManager] Update or Create database if needed");
 					// adds the latest Migration from the Migrationsfolder
 					// await appContext.Database.MigrateAsync(); //creates or updates the db if neccassary
 				}

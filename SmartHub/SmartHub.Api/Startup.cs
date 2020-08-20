@@ -23,9 +23,9 @@ namespace SmartHub.Api
 			var builder = new ConfigurationBuilder()
 					.AddConfiguration(configuration)
 					.SetBasePath(Directory.GetCurrentDirectory())
-					.AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
-					.AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: false, reloadOnChange: true)
-					.AddJsonFile("smarthub.config.json", optional: false)
+					.AddJsonFile("appsettings.json", false, true)
+					.AddJsonFile($"appsettings.{env.EnvironmentName}.json", false, true)
+					.AddJsonFile("smarthub.config.json", false, true)
 					;
 
 			if (env.IsDevelopment())
@@ -75,7 +75,7 @@ namespace SmartHub.Api
 				// The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
 				app.UseHsts();
 			}
-			Log.Information("----------------------------------------------------------------");
+			Log.ForContext(typeof(Startup)).Information("----------------------------------------------------------------");
 			app.ShowLocalIpv4();
 
 			// Response Compression
@@ -124,7 +124,7 @@ namespace SmartHub.Api
 
 				if (!Configuration.GetValue<bool>("Use_Staticfiles_DEV"))
 				{
-					Log.Warning("Not serving frontend from staticfiles");
+					Log.ForContext(typeof(Startup)).Warning("Not serving frontend from staticfiles");
 					// Start seperate FE server and Server listens to it
 					 spa.UseProxyToSpaDevelopmentServer("http://localhost:8080");
 					// To start its own FE server

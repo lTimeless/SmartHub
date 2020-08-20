@@ -1,10 +1,10 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
-using Serilog;
 using SmartHub.Domain.Entities.ValueObjects;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
+using Serilog;
 using SmartHub.Application.Common.Interfaces.Repositories;
 using SmartHub.Domain.Common.Enums;
 using SmartHub.Domain.Entities;
@@ -15,6 +15,7 @@ namespace SmartHub.Infrastructure.Database
 	{
 		private readonly IServiceScopeFactory _scopeFactory;
 		private readonly IUnitOfWork _unitOfWork;
+		private readonly ILogger _logger = Log.ForContext<SeedDatabase>();
 
 		public SeedDatabase(IServiceProvider serviceProvider, IUnitOfWork unitOfWork)
 		{
@@ -24,11 +25,11 @@ namespace SmartHub.Infrastructure.Database
 
 		public async Task SeedData()
 		{
-			Log.Information($"[{nameof(SeedData)}] Start seeding into database ...");
+			_logger.Information($"[{nameof(SeedData)}] Start seeding into database ...");
 			await SeedRoleData();
 			await SeedUserData();
 			await _unitOfWork.SaveAsync();
-			Log.Information($"[{nameof(SeedData)}] Finished seeding into database.");
+			_logger.Information($"[{nameof(SeedData)}] Finished seeding into database.");
 		}
 
 		private async Task SeedUserData()

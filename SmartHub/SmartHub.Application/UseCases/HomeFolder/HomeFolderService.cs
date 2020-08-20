@@ -15,6 +15,7 @@ namespace SmartHub.Application.UseCases.HomeFolder
     {
         private readonly IDirectoryService _directoryService;
         private readonly IOptionsMonitor<ApplicationSettings> _applicationSettings;
+        private readonly ILogger _log = Log.ForContext(typeof(HomeFolderService));
 
         // The overlaying service for creating the SmartHub config folder
         // with functions to create, delete and update it
@@ -40,7 +41,7 @@ namespace SmartHub.Application.UseCases.HomeFolder
                 var pluginPath = Path.Combine(homePath, folderName);
                 _applicationSettings.CurrentValue.DefaultPluginpath = pluginPath; // TODO: add plugins folder
                 _directoryService.CreateDirectory(homePath, folderName);
-                Log.Information("[HomeFolderService] SmartHub folder is at {@homePath}\\{@folderName}",
+                _log.Information("[HomeFolderService] SmartHub folder is at {@homePath}\\{@folderName}",
                     homePath,
                     folderName);
                 CreatePluginFolderInHomeFolder();

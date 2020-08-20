@@ -15,7 +15,7 @@ namespace SmartHub.Application.UseCases.AppStartup
 		private readonly IHangfireDispatcher _hangfireManager;
 		private readonly IHomeFolderService _homeFolderService;
 		private readonly IMediator _mediatR;
-
+		private readonly ILogger _log = Log.ForContext(typeof(AppStartup));
 		public AppStartup(IHangfireDispatcher hangfireManager,
 			IHomeFolderService homeFolderService, IMediator mediatR)
 		{
@@ -41,7 +41,7 @@ namespace SmartHub.Application.UseCases.AppStartup
 		/// </summary>
 		private async Task StartHangfireJobs()
 		{
-			Log.Information($"[{nameof(StartHangfireJobs)}] Start Hangfire jobs");
+			_log.Information($"[{nameof(StartHangfireJobs)}] Start Hangfire jobs");
 			// Only add Job if it doesn't exist 
 			//await _hangfireManager.AddRecurringJob(() =>
 			//		_pluginAdapterService.StartCompareAndUpdateProcedure(), DateTimeEnum.Minute, _interval).ConfigureAwait(false);
