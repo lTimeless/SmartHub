@@ -27,20 +27,6 @@ namespace SmartHub.Api.Controllers
 		}
 
 		/// <summary>
-		/// Creates the new Home
-		/// </summary>
-		/// <param name="value"></param>
-		/// <returns>A newly created Home and default Setting Object</returns>
-		/// <response code="201">Returns the newly created item</response>
-		[HttpPost]
-		[ProducesResponseType(StatusCodes.Status200OK)]
-		[ProducesResponseType(StatusCodes.Status401Unauthorized)]
-		public async Task<IActionResult> Post([FromBody] HomeCreateCommand value)
-		{
-			return Ok(await Mediator.Send(value).ConfigureAwait(false));
-		}
-
-		/// <summary>
 		/// Partial updates the Home
 		/// </summary>
 		[HttpPatch]

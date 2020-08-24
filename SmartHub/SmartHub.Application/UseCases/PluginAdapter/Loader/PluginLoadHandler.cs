@@ -30,8 +30,8 @@ namespace SmartHub.Application.UseCases.PluginAdapter.Loader
             var home = await _unitOfWork.HomeRepository.GetHome();
             if (home is null)
             {
-                _log.Warning($"[{nameof(PluginLoadHandler)}] No home created");
-                return Response.Fail<string>("There is no home created yet");
+                _log.Warning($"[{nameof(PluginLoadHandler)}] No home available.");
+                return Response.Fail<string>("No home available.");
             }
             var setting = home.Settings.FirstOrDefault(c => c.IsActive || c.PluginPath.Contains("_private"));
 
@@ -40,15 +40,16 @@ namespace SmartHub.Application.UseCases.PluginAdapter.Loader
 
             if (filteredOrAllFoundPlugins.IsNullOrEmpty())
             {
-                _log.Warning($"[{nameof(PluginLoadHandler)}] No new plugins available");
-                return Response.Fail<string>("No new plugins available");
+                _log.Warning($"[{nameof(PluginLoadHandler)}] No new plugins available.");
+                return Response.Fail<string>("No new plugins available.");
             }
+            // TODO: why is this null
             var path = request.Path.IsNullOrEmpty() ? setting.PluginPath : request.Path;
 
             var pluginsLoaded = await _pluginHostService.Plugins.LoadAndAddToHomeAsync(new []{ path }, request.LoadStrategyMultiple);
             return pluginsLoaded
-                ? Response.Ok("New Plugins loaded")
-                : Response.Fail<string>("Error: Couldn't load new Plugins");
+                ? Response.Ok("New Plugins loaded.")
+                : Response.Fail<string>("Error: Couldn't load new Plugins.");
         }
     }
 }

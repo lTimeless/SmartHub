@@ -4,6 +4,7 @@ using SmartHub.Application.Common.Interfaces;
 using System.Threading;
 using System.Threading.Tasks;
 using MediatR;
+using SmartHub.Application.UseCases.Entity.Homes.Create;
 using SmartHub.Application.UseCases.HomeFolder;
 using SmartHub.Application.UseCases.PluginAdapter.Loader;
 using SmartHub.Domain.Common.Enums;
@@ -26,6 +27,7 @@ namespace SmartHub.Application.UseCases.AppStartup
 
 		public async Task StartAsync(CancellationToken cancellationToken)
 		{
+			await CreateHomeOnFirstStartup();
 			// StartHangfireJobs();
 			await _homeFolderService.Init().ConfigureAwait(false);
 			await StartLoadPlugins().ConfigureAwait(false);
@@ -50,6 +52,13 @@ namespace SmartHub.Application.UseCases.AppStartup
 		private async Task StartLoadPlugins()
 		{
 			_ = await _mediatR.Send(new PluginLoadCommand(LoadStrategy.Multiple));
+		}
+
+		private async Task CreateHomeOnFirstStartup()
+		{
+			await _mediatR.Send(new HomeCreateCommand("SmartHub", "This is your own awesome and easy smarthome. "))
+				.ConfigureAwait(false);
+			_log.Information($"[{nameof(CreateHomeOnFirstStartup)}] SmartHub created.");
 		}
 	}
 }
