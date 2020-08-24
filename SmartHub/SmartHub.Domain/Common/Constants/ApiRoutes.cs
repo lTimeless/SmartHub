@@ -11,18 +11,18 @@
             public const string LoadNewByPath = "loadNewByPath";
             public const string LoadOnlyNew = "loadAllNew";
         }
-        public class NetworkScanRoutes
+        public static class NetworkScanRoutes
         {
             public const string Search = "search";
         }
 
-        public class IdentityRoutes
+        public static class IdentityRoutes
         {
             public const string Login = "login";
             public const string Registration = "registration";
         }
 
-        public class DeviceStateRoutes
+        public static class DeviceStateRoutes
         {
             public const string SetLightByDevice = "light/{deviceId}";
         }
