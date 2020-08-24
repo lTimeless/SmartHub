@@ -96,7 +96,8 @@ namespace SmartHub.Infrastructure.Database.Repositories
 		public async Task Rollback()
 		{
 			AppDbContext.ChangeTracker.Entries()
-				.Where(e => e.Entity != null).ToList() // && e.state == EntityState.Added
+				.Where(e => e.Entity != null) // vlt das hinzufügen => && (e.State == EntityState.Added || e.State == EntityState.Modified)
+				.ToList()
 				.ForEach(e => e.State = EntityState.Detached);
 			await SaveAsync();
 		}

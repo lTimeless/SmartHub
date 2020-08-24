@@ -23,8 +23,9 @@ namespace SmartHub.Infrastructure.Database
 			_unitOfWork = unitOfWork;
 		}
 
-		public async Task SeedData()
+		public async Task SeedData(bool seedDb)
 		{
+			if (!seedDb) return;
 			_logger.Information($"[{nameof(SeedData)}] Start seeding into database ...");
 			await SeedRoleData();
 			await SeedUserData();

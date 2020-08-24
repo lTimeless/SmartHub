@@ -67,7 +67,7 @@ namespace SmartHub.Api
 				app.UseDatabaseErrorPage();
 
 				// Seed Database
-				seedDatabase.SeedData().GetAwaiter().GetResult();
+				seedDatabase.SeedData(Configuration.GetValue<bool>("Seed_Db")).GetAwaiter().GetResult();
 			}
 			else
 			{

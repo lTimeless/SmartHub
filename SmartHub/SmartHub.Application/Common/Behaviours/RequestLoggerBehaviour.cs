@@ -8,12 +8,11 @@ namespace SmartHub.Application.Common.Behaviours
 {
     public class RequestLoggerBehaviour<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse>
     {
-        private readonly ILogger _logger;
+        private readonly ILogger _logger = Log.ForContext(typeof(RequestLoggerBehaviour<,>));
         private readonly CurrentUser _currentUser;
 
-        public RequestLoggerBehaviour(ILogger logger, CurrentUser currentUser)
+        public RequestLoggerBehaviour(CurrentUser currentUser)
         {
-            _logger = logger;
             _currentUser = currentUser;
         }
 
