@@ -6,18 +6,18 @@ using System;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using SmartHub.Application.UseCases.Entity.Homes.Update;
+using SmartHub.Domain.Common.Constants;
 
 namespace SmartHub.Api.Controllers
 {
 	public class HomeController : BaseController
 	{
 		/// <summary>
-		/// GET: api/Home
+		/// Gets the home
 		/// </summary>
-		/// <returns>List of Homes</returns>
-		[AllowAnonymous] // TODO: Create another endpoint which will just return less infos about the home
-		// only name
+		/// <returns>The Home</returns>
 		[HttpGet]
+		[AllowAnonymous]
 		[ProducesResponseType(StatusCodes.Status200OK)]
 		[ProducesResponseType(StatusCodes.Status400BadRequest)]
 		[ProducesResponseType(StatusCodes.Status401Unauthorized)]
@@ -27,18 +27,8 @@ namespace SmartHub.Api.Controllers
 		}
 
 		/// <summary>
-		/// Creates a new Home
+		/// Creates the new Home
 		/// </summary>
-		/// /// <remarks>
-		/// Sample request:
-		///
-		///     POST /home
-		///     {
-		///        "name": "Test",
-		///        "description": "Test_2",
-		///     }
-		///
-		/// </remarks>
 		/// <param name="value"></param>
 		/// <returns>A newly created Home and default Setting Object</returns>
 		/// <response code="201">Returns the newly created item</response>
@@ -50,7 +40,9 @@ namespace SmartHub.Api.Controllers
 			return Ok(await Mediator.Send(value).ConfigureAwait(false));
 		}
 
-		// PATCH: api/Home
+		/// <summary>
+		/// Partial updates the Home
+		/// </summary>
 		[HttpPatch]
 		public async Task<IActionResult> Patch([FromBody] HomeUpdateCommand value)
 		{
@@ -58,16 +50,20 @@ namespace SmartHub.Api.Controllers
 		}
 
 
-		// PUT: api/Home
+		/// <summary>
+		/// Full updates the Home
+		/// </summary>
 		[HttpPut]
 		public async Task<IActionResult> Put([FromBody] HomeUpdateCommand value)
 		{
 			return Ok(await Mediator.Send(value).ConfigureAwait(false));
 		}
 
-		// DELETE: api/ApiWithActions/5
-		[HttpDelete("{id}")]
-		public void Delete(int id)
+		/// <summary>
+		/// Deletes the Home
+		/// </summary>
+		[HttpDelete]
+		public void Delete()
 		{
 			throw new NotSupportedException($"[{nameof(Delete)}]Not supported");
 		}

@@ -1,10 +1,11 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
+using SmartHub.Domain.Common.Constants;
 
 namespace SmartHub.Api.Controllers
 {
-	[Route("api/[controller]")]
+	[Route(ApiRoutes.ApiControllerBase)]
 	[ApiController]
 	public class BaseController : ControllerBase
 	{

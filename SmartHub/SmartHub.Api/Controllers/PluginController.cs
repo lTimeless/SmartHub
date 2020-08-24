@@ -2,6 +2,7 @@
 using SmartHub.Application.UseCases.PluginAdapter.Finder;
 using SmartHub.Application.UseCases.PluginAdapter.Loader;
 using System.Threading.Tasks;
+using SmartHub.Domain.Common.Constants;
 using SmartHub.Domain.Common.Enums;
 
 namespace SmartHub.Api.Controllers
@@ -12,8 +13,8 @@ namespace SmartHub.Api.Controllers
 		/// <summary>
 		/// Finds all available plugins in the plugin folder
 		/// </summary>
-		/// <returns></returns>
-		[HttpGet("find")]
+		/// <returns>A Response with a Dictionary of "string, FoundPluginDto"</returns>
+		[HttpGet(ApiRoutes.PluginRoutes.FindAll)]
 		public async Task<IActionResult> FindAll()
 		{
 			return Ok(await Mediator.Send(new PluginFinderQuery(false)));
@@ -22,24 +23,30 @@ namespace SmartHub.Api.Controllers
 		/// <summary>
 		/// Find all new plugins in the plugin folder
 		/// </summary>
-		/// <returns></returns>
-		[HttpGet("findNew")]
+		/// <returns>A Response with a Dictionary of "string, FoundPluginDto"</returns>
+		[HttpGet(ApiRoutes.PluginRoutes.FindNew)]
 		public async Task<IActionResult> FindNew()
 		{
 			return Ok(await Mediator.Send(new PluginFinderQuery(true)));
 		}
 
-		// GET: api/Plugin
-		[HttpGet("loadAllNew")]
-		public async Task<IActionResult> LoadAllNew()
+		/// <summary>
+		/// Loads only new Plugins from the default pluginPaths
+		/// </summary>
+		/// <returns>A Response containing a message</returns>
+		[HttpGet(ApiRoutes.PluginRoutes.LoadOnlyNew)]
+		public async Task<IActionResult> LoadOnlyNew()
 		{
 
 			return Ok(await Mediator.Send(new PluginLoadCommand(LoadStrategy.Multiple)));
 		}
 
-		// GET: api/Plugin/
-		[HttpGet("{pluginPath}", Name = "Get")]
-		public async Task<IActionResult> LoadNewBypath(string pluginPath)
+		/// <summary>
+		/// Loads only new Plugins by the given path
+		/// </summary>
+		/// <returns>A Response containing a message</returns>
+		[HttpGet(ApiRoutes.PluginRoutes.LoadNewByPath)]
+		public async Task<IActionResult> LoadNewByPath([FromQuery]string pluginPath)
 		{
 			return Ok(await Mediator.Send(new PluginLoadCommand(LoadStrategy.Multiple, pluginPath)));
 		}
