@@ -293,7 +293,7 @@
 <script lang="ts">
 import { defineComponent, onMounted, ref, reactive, computed } from 'vue';
 import { HomeCreateRequest, HomeUpdateRequest, RegistrationRequest } from '@/types/types';
-import { clearStorage } from '@/services/auth/authService';
+import {clearStorage, getUserName} from '@/services/auth/authService';
 import { useRouter } from 'vue-router';
 import { A_CREATE_HOME, A_FETCH_HOME, A_UPDATE_HOME } from '@/store/home/actions';
 import { A_REGISTRATION } from '@/store/auth/actions';
@@ -378,12 +378,11 @@ export default defineComponent({
           if (!checkHomeExists.value && homeCreateRequest.name !== '') {
             store.dispatch(A_CREATE_HOME, homeCreateRequest);
           } else {
-            const auth = store.state.authModule.authResponse;
             const updateHomeRequest: HomeUpdateRequest = {
               name: null,
               description: null,
               settingName: null,
-              userName: auth.userName
+              userName: getUserName()
             };
             store.dispatch(A_UPDATE_HOME, updateHomeRequest);
             doneRegistration.value = true;

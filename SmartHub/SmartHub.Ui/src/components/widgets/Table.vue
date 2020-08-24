@@ -20,7 +20,7 @@
 </template>
 
 <script>
-import { defineComponent, ref } from 'vue';
+import { defineComponent } from 'vue';
 
 export default defineComponent({
   name: 'Table',
@@ -31,7 +31,6 @@ export default defineComponent({
     }
   },
   setup(props) {
-    const ttt = ref('');
     return {
       ...props
     };

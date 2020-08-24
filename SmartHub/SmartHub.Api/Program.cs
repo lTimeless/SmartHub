@@ -37,6 +37,7 @@ namespace SmartHub.Api
 				{
 					loggerConfig
 						.ReadFrom.Configuration(hostingContext.Configuration)
+						.WriteTo.Seq("http://localhost:5341")
 						.WriteTo.SignalRSink<LogHub, IServerHub>(
 							LogEventLevel.Information,
 							service,

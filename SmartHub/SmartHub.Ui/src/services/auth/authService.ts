@@ -73,3 +73,12 @@ export const getUserRole = (): Roles => {
   }
   return Roles.None;
 };
+
+export const getUserName = (): string => {
+  const authResponse = getAuthResponse();
+  if (authResponse === null) {
+    return '';
+  }
+  const tokenPayload = JwtDecode(authResponse.token) as TokenPayload;
+  return tokenPayload.unique_name;
+};

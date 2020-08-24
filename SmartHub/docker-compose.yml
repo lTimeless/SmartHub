@@ -6,6 +6,10 @@ services:
   #    build:
   #      context: .
   #      dockerfile: SmartHub.Api/Dockerfile
+  seq:
+    image: datalust/seq:latest
+    restart: unless-stopped
+
   postgres_database:
     image: postgres:alpine
     restart: unless-stopped

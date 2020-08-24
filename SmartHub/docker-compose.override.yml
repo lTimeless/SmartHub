@@ -14,6 +14,14 @@ services:
   #      - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
   #      - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
 
+  seq:
+    ports:
+      - "5341:80"
+    environment:
+      - ACCEPT_EULA=Y
+    volumes:
+      - ./seq-data:/data
+
   postgres_database:
     environment:
       - POSTGRES_PASSWORD=1234
