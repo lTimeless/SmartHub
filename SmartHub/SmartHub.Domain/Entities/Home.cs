@@ -18,7 +18,7 @@ namespace SmartHub.Domain.Entities
 
 		public virtual List<Setting> Settings { get; protected set; }
 
-		public virtual Address Address { get; }
+		public virtual Address Address { get; private set; }
 		public virtual List<DomainEvent> Events { get; set; }
 
 		protected Home()
@@ -51,6 +51,11 @@ namespace SmartHub.Domain.Entities
 			Events.Clear();
 		}
 
+		public Home AddAddress(string city, string state, string country, string zipCode, string street = "")
+		{
+			Address = new Address(street, city, state, country, zipCode);
+			return this;
+		}
 		public Home AddUser(User user)
 		{
 			if (Users == null)

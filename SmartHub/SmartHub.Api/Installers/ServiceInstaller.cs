@@ -5,6 +5,7 @@ using SmartHub.Application.Common.Interfaces.Events;
 using SmartHub.Application.Common.Interfaces.Repositories;
 using SmartHub.Application.Common.Models;
 using SmartHub.Application.UseCases.AppStartup;
+using SmartHub.Application.UseCases.GeoLocation;
 using SmartHub.Application.UseCases.HomeFolder;
 using SmartHub.Application.UseCases.Identity;
 using SmartHub.Application.UseCases.Identity.Login;
@@ -78,6 +79,7 @@ namespace SmartHub.Api.Installers
 			services.AddScoped<INetworkScannerService, NetworkScannerService>();
 			services.AddScoped<IPingService, PingService>();
 			services.AddScoped<IHttpService, HttpService>();
+			services.AddScoped<ILocationService, LocationService>();
 
 			services.AddScoped(typeof(IPluginLoadService<>), typeof(PluginLoadService<>));
 			services.AddScoped<IPluginFinderService, PluginFinderService>();
