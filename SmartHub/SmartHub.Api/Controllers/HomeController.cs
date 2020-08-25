@@ -20,7 +20,6 @@ namespace SmartHub.Api.Controllers
 		[AllowAnonymous]
 		[ProducesResponseType(StatusCodes.Status200OK)]
 		[ProducesResponseType(StatusCodes.Status400BadRequest)]
-		[ProducesResponseType(StatusCodes.Status401Unauthorized)]
 		public async Task<IActionResult> Get()
 		{
 			return Ok(await Mediator.Send(new HomesReadQuery()));

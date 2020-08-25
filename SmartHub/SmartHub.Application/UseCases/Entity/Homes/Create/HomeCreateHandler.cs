@@ -45,10 +45,13 @@ namespace SmartHub.Application.UseCases.Entity.Homes.Create
 				_optionsSnapshot.CurrentValue.DownloadServerUrl, _currentUser.RequesterName, SettingTypes.Default);
 			var homeEntity = new Home(request.Name, request.Description, defaultSetting);
 
-			var locationDto = await _locationService.GetLocation();
-			if (locationDto != null)
+			if (request.AutoDetectAddress)
 			{
-				homeEntity.AddAddress(locationDto.City, locationDto.Region, locationDto.Country, locationDto.ZipCode);
+				var locationDto = await _locationService.GetLocation();
+				if (locationDto != null)
+				{
+					homeEntity.AddAddress(locationDto.City, locationDto.Region, locationDto.Country, locationDto.ZipCode);
+				}
 			}
 
 			var result = await _unitOfWork.HomeRepository.AddAsync(homeEntity);

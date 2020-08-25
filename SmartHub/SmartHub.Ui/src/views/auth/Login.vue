@@ -73,6 +73,7 @@ import { LoginRequest } from '@/types/types';
 import { useRouter } from 'vue-router';
 import { useStore } from '@/store';
 import { A_LOGIN } from '@/store/auth/actions';
+import { A_FETCH_HOME } from '@/store/home/actions';
 
 export default defineComponent({
   name: 'Login',
@@ -84,6 +85,12 @@ export default defineComponent({
     const password = ref('');
     const username = ref('');
     const isSignInBtnClicked = ref(store.state.authModule.isSignInBtnClicked);
+    const getHomeState = ref(store.state.homeModule);
+
+    store.dispatch(A_FETCH_HOME);
+    // if (getHomeState.value.home === null) {
+    //   router.push('/init');
+    // }
     const onLoginClick = async () => {
       const login: LoginRequest = {
         username: username.value,

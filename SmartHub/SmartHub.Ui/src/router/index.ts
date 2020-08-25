@@ -14,6 +14,7 @@ import Routines from '@/views/home/Routines.vue';
 import Statistics from '@/views/home/Statistics.vue';
 import Settings from '@/views/home/Settings.vue';
 import Dashboard from '@/views/home/Dashboard.vue';
+import Init from '@/views/Init.vue';
 import Home from '../views/Home.vue';
 import MyUser from '../views/home/MyUser.vue';
 
@@ -30,6 +31,14 @@ const routes: Array<RouteRecordRaw> = [
     path: '/registration',
     name: 'Registration',
     component: Registration,
+    meta: {
+      requiresAuth: false
+    }
+  },
+  {
+    path: '/init',
+    name: 'init',
+    component: Init,
     meta: {
       requiresAuth: false
     }

@@ -212,38 +212,6 @@
                 </div>
               </div>
             </template>
-            <template v-if="activeStep === 2">
-              <div class="-mx-3 md:flex mt-4">
-                <div class="md:w-full px-3 md:mb-0">
-                  <label class="block text-gray-600 md:text-left mb-1 md:mb-0 pr-4" for="home-name">
-                    Home name
-                  </label>
-                  <input
-                    :disabled="checkHomeExists"
-                    class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight
-                            focus:outline-none focus:shadow-outline bg-ui-background"
-                    :class="checkHomeExists ? 'opacity-50 focus:outline-none cursor-not-allowed' : 'hover:text-white'"
-                    type="text"
-                    id="home-name"
-                    v-model="homeCreateRequest.name"
-                    placeholder="SmartHub"
-                  />
-                  <template v-if="checkHomeExists">
-                    <p class="ml-0 mt-4" :class="messageClass">{{ message }}.</p>
-                    <p class="ml-0 mt-2" :class="messageClass">
-                      Please
-                      <b :class="checkHomeExists ? 'text-ui-primary' : 'text-black'">click complete</b>
-                      to continue.
-                    </p>
-                  </template>
-                  <template v-else>
-                    <p class="mt-4">
-                      Modifying default settings will be coming soon 🔥😉
-                    </p>
-                  </template>
-                </div>
-              </div>
-            </template>
           </div>
           <!-- Actions -->
           <div class="grid grid-cols-2 gap-6 py-10">
@@ -256,7 +224,7 @@
                 Back
               </button>
             </div>
-            <div v-if="activeStep + 1 <= 2" class="col-start-2 flex justify-center">
+            <div v-if="activeStep + 1 >= 1" class="col-start-2 flex justify-center">
               <button
                 @click="onNextStep"
                 class="flex justify-center text-ui-primary font-bold w-5/12 py-2 border border-ui-border rounded-lg
@@ -292,10 +260,9 @@
 
 <script lang="ts">
 import { defineComponent, onMounted, ref, reactive, computed } from 'vue';
-import { HomeCreateRequest, HomeUpdateRequest, RegistrationRequest } from '@/types/types';
-import {clearStorage, getUserName} from '@/services/auth/authService';
+import { RegistrationRequest } from '@/types/types';
+import { clearStorage } from '@/services/auth/authService';
 import { useRouter } from 'vue-router';
-import { A_CREATE_HOME, A_FETCH_HOME, A_UPDATE_HOME } from '@/store/home/actions';
 import { A_REGISTRATION } from '@/store/auth/actions';
 import { useStore } from '@/store';
 
@@ -306,22 +273,14 @@ export default defineComponent({
     const store = useStore();
     const router = useRouter();
     const doneRegistration = ref(false);
-    const messageClass = ref('successMessage');
     const message = ref('');
     const activeStep = ref(0);
-    const getHomeState = ref(store.state.homeModule);
     const steps = [
       { title: 'Your Profile', step: 0 },
-      { title: 'Your Password', step: 1 },
-      { title: 'Your SmartHome', step: 2 }
+      { title: 'Your Password', step: 1 }
     ];
     const passwordStrengthText = ref('');
     const togglePassword = ref(false);
-    const homeCreateRequest: HomeCreateRequest = reactive({
-      name: '',
-      description: ''
-    });
-
     const registrationRequest: RegistrationRequest = reactive({
       username: '',
       firstname: '',
@@ -334,9 +293,7 @@ export default defineComponent({
       clearStorage();
     });
 
-    const checkFinalStepHome = computed(() => getHomeState.value.home?.name ?? homeCreateRequest.name);
-    const checkHomeExists = computed(() => store.state.homeModule.home !== null);
-    const checkInputs = computed(() => registrationRequest.username !== '' && registrationRequest.password !== '' && checkFinalStepHome.value);
+    const checkInputs = computed(() => registrationRequest.username !== '' && registrationRequest.password !== '');
 
     const checkPasswordStrength = () => {
       const strongRegex = new RegExp('^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])(?=.{8,})');
@@ -350,47 +307,15 @@ export default defineComponent({
         passwordStrengthText.value = 'Too weak';
       }
     };
-    const existingHome = () => {
-      if (getHomeState.value.home === null) {
-        message.value = 'No home created yet';
-        messageClass.value = 'secondary--text';
-      }
-      message.value = `Already a home created with name ${getHomeState.value.home?.name}  - this will be selected automatically`;
-      messageClass.value = 'primary--text';
-    };
 
     const onBackStep = (nextStep: number) => {
       activeStep.value = nextStep;
     };
     const onNextStep = async (): Promise<void> => {
-      let shouldBeNextStep = activeStep.value;
-      shouldBeNextStep += 1;
-      if (shouldBeNextStep === 2) {
-        await store.dispatch(A_FETCH_HOME);
-        await existingHome();
-      }
-      activeStep.value = shouldBeNextStep;
+      activeStep.value += 1;
     };
     const onRegistrationClick = async () => {
-      await store
-        .dispatch(A_REGISTRATION, registrationRequest)
-        .then(() => {
-          if (!checkHomeExists.value && homeCreateRequest.name !== '') {
-            store.dispatch(A_CREATE_HOME, homeCreateRequest);
-          } else {
-            const updateHomeRequest: HomeUpdateRequest = {
-              name: null,
-              description: null,
-              settingName: null,
-              userName: getUserName()
-            };
-            store.dispatch(A_UPDATE_HOME, updateHomeRequest);
-            doneRegistration.value = true;
-          }
-        })
-        .catch((error) => {
-          console.log(error);
-        });
+      await store.dispatch(A_REGISTRATION, registrationRequest);
     };
 
     const registrationComplete = () => {
@@ -403,8 +328,6 @@ export default defineComponent({
       registrationRequest,
       togglePassword,
       message,
-      messageClass,
-      homeCreateRequest,
       onBackStep,
       onNextStep,
       doneRegistration,
@@ -412,7 +335,6 @@ export default defineComponent({
       passwordStrengthText,
       checkInputs,
       onRegistrationClick,
-      checkHomeExists,
       registrationComplete
     };
   }

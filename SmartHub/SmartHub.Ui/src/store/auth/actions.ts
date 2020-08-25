@@ -4,7 +4,6 @@ import { RootState, AuthState } from '@/store/index.types';
 import { storeAuthResponse } from '@/services/auth/authService';
 import axiosInstance from '@/router/axios/axios';
 import { AuthMutations, M_AUTH_USER, M_UPDATE_LOGIN_BTN } from '@/store/auth/mutations';
-import { AxiosResponse } from 'axios';
 
 // Keys
 export const A_LOGIN = 'A_LOGIN';
