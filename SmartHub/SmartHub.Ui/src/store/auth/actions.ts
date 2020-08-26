@@ -3,7 +3,7 @@ import { LoginRequest, AuthResponse, RegistrationRequest, ServerResponse } from 
 import { RootState, AuthState } from '@/store/index.types';
 import { storeAuthResponse } from '@/services/auth/authService';
 import axiosInstance from '@/router/axios/axios';
-import { AuthMutations, M_AUTH_USER, M_UPDATE_LOGIN_BTN } from '@/store/auth/mutations';
+import { AuthMutations, M_AUTH_USER } from '@/store/auth/mutations';
 
 // Keys
 export const A_LOGIN = 'A_LOGIN';
@@ -25,7 +25,6 @@ export interface AuthActions {
 // Define Actions
 export const actions: ActionTree<AuthState, RootState> & AuthActions = {
   async [A_LOGIN]({ commit }, payload: LoginRequest): Promise<void> {
-    commit(M_UPDATE_LOGIN_BTN, undefined);
     await axiosInstance
       .post<ServerResponse<AuthResponse>>('api/Identity/login', payload)
       .then((response) => {
@@ -35,7 +34,6 @@ export const actions: ActionTree<AuthState, RootState> & AuthActions = {
       })
       .catch((err) => {
         console.log(err);
-        commit(M_UPDATE_LOGIN_BTN, undefined);
       });
   },
   async [A_REGISTRATION](state, payload: RegistrationRequest): Promise<void> {
@@ -51,6 +49,6 @@ export const actions: ActionTree<AuthState, RootState> & AuthActions = {
       });
   },
   async [A_LOGOUT]({ commit }) {
-    commit(M_UPDATE_LOGIN_BTN, undefined);
+    console.log('logout');
   }
 };

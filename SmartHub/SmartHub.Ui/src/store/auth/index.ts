@@ -5,8 +5,7 @@ import { actions, AuthActions } from '@/store/auth/actions';
 import { AuthMutations, mutations } from '@/store/auth/mutations';
 
 export const state: AuthState = {
-  authResponse: null,
-  isSignInBtnClicked: false
+  authResponse: null
 };
 
 export interface AuthModule<A = ModuleTree<AuthState>> {

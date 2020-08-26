@@ -16,17 +16,18 @@
                 clip-rule="evenodd"
               />
             </svg>
-            <h2 class="text-2xl mb-4 text-gray-800 text-center font-bold">Registration Success</h2>
+            <h2 class="text-2xl mb-4 text-gray-800 text-center font-bold">SmartHub Initialization Success</h2>
             <div class="text-gray-600 mb-8">
-              Thank you. We have sent you an email to ... . Please click the link in the message to activate your account.
+              Thank you for using SmartHub. If you encounter any problems or have any suggestions, please visit
+              <a href="https://github.com/SmartHub-Io/SmartHub">github</a> and create an issue. 🔥👌🚀❤
             </div>
             <!--  TODO: Email activation -->
             <button
-              @click="registrationComplete"
+              @click="goToLogin"
               class="w-40 block mx-auto focus:outline-none py-2 px-5 rounded-lg shadow-sm text-center
                       text-gray-600 bg-white hover:bg-gray-100 font-medium border"
             >
-              Back to home
+              Go to Login
             </button>
           </div>
         </div>
@@ -69,17 +70,17 @@
               <p class="text-red-500 text-xs italic"></p>
             </div>
             <div class="md:flex md:w-2/3 md:items-center mb-6">
-              <label class="block text-gray-500">
-                <input class="mr-2 leading-tight" type="checkbox" v-model="acceptStillWIP" />
-                <span class="text-sm">
+              <label class="block text-gray-500 flex items-center">
+                <input class="form-checkbox text-ui-primary" type="checkbox" v-model="acceptStillWIP" />
+                <span class="ml-2 text-sm">
                   This project is still under development.
                 </span>
               </label>
             </div>
             <div class="md:flex md:w-2/3 md:items-center mb-6">
-              <label class="block text-gray-500">
-                <input class="mr-2 leading-tight" type="checkbox" v-model="acceptDetectHomeAddress" />
-                <span class="text-sm">
+              <label class="block text-gray-500 flex items-center">
+                <input class="form-checkbox text-ui-primary" type="checkbox" v-model="acceptDetectHomeAddress" />
+                <span class="ml-2 text-sm">
                   Automatically detect your home address.
                 </span>
               </label>
@@ -106,7 +107,7 @@
 <script lang="ts">
 import { defineComponent, reactive, ref, computed } from 'vue';
 import { HomeCreateRequest } from '@/types/types';
-import { A_CREATE_HOME, A_UPDATE_HOME } from '@/store/home/actions';
+import { A_CREATE_HOME } from '@/store/home/actions';
 import { useStore } from '@/store';
 import { useRouter } from 'vue-router';
 
@@ -131,6 +132,10 @@ export default defineComponent({
         doneInit.value = true;
       });
     };
+
+    const goToLogin = () => {
+      router.push('login');
+    };
     const allDeactive = computed(() => !acceptDetectHomeAddress.value || !acceptStillWIP.value || homeCreateRequest.name === '');
     return {
       welcomeTitle,
@@ -139,7 +144,8 @@ export default defineComponent({
       acceptStillWIP,
       acceptDetectHomeAddress,
       InitHome,
-      allDeactive
+      allDeactive,
+      goToLogin
     };
   }
 });

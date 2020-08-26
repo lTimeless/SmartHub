@@ -4,6 +4,11 @@
     {
         public const string ApiControllerBase = "api/[controller]/";
 
+        public static class InitRoutes
+        {
+            public const string InitHome = "init";
+        }
+
         public static class PluginRoutes
         {
             public const string FindAll = "findAll";
