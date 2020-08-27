@@ -17,6 +17,7 @@ namespace SmartHub.Application.Common.Utils
                 .ToDictionary(x => x[0], x => x[1]);
             if (dictionary.ContainsKey("User ID"))
             {
+                // TODO: hier hat die appsetting immer höchste prio auch wenn argsUser befüllt ist !!!
                 dictionary["User ID"] = dictionary["User ID"].Contains("<") ? argsUser : dictionary["User ID"];
             }
             if (dictionary.ContainsKey("Password"))

@@ -1,151 +1,200 @@
 <template>
-  <div class="w-full registration">
-    <div
-      class="container fully-centered px-8 pt-6 pb-8
-              md:6/12 lg:w-6/12 xl:w-6/12"
-      :class="doneInit ? '' : 'bg-white shadow-md rounded'"
-    >
-      <template v-if="doneInit">
-        <div class="bg-white rounded-lg p-10 flex items-center shadow justify-between">
-          <div>
-            <svg class="mb-4 h-20 w-20 text-green-500 mx-auto" viewBox="0 0 20 20" fill="currentColor">
-              <path
-                fill-rule="evenodd"
-                d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1
-                0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
-                clip-rule="evenodd"
-              />
-            </svg>
-            <h2 class="text-2xl mb-4 text-gray-800 text-center font-bold">SmartHub Initialization Success</h2>
-            <div class="text-gray-600 mb-8">
-              Thank you for using SmartHub. If you encounter any problems or have any suggestions, please visit
-              <a href="https://github.com/SmartHub-Io/SmartHub">github</a> and create an issue. 🔥👌🚀❤
+  <div class="flex items-center min-h-screen p-6 bg-ui-loginBackground dark:bg-gray-900 login">
+    <template v-if="doneInit">
+      <ConfirmationModal title="SmartHub initialization success" button-title="Go to Registration" :callback="modalCallback">
+        <div class="text-gray-600 mb-8">
+          Thank you for using SmartHub.
+          <br />If you encounter any problems or have any suggestions, please visit
+          <a class="text-ui-primary" href="https://github.com/SmartHub-Io/SmartHub">github</a> and create an issue. 🔥👌🚀❤
+        </div>
+      </ConfirmationModal>
+    </template>
+    <template v-if="!doneInit">
+      <Card>
+        <div class="h-32 md:h-auto md:w-1/2">
+          <img aria-hidden="true" class="object-cover w-full h-full dark:hidden" src="../assets/images/undraw_at_home_octe.svg" alt="Office" />
+        </div>
+        <div class="flex items-center justify-center p-6 sm:p-12 md:w-1/2">
+          <div class="w-full">
+            <h2 class="mb-4 text-left text-2xl font-semibold text-gray-700 dark:text-gray-200">
+              {{ title }}
+            </h2>
+            <div class="text-gray-700 font-medium mt-3 mb-4 text-left">
+              Please type in a name and/or a description for your smartHub.
             </div>
-            <!--  TODO: Email activation -->
+            <div class="md:flex md:items-center mb-6">
+              <label class="block text-gray-500 flex items-center">
+                <input
+                  class="form-checkbox text-ui-primary form-checkbox focus:border-purple-400 focus:outline-none
+                  focus:shadow-outlineIndigo dark:focus:shadow-outline-gray"
+                  type="checkbox"
+                  v-model="useFakeDb"
+                  @change="triggerFakeDb"
+                />
+                <span class="ml-2 text-sm">
+                  Use fake data, for testing purposes?
+                </span>
+              </label>
+            </div>
+            <label class="text-left block text-sm">
+              <span class="text-gray-600 dark:text-gray-400">Name</span>
+              <input
+                required
+                class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-ui-primary
+                    focus:outline-none focus:shadow-outlineIndigo dark:text-gray-300 dark:focus:shadow-outline form-input"
+                :class="useFakeDbDisabled ? 'bg-gray-300' : ''"
+                placeholder="SmartHub (default)"
+                type="text"
+                v-model="homeCreateRequest.name"
+                :disabled="useFakeDbDisabled"
+              />
+            </label>
+            <label class="text-left block mt-4 text-sm">
+              <span class="text-gray-600 dark:text-gray-400">Description</span>
+              <input
+                required
+                class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-ui-primary
+                    focus:outline-none focus:shadow-outlineIndigo dark:text-gray-300 dark:focus:shadow-outline form-input"
+                placeholder="This is an awesome description (default)"
+                :class="useFakeDbDisabled ? 'bg-gray-300' : ''"
+                type="text"
+                v-model="homeCreateRequest.description"
+                :disabled="useFakeDbDisabled"
+              />
+            </label>
+            <div class="mt-4">
+              <div class="md:flex md:items-center mb-6">
+                <label class="block text-gray-500 flex items-center">
+                  <input
+                    class="form-checkbox text-ui-primary form-checkbox focus:border-purple-400 focus:outline-none
+                  focus:shadow-outlineIndigo dark:focus:shadow-outline-gray"
+                    :class="useFakeDbDisabled ? 'opacity-100' : ''"
+                    type="checkbox"
+                    v-model="acceptDetectHomeAddress"
+                    :disabled="useFakeDbDisabled"
+                  />
+                  <span class="ml-2 text-sm">
+                    Automatically detect your home address.
+                  </span>
+                </label>
+              </div>
+              <div class="md:flex md:items-center mb-6">
+                <label class="block text-gray-500 flex items-center">
+                  <input class="form-checkbox text-ui-primary" type="checkbox" v-model="acceptStillWIP" :disabled="useFakeDbDisabled" />
+                  <span class="ml-2 text-sm">
+                    This project is still under development.
+                  </span>
+                </label>
+              </div>
+            </div>
+
             <button
-              @click="goToLogin"
-              class="w-40 block mx-auto focus:outline-none py-2 px-5 rounded-lg shadow-sm text-center
-                      text-gray-600 bg-white hover:bg-gray-100 font-medium border"
+              @click="InitHome"
+              class="block w-full px-4 py-2 mt-4 text-sm font-medium leading-5 text-center text-white
+                  transition-colors duration-150 bg-ui-primary border border-transparent rounded-lg active:bg-ui-primary
+                  focus:outline-none focus:shadow-outlineIndigo"
+              :class="allDeactive ? 'opacity-50 focus:outline-none cursor-not-allowed' : 'hover:bg-ui-primaryHover'"
+              :disabled="allDeactive"
             >
-              Go to Login
+              Complete
+            </button>
+            <hr class="my-8" />
+            <button
+              disabled
+              class="flex items-center justify-center w-full px-4 py-2 text-sm font-medium leading-5 text-white
+                  text-gray-700 transition-colors duration-150 border border-gray-300 rounded-lg dark:text-gray-400
+                  active:bg-transparent focus:border-gray-500 active:text-gray-500 focus:outline-none focus:shadow-outline-gray"
+              :class="true ? 'opacity-50 focus:outline-none cursor-not-allowed' : 'hover:border-gray-500'"
+            >
+              Additional options....
             </button>
           </div>
         </div>
-      </template>
-      <template v-if="!doneInit">
-        <div class="h-full flex flex-col justify-between">
-          <h2 class="font-bold text-3xl">{{ welcomeTitle }}</h2>
-          <div class="m-1">
-            <img class="img" src="../assets/images/undraw_at_home_octe.svg" alt="Test" width="500" />
-          </div>
-          <form class="px-5">
-            <div class="text-gray-700 font-bold mt-3 mb-4 text-left">
-              Please type in a name and/or a description for your smarthome.
-            </div>
-            <div class="mb-4">
-              <label class="block text-gray-600 md:text-left mb-1 md:mb-0 pr-4" for="name">
-                SmartHub name
-              </label>
-              <input
-                required
-                class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight
-                        focus:outline-none focus:shadow-outline"
-                type="text"
-                id="name"
-                placeholder="SmartHub"
-                v-model="homeCreateRequest.name"
-              />
-            </div>
-            <div class="mb-5 mt-8">
-              <label class="block text-gray-600 md:text-left mb-1 md:mb-0 pr-4" for="description">
-                SmartHub description
-              </label>
-              <input
-                id="description"
-                class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3
-                      leading-tight focus:outline-none focus:shadow-outline"
-                placeholder="This is an awesome description"
-                v-model="homeCreateRequest.description"
-              />
-              <p class="text-red-500 text-xs italic"></p>
-            </div>
-            <div class="md:flex md:w-2/3 md:items-center mb-6">
-              <label class="block text-gray-500 flex items-center">
-                <input class="form-checkbox text-ui-primary" type="checkbox" v-model="acceptStillWIP" />
-                <span class="ml-2 text-sm">
-                  This project is still under development.
-                </span>
-              </label>
-            </div>
-            <div class="md:flex md:w-2/3 md:items-center mb-6">
-              <label class="block text-gray-500 flex items-center">
-                <input class="form-checkbox text-ui-primary" type="checkbox" v-model="acceptDetectHomeAddress" />
-                <span class="ml-2 text-sm">
-                  Automatically detect your home address.
-                </span>
-              </label>
-            </div>
-            <div class="flex flex-col items-center justify-between">
-              <button
-                @click="InitHome"
-                :disabled="allDeactive"
-                class="flex items-center text-white font-bold px-10 py-2 border border-ui-border rounded-lg
-                      bg-ui-primary active:bg-indigo-800 hover:bg-indigo-400 focus:outline-none"
-                :class="allDeactive ? 'opacity-50 hover:bg-ui-primary focus:outline-none cursor-not-allowed' : ''"
-                type="button"
-              >
-                Sign In
-              </button>
-            </div>
-          </form>
-        </div>
-      </template>
-    </div>
+      </Card>
+    </template>
   </div>
 </template>
 
 <script lang="ts">
 import { defineComponent, reactive, ref, computed } from 'vue';
 import { HomeCreateRequest } from '@/types/types';
-import { A_CREATE_HOME } from '@/store/home/actions';
+import { A_CREATE_HOME, A_FETCH_HOME } from '@/store/home/actions';
 import { useStore } from '@/store';
 import { useRouter } from 'vue-router';
+import Card from '@/components/widgets/Card.vue';
+import ConfirmationModal from '@/components/modals/ConfirmationModal.vue';
 
 export default defineComponent({
   name: 'Init',
-  components: {},
+  components: {
+    Card,
+    ConfirmationModal
+  },
   setup() {
     const store = useStore();
     const router = useRouter();
-    const welcomeTitle = 'Welcome to SmartHub';
+    const title = 'Welcome to SmartHub';
     const doneInit = ref(false);
     const acceptStillWIP = ref(false);
     const acceptDetectHomeAddress = ref(false);
+    const useFakeDb = ref(false);
+    const useFakeDbDisabled = ref(false);
+    const getHomeState = ref(store.state.homeModule);
     const homeCreateRequest: HomeCreateRequest = reactive({
       name: '',
-      description: ''
+      description: '',
+      acceptWIP: false,
+      autoDetectAddress: false
+    });
+
+    store.dispatch(A_FETCH_HOME).then(() => {
+      if (getHomeState.value.home !== null) {
+        router.push('/login');
+      }
     });
 
     const InitHome = () => {
-      console.log('init');
-      store.dispatch(A_CREATE_HOME, homeCreateRequest).then(() => {
-        doneInit.value = true;
-      });
+      if (homeCreateRequest.name === '') {
+        homeCreateRequest.name = 'SmartHub';
+      }
+      if (homeCreateRequest.description === '') {
+        homeCreateRequest.description = 'This is an awesome description';
+      }
+      homeCreateRequest.autoDetectAddress = acceptDetectHomeAddress.value;
+      homeCreateRequest.acceptWIP = acceptStillWIP.value;
+      homeCreateRequest.useFakeDb = useFakeDb.value;
+      console.log('init', homeCreateRequest);
+      store
+        .dispatch(A_CREATE_HOME, homeCreateRequest)
+        .then(() => {
+          doneInit.value = true;
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     };
 
-    const goToLogin = () => {
-      router.push('login');
+    const modalCallback = () => {
+      router.push('/registration');
     };
-    const allDeactive = computed(() => !acceptDetectHomeAddress.value || !acceptStillWIP.value || homeCreateRequest.name === '');
+    const triggerFakeDb = () => {
+      useFakeDbDisabled.value = !useFakeDbDisabled.value;
+      acceptStillWIP.value = !acceptStillWIP.value;
+      acceptDetectHomeAddress.value = !acceptDetectHomeAddress.value;
+    };
+    const allDeactive = computed(() => !acceptDetectHomeAddress.value || !acceptStillWIP.value);
     return {
-      welcomeTitle,
+      title,
       doneInit,
       homeCreateRequest,
       acceptStillWIP,
       acceptDetectHomeAddress,
+      useFakeDb,
+      useFakeDbDisabled,
       InitHome,
       allDeactive,
-      goToLogin
+      modalCallback,
+      triggerFakeDb
     };
   }
 });

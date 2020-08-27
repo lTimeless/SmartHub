@@ -28,6 +28,7 @@ module.exports = {
     'no-bitwise': ['error', { allow: ['~', '<<', '|'] }],
     'import/no-cycle': 0,
     'no-param-reassign': [2, { props: false }],
-    "arrow-body-style": ['error', 'as-needed']
+    'arrow-body-style': ['error', 'as-needed'],
+    'implicit-arrow-linebreak': 'off'
   }
 };

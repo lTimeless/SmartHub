@@ -32,9 +32,7 @@ export const actions: ActionTree<AuthState, RootState> & AuthActions = {
         storeAuthResponse(authResponse);
         commit(M_AUTH_USER, authResponse);
       })
-      .catch((err) => {
-        console.log(err);
-      });
+      .catch((err) => Promise.reject(err));
   },
   async [A_REGISTRATION](state, payload: RegistrationRequest): Promise<void> {
     return axiosInstance
@@ -44,9 +42,7 @@ export const actions: ActionTree<AuthState, RootState> & AuthActions = {
         await storeAuthResponse(auth);
         await state.commit(M_AUTH_USER, auth);
       })
-      .catch((err) => {
-        console.log(err);
-      });
+      .catch((err) => Promise.reject(err));
   },
   async [A_LOGOUT]({ commit }) {
     console.log('logout');

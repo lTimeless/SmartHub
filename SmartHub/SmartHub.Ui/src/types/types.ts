@@ -42,6 +42,9 @@ export interface RegistrationRequest {
 export interface HomeCreateRequest {
   name: string;
   description: string | null;
+  autoDetectAddress: boolean;
+  acceptWIP: boolean;
+  useFakeDb: boolean;
 }
 
 export interface HomeUpdateRequest {

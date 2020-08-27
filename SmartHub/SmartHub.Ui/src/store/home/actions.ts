@@ -1,9 +1,9 @@
 import { ActionContext, ActionTree } from 'vuex';
-import axiosInstance from '@/router/axios/axios';
 import { RootState, HomeState, AuthState } from '@/store/index.types';
-import { Home, HomeCreateRequest, HomeUpdateRequest, ServerResponse } from '@/types/types';
-import { getAuthentication } from '@/services/auth/authService';
+import { HomeCreateRequest, HomeUpdateRequest } from '@/types/types';
 import { HomeMutations, M_UPDATE_HOME } from '@/store/home/mutations';
+import { init } from '@/services/apis/init.service';
+import { getHome, putHome } from '@/services/apis/home.service';
 
 // Keys
 export const A_FETCH_HOME = 'A_FETCH_HOME';
@@ -27,31 +27,27 @@ export interface HomeActions {
 
 export const actions: ActionTree<HomeState, RootState> = {
   async [A_FETCH_HOME]({ commit }): Promise<void> {
-    await axiosInstance
-      .get<ServerResponse<Home>>('api/home')
+    await getHome()
       .then((response) => {
-        commit(M_UPDATE_HOME, response.data.data);
+        commit(M_UPDATE_HOME, response.data);
       })
       .catch((err) => {
         console.log(err);
+        return Promise.reject(err);
       });
   },
   async [A_CREATE_HOME]({ commit }, payload: HomeCreateRequest): Promise<void> {
-    await axiosInstance
-      .post<ServerResponse<Home>>('api/home', payload)
-      .then((response) => {
-        commit(M_UPDATE_HOME, response.data.data);
+    await init(payload)
+      .then((res) => {
+        commit(M_UPDATE_HOME, res.data);
+        return Promise.resolve(res.data);
       })
-      .catch((err) => {
-        console.log(err);
-      });
+      .catch((error) => Promise.reject(error));
   },
   async [A_UPDATE_HOME]({ commit }, payload: HomeUpdateRequest): Promise<void> {
-    axiosInstance.defaults.headers = getAuthentication().headers;
-    await axiosInstance
-      .put<ServerResponse<Home>>('api/home', payload)
-      .then((response) => {
-        commit(M_UPDATE_HOME, response.data.data);
+    await putHome(payload)
+      .then((res) => {
+        commit(M_UPDATE_HOME, res.data);
       })
       .catch((err) => {
         console.log(err);

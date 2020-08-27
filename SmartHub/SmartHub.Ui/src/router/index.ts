@@ -1,5 +1,5 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router';
-import { useRouteAuthGuard } from '@/router/guards/userAuth';
+import { useRouteAuthGuard } from '@/router/guards/userAuthGuard';
 import NotAuthorized from '@/views/NotAuthorized.vue';
 import NotFound from '@/views/NotFound.vue';
 import Login from '@/views/auth/Login.vue';

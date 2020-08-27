@@ -1,12 +1,10 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using SmartHub.Application.UseCases.Entity.Homes.Create;
 using SmartHub.Application.UseCases.Entity.Homes.Read;
 using System;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using SmartHub.Application.UseCases.Entity.Homes.Update;
-using SmartHub.Domain.Common.Constants;
 
 namespace SmartHub.Api.Controllers
 {
