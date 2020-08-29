@@ -43,7 +43,6 @@ namespace SmartHub.Application.UseCases.PluginAdapter.Loader
                 _log.Warning($"No new plugins available.");
                 return Response.Fail<string>("No new plugins available.");
             }
-            // TODO: why is this null
             var path = request.Path.IsNullOrEmpty() ? setting.PluginPath : request.Path;
 
             var pluginsLoaded = await _pluginHostService.Plugins.LoadAndAddToHomeAsync(new []{ path }, request.LoadStrategyMultiple);

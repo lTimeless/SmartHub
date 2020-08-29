@@ -4,6 +4,9 @@ using SmartHub.BasePlugin.Interfaces.DeviceTypes;
 
 namespace SmartHub.Application.UseCases.PluginAdapter.Host
 {
+	//TODO: der hsot wird zu der factory aus dem link. Also verwalted die dictionary aller Ts
+	// bekommt dann einiger der finktionen vom Loader.... zb die welche plugins zum Home hinzufügen(werden in eine funktion verbunden "synchonize")
+	// neue class PluginsManager -> welche dann alle Hosts auflisted und das Todo von weiter unten auch umsetzt
 	public class PluginHostService : IPluginHostService
 	{
 		public IPluginLoadService<IPlugin> Plugins { get; }

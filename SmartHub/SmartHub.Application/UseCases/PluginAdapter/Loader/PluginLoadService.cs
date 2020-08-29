@@ -22,6 +22,7 @@ namespace SmartHub.Application.UseCases.PluginAdapter.Loader
 		private readonly IPluginCreatorService<T> _pluginCreator;
 		private readonly IPluginFinderService _pluginFinderService;
 
+		// PluginHost sollte die dictionarys verwalten??? damit der Loader nur ladet!!
 		//TODO: damit hier nicht jedesmal die assembly neu geladen wird
 		// ein dictionary(zeile 51 bereits da alle instances) von typ T und dann bei der Getfunktion wird erst darin anhand des params "name" geprüft
 		// und erst danach dann die assembly geladen falls in der liste kein eintrag ist
@@ -60,7 +61,7 @@ namespace SmartHub.Application.UseCases.PluginAdapter.Loader
 			var foundIPlugin = dictionaryOfIPlugin.First(x => x.Key.Equals(plugin.Name));
 			return Task.FromResult(foundIPlugin.Value);
 		}
-
+		// TODO: eigentlich brauche ich nur LoadbyName
 		/// <inheritdoc cref="IPluginLoadService{T}.GetAndLoadByPath"/>
 		public Task<IEnumerable<T>> GetAndLoadByPath(string assemblyPath)
 		{
@@ -80,6 +81,8 @@ namespace SmartHub.Application.UseCases.PluginAdapter.Loader
 			return Task.FromResult<IEnumerable<T>>(listOfIPlugins);
 		}
 
+		// TODO: wird wegfallen, da alle welche nicht im dictionary sind und vom User angefragt werden, geladen werden.
+		// und die AddTOHome function wird in neue Funktion "SynchronizeWithDb" umwandern
 		/// <inheritdoc cref="IPluginLoadService{T}.LoadAndAddToHomeAsync"/>
 		public async Task<bool> LoadAndAddToHomeAsync(IEnumerable<string> assemblyPaths, LoadStrategy multiple)
 		{
