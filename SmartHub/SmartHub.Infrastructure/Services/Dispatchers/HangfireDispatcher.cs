@@ -18,25 +18,25 @@ namespace SmartHub.Infrastructure.Services.Dispatchers
 
 		public Task<string> AddJob(Expression<Action> action)
 		{
-			_log.Information($"[{nameof(AddJob)}] Add Job {nameof(action.Name)}");
+			_log.Information($"Add Job {nameof(action.Name)}");
 			return Task.FromResult(BackgroundJob.Enqueue(action));
 		}
 
 		public Task<string> AddJob(Expression<Func<Task, Task>> action)
 		{
-			_log.Information($"[{nameof(AddJob)}] Add Job {nameof(action.Name)}");
+			_log.Information($"Add Job {nameof(action.Name)}");
 			return Task.FromResult(BackgroundJob.Enqueue(action));
 		}
 
 		public Task<string> AddJob(Expression<Action> action, TimeSpan delay)
 		{
-			_log.Information($"[{nameof(AddJob)}] Add Job {nameof(action.Name)}");
+			_log.Information($"Add Job {nameof(action.Name)}");
 			return Task.FromResult(BackgroundJob.Schedule(action, delay));
 		}
 
 		public Task AddRecurringJob(Expression<Action> action, DateTime recurring, int interval = Interval)
 		{
-			_log.Information($"[{nameof(AddRecurringJob)}] Add RecurringJob {action.Name}");
+			_log.Information($"Add RecurringJob {action.Name}");
 			switch (recurring)
 			{
 				case DateTime.Minute:
@@ -75,7 +75,7 @@ namespace SmartHub.Infrastructure.Services.Dispatchers
 
 		public Task UpdateRecurringJob(string jobId, Expression<Action> action, DateTime recurring, int interval = Interval)
 		{
-			_log.Information($"[{nameof(AddRecurringJob)}] Update RecurringJob {nameof(action.Name)}");
+			_log.Information($"Update RecurringJob {nameof(action.Name)}");
 			switch (recurring)
 			{
 				case DateTime.Minute:

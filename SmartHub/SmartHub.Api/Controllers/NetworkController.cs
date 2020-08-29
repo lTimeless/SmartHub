@@ -3,11 +3,10 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using SmartHub.Application.UseCases.NetworkScanner;
 using System.Threading.Tasks;
-using SmartHub.Domain.Common.Constants;
 
 namespace SmartHub.Api.Controllers
 {
-	public class NetworkScanController : BaseController
+	public class NetworkController : BaseController
 	{
 		/// <summary>
 		/// Scans your network for devices
@@ -16,7 +15,7 @@ namespace SmartHub.Api.Controllers
 		/// <response code="200">Returns connected devices</response>
 		/// <response code="400">Returns bad request if error gets throws</response>
 		/// <response code="401">Returns unauthorized</response>
-		[HttpGet(ApiRoutes.NetworkScanRoutes.Search)]
+		[HttpGet("scan")]
 		[ProducesResponseType(StatusCodes.Status200OK)]
 		[ProducesResponseType(StatusCodes.Status400BadRequest)]
 		[ProducesResponseType(StatusCodes.Status401Unauthorized)]

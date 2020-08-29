@@ -9,7 +9,7 @@
         </div>
       </ConfirmationModal>
     </template>
-    <template v-if="!doneInit">
+    <template v-if="!doneInit && !showgoToFakeModal">
       <Card>
         <div class="h-32 md:h-auto md:w-1/2">
           <img aria-hidden="true" class="object-cover w-full h-full dark:hidden" src="../assets/images/undraw_at_home_octe.svg" alt="Office" />
@@ -28,7 +28,7 @@
                   class="form-checkbox text-ui-primary form-checkbox focus:border-purple-400 focus:outline-none
                   focus:shadow-outlineIndigo dark:focus:shadow-outline-gray"
                   type="checkbox"
-                  v-model="useFakeDb"
+                  v-model="homeCreateRequest.useFakeDb"
                   @change="triggerFakeDb"
                 />
                 <span class="ml-2 text-sm">
@@ -68,9 +68,9 @@
                   <input
                     class="form-checkbox text-ui-primary form-checkbox focus:border-purple-400 focus:outline-none
                   focus:shadow-outlineIndigo dark:focus:shadow-outline-gray"
-                    :class="useFakeDbDisabled ? 'opacity-100' : ''"
+                    :class="useFakeDbDisabled ? 'bg-gray-300' : ''"
                     type="checkbox"
-                    v-model="acceptDetectHomeAddress"
+                    v-model="homeCreateRequest.autoDetectAddress"
                     :disabled="useFakeDbDisabled"
                   />
                   <span class="ml-2 text-sm">
@@ -80,24 +80,42 @@
               </div>
               <div class="md:flex md:items-center mb-6">
                 <label class="block text-gray-500 flex items-center">
-                  <input class="form-checkbox text-ui-primary" type="checkbox" v-model="acceptStillWIP" :disabled="useFakeDbDisabled" />
+                  <input
+                    class="form-checkbox text-ui-primary"
+                    :class="useFakeDbDisabled ? 'bg-gray-300' : ''"
+                    type="checkbox"
+                    v-model="acceptWip"
+                    :disabled="useFakeDbDisabled"
+                  />
                   <span class="ml-2 text-sm">
                     This project is still under development.
                   </span>
                 </label>
               </div>
             </div>
-
-            <button
-              @click="InitHome"
-              class="block w-full px-4 py-2 mt-4 text-sm font-medium leading-5 text-center text-white
+            <template v-if="!useFakeDbDisabled">
+              <button
+                @click="InitHome"
+                class="block w-full px-4 py-2 mt-4 text-sm font-medium leading-5 text-center text-white
                   transition-colors duration-150 bg-ui-primary border border-transparent rounded-lg active:bg-ui-primary
                   focus:outline-none focus:shadow-outlineIndigo"
-              :class="allDeactive ? 'opacity-50 focus:outline-none cursor-not-allowed' : 'hover:bg-ui-primaryHover'"
-              :disabled="allDeactive"
-            >
-              Complete
-            </button>
+                :class="allDeactive ? 'opacity-50 focus:outline-none cursor-not-allowed' : 'hover:bg-ui-primaryHover'"
+                :disabled="allDeactive"
+              >
+                Complete
+              </button>
+            </template>
+            <template v-else>
+              <button
+                @click="showgoToFakeModal = !showgoToFakeModal"
+                class="block w-full px-4 py-2 mt-4 text-sm font-medium leading-5 text-center text-white
+                  transition-colors duration-150 bg-ui-primary border border-transparent rounded-lg active:bg-ui-primary
+                  focus:outline-none focus:shadow-outlineIndigo"
+              >
+                Go to
+              </button>
+            </template>
+
             <hr class="my-8" />
             <button
               disabled
@@ -112,6 +130,16 @@
         </div>
       </Card>
     </template>
+    <template v-if="showgoToFakeModal">
+      <NotImplementedModal title="SmartHub initialization success" button-title="Go to Testwebsite" :callback="goToFake">
+        <div class="text-gray-600 mb-8">
+          <h2 class="text-orange-500">This feature is not implemented at the moment</h2>
+          You want to test SmartHub with fake data?
+          <br />Than click the button and you will be redirected to the official testwebsite. <br />If you encounter any problems or have any
+          suggestions, please visit <a class="text-ui-primary" href="https://github.com/SmartHub-Io/SmartHub">github</a> and create an issue. 🔥👌🚀❤
+        </div>
+      </NotImplementedModal>
+    </template>
   </div>
 </template>
 
@@ -123,27 +151,27 @@ import { useStore } from '@/store';
 import { useRouter } from 'vue-router';
 import Card from '@/components/widgets/Card.vue';
 import ConfirmationModal from '@/components/modals/ConfirmationModal.vue';
+import NotImplementedModal from '@/components/modals/NotImplementedModal.vue';
 
 export default defineComponent({
   name: 'Init',
   components: {
     Card,
-    ConfirmationModal
+    ConfirmationModal,
+    NotImplementedModal
   },
   setup() {
     const store = useStore();
     const router = useRouter();
     const title = 'Welcome to SmartHub';
+    const showgoToFakeModal = ref(false);
+    const acceptWip = ref(false);
     const doneInit = ref(false);
-    const acceptStillWIP = ref(false);
-    const acceptDetectHomeAddress = ref(false);
-    const useFakeDb = ref(false);
     const useFakeDbDisabled = ref(false);
     const getHomeState = ref(store.state.homeModule);
     const homeCreateRequest: HomeCreateRequest = reactive({
       name: '',
       description: '',
-      acceptWIP: false,
       autoDetectAddress: false
     });
 
@@ -160,10 +188,6 @@ export default defineComponent({
       if (homeCreateRequest.description === '') {
         homeCreateRequest.description = 'This is an awesome description';
       }
-      homeCreateRequest.autoDetectAddress = acceptDetectHomeAddress.value;
-      homeCreateRequest.acceptWIP = acceptStillWIP.value;
-      homeCreateRequest.useFakeDb = useFakeDb.value;
-      console.log('init', homeCreateRequest);
       store
         .dispatch(A_CREATE_HOME, homeCreateRequest)
         .then(() => {
@@ -179,21 +203,24 @@ export default defineComponent({
     };
     const triggerFakeDb = () => {
       useFakeDbDisabled.value = !useFakeDbDisabled.value;
-      acceptStillWIP.value = !acceptStillWIP.value;
-      acceptDetectHomeAddress.value = !acceptDetectHomeAddress.value;
     };
-    const allDeactive = computed(() => !acceptDetectHomeAddress.value || !acceptStillWIP.value);
+
+    const goToFake = () => {
+      console.log('This feature is not implemented at the moment.');
+      router.push('/login');
+    };
+    const allDeactive = computed(() => !homeCreateRequest.autoDetectAddress || !acceptWip.value);
     return {
       title,
+      acceptWip,
+      showgoToFakeModal,
       doneInit,
       homeCreateRequest,
-      acceptStillWIP,
-      acceptDetectHomeAddress,
-      useFakeDb,
       useFakeDbDisabled,
       InitHome,
       allDeactive,
       modalCallback,
+      goToFake,
       triggerFakeDb
     };
   }

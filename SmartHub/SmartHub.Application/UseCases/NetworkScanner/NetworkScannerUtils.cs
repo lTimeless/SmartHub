@@ -53,7 +53,7 @@ namespace SmartHub.Application.UseCases.NetworkScanner
             }
             catch (SocketException e)
             {
-                Log.ForContext(typeof(NetworkScannerUtils)).Information($"[GetHostname] {e.Message}");
+                Log.ForContext(typeof(NetworkScannerUtils)).Information($"{e.Message}");
             }
 
             return res?.HostName ?? "";
@@ -90,7 +90,7 @@ namespace SmartHub.Application.UseCases.NetworkScanner
             }
             catch (Exception e)
             {
-                Log.ForContext(typeof(NetworkScannerUtils)).Warning($"[Mac] Error {e.Message}");
+                Log.ForContext(typeof(NetworkScannerUtils)).Warning($"Error {e.Message}");
             }
 
             return null;

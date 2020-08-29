@@ -2,8 +2,7 @@ import { ActionContext, ActionTree } from 'vuex';
 import { RootState, HomeState, AuthState } from '@/store/index.types';
 import { HomeCreateRequest, HomeUpdateRequest } from '@/types/types';
 import { HomeMutations, M_UPDATE_HOME } from '@/store/home/mutations';
-import { init } from '@/services/apis/init.service';
-import { getHome, putHome } from '@/services/apis/home.service';
+import { getHome, postHome, putHome } from '@/services/apis/home.service';
 
 // Keys
 export const A_FETCH_HOME = 'A_FETCH_HOME';
@@ -37,7 +36,7 @@ export const actions: ActionTree<HomeState, RootState> = {
       });
   },
   async [A_CREATE_HOME]({ commit }, payload: HomeCreateRequest): Promise<void> {
-    await init(payload)
+    await postHome(payload)
       .then((res) => {
         commit(M_UPDATE_HOME, res.data);
         return Promise.resolve(res.data);

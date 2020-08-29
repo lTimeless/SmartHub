@@ -18,13 +18,13 @@ namespace SmartHub.Infrastructure.Services.Dispatchers
 
 		public async Task StartAsync(CancellationToken cancellationToken)
 		{
-			_log.Information("[ChannelManager] ChannelManager started in background");
+			_log.Information("ChannelManager started in background");
 			await Init().ConfigureAwait(false);
 		}
 
 		public Task StopAsync(CancellationToken cancellationToken)
 		{
-			_log.Information("[ChannelManager] ChannelManager stopped");
+			_log.Information("ChannelManager stopped");
 			Dispose();
 			return Task.CompletedTask;
 		}
@@ -52,11 +52,11 @@ namespace SmartHub.Infrastructure.Services.Dispatchers
 			if (ChannelMessageDictionary.ContainsKey(eventType))
 			{
 				var res = ChannelMessageDictionary.Remove(eventType);
-				_log.Information(res ? $"[{nameof(RemoveChannel)}] Remove channel with name {eventType}" : $"[{nameof(RemoveChannel)}] Error removing channel with name {eventType}");
+				_log.Information(res ? $"Remove channel with name {eventType}" : $"Error removing channel with name {eventType}");
 				return Task.CompletedTask;
 			}
 
-			_log.Information($"[{nameof(RemoveChannel)}] Could not find channel with name {eventType}");
+			_log.Information($"Could not find channel with name {eventType}");
 			return Task.CompletedTask;
 		}
 
@@ -68,7 +68,7 @@ namespace SmartHub.Infrastructure.Services.Dispatchers
 
 		public IObservable<IEvent> GetChannel(EventTypes eventType)
 		{
-			_log.Information($"[{nameof(GetChannel)}] Get channel with name {eventType}");
+			_log.Information($"Get channel with name {eventType}");
 			return ChannelMessageDictionary[eventType];
 		}
 
@@ -91,7 +91,7 @@ namespace SmartHub.Infrastructure.Services.Dispatchers
 		{
 			var channel = ChannelMessageDictionary.GetValueOrDefault(eventType);
 			channel.OnError(exception);
-			_log.Information($"[{nameof(PublishErrorToChannel)}] Publish Error to channel => {eventType}");
+			_log.Information($"Publish Error to channel => {eventType}");
 			return Task.CompletedTask;
 		}
 
@@ -110,7 +110,7 @@ namespace SmartHub.Infrastructure.Services.Dispatchers
 			}
 			var newChannel = new Subject<IEvent>();
 			ChannelMessageDictionary.Add(eventType, newChannel);
-			_log.Information($"[{nameof(AddChannel)}] Added new channel => {eventType}");
+			_log.Information($"Added new channel => {eventType}");
 		}
 	}
 }

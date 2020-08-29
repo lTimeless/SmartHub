@@ -1,10 +1,10 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using SmartHub.Application.Common.Interfaces;
 using SmartHub.Application.Common.Interfaces.Events;
 using SmartHub.Application.Common.Interfaces.Repositories;
 using SmartHub.Application.Common.Models;
-using SmartHub.Application.UseCases.AppStartup;
 using SmartHub.Application.UseCases.GeoLocation;
 using SmartHub.Application.UseCases.HomeFolder;
 using SmartHub.Application.UseCases.Identity;
@@ -49,7 +49,6 @@ namespace SmartHub.Api.Installers
 		{
 			services.AddScoped<IHangfireDispatcher, HangfireDispatcher>();
 			services.AddScoped<IHomeFolderService, HomeFolderService>();
-			services.AddHostedService<AppStartup>();
 		}
 
 		private static void ConfigureBackgroundServices(IServiceCollection services)

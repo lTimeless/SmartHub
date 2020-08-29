@@ -8,7 +8,6 @@ using Serilog;
 using SmartHub.Api.Extensions;
 using SmartHub.Infrastructure.Database;
 using System.IO;
-using Microsoft.Extensions.Options;
 using SmartHub.Application.UseCases.SignalR;
 using SmartHub.Domain.Common.Settings;
 
@@ -16,7 +15,7 @@ namespace SmartHub.Api
 {
 	public class Startup
 	{
-		public IConfiguration Configuration { get; }
+		private IConfiguration Configuration { get; }
 		private IHostEnvironment AppEnvironment { get; }
 		public Startup(IHostEnvironment env, IConfiguration configuration)
 		{
@@ -76,7 +75,7 @@ namespace SmartHub.Api
 				app.UseHsts();
 			}
 			Log.ForContext(typeof(Startup)).Information("----------------------------------------------------------------");
-			app.ShowLocalIpv4();
+			AppExtension.ShowLocalIpv4();
 
 			// Response Compression
 			app.UseResponseCompression();
@@ -126,7 +125,7 @@ namespace SmartHub.Api
 				{
 					Log.ForContext(typeof(Startup)).Warning("Not serving frontend from staticfiles");
 					// Start seperate FE server and Server listens to it
-					 spa.UseProxyToSpaDevelopmentServer("http://localhost:8080");
+					spa.UseProxyToSpaDevelopmentServer("http://localhost:8080");
 					// To start its own FE server
 				}
 			});

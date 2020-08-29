@@ -38,29 +38,29 @@ namespace SmartHub.Api.Middleware
 		{
 			object? errors;
 			await _unitOfWork.Rollback();
-			_log.Warning("[HandleExceptionAsync] Rollback all changes from this request {}.", httpContext.TraceIdentifier);
+			_log.Warning("Rollback all changes from this request {}.", httpContext.TraceIdentifier);
 			switch (ex)
 			{
 				case RestException restException:
-					_log.Warning($"[{nameof(HandleExceptionAsync)}] Rest ERROR: {restException.Code} -- {restException.Errors}");
+					_log.Warning($"Rest ERROR: {restException.Code} -- {restException.Errors}");
 					httpContext.Response.StatusCode = (int)restException.Code;
 					errors = restException.Errors;
 					break;
 
 				case SmartHubException smartHubException:
-					_log.Warning($"[{nameof(HandleExceptionAsync)}] SmartHub ERROR: {smartHubException.Message} -- {smartHubException.Source} -- {smartHubException.StackTrace}");
+					_log.Warning($"SmartHub ERROR: {smartHubException.Message} -- {smartHubException.Source} -- {smartHubException.StackTrace}");
 					errors = string.IsNullOrWhiteSpace(smartHubException.Message) ? "Error" : smartHubException.Message;
 					httpContext.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
 					break;
 
 				case Exception exception:
-					_log.Warning($"[{nameof(HandleExceptionAsync)}] Server ERROR: {exception}");
+					_log.Warning($"Server ERROR: {exception}");
 					errors = string.IsNullOrWhiteSpace(exception.Message) ? "Error" : exception.Message;
 					httpContext.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
 					break;
 
 				default:
-					_log.Warning($"[{nameof(HandleExceptionAsync)}] Unknown Server ERROR");
+					_log.Warning("Unknown Server ERROR");
 					errors = string.IsNullOrWhiteSpace("Unknown Server ERROR");
 					break;
 			}

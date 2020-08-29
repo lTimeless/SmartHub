@@ -37,7 +37,7 @@ namespace SmartHub.Application.UseCases.DeviceState.LightState
 			var foundDevice = home.Devices.SingleOrDefault(x => x.Id == request.LightStateDto.DeviceId);
 			if (foundDevice is null)
 			{
-				return Response.Fail<DeviceStateDto>($"[{nameof(DeviceLightStateHandler)}] Error: No device found by the given deviceId {request.LightStateDto.DeviceId}");
+				return Response.Fail<DeviceStateDto>($"Error: No device found by the given deviceId {request.LightStateDto.DeviceId}");
 			}
 			var pluginObject = await _pluginHostService.LightPlugins.GetAndLoadByName(foundDevice.PluginName, home);
 			var connectionType = PluginUtils.CombineConnectionTypes(pluginObject);
@@ -48,12 +48,12 @@ namespace SmartHub.Application.UseCases.DeviceState.LightState
 			else if ((connectionType & ConnectionTypes.Mqtt) != 0 && foundDevice.PrimaryConnection == ConnectionTypes.Mqtt)
 			{
 				// TODO: implement later when Mqtt is useable
-				_log.Information($"[{nameof(DeviceLightStateHandler)}] {connectionType}");
+				_log.Information("{connectionType}");
 			}
 			else
 			{
 				// TODO: implement later -> error path
-				_log.Information($"[{nameof(DeviceLightStateHandler)}] {connectionType}");
+				_log.Information("{connectionType}");
 
 			}
 			var response = await _httpService.SendAsync(foundDevice.Ip.Ipv4, _query);

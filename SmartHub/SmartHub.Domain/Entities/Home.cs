@@ -25,15 +25,13 @@ namespace SmartHub.Domain.Entities
 		{
 		}
 
-		public Home(string name, string description, Setting setting) : base(name, description)
+		public Home(string name, string description) : base(name, description)
 		{
 			Users = new List<User>();
 			Devices = new List<Device>();
 			Groups = new List<Group>();
 			Plugins = new List<Plugin>();
-			Settings = new List<Setting>() { setting };
 			Events = new List<DomainEvent>();
-			Address = new Address("","","","",""); // TODO: add functionality
 		}
 
 		#region Methods

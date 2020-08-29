@@ -4,6 +4,7 @@ using SmartHub.Application.UseCases.Entity.Homes.Read;
 using System;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
+using SmartHub.Application.UseCases.Entity.Homes.Create;
 using SmartHub.Application.UseCases.Entity.Homes.Update;
 
 namespace SmartHub.Api.Controllers
@@ -21,6 +22,15 @@ namespace SmartHub.Api.Controllers
 		public async Task<IActionResult> Get()
 		{
 			return Ok(await Mediator.Send(new HomesReadQuery()));
+		}
+
+		/// <summary>
+		/// Partial updates the Home
+		/// </summary>
+		[HttpPost]
+		public async Task<IActionResult> Post([FromBody] HomeCreateCommand value)
+		{
+			return Ok(await Mediator.Send(value).ConfigureAwait(false));
 		}
 
 		/// <summary>

@@ -27,7 +27,7 @@ namespace SmartHub.Application.UseCases.PluginAdapter.Finder
 
         public async Task<Response<IReadOnlyDictionary<string, FoundPluginDto>>> Handle(PluginFinderQuery request, CancellationToken cancellationToken)
         {
-            _logger.Information($"[{nameof(PluginFinderHandler)}] Find (new = {request.OnlyNew}) available plugins");
+            _logger.Information($"Find (new = {request.OnlyNew}) available plugins");
             var home = await _unitOfWork.HomeRepository.GetHome().ConfigureAwait(false);
             var setting = home.Settings.FirstOrDefault(c => c.IsActive || c.PluginPath.Contains("_private"));
             var foundPlugins = _pluginFinder.FindPluginsInAssemblies(setting.PluginPath);

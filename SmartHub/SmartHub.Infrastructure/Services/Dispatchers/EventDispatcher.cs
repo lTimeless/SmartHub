@@ -24,18 +24,17 @@ namespace SmartHub.Infrastructure.Services.Dispatchers
 		{
 			_channelManager = channelManager;
 			_hubContext = hubContext;
-			_channelManager ??= new ChannelManager();
 		}
 
 		public async Task StartAsync(CancellationToken cancellationToken)
 		{
-			_log.Information("[EventDispatcher] EventDispatcher started in background");
+			_log.Information("EventDispatcher started in background");
 			await Init().ConfigureAwait(false);
 		}
 
 		public Task StopAsync(CancellationToken cancellationToken)
 		{
-			_log.Information("[EventDispatcher] EventDispatcher stopped");
+			_log.Information("EventDispatcher stopped");
 			Dispose();
 			return Task.CompletedTask;
 		}
@@ -90,7 +89,7 @@ namespace SmartHub.Infrastructure.Services.Dispatchers
 
 		private void DispatchGeneralEvent(IEvent baseEvent)
 		{
-			_log.Information("[(DispatchGeneralEvent)] Dispatch Event => {@Name} - {EventType}",
+			_log.Information("Dispatch Event => {@Name} - {EventType}",
 				baseEvent?.GetType().Name, baseEvent.EventType);
 			// hier dann alle aus den events Evententitys bauen und in die db speichern
 		}
@@ -109,7 +108,7 @@ namespace SmartHub.Infrastructure.Services.Dispatchers
 			switch (applicationEvent)
 			{
 				case LoginEvent loginEvent:
-					var message = $"[DispatchApplicationEvent] Dispatch LoginEvent =>  UserName: {loginEvent.UserName}; Login state: {loginEvent.Successful} ";
+					var message = $"Dispatch LoginEvent =>  UserName: {loginEvent.UserName}; Login state: {loginEvent.Successful} ";
 					_log.Information(message);
 					break;
 				default:
@@ -123,7 +122,7 @@ namespace SmartHub.Infrastructure.Services.Dispatchers
 			{
 				case HomeUpdatedEvent homeUpdatedEvent:
 					var message =
-						$"[DispatchDomainEvents] Dispatch HomeUpdatedEvent => Updated home {homeUpdatedEvent.Name} ";
+						$"Dispatch HomeUpdatedEvent => Updated home {homeUpdatedEvent.Name} ";
 					_log.Information(message);
 					break;
 				default:

@@ -30,7 +30,7 @@ namespace SmartHub.Application.UseCases.PluginAdapter.Loader
             var home = await _unitOfWork.HomeRepository.GetHome();
             if (home is null)
             {
-                _log.Warning($"[{nameof(PluginLoadHandler)}] No home available.");
+                _log.Warning($"No home available.");
                 return Response.Fail<string>("No home available.");
             }
             var setting = home.Settings.FirstOrDefault(c => c.IsActive || c.PluginPath.Contains("_private"));
@@ -40,7 +40,7 @@ namespace SmartHub.Application.UseCases.PluginAdapter.Loader
 
             if (filteredOrAllFoundPlugins.IsNullOrEmpty())
             {
-                _log.Warning($"[{nameof(PluginLoadHandler)}] No new plugins available.");
+                _log.Warning($"No new plugins available.");
                 return Response.Fail<string>("No new plugins available.");
             }
             // TODO: why is this null
