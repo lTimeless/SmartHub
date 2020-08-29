@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Server.Kestrel.Core;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 
 namespace SmartHub.Api.Installers
 {
@@ -12,6 +13,9 @@ namespace SmartHub.Api.Installers
 			services.Configure<IISOptions>(options => { });
 
 			services.Configure<KestrelServerOptions>(options => options.AllowSynchronousIO = true);
+
+			services.Configure<HostOptions>(configuration.GetSection("HostOptions"));
+
 		}
 	}
 }

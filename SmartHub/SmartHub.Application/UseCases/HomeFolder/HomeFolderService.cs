@@ -26,16 +26,14 @@ namespace SmartHub.Application.UseCases.HomeFolder
             _applicationSettings = applicationSettings;
         }
 
-        /// <inheritdoc cref="IInitialize.Init"/>
-        public Task Init()
+        /// <inheritdoc cref="IHomeFolderService.Create"/>
+        public Task Create()
         {
             // If environment dev => path == parentfolder
             // unix == "/"
             // windows "appdata/local" = > dev ../Smarthub.ConfigFolder-dev
-
             // Use DoNotVerify in case Folder doesn’t exist.
             var ( homePath, folderName ) = GetHomeFolderPath();
-
             if (!string.IsNullOrEmpty(homePath))
             {
                 var pluginPath = Path.Combine(homePath, folderName);

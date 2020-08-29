@@ -26,30 +26,20 @@ namespace SmartHub.Infrastructure.Services.Dispatchers
 			_hubContext = hubContext;
 		}
 
-		public async Task StartAsync(CancellationToken cancellationToken)
-		{
-			_log.Information("EventDispatcher started in background");
-			await Init().ConfigureAwait(false);
-		}
-
-		public Task StopAsync(CancellationToken cancellationToken)
-		{
-			_log.Information("EventDispatcher stopped");
-			Dispose();
-			return Task.CompletedTask;
-		}
-
-		public Task Init()
+		public Task StartAsync(CancellationToken cancellationToken)
 		{
 			_disposable = _channelManager
 				.GetChannel(EventTypes.All)
 				.Subscribe(Dispatch);
+			_log.Information("Start EventDispatcher in background.");
 			return Task.CompletedTask;
 		}
 
-		public void Dispose()
+		public Task StopAsync(CancellationToken cancellationToken)
 		{
 			_disposable.Dispose();
+			_log.Information("Stop EventDispatcher.");
+			return Task.CompletedTask;
 		}
 
 		private void Dispatch(IEvent baseEvent)

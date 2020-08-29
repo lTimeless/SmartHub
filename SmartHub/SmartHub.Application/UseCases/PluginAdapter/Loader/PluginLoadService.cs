@@ -22,6 +22,10 @@ namespace SmartHub.Application.UseCases.PluginAdapter.Loader
 		private readonly IPluginCreatorService<T> _pluginCreator;
 		private readonly IPluginFinderService _pluginFinderService;
 
+		//TODO: damit hier nicht jedesmal die assembly neu geladen wird
+		// ein dictionary(zeile 51 bereits da alle instances) von typ T und dann bei der Getfunktion wird erst darin anhand des params "name" geprüft
+		// und erst danach dann die assembly geladen falls in der liste kein eintrag ist
+		// neue einträge überschreiben zu bestehenden key überschreiben diese
 		public PluginLoadService(IUnitOfWork unitOfWork, IPluginCreatorService<T> pluginCreator, IPluginFinderService pluginFinderService)
 		{
 			_unitOfWork = unitOfWork;
@@ -76,8 +80,6 @@ namespace SmartHub.Application.UseCases.PluginAdapter.Loader
 			return Task.FromResult<IEnumerable<T>>(listOfIPlugins);
 		}
 
-
-
 		/// <inheritdoc cref="IPluginLoadService{T}.LoadAndAddToHomeAsync"/>
 		public async Task<bool> LoadAndAddToHomeAsync(IEnumerable<string> assemblyPaths, LoadStrategy multiple)
 		{
@@ -97,8 +99,6 @@ namespace SmartHub.Application.UseCases.PluginAdapter.Loader
 			}
 			return true;
 		}
-
-
 
 		// put entire unloadable AssemblyLoadContext in a method to avoid caller holding on to the reference
 		[MethodImpl(MethodImplOptions.NoInlining)]
@@ -121,7 +121,6 @@ namespace SmartHub.Application.UseCases.PluginAdapter.Loader
 			var (pluginLoadContext, assembly) = _pluginFinderService.GetAssemblyAndLoadContext(path);
 			return new Tuple<PluginLoadContext, IEnumerable<Assembly>>(pluginLoadContext, new[] { assembly });
 		}
-
 
 		private async Task AddToHome(Dictionary<string, T> iPluginDictionary, Assembly assembly)
 		{

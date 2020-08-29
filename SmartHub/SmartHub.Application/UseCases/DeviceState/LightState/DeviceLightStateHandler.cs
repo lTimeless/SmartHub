@@ -43,7 +43,7 @@ namespace SmartHub.Application.UseCases.DeviceState.LightState
 			var connectionType = PluginUtils.CombineConnectionTypes(pluginObject);
 			if ((connectionType & ConnectionTypes.Http) != 0 && foundDevice.PrimaryConnection == ConnectionTypes.Http)
 			{
-				_query = pluginObject.Instantiate().SetToggleLight(request.LightStateDto.ToggleLight).Build();
+				_query = pluginObject.InstantiateQuery().SetToggleLight(request.LightStateDto.ToggleLight).Build();
 			}
 			else if ((connectionType & ConnectionTypes.Mqtt) != 0 && foundDevice.PrimaryConnection == ConnectionTypes.Mqtt)
 			{

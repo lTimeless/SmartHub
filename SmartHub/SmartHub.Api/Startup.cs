@@ -13,122 +13,126 @@ using SmartHub.Domain.Common.Settings;
 
 namespace SmartHub.Api
 {
-	public class Startup
-	{
-		private IConfiguration Configuration { get; }
-		private IHostEnvironment AppEnvironment { get; }
-		public Startup(IHostEnvironment env, IConfiguration configuration)
-		{
-			var builder = new ConfigurationBuilder()
-					.AddConfiguration(configuration)
-					.SetBasePath(Directory.GetCurrentDirectory())
-					.AddJsonFile("appsettings.json", false, true)
-					.AddJsonFile($"appsettings.{env.EnvironmentName}.json", false, true)
-					.AddJsonFile("smarthub.config.json", false, true)
-					;
+    public class Startup
+    {
+        private IConfiguration Configuration { get; }
+        private IHostEnvironment AppEnvironment { get; }
 
-			if (env.IsDevelopment())
-			{
-				builder.AddUserSecrets<Startup>();
-			}
+        public Startup(IHostEnvironment env, IConfiguration configuration)
+        {
+            var builder = new ConfigurationBuilder()
+                    .AddConfiguration(configuration)
+                    .SetBasePath(Directory.GetCurrentDirectory())
+                    .AddJsonFile("appsettings.json", false, true)
+                    .AddJsonFile($"appsettings.{env.EnvironmentName}.json", false, true)
+                    .AddJsonFile("smarthub.config.json", false, true)
+                ;
 
-			AppEnvironment = env;
-			Configuration = builder.Build();
-		}
+            if (env.IsDevelopment())
+            {
+                builder.AddUserSecrets<Startup>();
+            }
 
-		// Autofac DI Container -> runs/builds after ConfigureServices!
-		public void ConfigureContainer(ContainerBuilder builder)
-		{
-			// Register your own things directly with Autofac, like:
-			builder.RegisterModule(new AutofacModule());
-		}
-		// This method gets called by the runtime. Use this method to add services to the container.
-		public void ConfigureServices(IServiceCollection services)
-		{
-			services.InstallServicesInAssembly(Configuration);
+            AppEnvironment = env;
+            Configuration = builder.Build();
+        }
 
-			// -------------- SmartHubSettings ---------------
-			services.Configure<ApplicationSettings>(Configuration.GetSection("SmartHub"));
-			services.PostConfigure<ApplicationSettings>(options =>
-			{
-				options.EnvironmentName = AppEnvironment.EnvironmentName;
-				options.DefaultName = AppEnvironment.ApplicationName;
-			});
-			// dann injecten mit IOptions<SmartHubSettings> smartHubSettings -> smartHubSettings.value
-		}
+        // Autofac DI Container -> runs/builds after ConfigureServices!
+        public void ConfigureContainer(ContainerBuilder builder)
+        {
+            // Register your own things directly with Autofac, like:
+            builder.RegisterModule(new AutofacModule());
+        }
 
-		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-		public void Configure(IApplicationBuilder app, IWebHostEnvironment env, SeedDatabase seedDatabase)
-		{
-			if (env.IsDevelopment())
-			{
-				app.UseDeveloperExceptionPage();
-				app.UseDatabaseErrorPage();
+        // This method gets called by the runtime. Use this method to add services to the container.
+        public void ConfigureServices(IServiceCollection services)
+        {
+            services.InstallServicesInAssembly(Configuration);
 
-				// Seed Database
-				seedDatabase.SeedData(Configuration.GetValue<bool>("Seed_Db")).GetAwaiter().GetResult();
-			}
-			else
-			{
-				app.UseExceptionHandler("/Error");
-				// The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
-				app.UseHsts();
-			}
-			Log.ForContext(typeof(Startup)).Information("----------------------------------------------------------------");
-			AppExtension.ShowLocalIpv4();
+            // -------------- SmartHubSettings ---------------
+            services.Configure<ApplicationSettings>(Configuration.GetSection("SmartHub"));
+            services.PostConfigure<ApplicationSettings>(options =>
+            {
+                options.EnvironmentName = AppEnvironment.EnvironmentName;
+                options.DefaultName = AppEnvironment.ApplicationName;
+            });
+            // dann injecten mit IOptions<SmartHubSettings> smartHubSettings -> smartHubSettings.value
+        }
 
-			// Response Compression
-			app.UseResponseCompression();
+        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, SeedDatabase seedDatabase)
+        {
+            if (env.IsDevelopment())
+            {
+                app.UseDeveloperExceptionPage();
+                app.UseDatabaseErrorPage();
 
-			// Serilog
-			app.UseSerilogRequestLogging();
+                // Seed Database
+                seedDatabase.SeedData(Configuration.GetValue<bool>("Seed_Db")).GetAwaiter().GetResult();
+            }
+            else
+            {
+                app.UseExceptionHandler("/Error");
+                // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
+                app.UseHsts();
+            }
 
-			// CustomExceptionMiddleware
-			app.ConfigureCustomExceptionMiddleware();
+            Log.ForContext(typeof(Startup))
+                .Information("----------------------------------------------------------------");
+            AppExtension.ShowLocalIpv4();
 
-			app.UseHttpsRedirection();
-			app.UseStaticFiles();
-			app.UseSpaStaticFiles();
+            // Response Compression
+            app.UseResponseCompression();
 
-			// Swagger
-			app.ConfigureSwagger();
+            // Serilog
+            app.UseSerilogRequestLogging();
 
-			// Hangfire
-			app.ConfigureHangfire();
+            // CustomExceptionMiddleware
+            app.ConfigureCustomExceptionMiddleware();
 
-			// Routing
-			app.UseRouting();
+            app.UseHttpsRedirection();
+            app.UseStaticFiles();
+            app.UseSpaStaticFiles();
 
-			// Auth
-			app.UseCors("CorsPolicy");
-			app.UseAuthentication();
-			app.UseAuthorization();
+            // Swagger
+            app.ConfigureSwagger();
 
-			// Endpoints
-			app.UseEndpoints(endpoints =>
-			{
-				endpoints.MapControllerRoute(
-					name: "default",
-					pattern: "{controller}/{action=Index}/{id?}");
+            // Hangfire
+            app.ConfigureHangfire();
 
-				endpoints.MapHub<EventHub>("/api/hub/events");
-				endpoints.MapHub<LogHub>("/api/hub/logs");
-			});
+            // Routing
+            app.UseRouting();
 
-			app.UseSpa(spa =>
-			{
-				// To learn more about options for serving an Angular SPA from ASP.NET Core,
-				// see https://go.microsoft.com/fwlink/?linkid=864501
-				spa.Options.SourcePath = "wwwroot";
+            // Auth
+            app.UseCors("CorsPolicy");
+            app.UseAuthentication();
+            app.UseAuthorization();
 
-				if (!Configuration.GetValue<bool>("Use_Staticfiles_DEV"))
-				{
-					Log.ForContext(typeof(Startup)).Warning("Not serving frontend from staticfiles");
-					// Start seperate FE server and Server listens to it
-					spa.UseProxyToSpaDevelopmentServer("http://localhost:8080");
-					// To start its own FE server
-				}
-			});
-		}
-	}
+            // Endpoints
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapControllerRoute(
+                    name: "default",
+                    pattern: "{controller}/{action=Index}/{id?}");
+
+                endpoints.MapHub<EventHub>("/api/hub/events");
+                endpoints.MapHub<LogHub>("/api/hub/logs");
+            });
+
+            app.UseSpa(spa =>
+            {
+                // To learn more about options for serving an Angular SPA from ASP.NET Core,
+                // see https://go.microsoft.com/fwlink/?linkid=864501
+                spa.Options.SourcePath = "wwwroot";
+
+                if (!Configuration.GetValue<bool>("Use_Staticfiles_DEV"))
+                {
+                    Log.ForContext(typeof(Startup)).Warning("Not serving frontend from staticfiles");
+                    // Start seperate FE server and Server listens to it
+                    spa.UseProxyToSpaDevelopmentServer("http://localhost:8080");
+                    // To start its own FE server
+                }
+            });
+        }
+    }
 }

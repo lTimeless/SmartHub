@@ -2,7 +2,7 @@
 {
     public interface IBuild<T> : IPlugin where T : IBuild<T>
     {
-        T Instantiate();
+        T InstantiateQuery();
         string Build();
     }
 }

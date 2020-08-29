@@ -16,35 +16,22 @@ namespace SmartHub.Infrastructure.Services.Dispatchers
 		private readonly ILogger _log = Log.ForContext<ChannelManager>();
 		private Dictionary<EventTypes, Subject<IEvent>> ChannelMessageDictionary { get; set; }
 
-		public async Task StartAsync(CancellationToken cancellationToken)
-		{
-			_log.Information("ChannelManager started in background");
-			await Init().ConfigureAwait(false);
-		}
-
-		public Task StopAsync(CancellationToken cancellationToken)
-		{
-			_log.Information("ChannelManager stopped");
-			Dispose();
-			return Task.CompletedTask;
-		}
-
-		public Task Init()
+		public Task StartAsync(CancellationToken cancellationToken)
 		{
 			ChannelMessageDictionary = new Dictionary<EventTypes, Subject<IEvent>>();
-
 			// Creates channels for all EventTypes
 			foreach (var type in (EventTypes[])Enum.GetValues(typeof(EventTypes)))
 			{
 				AddChannel(type);
 			}
-
+			_log.Information("Start ChannelManager in background.");
 			return Task.CompletedTask;
 		}
 
-		public void Dispose()
+		public Task StopAsync(CancellationToken cancellationToken)
 		{
-			Clear();
+			_log.Information("Stop ChannelManager.");
+			return Task.CompletedTask;
 		}
 
 		public Task RemoveChannel(EventTypes eventType)

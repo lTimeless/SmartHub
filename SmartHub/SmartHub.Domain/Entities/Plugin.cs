@@ -10,8 +10,6 @@ namespace SmartHub.Domain.Entities
 		public bool Active { get; private set; }
 		public double AssemblyVersion { get; private set; }
 		public virtual Company Company { get; private set; }
-
-		// TODO: will be replaced later for an Enum flag "ConnectionTypes"
 		public ConnectionTypes ConnectionTypes { get; private set; }
 		public bool IsDownloaded { get; private set; }
 

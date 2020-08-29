@@ -22,6 +22,7 @@ using SmartHub.Infrastructure.Services.Background;
 using SmartHub.Infrastructure.Services.Dispatchers;
 using SmartHub.Infrastructure.Services.FileSystem;
 using SmartHub.Infrastructure.Services.Http;
+using SmartHub.Infrastructure.Services.Initialization;
 
 namespace SmartHub.Api.Installers
 {
@@ -30,8 +31,8 @@ namespace SmartHub.Api.Installers
 		public void InstallServices(IServiceCollection services, IConfiguration configuration)
 		{
 			ConfigureRepositories(services);
-			ConfigureBackgroundServices(services);
 			ConfigureApplicationStartupServices(services);
+			ConfigureBackgroundServices(services);
 			ConfigureAuthServices(services);
 			ConfigureHelpServices(services);
 			ConfigureServices(services);
@@ -53,10 +54,11 @@ namespace SmartHub.Api.Installers
 
 		private static void ConfigureBackgroundServices(IServiceCollection services)
 		{
+			services.AddTransient(typeof(BackgroundServiceStarter<>));
 			services.AddSingleton(typeof(IChannelManager), typeof(ChannelManager));
-			services.AddHostedService<BackgroundServiceStarter<IChannelManager>>();
 			services.AddSingleton<IEventDispatcher, EventDispatcher>();
-			services.AddHostedService<BackgroundServiceStarter<IEventDispatcher>>();
+			services.AddSingleton(typeof(IInitializationService),typeof(InitializationService));
+			services.AddHostedService<BackgroundServiceStarter<IInitializationService>>();
 		}
 
 		private static void ConfigureAuthServices(IServiceCollection services)
