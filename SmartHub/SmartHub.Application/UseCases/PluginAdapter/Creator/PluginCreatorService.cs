@@ -26,7 +26,7 @@ namespace SmartHub.Application.UseCases.PluginAdapter.Creator
 					case null:
 						continue;
 					case T iPlugin:
-						iPluginsDictionary.Add(GetType().GetProperty("Name").GetValue(iPlugin) as string, plugin);
+						iPluginsDictionary.Add(iPlugin.GetType().GetProperty("Name").GetValue(iPlugin) as string, plugin);
 						break;
 				}
 			}
