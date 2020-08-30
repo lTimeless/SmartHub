@@ -1,9 +1,7 @@
 ﻿using System.Collections.Generic;
-using System.Net;
 using MediatR;
 using System.Threading;
 using System.Threading.Tasks;
-using SmartHub.Application.Common.Exceptions;
 using SmartHub.Application.Common.Interfaces.Repositories;
 using SmartHub.Application.Common.Models;
 using SmartHub.Domain.Entities;
@@ -17,7 +15,6 @@ namespace SmartHub.Application.UseCases.Identity.Registration
 		private readonly IUnitOfWork _unitOfWork;
 		private readonly IdentityService _identityService;
 
-
 		public RegistrationHandler(IRegistrationService registrationService, IUnitOfWork unitOfWork, IdentityService identityService)
 		{
 			_registrationService = registrationService;
@@ -27,8 +24,8 @@ namespace SmartHub.Application.UseCases.Identity.Registration
 
 		public async Task<Response<AuthResponseDto>> Handle(RegistrationCommand request, CancellationToken cancellationToken)
 		{
-			var userFound = await _unitOfWork.UserRepository.GetUserByName(request.Username);
-			if (userFound != null)
+			var foundUser = await _unitOfWork.UserRepository.GetUserByName(request.Username);
+			if (foundUser != null)
 			{
 				return Response.Fail<AuthResponseDto>("Username already exists.");
 			}

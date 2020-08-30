@@ -1,4 +1,5 @@
 ﻿using System.Threading.Tasks;
+using SmartHub.Domain.Entities;
 
 namespace SmartHub.Application.UseCases.Identity.Login
 {
@@ -12,6 +13,6 @@ namespace SmartHub.Application.UseCases.Identity.Login
 		/// </summary>
 		/// <param name="userInput">The input the user does</param>
 		/// <returns>An AuthResponseDto</returns>
-		Task<AuthResponseDto> LoginAsync(LoginQuery userInput);
+		Task<bool> LoginAsync(LoginQuery userInput, User foundUser);
 	}
 }
