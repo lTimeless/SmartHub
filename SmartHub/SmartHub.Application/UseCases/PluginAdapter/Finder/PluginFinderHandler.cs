@@ -29,6 +29,10 @@ namespace SmartHub.Application.UseCases.PluginAdapter.Finder
         {
             _logger.Information($"Find (new = {request.OnlyNew}) available plugins");
             var home = await _unitOfWork.HomeRepository.GetHome().ConfigureAwait(false);
+            if (home == null)
+            {
+                return Response.Fail<IReadOnlyDictionary<string, FoundPluginDto>>("No home available.");
+            }
             var setting = home.Settings.FirstOrDefault(c => c.IsActive || c.PluginPath.Contains("_private"));
             var foundPlugins = _pluginFinder.FindPluginsInAssemblies(setting.PluginPath);
 

@@ -163,28 +163,6 @@ namespace SmartHub.Domain.Entities
 			}
 			return this;
 		}
-
-		public Home UpdateHome(string? name, string? description, Setting? setting, User? user )
-		{
-			if (name != null)
-			{
-				Name = name;
-			}
-			if (description != null)
-			{
-				Description = description;
-			}
-			if (setting != null)
-			{
-				AddSetting(setting);
-			}
-			if (user != null)
-			{
-				AddUser(user);
-			}
-			return this;
-		}
 		#endregion
-
 	}
 }

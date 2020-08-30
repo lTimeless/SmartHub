@@ -5,7 +5,7 @@ using System;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using SmartHub.Application.UseCases.Entity.Homes.Create;
-using SmartHub.Application.UseCases.Entity.Homes.Update;
+using SmartHub.Application.UseCases.Entity.Homes.Patch;
 
 namespace SmartHub.Api.Controllers
 {
@@ -28,6 +28,7 @@ namespace SmartHub.Api.Controllers
 		/// Partial updates the Home
 		/// </summary>
 		[HttpPost]
+		[AllowAnonymous]
 		public async Task<IActionResult> Post([FromBody] HomeCreateCommand value)
 		{
 			return Ok(await Mediator.Send(value).ConfigureAwait(false));
@@ -37,9 +38,9 @@ namespace SmartHub.Api.Controllers
 		/// Partial updates the Home
 		/// </summary>
 		[HttpPatch]
-		public async Task<IActionResult> Patch([FromBody] HomeUpdateCommand value)
+		public async Task<IActionResult> Patch([FromBody] HomePatchCommand value)
 		{
-			return Ok();
+			return Ok(await Mediator.Send(value).ConfigureAwait(false));
 		}
 
 
@@ -47,9 +48,9 @@ namespace SmartHub.Api.Controllers
 		/// Full updates the Home
 		/// </summary>
 		[HttpPut]
-		public async Task<IActionResult> Put([FromBody] HomeUpdateCommand value)
+		public async Task<IActionResult> Put([FromBody] HomePatchCommand value)
 		{
-			return Ok(await Mediator.Send(value).ConfigureAwait(false));
+			return Ok("This is not implemented at the moment.");
 		}
 
 		/// <summary>

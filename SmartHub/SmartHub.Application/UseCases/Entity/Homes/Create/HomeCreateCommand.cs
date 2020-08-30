@@ -1,8 +1,9 @@
 ﻿using MediatR;
+using SmartHub.Application.Common.Models;
 
 namespace SmartHub.Application.UseCases.Entity.Homes.Create
 {
-	public class HomeCreateCommand : IRequest<bool>
+	public class HomeCreateCommand : IRequest<Response<HomeDto>>
 	{
 		public string Name { get; set; }
 		public string Description { get; set; }

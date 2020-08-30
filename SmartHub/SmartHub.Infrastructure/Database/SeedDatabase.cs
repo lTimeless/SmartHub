@@ -37,15 +37,15 @@ namespace SmartHub.Infrastructure.Database
 		{
 			using var serviceScope = _scopeFactory.CreateScope();
 			var userManager = serviceScope.ServiceProvider.GetRequiredService<UserManager<User>>();
-			var admin = new User("Admin", null, new PersonName("Max", "", "Test"), null)
+			var admin = new User("Admin", null, new PersonName("Max", "", "Test"))
 			{
 				CreatedBy = "Home", LastModifiedBy = "Home"
 			};
-			var guest = new User("Guest", null, new PersonName("Guest", "Person", "Test"), null)
+			var guest = new User("Guest", null, new PersonName("Guest", "Person", "Test"))
 			{
 				CreatedBy = "Home", LastModifiedBy = "home"
 			};
-			var user = new User("User", null, new PersonName("Test", "Middle", "Best"), null)
+			var user = new User("User", null, new PersonName("Test", "Middle", "Best"))
 			{
 				CreatedBy = "Home", LastModifiedBy = "Home"
 			};

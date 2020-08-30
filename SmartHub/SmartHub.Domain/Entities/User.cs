@@ -23,17 +23,14 @@ namespace SmartHub.Domain.Entities
 		{
 		}
 
-		public User(string userName, string? personInfo, PersonName? fullname, Home? home) :
+		public User(string userName, string? personInfo, PersonName? fullname) :
 			base(userName)
 		{
 			Id = Guid.NewGuid().ToString();
 			EmailConfirmed = true;
 			PersonInfo = personInfo;
 			PersonName = fullname;
-
-			Home = home;
+			Home = null;
 		}
-
-
 	}
 }

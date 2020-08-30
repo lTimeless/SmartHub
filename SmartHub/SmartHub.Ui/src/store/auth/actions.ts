@@ -4,6 +4,7 @@ import { RootState, AuthState } from '@/store/index.types';
 import { storeAuthResponse } from '@/services/auth/authService';
 import axiosInstance from '@/router/axios/axios';
 import { AuthMutations, M_AUTH_USER } from '@/store/auth/mutations';
+import { postLogin, postRegistration } from '@/services/apis/user.service';
 
 // Keys
 export const A_LOGIN = 'A_LOGIN';
@@ -12,7 +13,7 @@ export const A_LOGOUT = 'A_LOGOUT';
 
 // Actions
 type AugmentedActionContext = {
-  commit<K extends keyof AuthMutations>(key: K, payload?: Parameters<AuthMutations[K]>[1]): ReturnType<AuthMutations[K]>;
+  commit<K extends keyof AuthMutations>(key: K, payload: Parameters<AuthMutations[K]>[1] | null): ReturnType<AuthMutations[K]>;
 } & Omit<ActionContext<AuthState, RootState>, 'commit'>;
 
 // Action Interface
@@ -25,24 +26,28 @@ export interface AuthActions {
 // Define Actions
 export const actions: ActionTree<AuthState, RootState> & AuthActions = {
   async [A_LOGIN]({ commit }, payload: LoginRequest): Promise<void> {
-    await axiosInstance
-      .post<ServerResponse<AuthResponse>>('api/Identity/login', payload)
+    await postLogin(payload)
       .then((response) => {
-        const authResponse = response.data.data as AuthResponse;
-        storeAuthResponse(authResponse);
-        commit(M_AUTH_USER, authResponse);
+        storeAuthResponse(response.data as AuthResponse);
+        commit(M_AUTH_USER, response.data);
+        return Promise.resolve();
       })
-      .catch((err) => Promise.reject(err));
+      .catch((err) => {
+        console.log(err);
+        return Promise.reject(err);
+      });
   },
   async [A_REGISTRATION](state, payload: RegistrationRequest): Promise<void> {
-    return axiosInstance
-      .post<ServerResponse<AuthResponse>>('api/Identity/registration', payload)
-      .then(async (response) => {
-        const auth = response.data.data as AuthResponse;
-        await storeAuthResponse(auth);
-        await state.commit(M_AUTH_USER, auth);
+    await postRegistration(payload)
+      .then((response) => {
+        storeAuthResponse(response.data as AuthResponse);
+        state.commit(M_AUTH_USER, response.data);
+        return Promise.resolve();
       })
-      .catch((err) => Promise.reject(err));
+      .catch((err) => {
+        console.log(err);
+        return Promise.reject(err);
+      });
   },
   async [A_LOGOUT]({ commit }) {
     console.log('logout');
