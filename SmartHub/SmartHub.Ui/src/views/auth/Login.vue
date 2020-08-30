@@ -103,7 +103,6 @@ export default defineComponent({
         password: password.value
       };
       await store.dispatch(A_LOGIN, login).catch((error) => {
-        console.log(error);
         isSignInBtnClicked.value = false;
       });
       await router.push('/');

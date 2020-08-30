@@ -2,7 +2,6 @@ import { ActionContext, ActionTree } from 'vuex';
 import { LoginRequest, AuthResponse, RegistrationRequest, ServerResponse } from '@/types/types';
 import { RootState, AuthState } from '@/store/index.types';
 import { storeAuthResponse } from '@/services/auth/authService';
-import axiosInstance from '@/router/axios/axios';
 import { AuthMutations, M_AUTH_USER } from '@/store/auth/mutations';
 import { postLogin, postRegistration } from '@/services/apis/user.service';
 
@@ -28,9 +27,12 @@ export const actions: ActionTree<AuthState, RootState> & AuthActions = {
   async [A_LOGIN]({ commit }, payload: LoginRequest): Promise<void> {
     await postLogin(payload)
       .then((response) => {
+        if (!response.success) {
+          return Promise.reject(response.message);
+        }
         storeAuthResponse(response.data as AuthResponse);
         commit(M_AUTH_USER, response.data);
-        return Promise.resolve();
+        return Promise.resolve(response.data);
       })
       .catch((err) => {
         console.log(err);
@@ -40,6 +42,9 @@ export const actions: ActionTree<AuthState, RootState> & AuthActions = {
   async [A_REGISTRATION](state, payload: RegistrationRequest): Promise<void> {
     await postRegistration(payload)
       .then((response) => {
+        if (!response.success) {
+          return Promise.reject(response.message);
+        }
         storeAuthResponse(response.data as AuthResponse);
         state.commit(M_AUTH_USER, response.data);
         return Promise.resolve();

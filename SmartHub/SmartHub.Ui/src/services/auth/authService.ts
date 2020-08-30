@@ -1,7 +1,9 @@
-import { AxiosRequestConfig } from 'axios';
 import { AuthResponse } from '@/types/types';
 import { Roles } from '@/types/enums';
 import JwtDecode from 'jwt-decode';
+import { A_LOGOUT } from '@/store/auth/actions';
+import { useStore } from '@/store';
+import router from '@/router';
 
 type TokenPayload = { unique_name: string; jti: string; roles: string[] | string; nbf: number; exp: number; iat: number };
 
@@ -22,10 +24,6 @@ export const getToken = (): string | null => {
 };
 
 export const isAuthenticated = (): boolean => getToken() !== null;
-
-export const getAuthentication = (): AxiosRequestConfig => ({
-  headers: { Authorization: `Bearer ${getToken()}` }
-});
 
 // TODO: logic will be implemented later, when refreshToken will be added
 // public static getNewToken(): Promise<string> {
@@ -81,4 +79,11 @@ export const getUserName = (): string => {
   }
   const tokenPayload = JwtDecode(authResponse.token) as TokenPayload;
   return tokenPayload.unique_name;
+};
+
+export const logout = () => {
+  const store = useStore();
+  store.dispatch(A_LOGOUT);
+  clearStorage();
+  router.push('/login');
 };

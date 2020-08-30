@@ -1,20 +1,34 @@
 import axios from 'axios';
-import { getAuthentication, isAuthenticated } from '@/services/auth/authService';
+import { getToken, logout } from '@/services/auth/authService';
+import { useRouter } from 'vue-router';
 
-const axiosInstance = axios.create({
-  baseURL: 'http://localhost:8080',
-  timeout: 8000,
-  params: {} // do not remove this, its added to add params later in the config
-});
-
-axiosInstance.interceptors.request.use(
+axios.interceptors.request.use(
   (config) => {
-    if (isAuthenticated()) {
-      config.headers = getAuthentication().headers;
+    console.log('interceptor');
+    const token = getToken();
+    if (token) {
+      config.headers['Authorization'] = `Bearer ${token}`;
     }
     return config;
   },
   (error) => Promise.reject(error)
 );
 
-export default axiosInstance;
+axios.interceptors.response.use(
+  (response) => {
+    if (!response.data.success) {
+      console.log('interceptor response', response.data);
+      // TODO: trigger toast notification
+      return Promise.reject(response.data.message);
+    }
+    const router = useRouter();
+    if (response.status === 401) {
+      logout();
+      router.push('/login');
+    }
+    return response;
+  },
+  (error) => Promise.reject(error),
+);
+
+export default axios;

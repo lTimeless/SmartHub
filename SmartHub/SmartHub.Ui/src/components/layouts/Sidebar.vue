@@ -48,7 +48,7 @@
     </div>
 
     <div class="flex justify-center mt-7 mb-8">
-      <action-button color="indigo" :height="35" :width="150" title="Logout" :callback="logout" />
+      <action-button color="indigo" :height="35" :width="150" title="Logout" :callback="clickLogout" />
     </div>
   </div>
 </template>
@@ -56,10 +56,9 @@
 <script lang="ts">
 import { computed, defineComponent, onMounted, ref } from 'vue';
 import { useRouter } from 'vue-router';
-import { clearStorage, getUserRole } from '@/services/auth/authService';
+import { getUserRole, logout } from '@/services/auth/authService';
 import ActionButton from '@/components/widgets/ActionButton.vue';
 import { useStore } from '@/store';
-import { A_LOGOUT } from '@/store/auth/actions';
 
 export default defineComponent({
   name: 'Sidebar',
@@ -131,14 +130,12 @@ export default defineComponent({
       isRole.value = getUserRole();
     });
 
-    const logout = () => {
-      store.dispatch(A_LOGOUT);
-      clearStorage();
-      router.push('/login');
+    const clickLogout = () => {
+      logout();
     };
 
     return {
-      logout,
+      clickLogout,
       currentPath,
       sidebarLists,
       roleIncluded,

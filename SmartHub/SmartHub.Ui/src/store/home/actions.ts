@@ -28,7 +28,11 @@ export const actions: ActionTree<HomeState, RootState> = {
   async [A_FETCH_HOME]({ commit }): Promise<void> {
     await getHome()
       .then((response) => {
+        if (!response.success) {
+          return Promise.reject(response.message);
+        }
         commit(M_UPDATE_HOME, response.data);
+        return Promise.resolve();
       })
       .catch((err) => {
         console.log(err);
@@ -37,9 +41,12 @@ export const actions: ActionTree<HomeState, RootState> = {
   },
   async [A_CREATE_HOME]({ commit }, payload: HomeCreateRequest): Promise<void> {
     await postHome(payload)
-      .then((res) => {
-        commit(M_UPDATE_HOME, res.data);
-        return Promise.resolve(res.data);
+      .then((response) => {
+        if (!response.success) {
+          return Promise.reject(response.message);
+        }
+        commit(M_UPDATE_HOME, response.data);
+        return Promise.resolve(response.data);
       })
       .catch((error) => Promise.reject(error));
   },
