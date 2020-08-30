@@ -2,6 +2,12 @@ import axios from 'axios';
 import { getToken, logout } from '@/services/auth/authService';
 import { useRouter } from 'vue-router';
 
+export default axios.create({
+  headers: {
+    'Content-type': 'application/json'
+  }
+});
+
 axios.interceptors.request.use(
   (config) => {
     console.log('interceptor');
@@ -31,4 +37,3 @@ axios.interceptors.response.use(
   (error) => Promise.reject(error),
 );
 
-export default axios;

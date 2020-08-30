@@ -1,5 +1,5 @@
-import axios from 'axios';
 import { Home, HomeCreateRequest, HomeUpdateRequest, ServerResponse } from '@/types/types';
+import axios from '@/router/axios/axios';
 
 const API_HOME_URL = 'api/Home';
 

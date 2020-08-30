@@ -1,5 +1,5 @@
-import axios from 'axios';
 import { AuthResponse, LoginRequest, RegistrationRequest, ServerResponse } from '@/types/types';
+import axios from '@/router/axios/axios';
 
 const API_URL_LOGIN = 'api/Identity/login';
 const API_URL_REGISTRATION = 'api/Identity/registration';
