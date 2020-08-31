@@ -51,6 +51,7 @@ namespace SmartHub.Infrastructure.Database
 
 		public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = new CancellationToken())
 		{
+			// TODO: vlt wird das für User und Role nicht funktionieren
 			foreach (var entry in ChangeTracker.Entries<IEntity>())
 			{
 				var dateTime = _dateTimeService.NowUtc;
