@@ -2,8 +2,6 @@
 using System.Security.Claims;
 using Microsoft.AspNetCore.Identity;
 using SmartHub.Application.Common.Interfaces;
-using SmartHub.Application.Common.Utils;
-using SmartHub.Domain.Common.Enums;
 using SmartHub.Domain.Entities;
 
 namespace SmartHub.Application.UseCases.Identity

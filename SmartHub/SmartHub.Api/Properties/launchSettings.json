@@ -30,7 +30,7 @@
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       },
-      "commandLineArgs": "Use_Staticfiles_DEV=false Use_FakeDb=false Seed_Db=false Pgsql_User=postgres Pgsql_pwd=1234"
+      "commandLineArgs": "Use_StaticFiles=false Seed_Db=false Pgsql_User=postgres Pgsql_pwd=1234"
     },
     "Docker": {
       "commandName": "Docker",

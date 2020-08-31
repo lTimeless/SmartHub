@@ -37,7 +37,7 @@ namespace SmartHub.Api.Middleware
 		private async Task HandleExceptionAsync(HttpContext httpContext, Exception ex)
 		{
 			object? errors;
-			await _unitOfWork.Rollback();
+			await _unitOfWork.RollbackAsync();
 			_log.Warning("Rollback all changes from this request {}.", httpContext.TraceIdentifier);
 			switch (ex)
 			{

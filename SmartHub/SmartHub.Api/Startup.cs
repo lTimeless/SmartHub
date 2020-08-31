@@ -8,8 +8,11 @@ using Serilog;
 using SmartHub.Api.Extensions;
 using SmartHub.Infrastructure.Database;
 using System.IO;
+using SmartHub.Application;
 using SmartHub.Application.UseCases.SignalR;
 using SmartHub.Domain.Common.Settings;
+using SmartHub.Infrastructure;
+using SmartHub.Infrastructure.Shared;
 
 namespace SmartHub.Api
 {
@@ -47,7 +50,13 @@ namespace SmartHub.Api
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.InstallServicesInAssembly(Configuration);
+            // services.InstallServicesInAssembly(Configuration);
+            // Add each layer
+            services.AddInfrastrucurePersistance(Configuration);
+            services.AddInfrastrucureShared();
+            services.AddApplicationLayer();
+            services.AddApiLayer(Configuration);
+
 
             // -------------- SmartHubSettings ---------------
             services.Configure<ApplicationSettings>(Configuration.GetSection("SmartHub"));
@@ -125,7 +134,7 @@ namespace SmartHub.Api
                 // see https://go.microsoft.com/fwlink/?linkid=864501
                 spa.Options.SourcePath = "wwwroot";
 
-                if (!Configuration.GetValue<bool>("Use_Staticfiles_DEV"))
+                if (!Configuration.GetValue<bool>("Use_StaticFiles"))
                 {
                     Log.ForContext(typeof(Startup)).Warning("Not serving frontend from staticfiles");
                     // Start seperate FE server and Server listens to it
