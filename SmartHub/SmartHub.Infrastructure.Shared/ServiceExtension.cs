@@ -23,7 +23,8 @@ namespace SmartHub.Infrastructure.Shared
         private static void AddBackgroundServices(this IServiceCollection services)
         {
             services.AddTransient(typeof(BackgroundServiceStarter<>));
-            services.AddSingleton(typeof(IChannelManager), typeof(ChannelManager));
+            services.AddSingleton<IChannelManager,ChannelManager>();
+            services.AddSingleton<IHangfireDispatcher, HangfireDispatcher>();
             services.AddSingleton<IEventDispatcher, EventDispatcher>();
             services.AddSingleton(typeof(IInitializationService),typeof(InitializationService));
             services.AddHostedService<BackgroundServiceStarter<IInitializationService>>();
@@ -31,9 +32,8 @@ namespace SmartHub.Infrastructure.Shared
 
         private static void AddApplicationServices(this IServiceCollection services)
         {
-            services.AddSingleton<IHangfireDispatcher, HangfireDispatcher>();
-            services.AddScoped<IHomeFolderService, HomeFolderService>();
-            services.AddScoped<IDirectoryService, DirectoryService>();
+            services.AddTransient<IHomeFolderService, HomeFolderService>();
+            services.AddTransient<IDirectoryService, DirectoryService>();
             services.AddScoped<IPingService, PingService>();
             services.AddScoped<IHttpService, HttpService>();
         }

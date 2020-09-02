@@ -13,16 +13,14 @@ namespace SmartHub.Api.Middleware
 	public class ExceptionMiddleware
 	{
 		private readonly ILogger _log = Log.ForContext(typeof(ExceptionMiddleware));
-		private readonly IUnitOfWork _unitOfWork;
 		private readonly RequestDelegate _next;
 
-		public ExceptionMiddleware(RequestDelegate next, IUnitOfWork unitOfWork)
+		public ExceptionMiddleware(RequestDelegate next)
 		{
 			_next = next;
-			_unitOfWork = unitOfWork;
 		}
 
-		public async Task InvokeAsync(HttpContext httpContext)
+		public async Task InvokeAsync(HttpContext httpContext, IUnitOfWork unitOfWork)
 		{
 			try
 			{
@@ -30,14 +28,14 @@ namespace SmartHub.Api.Middleware
 			}
 			catch (Exception ex)
 			{
-				await HandleExceptionAsync(httpContext, ex);
+				await HandleExceptionAsync(httpContext, ex, unitOfWork);
 			}
 		}
 
-		private async Task HandleExceptionAsync(HttpContext httpContext, Exception ex)
+		private async Task HandleExceptionAsync(HttpContext httpContext, Exception ex, IUnitOfWork unitOfWork)
 		{
 			object? errors;
-			await _unitOfWork.RollbackAsync();
+			await unitOfWork.RollbackAsync();
 			_log.Warning("Rollback all changes from this request {}.", httpContext.TraceIdentifier);
 			switch (ex)
 			{

@@ -1,4 +1,3 @@
-using Autofac;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -10,7 +9,6 @@ using SmartHub.Infrastructure.Database;
 using System.IO;
 using SmartHub.Application;
 using SmartHub.Application.UseCases.SignalR;
-using SmartHub.Domain.Common.Settings;
 using SmartHub.Infrastructure;
 using SmartHub.Infrastructure.Shared;
 
@@ -28,8 +26,7 @@ namespace SmartHub.Api
                     .SetBasePath(Directory.GetCurrentDirectory())
                     .AddJsonFile("appsettings.json", false, true)
                     .AddJsonFile($"appsettings.{env.EnvironmentName}.json", false, true)
-                    .AddJsonFile("smarthub.config.json", false, true)
-                ;
+                    .AddJsonFile("smarthub.config.json", false, true);
 
             if (env.IsDevelopment())
             {
@@ -40,32 +37,14 @@ namespace SmartHub.Api
             Configuration = builder.Build();
         }
 
-        // Autofac DI Container -> runs/builds after ConfigureServices!
-        public void ConfigureContainer(ContainerBuilder builder)
-        {
-            // Register your own things directly with Autofac, like:
-            builder.RegisterModule(new AutofacModule());
-        }
-
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            // services.InstallServicesInAssembly(Configuration);
             // Add each layer
             services.AddInfrastrucurePersistance(Configuration);
             services.AddInfrastrucureShared();
             services.AddApplicationLayer();
-            services.AddApiLayer(Configuration);
-
-
-            // -------------- SmartHubSettings ---------------
-            services.Configure<ApplicationSettings>(Configuration.GetSection("SmartHub"));
-            services.PostConfigure<ApplicationSettings>(options =>
-            {
-                options.EnvironmentName = AppEnvironment.EnvironmentName;
-                options.DefaultName = AppEnvironment.ApplicationName;
-            });
-            // dann injecten mit IOptions<SmartHubSettings> smartHubSettings -> smartHubSettings.value
+            services.AddApiLayer(Configuration, AppEnvironment);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

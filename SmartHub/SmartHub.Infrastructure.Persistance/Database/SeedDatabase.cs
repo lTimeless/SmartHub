@@ -26,11 +26,11 @@ namespace SmartHub.Infrastructure.Database
 		public async Task SeedData(bool seedDb)
 		{
 			if (!seedDb) return;
-			_logger.Information($"Start seeding into database ...");
+			_logger.Information("Start seeding into database ...");
 			await SeedRoleData();
 			await SeedUserData();
 			await _unitOfWork.SaveAsync();
-			_logger.Information($"Finished seeding into database.");
+			_logger.Information("Finished seeding into database.");
 		}
 
 		private async Task SeedUserData()

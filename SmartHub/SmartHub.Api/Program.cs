@@ -1,5 +1,4 @@
 using System.Threading.Tasks;
-using Autofac.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
@@ -32,7 +31,6 @@ namespace SmartHub.Api
 					b.AddCommandLine(args)
 						.AddEnvironmentVariables();
 				})
-				.UseServiceProviderFactory(new AutofacServiceProviderFactory())
 				.UseSerilog((hostingContext, service, loggerConfig) =>
 				{
 					loggerConfig

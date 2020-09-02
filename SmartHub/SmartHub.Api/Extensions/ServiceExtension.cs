@@ -17,15 +17,16 @@ using Newtonsoft.Json.Serialization;
 using NodaTime;
 using NodaTime.Serialization.JsonNet;
 using Polly;
+using SmartHub.Domain.Common.Settings;
 
 namespace SmartHub.Api.Extensions
 {
 	public static class ServiceExtension
 	{
-		public static void AddApiLayer(this IServiceCollection services, IConfiguration configuration)
+		public static void AddApiLayer(this IServiceCollection services, IConfiguration configuration, IHostEnvironment appEnvironment)
 		{
 			// Server configuration
-			services.AddServerConfiguration(configuration);
+			services.AddServerConfiguration(configuration, appEnvironment);
 			// Swagger
 			services.AddSwagger();
 			// Controllers
@@ -42,11 +43,19 @@ namespace SmartHub.Api.Extensions
 
 		}
 
-		private static void AddServerConfiguration(this IServiceCollection services, IConfiguration configuration)
+		private static void AddServerConfiguration(this IServiceCollection services, IConfiguration configuration, IHostEnvironment appEnvironment)
 		{
 			services.Configure<KestrelServerOptions>(options => options.AllowSynchronousIO = true);
 
 			services.Configure<HostOptions>(configuration.GetSection("HostOptions"));
+
+			// -------------- SmartHubSettings ---------------
+			services.Configure<ApplicationSettings>(configuration.GetSection("SmartHub"));
+			services.PostConfigure<ApplicationSettings>(options =>
+			{
+				options.EnvironmentName = appEnvironment.EnvironmentName;
+				options.DefaultName = appEnvironment.ApplicationName;
+			});
 		}
 
 		private static void AddSpaStaticFiles(this IServiceCollection services)
