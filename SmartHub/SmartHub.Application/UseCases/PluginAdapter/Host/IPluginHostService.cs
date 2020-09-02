@@ -1,4 +1,6 @@
-﻿using SmartHub.Application.UseCases.PluginAdapter.Loader;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
+using SmartHub.Application.UseCases.PluginAdapter.Loader;
 using SmartHub.BasePlugin;
 using SmartHub.BasePlugin.Interfaces.DeviceTypes;
 
@@ -8,22 +10,18 @@ namespace SmartHub.Application.UseCases.PluginAdapter.Host
 	/// Service for holding infos about available plugins
 	/// Here you can load a specific plugin
 	/// </summary>
-	public interface IPluginHostService
+	public interface IPluginHostService<T> where T: class
 	{
-		/// <summary>
-		/// Loads all Plugins
-		/// </summary>
-		IPluginLoadService<IPlugin> Plugins { get; }
-
-		/// <summary>
-		/// Loads only light plugins
-		/// </summary>
-		IPluginLoadService<ILight> LightPlugins { get; }
-
-		/// <summary>
-		/// Loads only door plugins
-		/// </summary>
-		IPluginLoadService<IDoor> DoorPlugins { get; }
+		Task<T> GetPluginByName();
+		// /// <summary>
+		// /// Loads only light plugins
+		// /// </summary>
+		// IPluginLoadService<ILight> LightPlugins { get; }
+		//
+		// /// <summary>
+		// /// Loads only door plugins
+		// /// </summary>
+		// IPluginLoadService<IDoor> DoorPlugins { get; }
 
 	}
 }

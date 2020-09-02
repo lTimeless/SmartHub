@@ -30,7 +30,7 @@ namespace SmartHub.Application.UseCases.PluginAdapter.Loader
             var home = await _unitOfWork.HomeRepository.GetHome();
             if (home is null)
             {
-                _log.Warning($"No home available.");
+                _log.Warning("No home available.");
                 return Response.Fail<string>("No home available.");
             }
             var setting = home.Settings.FirstOrDefault(c => c.IsActive || c.PluginPath.Contains("_private"));
