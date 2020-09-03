@@ -34,16 +34,6 @@ namespace SmartHub.Application.UseCases.PluginAdapter.Loader
 			_pluginFinderService = pluginFinderService;
 		}
 
-		public Task<T> LoadByName(string pluginName)
-		{
-			if (string.IsNullOrEmpty(pluginName))
-			{
-				throw new PluginException($"[{nameof(GetAndLoadByName)}] Error: The given pluginName is null or empty");
-			}
-
-			return null;
-		}
-
 		/// <inheritdoc cref="IPluginLoadService{T}.GetAndLoadByName"/>
 		public Task<T> GetAndLoadByName(string pluginName, Home home)
 		{
