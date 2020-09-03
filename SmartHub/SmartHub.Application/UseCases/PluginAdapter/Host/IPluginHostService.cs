@@ -1,6 +1,6 @@
-﻿using SmartHub.Application.UseCases.PluginAdapter.Loader;
+﻿using System.Threading.Tasks;
 using SmartHub.BasePlugin;
-using SmartHub.BasePlugin.Interfaces.DeviceTypes;
+using SmartHub.Domain.Common.Enums;
 
 namespace SmartHub.Application.UseCases.PluginAdapter.Host
 {
@@ -10,16 +10,23 @@ namespace SmartHub.Application.UseCases.PluginAdapter.Host
 	/// </summary>
 	public interface IPluginHostService
 	{
-		IPluginLoadService<IPlugin> Plugins { get; }
-		/// <summary>
-		/// Loads only light plugins
-		/// </summary>
-		IPluginLoadService<ILight> LightPlugins { get; }
+		Task<TP> GetPluginByNameAsync<TP>(string pluginName) where TP : IPlugin;
 
 		/// <summary>
-		/// Loads only door plugins
+		/// Synchronizes after startup the Dictionary with the plugins in the db
+		/// so all Iplugins will be loaded into the dictionary
 		/// </summary>
-		IPluginLoadService<IDoor> DoorPlugins { get; }
+		/// <param name="assemblyPath">the assemblies where to load all plugin from</param>
+		/// <param name="multiple"></param>
+		/// <returns>task completed, returns, or throws en exception if it could not create new plugin entities</returns>
+		Task SynchronizeDictionaryWithDb(string assemblyPath, LoadStrategy multiple);
 
+		/// <summary>
+		/// Loads IPlugins from the assembly, than creates PluginEntity and adds it to the home Entity
+		/// </summary>
+		/// <param name="assemblyPath">the assemblies where to load all plugin from</param>
+		/// <param name="multiple"></param>
+		/// <returns>task completed, returns, or throws en exception if it could not create new plugin entities</returns>
+		Task AddToHome(string assemblyPath, LoadStrategy multiple);
 	}
 }

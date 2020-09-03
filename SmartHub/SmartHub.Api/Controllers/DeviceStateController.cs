@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using SmartHub.Application.UseCases.DeviceState.LightState;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 
 namespace SmartHub.Api.Controllers
 {
@@ -13,6 +14,7 @@ namespace SmartHub.Api.Controllers
         /// <param name="toggleLight">Turn the light on or off</param>
         /// <returns></returns>
         [HttpGet("light/{deviceId}")]
+        [AllowAnonymous]
         public async Task<IActionResult> LightOnOff(string deviceId, [FromQuery]bool toggleLight)
         {
             var deviceLightState = new DeviceLightStateRequestDto

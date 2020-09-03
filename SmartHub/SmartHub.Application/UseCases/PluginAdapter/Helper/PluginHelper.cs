@@ -1,13 +1,14 @@
-﻿using SmartHub.BasePlugin;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Reflection;
+using SmartHub.BasePlugin;
 using SmartHub.Domain.Common.Enums;
 
-namespace SmartHub.Application.UseCases.PluginAdapter.Util
+namespace SmartHub.Application.UseCases.PluginAdapter.Helper
 {
-	public static class PluginUtils
+	public static class PluginHelper
 	{
 		/// <summary>
 		/// gets valid pluginTypes
@@ -63,6 +64,30 @@ namespace SmartHub.Application.UseCases.PluginAdapter.Util
 			}
 
 			return connectionTyp;
+		}
+
+
+		public static bool ValidatePath(string path)
+		{
+			var pathInfo = File.GetAttributes(path);
+
+			if ((pathInfo & FileAttributes.Directory) == FileAttributes.Directory)
+			{
+				if (!Directory.Exists(path))
+				{
+					return false;
+				}
+			}
+
+			if ((pathInfo & FileAttributes.Archive) == FileAttributes.Archive)
+			{
+				if (!File.Exists(path))
+				{
+					return false;
+				}
+			}
+
+			return true;
 		}
 	}
 }

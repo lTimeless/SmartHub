@@ -8,15 +8,14 @@ namespace SmartHub.Application.UseCases.PluginAdapter.Creator
 	/// <summary>
 	/// Service for creating Plugins
 	/// </summary>
-	/// <typeparam name="T">The type to create</typeparam>
-	public interface IPluginCreatorService<T>
+	public interface IPluginCreatorService
 	{
 		/// <summary>
 		///	Creates all IPlugins from the given assembly
 		/// </summary>
 		/// <param name="assembly">the assembly wit all the iPlugins</param>
 		/// <returns>A dictionary with the plugin name as key and the created iPlugin instance as value</returns>
-		Dictionary<string, T> CreateIPluginsFromAssembly(Assembly assembly);
+		Dictionary<string, IPlugin> CreateIPluginsFromAssembly(Assembly assembly);
 
 		/// <summary>
 		/// Creates a list of Plugin entities from a list of IPlugins

@@ -1,13 +1,14 @@
-﻿using Microsoft.EntityFrameworkCore;
-using SmartHub.Application.Common.Interfaces;
-using SmartHub.Domain.Entities;
-using System.Linq;
+﻿using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+using SmartHub.Application.Common.Interfaces;
 using SmartHub.Application.Common.Interfaces.Repositories;
 using SmartHub.Domain.Common.Enums;
+using SmartHub.Domain.Entities;
+using SmartHub.Infrastructure.Database.Repositories;
 
-namespace SmartHub.Infrastructure.Database.Repositories
+namespace SmartHub.Infrastructure.Database
 {
 	public class UnitOfWork : IUnitOfWork
 	{

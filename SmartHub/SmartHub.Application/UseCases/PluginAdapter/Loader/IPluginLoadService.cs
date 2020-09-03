@@ -1,39 +1,18 @@
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
-using SmartHub.Domain.Common.Enums;
-using SmartHub.Domain.Entities;
+﻿using System.Threading.Tasks;
+using SmartHub.BasePlugin;
 
 namespace SmartHub.Application.UseCases.PluginAdapter.Loader
 {
 	/// <summary>
-	/// Service for loading Plugins
+	/// Service for loading IPlugins
 	/// </summary>
-	/// <typeparam name="T">The type to load.</typeparam>
-	public interface IPluginLoadService<T> where T : class
+	public interface IPluginLoadService
 	{
 		/// <summary>
 		/// Gets and loads an iPlugin by name
 		/// </summary>
 		/// <param name="pluginName">the plugin name from the iPlugin</param>
-		/// <param name="home">the home</param>
-		/// <returns>the wanted iPlugin or null</returns>
-		Task<T> GetAndLoadByName(string pluginName, Home home);
-
-		/// <summary>
-		/// Gets and loads IPlugins by path
-		/// </summary>
-		/// <param name="assemblyPath"></param>
-		/// <returns>the wanted iPlugins</returns>
-		Task<IEnumerable<T>> GetAndLoadByPath(string assemblyPath);
-
-
-		/// <summary>
-		/// Loads IPlugins, from multiple assemblies and creates Plugins if they don't exist yet
-		/// </summary>
-		/// <param name="assemblyPaths">the assemblies where to load all plugin from</param>
-		/// <param name="multiple"></param>
-		/// <returns>task completed, returns, or throws en exception if it could not create new plugin entities</returns>
-		Task<bool> LoadAndAddToHomeAsync(IEnumerable<string> assemblyPaths, LoadStrategy multiple);
-
+		/// <returns>the wanted iPlugin or throws Exception</returns>
+		Task<IPlugin> LoadByName(string pluginName);
 	}
 }

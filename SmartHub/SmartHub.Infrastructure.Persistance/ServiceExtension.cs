@@ -10,10 +10,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
-using Newtonsoft.Json;
 using SmartHub.Application.Common.Interfaces;
 using SmartHub.Application.Common.Interfaces.Repositories;
-using SmartHub.Application.Common.Models;
 using SmartHub.Domain.Common.Settings;
 using SmartHub.Domain.Entities;
 using SmartHub.Infrastructure.Database;
@@ -102,31 +100,6 @@ namespace SmartHub.Infrastructure
                     ClockSkew = TimeSpan.Zero,
                     ValidIssuer = configuration["JwtSettings:Issuer"],
                     ValidAudience = configuration["JwtSettings:Audience"]
-                };
-                x.Events = new JwtBearerEvents()
-                {
-                    OnAuthenticationFailed = c =>
-                    {
-                        c.NoResult();
-                        c.Response.StatusCode = 500;
-                        c.Response.ContentType = "text/plain";
-                        return c.Response.WriteAsync(c.Exception.ToString());
-                    },
-                    OnChallenge = context =>
-                    {
-                        context.HandleResponse();
-                        context.Response.StatusCode = 401;
-                        context.Response.ContentType = "application/json";
-                        var result = JsonConvert.SerializeObject(Response.Fail<string>("You are not Authorized"));
-                        return context.Response.WriteAsync(result);
-                    },
-                    OnForbidden = context =>
-                    {
-                        context.Response.StatusCode = 403;
-                        context.Response.ContentType = "application/json";
-                        var result = JsonConvert.SerializeObject(Response.Fail<string>("You are not authorized to access this resource"));
-                        return context.Response.WriteAsync(result);
-                    },
                 };
             });
 

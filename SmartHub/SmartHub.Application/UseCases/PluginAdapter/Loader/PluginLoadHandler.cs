@@ -1,6 +1,5 @@
 ﻿using MediatR;
 using Serilog;
-using SmartHub.Application.UseCases.PluginAdapter.Finder;
 using SmartHub.Application.UseCases.PluginAdapter.Host;
 using SmartHub.Domain.Common.Extensions;
 using System.Linq;
@@ -40,12 +39,12 @@ namespace SmartHub.Application.UseCases.PluginAdapter.Loader
 
             if (filteredOrAllFoundPlugins.IsNullOrEmpty())
             {
-                _log.Warning($"No new plugins available.");
+                _log.Warning("No new plugins available.");
                 return Response.Fail<string>("No new plugins available.");
             }
             var path = request.Path.IsNullOrEmpty() ? setting.PluginPath : request.Path;
 
-            var pluginsLoaded = await _pluginHostService.Plugins.LoadAndAddToHomeAsync(new []{ path }, request.LoadStrategyMultiple);
+            var pluginsLoaded = await _pluginHostService.AddToHomeAsync( path, request.LoadStrategyMultiple);
             return pluginsLoaded
                 ? Response.Ok("New Plugins loaded.")
                 : Response.Fail<string>("Error: Couldn't load new Plugins.");

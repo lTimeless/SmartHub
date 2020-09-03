@@ -7,8 +7,9 @@ using Serilog;
 using SmartHub.Application.Common.Interfaces;
 using SmartHub.Application.Common.Interfaces.Repositories;
 using SmartHub.Application.Common.Models;
+using SmartHub.Application.UseCases.PluginAdapter.Helper;
 using SmartHub.Application.UseCases.PluginAdapter.Host;
-using SmartHub.Application.UseCases.PluginAdapter.Util;
+using SmartHub.BasePlugin.Interfaces.DeviceTypes;
 using SmartHub.Domain.Common.Enums;
 
 namespace SmartHub.Application.UseCases.DeviceState.LightState
@@ -39,8 +40,9 @@ namespace SmartHub.Application.UseCases.DeviceState.LightState
 			{
 				return Response.Fail<DeviceStateDto>($"Error: No device found by the given deviceId {request.LightStateDto.DeviceId}");
 			}
-			var pluginObject = await _pluginHostService.LightPlugins.GetAndLoadByName(foundDevice.PluginName, home);
-			var connectionType = PluginUtils.CombineConnectionTypes(pluginObject);
+			// var pluginObject = await _pluginHostService.Plugins.GetAndLoadByName(foundDevice.PluginName, home) as ILight;
+			var pluginObject = await _pluginHostService.GetPluginByNameAsync<ILight>(foundDevice.PluginName);
+			var connectionType = PluginHelper.CombineConnectionTypes(pluginObject);
 			if ((connectionType & ConnectionTypes.Http) != 0 && foundDevice.PrimaryConnection == ConnectionTypes.Http)
 			{
 				_query = pluginObject.InstantiateQuery().SetToggleLight(request.LightStateDto.ToggleLight).Build();
@@ -56,8 +58,8 @@ namespace SmartHub.Application.UseCases.DeviceState.LightState
 				_log.Information("{connectionType}");
 
 			}
-			var response = await _httpService.SendAsync(foundDevice.Ip.Ipv4, _query);
-			return response ?
+			// var response = await _httpService.SendAsync(foundDevice.Ip.Ipv4, _query);
+			return true ?
 				Response.Ok<DeviceStateDto>($"{foundDevice.Name} changed light status", request.LightStateDto) :
 				Response.Fail<DeviceStateDto>($"Error: Couldn't send new light status to {foundDevice.Name}");
 		}

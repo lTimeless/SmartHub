@@ -1,6 +1,5 @@
 ﻿using SmartHub.Application.Common.Exceptions;
 using SmartHub.Application.UseCases.PluginAdapter.Creator;
-using SmartHub.Application.UseCases.PluginAdapter.Finder;
 using SmartHub.BasePlugin;
 using SmartHub.Domain.Common.Extensions;
 using System;
@@ -11,138 +10,125 @@ using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using SmartHub.Application.Common.Interfaces.Repositories;
-using SmartHub.Domain.Common.Enums;
-using SmartHub.Domain.Entities;
+using SmartHub.Application.UseCases.PluginAdapter.Helper;
 
 namespace SmartHub.Application.UseCases.PluginAdapter.Loader
 {
-	public class PluginLoadService<T> : IPluginLoadService<T> where T : class
+	public class PluginLoadService: IPluginLoadService
 	{
-		private readonly IUnitOfWork _unitOfWork;
-		private readonly IPluginCreatorService<T> _pluginCreator;
-		private readonly IPluginFinderService _pluginFinderService;
 
-		// PluginHost sollte die dictionarys verwalten??? damit der Loader nur ladet!!
-		//TODO: damit hier nicht jedesmal die assembly neu geladen wird
-		// ein dictionary(zeile 51 bereits da alle instances) von typ T und dann bei der Getfunktion wird erst darin anhand des params "name" geprüft
-		// und erst danach dann die assembly geladen falls in der liste kein eintrag ist
-		// neue einträge überschreiben zu bestehenden key überschreiben diese
-		public PluginLoadService(IUnitOfWork unitOfWork, IPluginCreatorService<T> pluginCreator, IPluginFinderService pluginFinderService)
+		private readonly IUnitOfWork _unitOfWork;
+		private readonly IPluginCreatorService _pluginCreator;
+
+		public PluginLoadService(IUnitOfWork unitOfWork, IPluginCreatorService pluginCreator)
 		{
 			_unitOfWork = unitOfWork;
 			_pluginCreator = pluginCreator;
-			_pluginFinderService = pluginFinderService;
 		}
 
-		/// <inheritdoc cref="IPluginLoadService{T}.GetAndLoadByName"/>
-		public Task<T> GetAndLoadByName(string pluginName, Home home)
+		/// <inheritdoc cref="IPluginLoadService.LoadByName"/>
+		[MethodImpl(MethodImplOptions.NoInlining)] // put entire unloadable AssemblyLoadContext in a method to avoid caller holding on to the reference
+		public async Task<IPlugin> LoadByName(string pluginName)
 		{
-			if (string.IsNullOrEmpty(pluginName))
+			var home = await _unitOfWork.HomeRepository.GetHome();
+			if (home is null)
 			{
-				throw new PluginException($"[{nameof(GetAndLoadByName)}] Error: The given pluginName is null or empty");
+				throw new PluginException("Error: No home created yet.");
+			}
+			var setting = home.Settings.FirstOrDefault(c => c.IsActive);
+
+			var foundAllFindPluginsInAssembliesDictionary = FindPluginsInAssemblies(setting.PluginPath);
+			if (!foundAllFindPluginsInAssembliesDictionary.ContainsKey(pluginName))
+			{
+				throw new PluginException($"Error: No plugin found on your machine for the given name - {pluginName}");
 			}
 
-			var plugin = home.Plugins.Find(x => x.Name == pluginName);
-			if (plugin is null)
+			var pluginDto = foundAllFindPluginsInAssembliesDictionary[pluginName];
+			if (!PluginHelper.ValidatePath(pluginDto.Path))
 			{
-				throw new PluginException($"[{nameof(GetAndLoadByName)}] Error: No plugin found, in the database, under the given name : {pluginName}");
+				throw new PluginException($"Error: Couldn't load plugin {pluginName}");
+			}
+			(PluginLoadContext pluginLoadContext, Assembly assembly) = LoadAssemblyAndContext(pluginDto.Path);
+
+			var iPluginsFromAssembly = _pluginCreator.CreateIPluginsFromAssembly(assembly);
+
+			if (iPluginsFromAssembly.IsNullOrEmpty())
+			{
+				throw new PluginException($"Error: While receiving the IPlugin from {nameof(_pluginCreator.CreateIPluginsFromAssembly)}");
 			}
 
-			(PluginLoadContext pluginLoadContext, IEnumerable<Assembly> assembly) = Load(plugin.AssemblyFilepath, LoadStrategy.Single);
-
-			var dictionaryOfIPlugin = _pluginCreator.CreateIPluginsFromAssembly(assembly.FirstOrDefault());
-
+			var foundIPlugin = iPluginsFromAssembly.First(x => x.Key.Equals(pluginName));
 			pluginLoadContext.Unload();
-			if (dictionaryOfIPlugin.IsNullOrEmpty())
-			{
-				throw new PluginException($"[{nameof(GetAndLoadByName)}] Error: While receiving the IPlugin from {nameof(_pluginCreator.CreateIPluginsFromAssembly)}");
-			}
 
-			var foundIPlugin = dictionaryOfIPlugin.First(x => x.Key.Equals(plugin.Name));
-			return Task.FromResult(foundIPlugin.Value);
+			return foundIPlugin.Value;
 		}
-		// TODO: eigentlich brauche ich nur LoadbyName
-		/// <inheritdoc cref="IPluginLoadService{T}.GetAndLoadByPath"/>
-		public Task<IEnumerable<T>> GetAndLoadByPath(string assemblyPath)
-		{
-			if (string.IsNullOrEmpty(assemblyPath))
-			{
-				throw new SmartHubException($"[{nameof(GetAndLoadByPath)}] The given assemblyPath is null");
-			}
 
-			(PluginLoadContext pluginLoadContext, IEnumerable<Assembly> assemblies) = Load(assemblyPath, LoadStrategy.Multiple);
-			var listOfIPlugins = new List<T>();
+		// put entire UnloadableAssemblyLoadContext in a method to avoid caller holding on to the reference
+		[MethodImpl(MethodImplOptions.NoInlining)]
+		public IReadOnlyDictionary<string, PluginDto> FindPluginsInAssemblies(string path)
+		{
+			var assemblyPluginInfos = new Dictionary<string, PluginDto>();
+			(PluginLoadContext pluginLoadContext, IEnumerable<Assembly> assemblies) = LoadAssembliesAndContext(path);
+
 			foreach (var assembly in assemblies)
 			{
-				var dictionaryOfIPlugin = _pluginCreator.CreateIPluginsFromAssembly(assembly);
-				listOfIPlugins.AddRange(dictionaryOfIPlugin.Values);
+				foreach (var plugin in PluginHelper.GetValidPluginTypes(assembly))
+				{
+					// plugin.name === class name
+					var pluginDto = new PluginDto(plugin.Name, assembly.Location);
+					assemblyPluginInfos.Add(plugin.Name, pluginDto);
+				}
 			}
 			pluginLoadContext.Unload();
-			return Task.FromResult<IEnumerable<T>>(listOfIPlugins);
+			return assemblyPluginInfos;
 		}
 
-		// TODO: wird wegfallen, da alle welche nicht im dictionary sind und vom User angefragt werden, geladen werden.
-		// und die AddTOHome function wird in neue Funktion "SynchronizeWithDb" umwandern
-		/// <inheritdoc cref="IPluginLoadService{T}.LoadAndAddToHomeAsync"/>
-		public async Task<bool> LoadAndAddToHomeAsync(IEnumerable<string> assemblyPaths, LoadStrategy multiple)
+
+
+
+		public async Task<IReadOnlyDictionary<string, PluginDto>> FilterByPluginsInHome(
+			IReadOnlyDictionary<string, PluginDto> foundPluginDtosDictionary)
 		{
-			var paths = assemblyPaths.ToList();
-			if (paths.IsNullOrEmpty())
+			var home = await _unitOfWork.HomeRepository.GetHome();
+			if (home.Plugins.IsNullOrEmpty())
 			{
-				return false;
+				return foundPluginDtosDictionary;
 			}
-			foreach (var path in paths)
+			var finalDictionary = new Dictionary<string, PluginDto>();
+			foreach (var (key, value) in foundPluginDtosDictionary)
 			{
-				(PluginLoadContext pluginLoadContext, IEnumerable<Assembly> assemblies) = Load(path, multiple);
-				foreach (var assembly in assemblies)
+				if (home.Plugins.Any(x => x.Name == key))
 				{
-					await AddToHome(_pluginCreator.CreateIPluginsFromAssembly(assembly), assembly);
+					continue;
 				}
-				pluginLoadContext.Unload();
+				finalDictionary.Add(key, value);
 			}
-			return true;
+			return finalDictionary;
 		}
 
-		// put entire unloadable AssemblyLoadContext in a method to avoid caller holding on to the reference
-		[MethodImpl(MethodImplOptions.NoInlining)]
-		private Tuple<PluginLoadContext, IEnumerable<Assembly>> Load(string path, LoadStrategy multiple)
+
+
+
+
+		private Tuple<PluginLoadContext, IEnumerable<Assembly>> LoadAssembliesAndContext(string path)
 		{
-			var pathInfo = File.GetAttributes(path);
-
-			if ((pathInfo & FileAttributes.Directory) == FileAttributes.Directory)
-			{
-				if (!Directory.Exists(path))
-				{
-					throw new PluginException($"[{nameof(Load)}] The given path does not exist, path: {path}");
-				}
-
-				if (multiple == LoadStrategy.Multiple)
-				{
-					return _pluginFinderService.GetAssembliesAndLoadContext(path);
-				}
-			}
-			var (pluginLoadContext, assembly) = _pluginFinderService.GetAssemblyAndLoadContext(path);
-			return new Tuple<PluginLoadContext, IEnumerable<Assembly>>(pluginLoadContext, new[] { assembly });
+			var pluginLoadContext = new PluginLoadContext();
+			var assemblies = Directory
+				.EnumerateFiles(path, "*.dll", SearchOption.AllDirectories)
+				.Select(pluginLoadContext.LoadFromAssemblyPath)
+				.Distinct();
+			return new Tuple<PluginLoadContext, IEnumerable<Assembly>>(pluginLoadContext, assemblies);
 		}
 
-		private async Task AddToHome(Dictionary<string, T> iPluginDictionary, Assembly assembly)
+		private Tuple<PluginLoadContext, Assembly> LoadAssemblyAndContext(string path)
 		{
-			foreach (var (name, _) in iPluginDictionary)
+			var pluginLoadContext = new PluginLoadContext();
+			var assembly = pluginLoadContext.LoadFromAssemblyPath(path);
+			if (assembly is null)
 			{
-				var listOfIPlugins = iPluginDictionary.Values.ToList() as IEnumerable<IPlugin>
-									 ?? throw new PluginException(
-										 $"[AddToHome] Error converting list of {name} to list of IPlugin");
-
-				var listOfPlugins = _pluginCreator.CreatePluginsFromIPlugins(listOfIPlugins, assembly.Location);
-				var home = await _unitOfWork.HomeRepository.GetHome();
-
-				foreach (var plugin in listOfPlugins.Where(plugin => home.CheckIfPluginExistAndHasHigherVersion(plugin)))
-				{
-					listOfPlugins.Remove(plugin);
-				}
-
-				home.AddPlugins(listOfPlugins);
+				throw new PluginException($"[{nameof(LoadAssemblyAndContext)}] Error: Could not load the assembly under the given path: {path}");
 			}
+			return new Tuple<PluginLoadContext, Assembly>(pluginLoadContext, assembly);
 		}
 	}
 }

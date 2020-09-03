@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using SmartHub.Application.UseCases.PluginAdapter.Finder;
 using SmartHub.Application.UseCases.PluginAdapter.Loader;
 using System.Threading.Tasks;
 using SmartHub.Domain.Common.Enums;
@@ -10,7 +9,7 @@ namespace SmartHub.Api.Controllers
 	{
 
 		/// <summary>
-		/// Finds all available plugins in the plugin folder
+		/// Finds all available plugins in the plugin folder (on hdd not db)
 		/// </summary>
 		/// <returns>A Response with a Dictionary of "string, FoundPluginDto"</returns>
 		[HttpGet("findAll")]
@@ -20,7 +19,7 @@ namespace SmartHub.Api.Controllers
 		}
 
 		/// <summary>
-		/// Find all new plugins in the plugin folder
+		/// Find all new plugins in the plugin folder (on hdd not db)
 		/// </summary>
 		/// <returns>A Response with a Dictionary of "string, FoundPluginDto"</returns>
 		[HttpGet("findNew")]
@@ -30,13 +29,12 @@ namespace SmartHub.Api.Controllers
 		}
 
 		/// <summary>
-		/// Loads only new Plugins from the default pluginPaths
+		/// Loads only new Plugins from the plugin folder
 		/// </summary>
 		/// <returns>A Response containing a message</returns>
 		[HttpGet("loadAllNew")]
 		public async Task<IActionResult> LoadAllNew()
 		{
-
 			return Ok(await Mediator.Send(new PluginLoadCommand(LoadStrategy.Multiple)));
 		}
 

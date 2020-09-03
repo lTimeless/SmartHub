@@ -10,7 +10,6 @@ using SmartHub.Application.UseCases.Identity.Login;
 using SmartHub.Application.UseCases.Identity.Registration;
 using SmartHub.Application.UseCases.NetworkScanner;
 using SmartHub.Application.UseCases.PluginAdapter.Creator;
-using SmartHub.Application.UseCases.PluginAdapter.Finder;
 using SmartHub.Application.UseCases.PluginAdapter.Host;
 using SmartHub.Application.UseCases.PluginAdapter.Loader;
 
@@ -42,10 +41,9 @@ namespace SmartHub.Application
             // Geolocation
             services.AddScoped<ILocationService, LocationService>();
             // PluginAdapter
-            services.AddScoped(typeof(IPluginLoadService<>), typeof(PluginLoadService<>));
-            services.AddScoped<IPluginFinderService, PluginFinderService>();
-            services.AddScoped(typeof(IPluginCreatorService<>), typeof(PluginCreatorService<>));
-            services.AddScoped(typeof(IPluginHostService), typeof(PluginHostService));
+            services.AddScoped<IPluginLoadService, PluginLoadService>();
+            services.AddScoped<IPluginCreatorService, PluginCreatorService>();
+            services.AddScoped<IPluginHostService, PluginHostService>();
         }
 
         private static void AddMediatr(this IServiceCollection services)
