@@ -9,8 +9,10 @@ using SmartHub.Domain.Entities;
 
 namespace SmartHub.Application.UseCases.PluginAdapter.Creator
 {
+	/// <inheritdoc cref="IPluginCreatorService"/>
 	public class PluginCreatorService : IPluginCreatorService
 	{
+		/// <inheritdoc cref="IPluginCreatorService.CreateIPluginsFromAssembly"/>
 		public Dictionary<string, IPlugin> CreateIPluginsFromAssembly(Assembly assembly)
 		{
 			var iPluginsDictionary = new Dictionary<string, IPlugin>();
@@ -22,6 +24,7 @@ namespace SmartHub.Application.UseCases.PluginAdapter.Creator
 			return iPluginsDictionary;
 		}
 
+		/// <inheritdoc cref="IPluginCreatorService.CreatePluginsFromIPlugins"/>
 		public List<Plugin> CreatePluginsFromIPlugins(IEnumerable<IPlugin> iPluginsList, string assemblyLocation)
 		{
 			var pluginList = new List<Plugin>();

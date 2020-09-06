@@ -2,9 +2,13 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Reflection;
+using System.Threading.Tasks;
 using SmartHub.BasePlugin;
 using SmartHub.Domain.Common.Enums;
+using SmartHub.Domain.Common.Extensions;
+using SmartHub.Domain.Entities;
 
 namespace SmartHub.Application.UseCases.PluginAdapter.Helper
 {
@@ -66,11 +70,14 @@ namespace SmartHub.Application.UseCases.PluginAdapter.Helper
 			return connectionTyp;
 		}
 
-
+		/// <summary>
+		/// Validates the given path if it is a Dictionary or a .dll File
+		/// </summary>
+		/// <param name="path">The path to look for</param>
+		/// <returns>false if path does not exist</returns>
 		public static bool ValidatePath(string path)
 		{
 			var pathInfo = File.GetAttributes(path);
-
 			if ((pathInfo & FileAttributes.Directory) == FileAttributes.Directory)
 			{
 				if (!Directory.Exists(path))
@@ -78,7 +85,6 @@ namespace SmartHub.Application.UseCases.PluginAdapter.Helper
 					return false;
 				}
 			}
-
 			if ((pathInfo & FileAttributes.Archive) == FileAttributes.Archive)
 			{
 				if (!File.Exists(path))
@@ -86,8 +92,28 @@ namespace SmartHub.Application.UseCases.PluginAdapter.Helper
 					return false;
 				}
 			}
-
 			return true;
+		}
+
+		/// <summary>
+		/// Filters the given dictionary with the given function
+		/// </summary>
+		/// <param name="foundPluginDtosDictionary">all previously found PluginDtos</param>
+		/// <param name="function">Function that checks if pluginExists</param>
+		/// <returns></returns>
+		public static IReadOnlyDictionary<string, PluginDto> FilterByFunction(
+			IReadOnlyDictionary<string, PluginDto> foundPluginDtosDictionary, Func<string, bool> function)
+		{
+			var finalDictionary = new Dictionary<string, PluginDto>();
+			foreach (var (key, value) in foundPluginDtosDictionary)
+			{
+				if(function.Invoke(key))
+				{
+					continue;
+				}
+				finalDictionary.Add(key, value);
+			}
+			return finalDictionary;
 		}
 	}
 }

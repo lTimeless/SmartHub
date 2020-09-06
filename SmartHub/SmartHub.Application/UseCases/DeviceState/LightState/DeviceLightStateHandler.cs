@@ -35,6 +35,11 @@ namespace SmartHub.Application.UseCases.DeviceState.LightState
 				throw new ArgumentNullException(nameof(request));
 			}
 			var home = await _unitOfWork.HomeRepository.GetHome();
+			if (home is null)
+			{
+				return Response.Fail<DeviceStateDto>("Error: There is no home created at the moment.");
+
+			}
 			var foundDevice = home.Devices.SingleOrDefault(x => x.Id == request.LightStateDto.DeviceId);
 			if (foundDevice is null)
 			{

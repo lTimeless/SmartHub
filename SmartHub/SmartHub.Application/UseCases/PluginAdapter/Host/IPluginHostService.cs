@@ -1,6 +1,5 @@
 ﻿using System.Threading.Tasks;
 using SmartHub.BasePlugin;
-using SmartHub.Domain.Common.Enums;
 
 namespace SmartHub.Application.UseCases.PluginAdapter.Host
 {
@@ -13,20 +12,9 @@ namespace SmartHub.Application.UseCases.PluginAdapter.Host
 		Task<TP> GetPluginByNameAsync<TP>(string pluginName) where TP : IPlugin;
 
 		/// <summary>
-		/// Synchronizes after startup the Dictionary with the plugins in the db
-		/// so all Iplugins will be loaded into the dictionary
+		/// Synchronizes the Dictionary and Database with the Plugin folder
 		/// </summary>
-		/// <param name="assemblyPath">the assemblies where to load all plugin from</param>
-		/// <param name="multiple"></param>
-		/// <returns>task completed, returns, or throws en exception if it could not create new plugin entities</returns>
-		Task SynchronizeDictionaryWithDb(string assemblyPath, LoadStrategy multiple);
-
-		/// <summary>
-		/// Loads IPlugins from the assembly, than creates PluginEntity and adds it to the home Entity
-		/// </summary>
-		/// <param name="assemblyPath">the assemblies where to load all plugin from</param>
-		/// <param name="multiple"></param>
-		/// <returns>task completed, returns, or throws en exception if it could not create new plugin entities</returns>
-		Task AddToHome(string assemblyPath, LoadStrategy multiple);
+		/// <returns>returns false if there was an error and true if it was successful</returns>
+		Task<bool> SynchronizeDictionaryAndDb();
 	}
 }

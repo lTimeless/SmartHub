@@ -33,8 +33,8 @@ namespace SmartHub.Application.UseCases.Entity.Homes.Create
 
 		public async Task<Response<HomeDto>> Handle(HomeCreateCommand request, CancellationToken cancellationToken)
 		{
-			var homAlreadyExists = await _unitOfWork.HomeRepository.GetHome();
-			if (homAlreadyExists != null)
+			var home = await _unitOfWork.HomeRepository.GetHome();
+			if (home != null)
 			{
 				return Response.Fail<HomeDto>("Error: There is already a home.");
 			}
@@ -42,7 +42,6 @@ namespace SmartHub.Application.UseCases.Entity.Homes.Create
 			var defaultSetting = new Setting($"{request.Name}_Setting_default",
 				"This is a default setting",
 				true,
-				_optionsSnapshot.CurrentValue.DefaultPluginpath,
 				_optionsSnapshot.CurrentValue.DefaultPluginpath,
 				_optionsSnapshot.CurrentValue.DownloadServerUrl,
 				_currentUser.RequesterName,

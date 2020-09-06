@@ -1,21 +1,42 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using SmartHub.Application.UseCases.PluginAdapter.Loader;
+﻿using System;
 using System.Threading.Tasks;
-using SmartHub.Domain.Common.Enums;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using SmartHub.Application.UseCases.PluginAdapter.Host;
+using SmartHub.BasePlugin;
 
 namespace SmartHub.Api.Controllers
 {
 	public class PluginController : BaseController
 	{
+		private readonly IPluginHostService _pluginHostService;
+
+		public PluginController(IPluginHostService pluginHostService)
+		{
+			_pluginHostService = pluginHostService;
+		}
+
+		/// <summary>
+		/// Loads only new Plugins by the given path
+		/// </summary>
+		/// <returns>A Response containing a message</returns>
+		[AllowAnonymous]
+		[HttpGet("getByName")]
+		[Obsolete("This is just for testing purposes")]
+		public async Task<IActionResult> GetByName([FromQuery]string pluginName)
+		{
+			return Ok(await _pluginHostService.GetPluginByNameAsync<IPlugin>(pluginName));
+		}
 
 		/// <summary>
 		/// Finds all available plugins in the plugin folder (on hdd not db)
 		/// </summary>
 		/// <returns>A Response with a Dictionary of "string, FoundPluginDto"</returns>
 		[HttpGet("findAll")]
-		public async Task<IActionResult> FindAll()
+		[Obsolete("This will be later implemented with the downloadFromServer function")]
+		public IActionResult FindAll()
 		{
-			return Ok(await Mediator.Send(new PluginFinderQuery(false)));
+			return Ok("This is not implemented");
 		}
 
 		/// <summary>
@@ -23,9 +44,10 @@ namespace SmartHub.Api.Controllers
 		/// </summary>
 		/// <returns>A Response with a Dictionary of "string, FoundPluginDto"</returns>
 		[HttpGet("findNew")]
-		public async Task<IActionResult> FindNew()
+		[Obsolete("This will be later implemented with the downloadFromServer function")]
+		public IActionResult FindNew()
 		{
-			return Ok(await Mediator.Send(new PluginFinderQuery(true)));
+			return Ok("This is not implemented");
 		}
 
 		/// <summary>
@@ -33,9 +55,10 @@ namespace SmartHub.Api.Controllers
 		/// </summary>
 		/// <returns>A Response containing a message</returns>
 		[HttpGet("loadAllNew")]
-		public async Task<IActionResult> LoadAllNew()
+		[Obsolete("This will be later implemented with the downloadFromServer function")]
+		public IActionResult LoadAllNew()
 		{
-			return Ok(await Mediator.Send(new PluginLoadCommand(LoadStrategy.Multiple)));
+			return Ok("This is not implemented");
 		}
 
 		/// <summary>
@@ -43,9 +66,10 @@ namespace SmartHub.Api.Controllers
 		/// </summary>
 		/// <returns>A Response containing a message</returns>
 		[HttpGet("loadNewBypath")]
-		public async Task<IActionResult> LoadNewByPath([FromQuery]string pluginPath)
+		[Obsolete("This will be later implemented with the downloadFromServer function")]
+		public IActionResult LoadNewByPath([FromQuery]string pluginPath)
 		{
-			return Ok(await Mediator.Send(new PluginLoadCommand(LoadStrategy.Multiple, pluginPath)));
+			return Ok("This is not implemented");
 		}
 	}
 }

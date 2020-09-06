@@ -9,35 +9,24 @@ using System.Linq;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
-using SmartHub.Application.Common.Interfaces.Repositories;
 using SmartHub.Application.UseCases.PluginAdapter.Helper;
 
 namespace SmartHub.Application.UseCases.PluginAdapter.Loader
 {
+	/// <inheritdoc cref="IPluginLoadService"/>
 	public class PluginLoadService: IPluginLoadService
 	{
-
-		private readonly IUnitOfWork _unitOfWork;
 		private readonly IPluginCreatorService _pluginCreator;
 
-		public PluginLoadService(IUnitOfWork unitOfWork, IPluginCreatorService pluginCreator)
+		public PluginLoadService(IPluginCreatorService pluginCreator)
 		{
-			_unitOfWork = unitOfWork;
 			_pluginCreator = pluginCreator;
 		}
 
 		/// <inheritdoc cref="IPluginLoadService.LoadByName"/>
-		[MethodImpl(MethodImplOptions.NoInlining)] // put entire unloadable AssemblyLoadContext in a method to avoid caller holding on to the reference
-		public async Task<IPlugin> LoadByName(string pluginName)
+		public async Task<IPlugin> LoadByName(string pluginName, string pluginPath)
 		{
-			var home = await _unitOfWork.HomeRepository.GetHome();
-			if (home is null)
-			{
-				throw new PluginException("Error: No home created yet.");
-			}
-			var setting = home.Settings.FirstOrDefault(c => c.IsActive);
-
-			var foundAllFindPluginsInAssembliesDictionary = FindPluginsInAssemblies(setting.PluginPath);
+			var foundAllFindPluginsInAssembliesDictionary = FindPluginsInAssemblies(pluginPath);
 			if (!foundAllFindPluginsInAssembliesDictionary.ContainsKey(pluginName))
 			{
 				throw new PluginException($"Error: No plugin found on your machine for the given name - {pluginName}");
@@ -48,9 +37,8 @@ namespace SmartHub.Application.UseCases.PluginAdapter.Loader
 			{
 				throw new PluginException($"Error: Couldn't load plugin {pluginName}");
 			}
-			(PluginLoadContext pluginLoadContext, Assembly assembly) = LoadAssemblyAndContext(pluginDto.Path);
 
-			var iPluginsFromAssembly = _pluginCreator.CreateIPluginsFromAssembly(assembly);
+			var iPluginsFromAssembly = await LoadAndCreateIPlugins(pluginDto.Path);
 
 			if (iPluginsFromAssembly.IsNullOrEmpty())
 			{
@@ -58,13 +46,10 @@ namespace SmartHub.Application.UseCases.PluginAdapter.Loader
 			}
 
 			var foundIPlugin = iPluginsFromAssembly.First(x => x.Key.Equals(pluginName));
-			pluginLoadContext.Unload();
-
 			return foundIPlugin.Value;
 		}
 
-		// put entire UnloadableAssemblyLoadContext in a method to avoid caller holding on to the reference
-		[MethodImpl(MethodImplOptions.NoInlining)]
+		/// <inheritdoc cref="IPluginLoadService.FindPluginsInAssemblies"/>
 		public IReadOnlyDictionary<string, PluginDto> FindPluginsInAssemblies(string path)
 		{
 			var assemblyPluginInfos = new Dictionary<string, PluginDto>();
@@ -83,34 +68,16 @@ namespace SmartHub.Application.UseCases.PluginAdapter.Loader
 			return assemblyPluginInfos;
 		}
 
-
-
-
-		public async Task<IReadOnlyDictionary<string, PluginDto>> FilterByPluginsInHome(
-			IReadOnlyDictionary<string, PluginDto> foundPluginDtosDictionary)
+		/// <inheritdoc cref="IPluginLoadService.LoadAndCreateIPlugins"/>
+		public Task<Dictionary<string, IPlugin>> LoadAndCreateIPlugins(string pluginPath)
 		{
-			var home = await _unitOfWork.HomeRepository.GetHome();
-			if (home.Plugins.IsNullOrEmpty())
-			{
-				return foundPluginDtosDictionary;
-			}
-			var finalDictionary = new Dictionary<string, PluginDto>();
-			foreach (var (key, value) in foundPluginDtosDictionary)
-			{
-				if (home.Plugins.Any(x => x.Name == key))
-				{
-					continue;
-				}
-				finalDictionary.Add(key, value);
-			}
-			return finalDictionary;
+			var assembly = LoadAssemblyBypath(pluginPath);
+			return Task.FromResult(_pluginCreator.CreateIPluginsFromAssembly(assembly));
 		}
 
 
-
-
-
-		private Tuple<PluginLoadContext, IEnumerable<Assembly>> LoadAssembliesAndContext(string path)
+		[MethodImpl(MethodImplOptions.NoInlining)]
+		private static Tuple<PluginLoadContext, IEnumerable<Assembly>> LoadAssembliesAndContext(string path)
 		{
 			var pluginLoadContext = new PluginLoadContext();
 			var assemblies = Directory
@@ -120,15 +87,16 @@ namespace SmartHub.Application.UseCases.PluginAdapter.Loader
 			return new Tuple<PluginLoadContext, IEnumerable<Assembly>>(pluginLoadContext, assemblies);
 		}
 
-		private Tuple<PluginLoadContext, Assembly> LoadAssemblyAndContext(string path)
+		[MethodImpl(MethodImplOptions.NoInlining)]
+		private static Assembly LoadAssemblyBypath(string path)
 		{
 			var pluginLoadContext = new PluginLoadContext();
 			var assembly = pluginLoadContext.LoadFromAssemblyPath(path);
 			if (assembly is null)
 			{
-				throw new PluginException($"[{nameof(LoadAssemblyAndContext)}] Error: Could not load the assembly under the given path: {path}");
+				throw new PluginException($" Error: Could not load the assembly under the given path: {path}");
 			}
-			return new Tuple<PluginLoadContext, Assembly>(pluginLoadContext, assembly);
+			return assembly;
 		}
 	}
 }
