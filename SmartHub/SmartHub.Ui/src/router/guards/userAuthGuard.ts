@@ -7,19 +7,19 @@ const validateUserRoleToRoute = (to: RouteLocationNormalized, roles: Roles, next
     if (roles === Roles.Admin) {
       next();
     } else {
-      next({ path: '/notauth' });
+      next({ name: 'NotAuthorized' });
     }
   } else if (to.matched.some((record) => record.meta.isUser)) {
     if (roles === Roles.Admin || roles === Roles.User) {
       next();
     } else {
-      next({ path: '/notauth' });
+      next({ name: 'NotAuthorized' });
     }
   } else if (to.matched.some((record) => record.meta.isGuest)) {
     if (roles === Roles.Admin || roles === Roles.User || roles === Roles.Guest) {
       next();
     } else {
-      next({ path: '/notauth' });
+      next({ name: 'NotAuthorized' });
     }
   }
 };
