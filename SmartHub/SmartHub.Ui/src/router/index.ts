@@ -1,22 +1,16 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router';
 import { useRouteAuthGuard } from '@/router/guards/userAuthGuard';
-import NotAuthorized from '@/views/NotAuthorized.vue';
 import NotFound from '@/views/NotFound.vue';
+import NotAuthorized from '@/views/NotAuthorized.vue';
 import Login from '@/views/auth/Login.vue';
 import Registration from '@/views/auth/Registration.vue';
+import Init from '@/views/Init.vue';
+import Statistics from '@/views/home/Statistics.vue';
 import Events from '@/views/home/admin/Events.vue';
 import Logs from '@/views/home/admin/Logs.vue';
 import System from '@/views/home/admin/System.vue';
 import Health from '@/views/home/admin/Health.vue';
 import Manager from '@/views/home/admin/Manager.vue';
-import Plugins from '@/views/home/Plugins.vue';
-import Routines from '@/views/home/Routines.vue';
-import Statistics from '@/views/home/Statistics.vue';
-import Settings from '@/views/home/Settings.vue';
-import Dashboard from '@/views/home/Dashboard.vue';
-import Init from '@/views/Init.vue';
-import Home from '../views/Home.vue';
-import MyUser from '../views/home/MyUser.vue';
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -45,33 +39,29 @@ const routes: Array<RouteRecordRaw> = [
   },
   {
     path: '/',
-    component: Home,
+    component: () => import(/* webpackChunkName: "home" */ '../views/Home.vue'),
     meta: {
       requiresAuth: true,
       isGuest: true
     },
     children: [
-      {
-        path: '/user',
-        name: 'User',
-        component: MyUser
-      },
+      // Guest paths #####
       {
         path: '',
         name: 'Dashboard',
-        component: Dashboard,
+        component: () => import(/* webpackChunkName: "dashboard" */ '../views/home/Dashboard.vue'),
         meta: {
           requiresAuth: true,
           isGuest: true
         }
       },
       {
-        path: '/settings',
-        name: 'Settings',
-        component: Settings,
+        path: '/user',
+        name: 'User',
+        component: () => import(/* webpackChunkName: "user" */ '../views/home/MyUser.vue'),
         meta: {
           requiresAuth: true,
-          isUser: true
+          isGuest: true
         }
       },
       {
@@ -86,10 +76,21 @@ const routes: Array<RouteRecordRaw> = [
           isGuest: true
         }
       },
+      // User paths #####
+      {
+        path: '/settings',
+        name: 'Settings',
+        component: () => import(/* webpackChunkName: "init" */ '../views/home/Settings.vue'),
+        meta: {
+          requiresAuth: true,
+          isUser: true
+        }
+      },
       {
         path: '/plugins',
         name: 'Plugins',
-        component: Plugins,
+        component: () => import(/* webpackChunkName: "plugins" */ '../views/home/Routines.vue'),
+
         meta: {
           requiresAuth: true,
           isUser: true
@@ -98,7 +99,8 @@ const routes: Array<RouteRecordRaw> = [
       {
         path: '/routines',
         name: 'Routines',
-        component: Routines,
+        component: () => import(/* webpackChunkName: "routines" */ '../views/home/Routines.vue'),
+
         meta: {
           requiresAuth: true,
           isUser: true
@@ -113,6 +115,7 @@ const routes: Array<RouteRecordRaw> = [
           isUser: true
         }
       },
+      // Admin paths #####
       {
         path: '/events',
         name: 'events',

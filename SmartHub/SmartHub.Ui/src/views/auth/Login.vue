@@ -102,9 +102,14 @@ export default defineComponent({
         username: username.value,
         password: password.value
       };
-      await store.dispatch(A_LOGIN, login).catch((error) => {
-        isSignInBtnClicked.value = false;
-      });
+      await store
+        .dispatch(A_LOGIN, login)
+        .then(() => {
+          isSignInBtnClicked.value = false;
+        })
+        .catch(() => {
+          isSignInBtnClicked.value = false;
+        });
       await router.push('/');
     };
 

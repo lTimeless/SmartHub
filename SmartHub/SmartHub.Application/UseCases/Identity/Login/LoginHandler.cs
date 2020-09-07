@@ -32,7 +32,7 @@ namespace SmartHub.Application.UseCases.Identity.Login
 
 			if (!result)
 			{
-				return Response.Fail<AuthResponseDto>($"Error: Could not register user with username {request.UserName}");
+				return Response.Fail<AuthResponseDto>($"Error: Couldn't sign in user with username {request.UserName}");
 			}
 			var rolesToUser = await _userManager.GetRolesAsync(foundUser);
 			return Response.Ok("Successful",

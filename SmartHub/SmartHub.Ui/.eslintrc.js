@@ -21,7 +21,7 @@ module.exports = {
     'no-console': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
     'no-debugger': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
     'import/prefer-default-export': 'off',
-    'max-len': [2, 150, 2],
+    'max-len': ['error', { code: 170, tabWidth: 4, ignoreComments: true, ignoreTrailingComments: true }],
     'lines-between-class-members': ['error', 'always', { exceptAfterSingleLine: true }],
     'comma-dangle': ['error', 'never'],
     'object-curly-newline': ['error', { ImportDeclaration: { multiline: true, minProperties: 10 }, ExportDeclaration: 'never' }],
@@ -29,6 +29,9 @@ module.exports = {
     'import/no-cycle': 0,
     'no-param-reassign': [2, { props: false }],
     'arrow-body-style': ['error', 'as-needed'],
-    'implicit-arrow-linebreak': 'off'
+    'implicit-arrow-linebreak': 'off',
+    'function-paren-newline': ['error', 'never'],
+    'linebreak-style': ['error', 'unix'],
+    'prettier/prettier': ['error', {endOfLine: 'auto'}],
   }
 };

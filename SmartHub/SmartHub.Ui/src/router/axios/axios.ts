@@ -13,7 +13,7 @@ axios.interceptors.request.use(
     console.log('interceptor');
     const token = getToken();
     if (token) {
-      config.headers['Authorization'] = `Bearer ${token}`;
+      config.headers.Authorization = `Bearer ${token}`;
     }
     return config;
   },
@@ -34,6 +34,5 @@ axios.interceptors.response.use(
     }
     return response;
   },
-  (error) => Promise.reject(error),
+  (error) => Promise.reject(error)
 );
-
