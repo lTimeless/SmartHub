@@ -3,14 +3,7 @@ module.exports = {
   env: {
     node: true
   },
-  extends: [
-    'plugin:prettier/recommended',
-    'plugin:vue/vue3-essential',
-    '@vue/airbnb',
-    // "eslint:recommended",
-    '@vue/typescript/recommended',
-    '@vue/prettier/@typescript-eslint'
-  ],
+  extends: ['plugin:vue/vue3-essential', '@vue/prettier/@typescript-eslint', '@vue/typescript/recommended', 'plugin:prettier/recommended'],
   parserOptions: {
     parser: '@typescript-eslint/parser', // the typescript-parser for eslint, instead of tslint
     sourceType: 'module', // allow the use of imports statements
@@ -21,7 +14,7 @@ module.exports = {
     'no-console': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
     'no-debugger': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
     'import/prefer-default-export': 'off',
-    'max-len': ['error', { code: 170, tabWidth: 4, ignoreComments: true, ignoreTrailingComments: true }],
+    'max-len': ['error', { code: 170, tabWidth: 2, ignoreComments: true, ignoreTrailingComments: true }],
     'lines-between-class-members': ['error', 'always', { exceptAfterSingleLine: true }],
     'comma-dangle': ['error', 'never'],
     'object-curly-newline': ['error', { ImportDeclaration: { multiline: true, minProperties: 10 }, ExportDeclaration: 'never' }],
@@ -30,8 +23,7 @@ module.exports = {
     'no-param-reassign': [2, { props: false }],
     'arrow-body-style': ['error', 'as-needed'],
     'implicit-arrow-linebreak': 'off',
-    'function-paren-newline': ['error', 'never'],
-    'linebreak-style': ['error', 'unix'],
-    'prettier/prettier': ['error', {endOfLine: 'auto'}],
+    'function-paren-newline': ['error', 'consistent'],
+    'linebreak-style': ['error', 'unix']
   }
 };

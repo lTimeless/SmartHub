@@ -11,10 +11,7 @@ export const A_UPDATE_HOME = 'A_UPDATE_HOME';
 
 // actions context type
 type AugmentedActionContext = {
-  commit<K extends keyof HomeMutations<AuthState>>(
-    key: K,
-    payload: Parameters<HomeMutations<AuthState>[K]>[1]
-  ): ReturnType<HomeMutations<AuthState>[K]>;
+  commit<K extends keyof HomeMutations<AuthState>>(key: K, payload: Parameters<HomeMutations<AuthState>[K]>[1]): ReturnType<HomeMutations<AuthState>[K]>;
 } & Omit<ActionContext<AuthState, RootState>, 'commit'>;
 
 // Action Interface
