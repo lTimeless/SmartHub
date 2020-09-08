@@ -28,7 +28,7 @@ namespace SmartHub.Api.Middleware
 			}
 			catch (Exception ex)
 			{
-				await HandleExceptionAsync(httpContext, ex, unitOfWork);
+				await HandleExceptionAsync(httpContext, ex, unitOfWork).ConfigureAwait(false);
 			}
 		}
 

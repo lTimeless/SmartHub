@@ -34,8 +34,10 @@ namespace SmartHub.Application.UseCases.HomeFolder
             // windows "appdata/local" = > dev ../Smarthub.ConfigFolder-dev
             // Use DoNotVerify in case Folder doesn’t exist.
             var ( homePath, folderName ) = GetHomeFolderPath();
-            if (string.IsNullOrEmpty(homePath)) return Task.CompletedTask;
-
+            if (string.IsNullOrEmpty(homePath))
+            {
+                return Task.CompletedTask;
+            }
             var pluginPath = Path.Combine(homePath, folderName);
             _applicationSettings.CurrentValue.DefaultPluginpath = pluginPath; // TODO: add plugins folder
             _directoryService.CreateDirectory(homePath, folderName);

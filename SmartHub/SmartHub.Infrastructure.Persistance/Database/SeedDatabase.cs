@@ -25,7 +25,10 @@ namespace SmartHub.Infrastructure.Database
 
 		public async Task SeedData(bool seedDb)
 		{
-			if (!seedDb) return;
+			if (!seedDb)
+			{
+				return;
+			}
 			_logger.Information("Start seeding into database ...");
 			await SeedRoleData();
 			await SeedUserData();

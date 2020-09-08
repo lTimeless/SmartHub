@@ -22,22 +22,7 @@ namespace SmartHub.Application.UseCases.Entity.Homes.Patch
 		public async Task<Response<HomeDto>> Handle(HomePatchCommand request, CancellationToken cancellationToken)
 		{
 			var homeEntity = await _unitOfWork.HomeRepository.GetHome();
-			// User? userEntity = null;
-			// Setting? settingEntity = null;
-			// if (request.UserName != null)
-			// {
-			// 	userEntity = await _unitOfWork.UserRepository.GetUserByName(request.UserName);
-			// }
-			// if (request.SettingName != null)
-			// {
-			// 	settingEntity = homeEntity.Settings.Find(x => x.Name == request.SettingName);
-			// }
-			// homeEntity.UpdateHome(request.Name, request.Description, settingEntity, userEntity);
-			// await _unitOfWork.HomeRepository.UpdateAsync(homeEntity);
-
-
-			request.homePatch.ApplyTo(_mapper.Map<HomeDto>(homeEntity));
-
+			request.HomePatch.ApplyTo(_mapper.Map<HomeDto>(homeEntity));
 			return Response.Ok("Home updated.", _mapper.Map<HomeDto>(homeEntity));
 
 		}

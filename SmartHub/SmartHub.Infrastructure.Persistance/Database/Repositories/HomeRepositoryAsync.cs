@@ -18,11 +18,5 @@ namespace SmartHub.Infrastructure.Database.Repositories
         {
             return await _entities.FirstOrDefaultAsync();
         }
-
-        public async Task<Home?> PatchHome()
-        {
-            var home = await GetHome();
-            return await _entities.FirstOrDefaultAsync();
-        }
     }
 }

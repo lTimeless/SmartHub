@@ -38,7 +38,7 @@ namespace SmartHub.Application.UseCases.PluginAdapter.Loader
 				throw new PluginException($"Error: Couldn't load plugin {pluginName}");
 			}
 
-			var iPluginsFromAssembly = await LoadAndCreateIPlugins(pluginDto.Path);
+			var iPluginsFromAssembly = await LoadAndCreateIPlugins(pluginDto.Path).ConfigureAwait(false);
 
 			if (iPluginsFromAssembly.IsNullOrEmpty())
 			{

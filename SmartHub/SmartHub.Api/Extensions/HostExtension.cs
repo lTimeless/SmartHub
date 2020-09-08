@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Serilog;
+using SmartHub.Application.Common.Exceptions;
 using SmartHub.Infrastructure.Database;
 
 namespace SmartHub.Api.Extensions
@@ -56,7 +57,7 @@ namespace SmartHub.Api.Extensions
 			}
 			catch (Exception ex)
 			{
-				throw new Exception($"Error while migrating the DB on startup -- {ex.Message} \n {ex.Source}");
+				throw new SmartHubException($"Error while migrating the DB on startup -- {ex.Message} \n {ex.Source}");
 			}
 
 			return host;

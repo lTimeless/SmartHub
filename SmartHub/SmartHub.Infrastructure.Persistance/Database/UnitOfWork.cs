@@ -41,7 +41,10 @@ namespace SmartHub.Infrastructure.Database
 
 			foreach (var item in aggregateRoots.Where(item => item?.Events != null))
 			{
-				if (item == null) continue;
+				if (item == null)
+				{
+					continue;
+				}
 				foreach (var itemEvent in item.Events)
 				{
 					await _channelManager.PublishNextToChannel(EventTypes.All, itemEvent).ConfigureAwait(false);
