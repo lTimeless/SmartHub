@@ -1,27 +1,33 @@
 version: '3.4'
 
 services:
-  #  smarthub.api:
-  #    environment:
-  #      - ASPNETCORE_ENVIRONMENT=Development
-  #      - ASPNETCORE_URLS=https://+:5001;http://+:5000;https://+:5003;http://+:5002
-  #    ports:
-  #      - "5000"
-  #      - "5001"
-  #      - "5002"
-  #      - "5003"
-  #    volumes:
-  #      - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
-  #      - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
-
-  seq:
-    ports:
-      - "5341:80"
+  # Elastic and Kibana
+  elastic:
     environment:
-      - ACCEPT_EULA=Y
+      - discovery.type=single-node
+      - bootstrap.memory_lock=true
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
     volumes:
-      - ./seq-data:/data
+      - data01:/usr/share/elasticsearch/data
+    ports:
+      - "9200:9200"
+    networks:
+      - elastic
 
+  kibana:
+    ports:
+      - "5601:5601"
+    environment:
+      ELASTICSEARCH_URL: http://elastic:9200
+      ELASTICSEARCH_HOSTS: http://elastic:9200
+    networks:
+      - elastic
+
+  # PostgreSQL database
   postgres_database:
     environment:
       - POSTGRES_PASSWORD=1234
@@ -31,6 +37,7 @@ services:
     volumes:
       - database-data:/var/lib/postgresql/data
 
+  # PostgreSQL pgAdmin Ui
   pgadmin:
     ports:
       - "5050:80"
@@ -39,4 +46,3 @@ services:
       - PGADMIN_DEFAULT_PASSWORD=admin
     volumes:
       - pgadmin:/root/.pgadmin
-

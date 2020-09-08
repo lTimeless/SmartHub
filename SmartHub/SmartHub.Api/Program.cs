@@ -1,3 +1,4 @@
+using System;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -6,6 +7,7 @@ using Microsoft.Extensions.Logging;
 using Serilog;
 using Serilog.Events;
 using Serilog.Sinks.AspNetCore.SignalR.Extensions;
+using Serilog.Sinks.Elasticsearch;
 using SmartHub.Api.Extensions;
 using SmartHub.Application.UseCases.SignalR;
 
@@ -31,11 +33,18 @@ namespace SmartHub.Api
 					b.AddCommandLine(args)
 						.AddEnvironmentVariables();
 				})
-				.UseSerilog((hostingContext, service, loggerConfig) =>
+				.UseSerilog((context, service, loggerConfig) =>
 				{
 					loggerConfig
-						.ReadFrom.Configuration(hostingContext.Configuration)
-						.WriteTo.Seq("http://localhost:5341")
+						.ReadFrom.Configuration(context.Configuration)
+						.WriteTo.Elasticsearch(new ElasticsearchSinkOptions(new Uri(context.Configuration["ElasticConfiguration:Uri"]))
+						{
+							AutoRegisterTemplate = true,
+							NumberOfShards = 2,
+							NumberOfReplicas = 1,
+							IndexFormat = $"{context.Configuration["ApplicationName"]}-logs-{context.HostingEnvironment.EnvironmentName?.ToLower().Replace(".","-")}-{DateTime.UtcNow:yyyy-MM}"
+						})
+						.Enrich.WithProperty("Environment",context.HostingEnvironment.EnvironmentName)
 						.WriteTo.SignalRSink<LogHub, IServerHub>(
 							LogEventLevel.Information,
 							service,
