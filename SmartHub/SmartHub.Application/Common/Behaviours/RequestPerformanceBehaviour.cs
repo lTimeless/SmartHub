@@ -10,13 +10,12 @@ namespace SmartHub.Application.Common.Behaviours
     public class RequestPerformanceBehaviour<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse>
     {
         private readonly Stopwatch _timer;
-        private readonly ILogger _logger;
+        private readonly ILogger _logger = Log.ForContext(typeof(RequestPerformanceBehaviour<,>));
         private readonly IUserAccessor _currentUserService;
 
-        public RequestPerformanceBehaviour(ILogger logger, IUserAccessor currentUserService)
+        public RequestPerformanceBehaviour(IUserAccessor currentUserService)
         {
             _timer = new Stopwatch();
-            _logger = logger;
             _currentUserService = currentUserService;
         }
 

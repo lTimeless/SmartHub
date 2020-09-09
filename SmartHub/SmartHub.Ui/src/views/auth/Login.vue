@@ -1,69 +1,70 @@
 <template>
-  <div class="w-full login">
-    <div
-      class="container fully-centered bg-white shadow-md rounded px-8 pt-6 pb-8
-              md:8/12 lg:w-6/12 xl:w-5/12"
-    >
-      <div class="h-full flex flex-col justify-between">
-        <h2 class="font-bold text-3xl">{{ welcomeToSmartHub }}</h2>
-        <div class="ma-0">
-          <img class="img" src="../../assets/images/undraw_smart_home_28oy.svg" alt="Test" width="500" />
-        </div>
-        <form class="px-5">
-          <div class="mb-4">
-            <label class="block text-gray-600 md:text-left mb-1 md:mb-0 pr-4" for="username">
-              Username
-            </label>
+  <div class="flex items-center min-h-screen p-6 bg-ui-loginBackground dark:bg-gray-900">
+    <Card>
+      <div class="h-32 md:h-auto md:w-1/2">
+        <img aria-hidden="true" class="object-cover w-full h-full dark:hidden" src="../../assets/images/undraw_smart_home_28oy.svg" alt="Office" />
+      </div>
+      <div class="flex items-center justify-center p-6 sm:p-12 md:w-1/2">
+        <div class="w-full">
+          <h2 class="mb-4 text-left text-2xl font-semibold text-gray-700 dark:text-gray-200">
+            {{ title }}
+          </h2>
+          <label class="text-left block text-sm">
+            <span class="text-gray-600 dark:text-gray-400">Username</span>
             <input
               required
               v-model="username"
-              class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight
-          focus:outline-none focus:shadow-outline"
-              id="username"
-              type="text"
-              placeholder="JonDoe"
+              class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-ui-primary
+                    focus:outline-none focus:shadow-outlineIndigo dark:text-gray-300 dark:focus:shadow-outline form-input"
+              placeholder="Jane Doe"
             />
-          </div>
-          <div class="mb-5 mt-8">
-            <label class="block text-gray-600 md:text-left mb-1 md:mb-0 pr-4" for="password">
-              Password
-            </label>
+          </label>
+          <label class="text-left block mt-4 text-sm">
+            <span class="text-gray-600 dark:text-gray-400">Password</span>
             <input
-              v-model="password"
               required
-              name="password"
-              @keyup.enter="onLoginClick"
-              class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3
-          leading-tight focus:outline-none focus:shadow-outline"
-              id="password"
+              v-model="password"
+              class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-ui-primary
+                    focus:outline-none focus:shadow-outlineIndigo dark:text-gray-300 dark:focus:shadow-outline form-input"
+              placeholder="***************"
               type="password"
-              placeholder="*******"
+              @keyup.enter="onLoginClick"
             />
-            <p class="text-red-500 text-xs italic"></p>
-            <router-link to="/forgotpassword" class="block text-gray-500 md:text-left mb-1 md:mb-0 pr-4">
-              Forgot Password?
-            </router-link>
-          </div>
-          <div class="flex flex-col items-center justify-between">
-            <button
-              @click="onLoginClick"
-              :disabled="signInDisabled"
-              class="flex items-center text-white font-bold px-10 py-2 border border-ui-border rounded-lg
-                      bg-ui-primary active:bg-indigo-800 hover:bg-indigo-400 focus:outline-none"
-              :class="signInDisabled ? 'opacity-50 hover:bg-ui-primary focus:outline-none cursor-not-allowed' : ''"
-              type="button"
-            >
-              Sign In
-            </button>
+          </label>
 
-            <p class="pt-2">
-              You can register
-              <router-link to="/registration">here</router-link>.
-            </p>
-          </div>
-        </form>
+          <button
+            class="block w-full px-4 py-2 mt-4 text-sm font-medium leading-5 text-center text-white
+                  transition-colors duration-150 bg-ui-primary border border-transparent rounded-lg active:bg-ui-primary
+                  focus:outline-none focus:shadow-outlineIndigo"
+            :class="signInDisabled ? 'opacity-50 focus:outline-none cursor-not-allowed' : 'hover:bg-ui-primaryHover'"
+            @click="onLoginClick"
+            :disabled="signInDisabled"
+          >
+            Log in
+          </button>
+          <hr class="my-8" />
+          <button
+            disabled
+            class="flex items-center justify-center w-full px-4 py-2 text-sm font-medium leading-5 text-white
+                  text-gray-700 transition-colors duration-150 border border-gray-300 rounded-lg dark:text-gray-400
+                  active:bg-transparent focus:border-gray-500 active:text-gray-500 focus:outline-none focus:shadow-outline-gray"
+            :class="true ? 'opacity-50 focus:outline-none cursor-not-allowed' : 'hover:border-gray-500'"
+          >
+            Additional login options....
+          </button>
+          <p class="mt-4 text-left">
+            <router-link class="text-sm font-medium text-ui-primary dark:text-ui-primary hover:underline" to="/forgotpassword">
+              Forgot your password?
+            </router-link>
+          </p>
+          <p class="mt-1 text-left">
+            <router-link class="text-sm font-medium text-ui-primary dark:text-ui-primary hover:underline" to="/registration">
+              Create account
+            </router-link>
+          </p>
+        </div>
       </div>
-    </div>
+    </Card>
   </div>
 </template>
 
@@ -73,30 +74,49 @@ import { LoginRequest } from '@/types/types';
 import { useRouter } from 'vue-router';
 import { useStore } from '@/store';
 import { A_LOGIN } from '@/store/auth/actions';
+import { A_FETCH_HOME } from '@/store/home/actions';
+import Card from '@/components/widgets/Card.vue';
 
 export default defineComponent({
-  name: 'Login',
-  components: {},
+  components: {
+    Card
+  },
   setup() {
     const store = useStore();
     const router = useRouter();
-    const welcomeToSmartHub = 'Welcome to SmartHub';
+    const title = 'Login';
     const password = ref('');
     const username = ref('');
-    const isSignInBtnClicked = ref(store.state.authModule.isSignInBtnClicked);
+    const isSignInBtnClicked = ref(false);
+    const getHomeState = ref(store.state.homeModule);
+
+    store.dispatch(A_FETCH_HOME).then(() => {
+      if (getHomeState.value.home === null) {
+        router.push('/init');
+      }
+    });
+
     const onLoginClick = async () => {
+      isSignInBtnClicked.value = true;
       const login: LoginRequest = {
         username: username.value,
         password: password.value
       };
-      await store.dispatch(A_LOGIN, login);
+      await store
+        .dispatch(A_LOGIN, login)
+        .then(() => {
+          isSignInBtnClicked.value = false;
+        })
+        .catch(() => {
+          isSignInBtnClicked.value = false;
+        });
       await router.push('/');
     };
 
-    const signInDisabled = computed(() => isSignInBtnClicked.value && (username.value.length === 0 || password.value.length < 4));
+    const signInDisabled = computed(() => username.value.length === 0 || password.value.length < 4 || isSignInBtnClicked.value);
 
     return {
-      welcomeToSmartHub,
+      title,
       onLoginClick,
       password,
       username,
@@ -106,30 +126,4 @@ export default defineComponent({
 });
 </script>
 
-<style lang="scss" scoped>
-.login {
-  width: 100%;
-  height: 100vh;
-  display: flex;
-  background-color: var(--color-ui-login-background);
-  .fully-centered {
-    align-self: center;
-    height: 80%;
-
-    .img {
-      max-width: 90%;
-      display: flex;
-      justify-items: center;
-      margin: auto;
-    }
-  }
-
-  p {
-    margin: 0;
-    a {
-      text-decoration: underline;
-      /*color: var(--color-ui-background);*/
-    }
-  }
-}
-</style>
+<style lang="scss" scoped></style>

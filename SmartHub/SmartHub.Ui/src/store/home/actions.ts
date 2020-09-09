@@ -1,9 +1,8 @@
 import { ActionContext, ActionTree } from 'vuex';
-import axiosInstance from '@/router/axios/axios';
 import { RootState, HomeState, AuthState } from '@/store/index.types';
-import { Home, HomeCreateRequest, HomeUpdateRequest, ServerResponse } from '@/types/types';
-import { getAuthentication } from '@/services/auth/authService';
+import { HomeCreateRequest, HomeUpdateRequest } from '@/types/types';
 import { HomeMutations, M_UPDATE_HOME } from '@/store/home/mutations';
+import { getHome, postHome, putHome } from '@/services/apis/home.service';
 
 // Keys
 export const A_FETCH_HOME = 'A_FETCH_HOME';
@@ -12,10 +11,7 @@ export const A_UPDATE_HOME = 'A_UPDATE_HOME';
 
 // actions context type
 type AugmentedActionContext = {
-  commit<K extends keyof HomeMutations<AuthState>>(
-    key: K,
-    payload: Parameters<HomeMutations<AuthState>[K]>[1]
-  ): ReturnType<HomeMutations<AuthState>[K]>;
+  commit<K extends keyof HomeMutations<AuthState>>(key: K, payload: Parameters<HomeMutations<AuthState>[K]>[1]): ReturnType<HomeMutations<AuthState>[K]>;
 } & Omit<ActionContext<AuthState, RootState>, 'commit'>;
 
 // Action Interface
@@ -27,31 +23,34 @@ export interface HomeActions {
 
 export const actions: ActionTree<HomeState, RootState> = {
   async [A_FETCH_HOME]({ commit }): Promise<void> {
-    await axiosInstance
-      .get<ServerResponse<Home>>('api/home')
+    await getHome()
       .then((response) => {
-        commit(M_UPDATE_HOME, response.data.data);
+        if (!response.success) {
+          return Promise.reject(response.message);
+        }
+        commit(M_UPDATE_HOME, response.data);
+        return Promise.resolve();
       })
       .catch((err) => {
         console.log(err);
+        return Promise.reject(err);
       });
   },
   async [A_CREATE_HOME]({ commit }, payload: HomeCreateRequest): Promise<void> {
-    await axiosInstance
-      .post<ServerResponse<Home>>('api/home', payload)
+    await postHome(payload)
       .then((response) => {
-        commit(M_UPDATE_HOME, response.data.data);
+        if (!response.success) {
+          return Promise.reject(response.message);
+        }
+        commit(M_UPDATE_HOME, response.data);
+        return Promise.resolve(response.data);
       })
-      .catch((err) => {
-        console.log(err);
-      });
+      .catch((error) => Promise.reject(error));
   },
   async [A_UPDATE_HOME]({ commit }, payload: HomeUpdateRequest): Promise<void> {
-    axiosInstance.defaults.headers = getAuthentication().headers;
-    await axiosInstance
-      .put<ServerResponse<Home>>('api/home', payload)
-      .then((response) => {
-        commit(M_UPDATE_HOME, response.data.data);
+    await putHome(payload)
+      .then((res) => {
+        commit(M_UPDATE_HOME, res.data);
       })
       .catch((err) => {
         console.log(err);

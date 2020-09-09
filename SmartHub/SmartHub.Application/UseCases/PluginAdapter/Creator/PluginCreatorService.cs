@@ -1,38 +1,30 @@
-﻿using SmartHub.Application.UseCases.PluginAdapter.Util;
-using SmartHub.BasePlugin;
+﻿using SmartHub.BasePlugin;
 using SmartHub.Domain.Common.Extensions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using SmartHub.Application.UseCases.PluginAdapter.Helper;
 using SmartHub.Domain.Entities;
 
 namespace SmartHub.Application.UseCases.PluginAdapter.Creator
 {
-	public class PluginCreatorService<T> : IPluginCreatorService<T> where T : class
+	/// <inheritdoc cref="IPluginCreatorService"/>
+	public class PluginCreatorService : IPluginCreatorService
 	{
-		public PluginCreatorService()
+		/// <inheritdoc cref="IPluginCreatorService.CreateIPluginsFromAssembly"/>
+		public Dictionary<string, IPlugin> CreateIPluginsFromAssembly(Assembly assembly)
 		{
-		}
-
-		public Dictionary<string, T> CreateIPluginsFromAssembly(Assembly assembly)
-		{
-			var iPluginsDictionary = new Dictionary<string, T>();
-			foreach (var type in PluginUtils.GetValidPluginTypes(assembly))
+			var iPluginsDictionary = new Dictionary<string, IPlugin>();
+			foreach (var type in PluginHelper.GetValidPluginTypes(assembly))
 			{
-				var plugin = Activator.CreateInstance(type) as T;
-				switch (plugin)
-				{
-					case null:
-						continue;
-					case IPlugin iPlugin:
-						iPluginsDictionary.Add(iPlugin.Name, plugin);
-						break;
-				}
+				var iPlugin = Activator.CreateInstance(type) as IPlugin;
+				iPluginsDictionary.Add(iPlugin.GetType().GetProperty("Name").GetValue(iPlugin) as string, iPlugin);
 			}
 			return iPluginsDictionary;
 		}
 
+		/// <inheritdoc cref="IPluginCreatorService.CreatePluginsFromIPlugins"/>
 		public List<Plugin> CreatePluginsFromIPlugins(IEnumerable<IPlugin> iPluginsList, string assemblyLocation)
 		{
 			var pluginList = new List<Plugin>();
@@ -43,11 +35,9 @@ namespace SmartHub.Application.UseCases.PluginAdapter.Creator
 			}
 
 			pluginList.AddRange(from iPlugin in pluginsList
-				select new Plugin(iPlugin.Name, string.Empty, PluginUtils.GetEnumType(iPlugin.Name), assemblyLocation,
-					true, iPlugin.AssemblyVersion, iPlugin.Company, PluginUtils.CombineConnectionTypes(iPlugin)));
+				select new Plugin(iPlugin.Name, string.Empty, PluginHelper.GetEnumType(iPlugin.Name), assemblyLocation,
+					true, iPlugin.AssemblyVersion, iPlugin.Company, PluginHelper.CombineConnectionTypes(iPlugin)));
 			return pluginList;
 		}
-
-
 	}
 }

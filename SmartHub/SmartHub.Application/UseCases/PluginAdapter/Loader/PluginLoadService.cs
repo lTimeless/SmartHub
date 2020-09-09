@@ -1,6 +1,5 @@
 ﻿using SmartHub.Application.Common.Exceptions;
 using SmartHub.Application.UseCases.PluginAdapter.Creator;
-using SmartHub.Application.UseCases.PluginAdapter.Finder;
 using SmartHub.BasePlugin;
 using SmartHub.Domain.Common.Extensions;
 using System;
@@ -10,138 +9,94 @@ using System.Linq;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
-using SmartHub.Application.Common.Interfaces.Repositories;
-using SmartHub.Domain.Common.Enums;
-using SmartHub.Domain.Entities;
+using SmartHub.Application.UseCases.PluginAdapter.Helper;
 
 namespace SmartHub.Application.UseCases.PluginAdapter.Loader
 {
-	public class PluginLoadService<T> : IPluginLoadService<T> where T : class
+	/// <inheritdoc cref="IPluginLoadService"/>
+	public class PluginLoadService: IPluginLoadService
 	{
-		private readonly IUnitOfWork _unitOfWork;
-		private readonly IPluginCreatorService<T> _pluginCreator;
-		private readonly IPluginFinderService _pluginFinderService;
+		private readonly IPluginCreatorService _pluginCreator;
 
-		public PluginLoadService(IUnitOfWork unitOfWork, IPluginCreatorService<T> pluginCreator, IPluginFinderService pluginFinderService)
+		public PluginLoadService(IPluginCreatorService pluginCreator)
 		{
-			_unitOfWork = unitOfWork;
 			_pluginCreator = pluginCreator;
-			_pluginFinderService = pluginFinderService;
 		}
 
-		/// <inheritdoc cref="IPluginLoadService{T}.GetAndLoadByName"/>
-		public Task<T> GetAndLoadByName(string pluginName, Home home)
+		/// <inheritdoc cref="IPluginLoadService.LoadByName"/>
+		public async Task<IPlugin> LoadByName(string pluginName, string pluginPath)
 		{
-			if (string.IsNullOrEmpty(pluginName))
+			var foundAllFindPluginsInAssembliesDictionary = FindPluginsInAssemblies(pluginPath);
+			if (!foundAllFindPluginsInAssembliesDictionary.ContainsKey(pluginName))
 			{
-				throw new PluginException($"[{nameof(GetAndLoadByName)}] Error: The given pluginName is null or empty");
+				throw new PluginException($"Error: No plugin found on your machine for the given name - {pluginName}");
 			}
 
-			var plugin = home.Plugins.Find(x => x.Name == pluginName);
-			if (plugin is null)
+			var pluginDto = foundAllFindPluginsInAssembliesDictionary[pluginName];
+			if (!PluginHelper.ValidatePath(pluginDto.Path))
 			{
-				throw new PluginException($"[{nameof(GetAndLoadByName)}] Error: No plugin found, in the database, under the given name : {pluginName}");
+				throw new PluginException($"Error: Couldn't load plugin {pluginName}");
 			}
 
-			(PluginLoadContext pluginLoadContext, IEnumerable<Assembly> assembly) = Load(plugin.AssemblyFilepath, LoadStrategy.Single);
+			var iPluginsFromAssembly = await LoadAndCreateIPlugins(pluginDto.Path).ConfigureAwait(false);
 
-			var dictionaryOfIPlugin = _pluginCreator.CreateIPluginsFromAssembly(assembly.FirstOrDefault());
-
-			pluginLoadContext.Unload();
-			if (dictionaryOfIPlugin.IsNullOrEmpty())
+			if (iPluginsFromAssembly.IsNullOrEmpty())
 			{
-				throw new PluginException($"[{nameof(GetAndLoadByName)}] Error: While receiving the IPlugin from {nameof(_pluginCreator.CreateIPluginsFromAssembly)}");
+				throw new PluginException($"Error: While receiving the IPlugin from {nameof(_pluginCreator.CreateIPluginsFromAssembly)}");
 			}
 
-			var foundIPlugin = dictionaryOfIPlugin.First(x => x.Key.Equals(plugin.Name));
-			return Task.FromResult(foundIPlugin.Value);
+			var foundIPlugin = iPluginsFromAssembly.First(x => x.Key.Equals(pluginName));
+			return foundIPlugin.Value;
 		}
 
-		/// <inheritdoc cref="IPluginLoadService{T}.GetAndLoadByPath"/>
-		public Task<IEnumerable<T>> GetAndLoadByPath(string assemblyPath)
+		/// <inheritdoc cref="IPluginLoadService.FindPluginsInAssemblies"/>
+		public IReadOnlyDictionary<string, PluginDto> FindPluginsInAssemblies(string path)
 		{
-			if (string.IsNullOrEmpty(assemblyPath))
-			{
-				throw new SmartHubException($"[{nameof(GetAndLoadByPath)}] The given assemblyPath is null");
-			}
+			var assemblyPluginInfos = new Dictionary<string, PluginDto>();
+			(PluginLoadContext pluginLoadContext, IEnumerable<Assembly> assemblies) = LoadAssembliesAndContext(path);
 
-			(PluginLoadContext pluginLoadContext, IEnumerable<Assembly> assemblies) = Load(assemblyPath, LoadStrategy.Multiple);
-			var listOfIPlugins = new List<T>();
 			foreach (var assembly in assemblies)
 			{
-				var dictionaryOfIPlugin = _pluginCreator.CreateIPluginsFromAssembly(assembly);
-				listOfIPlugins.AddRange(dictionaryOfIPlugin.Values);
+				foreach (var plugin in PluginHelper.GetValidPluginTypes(assembly))
+				{
+					// plugin.name === class name
+					var pluginDto = new PluginDto(plugin.Name, assembly.Location);
+					assemblyPluginInfos.Add(plugin.Name, pluginDto);
+				}
 			}
 			pluginLoadContext.Unload();
-			return Task.FromResult<IEnumerable<T>>(listOfIPlugins);
+			return assemblyPluginInfos;
 		}
 
-
-
-		/// <inheritdoc cref="IPluginLoadService{T}.LoadAndAddToHomeAsync"/>
-		public async Task<bool> LoadAndAddToHomeAsync(IEnumerable<string> assemblyPaths, LoadStrategy multiple)
+		/// <inheritdoc cref="IPluginLoadService.LoadAndCreateIPlugins"/>
+		public Task<Dictionary<string, IPlugin>> LoadAndCreateIPlugins(string pluginPath)
 		{
-			var paths = assemblyPaths.ToList();
-			if (paths.IsNullOrEmpty())
-			{
-				return false;
-			}
-			foreach (var path in paths)
-			{
-				(PluginLoadContext pluginLoadContext, IEnumerable<Assembly> assemblies) = Load(path, multiple);
-				foreach (var assembly in assemblies)
-				{
-					await AddToHome(_pluginCreator.CreateIPluginsFromAssembly(assembly), assembly);
-				}
-				pluginLoadContext.Unload();
-			}
-			return true;
+			var assembly = LoadAssemblyBypath(pluginPath);
+			return Task.FromResult(_pluginCreator.CreateIPluginsFromAssembly(assembly));
 		}
 
 
-
-		// put entire unloadable AssemblyLoadContext in a method to avoid caller holding on to the reference
 		[MethodImpl(MethodImplOptions.NoInlining)]
-		private Tuple<PluginLoadContext, IEnumerable<Assembly>> Load(string path, LoadStrategy multiple)
+		private static Tuple<PluginLoadContext, IEnumerable<Assembly>> LoadAssembliesAndContext(string path)
 		{
-			var pathInfo = File.GetAttributes(path);
-
-			if ((pathInfo & FileAttributes.Directory) == FileAttributes.Directory)
-			{
-				if (!Directory.Exists(path))
-				{
-					throw new PluginException($"[{nameof(Load)}] The given path does not exist, path: {path}");
-				}
-
-				if (multiple == LoadStrategy.Multiple)
-				{
-					return _pluginFinderService.GetAssembliesAndLoadContext(path);
-				}
-			}
-			var (pluginLoadContext, assembly) = _pluginFinderService.GetAssemblyAndLoadContext(path);
-			return new Tuple<PluginLoadContext, IEnumerable<Assembly>>(pluginLoadContext, new[] { assembly });
+			var pluginLoadContext = new PluginLoadContext();
+			var assemblies = Directory
+				.EnumerateFiles(path, "*.dll", SearchOption.AllDirectories)
+				.Select(pluginLoadContext.LoadFromAssemblyPath)
+				.Distinct();
+			return new Tuple<PluginLoadContext, IEnumerable<Assembly>>(pluginLoadContext, assemblies);
 		}
 
-
-		private async Task AddToHome(Dictionary<string, T> iPluginDictionary, Assembly assembly)
+		[MethodImpl(MethodImplOptions.NoInlining)]
+		private static Assembly LoadAssemblyBypath(string path)
 		{
-			foreach (var (name, _) in iPluginDictionary)
+			var pluginLoadContext = new PluginLoadContext();
+			var assembly = pluginLoadContext.LoadFromAssemblyPath(path);
+			if (assembly is null)
 			{
-				var listOfIPlugins = iPluginDictionary.Values.ToList() as IEnumerable<IPlugin>
-									 ?? throw new PluginException(
-										 $"[{nameof(AddToHome)}] Error converting list of {name} to list of IPlugin");
-
-				var listOfPlugins = _pluginCreator.CreatePluginsFromIPlugins(listOfIPlugins, assembly.Location);
-				var home = await _unitOfWork.HomeRepository.GetHome();
-
-				foreach (var plugin in listOfPlugins.Where(plugin => home.CheckIfPluginExistAndHasHigherVersion(plugin)))
-				{
-					listOfPlugins.Remove(plugin);
-				}
-
-				home.AddPlugins(listOfPlugins);
-				await _unitOfWork.SaveAsync();
+				throw new PluginException($" Error: Could not load the assembly under the given path: {path}");
 			}
+			return assembly;
 		}
 	}
 }

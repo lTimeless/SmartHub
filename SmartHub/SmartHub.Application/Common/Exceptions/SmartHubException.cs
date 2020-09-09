@@ -16,7 +16,7 @@ namespace SmartHub.Application.Common.Exceptions
 
 		public SmartHubException(string message, [CallerMemberName] string methodName = "", [CallerLineNumber] int lineNumber = 0)
 		{
-			Log.Warning($"{methodName} threw an error on line {lineNumber}, Message {message}");
+			Log.ForContext(typeof(SmartHubException)).Warning($"{methodName} threw an error on line {lineNumber}, Message {message}");
 		}
 	}
 }

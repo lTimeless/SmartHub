@@ -1,21 +1,24 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using SmartHub.Application.UseCases.DeviceState.LightState;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 
 namespace SmartHub.Api.Controllers
 {
     public class DeviceStateController : BaseController
     {
-        //TODO: remove after testing
+        /// <summary>
+        /// Sets the light of the given device
+        /// </summary>
+        /// <param name="deviceId">The given deviceId</param>
+        /// <param name="toggleLight">Turn the light on or off</param>
+        /// <returns></returns>
+        [HttpGet("light/{deviceId}")]
         [AllowAnonymous]
-        // GET: api/Device
-        [HttpGet("light/{deviceId}/{toggleLight}/{company}")]
-        public async Task<IActionResult> LightOnOff(string deviceId, bool toggleLight, string company)
+        public async Task<IActionResult> LightOnOff(string deviceId, [FromQuery]bool toggleLight)
         {
             var deviceLightState = new DeviceLightStateRequestDto
             {
-                Company = company,
                 ToggleLight = toggleLight,
                 DeviceId = deviceId
             };

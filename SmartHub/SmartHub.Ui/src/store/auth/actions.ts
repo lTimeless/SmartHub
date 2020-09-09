@@ -1,10 +1,9 @@
 import { ActionContext, ActionTree } from 'vuex';
 import { LoginRequest, AuthResponse, RegistrationRequest, ServerResponse } from '@/types/types';
 import { RootState, AuthState } from '@/store/index.types';
-import { storeAuthResponse, storeToken } from '@/services/auth/authService';
-import axiosInstance from '@/router/axios/axios';
-import { AuthMutations, M_AUTH_USER, M_UPDATE_LOGIN_BTN } from '@/store/auth/mutations';
-import { AxiosResponse } from 'axios';
+import { storeAuthResponse } from '@/services/auth/authService';
+import { AuthMutations, M_AUTH_USER } from '@/store/auth/mutations';
+import { postLogin, postRegistration } from '@/services/apis/user.service';
 
 // Keys
 export const A_LOGIN = 'A_LOGIN';
@@ -13,7 +12,7 @@ export const A_LOGOUT = 'A_LOGOUT';
 
 // Actions
 type AugmentedActionContext = {
-  commit<K extends keyof AuthMutations>(key: K, payload?: Parameters<AuthMutations[K]>[1]): ReturnType<AuthMutations[K]>;
+  commit<K extends keyof AuthMutations>(key: K, payload: Parameters<AuthMutations[K]>[1] | null): ReturnType<AuthMutations[K]>;
 } & Omit<ActionContext<AuthState, RootState>, 'commit'>;
 
 // Action Interface
@@ -26,34 +25,36 @@ export interface AuthActions {
 // Define Actions
 export const actions: ActionTree<AuthState, RootState> & AuthActions = {
   async [A_LOGIN]({ commit }, payload: LoginRequest): Promise<void> {
-    commit(M_UPDATE_LOGIN_BTN, undefined);
-    await axiosInstance
-      .post<ServerResponse<AuthResponse>>('api/Identity/login', payload)
+    await postLogin(payload)
       .then((response) => {
-        const authResponse = response.data.data as AuthResponse;
-        storeToken(authResponse.token);
-        storeAuthResponse(authResponse);
-        commit(M_AUTH_USER, authResponse);
+        if (!response.success) {
+          return Promise.reject(response.message);
+        }
+        storeAuthResponse(response.data as AuthResponse);
+        commit(M_AUTH_USER, response.data);
+        return Promise.resolve(response.data);
       })
       .catch((err) => {
         console.log(err);
-        commit(M_UPDATE_LOGIN_BTN, undefined);
+        return Promise.reject(err);
       });
   },
   async [A_REGISTRATION](state, payload: RegistrationRequest): Promise<void> {
-    return axiosInstance
-      .post<ServerResponse<AuthResponse>>('api/Identity/registration', payload)
-      .then(async (response) => {
-        const auth = response.data.data as AuthResponse;
-        await storeToken(auth.token);
-        await storeAuthResponse(auth);
-        await state.commit(M_AUTH_USER, auth);
+    await postRegistration(payload)
+      .then((response) => {
+        if (!response.success) {
+          return Promise.reject(response.message);
+        }
+        storeAuthResponse(response.data as AuthResponse);
+        state.commit(M_AUTH_USER, response.data);
+        return Promise.resolve();
       })
       .catch((err) => {
         console.log(err);
+        return Promise.reject(err);
       });
   },
   async [A_LOGOUT]({ commit }) {
-    commit(M_UPDATE_LOGIN_BTN, undefined);
+    console.log('logout');
   }
 };

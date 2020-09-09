@@ -1,11 +1,12 @@
-﻿using AutoMapper;
-using MediatR;
-using System;
+﻿using MediatR;
 using System.Threading;
 using System.Threading.Tasks;
+using AutoMapper;
 using Microsoft.Extensions.Options;
+using Serilog;
 using SmartHub.Application.Common.Interfaces.Repositories;
 using SmartHub.Application.Common.Models;
+using SmartHub.Application.UseCases.GeoLocation;
 using SmartHub.Domain.Common.Enums;
 using SmartHub.Domain.Common.Settings;
 using SmartHub.Domain.Entities;
@@ -14,49 +15,56 @@ namespace SmartHub.Application.UseCases.Entity.Homes.Create
 {
 	public class HomeCreateHandler : IRequestHandler<HomeCreateCommand, Response<HomeDto>>
 	{
-		private readonly IUnitOfWork _unitOfWork;
 		private readonly IMapper _mapper;
-		private readonly Random _random;
+		private readonly IUnitOfWork _unitOfWork;
 		private readonly CurrentUser _currentUser;
+		private readonly ILocationService _locationService;
 		private readonly IOptionsMonitor<ApplicationSettings> _optionsSnapshot;
+		private readonly ILogger _logger = Log.ForContext(typeof(HomeCreateHandler));
 
-		public HomeCreateHandler(IMapper mapper, IUnitOfWork unitOfWork, IOptionsMonitor<ApplicationSettings> optionsSnapshot, CurrentUser currentUser)
+		public HomeCreateHandler(IUnitOfWork unitOfWork, IOptionsMonitor<ApplicationSettings> optionsSnapshot, CurrentUser currentUser, ILocationService locationService, IMapper mapper)
 		{
-			_mapper = mapper;
 			_unitOfWork = unitOfWork;
 			_optionsSnapshot = optionsSnapshot;
 			_currentUser = currentUser;
-			_random = new Random();
+			_locationService = locationService;
+			_mapper = mapper;
 		}
 
 		public async Task<Response<HomeDto>> Handle(HomeCreateCommand request, CancellationToken cancellationToken)
 		{
-			var homAlreadyExists = await _unitOfWork.HomeRepository.GetHome();
-			if (homAlreadyExists != null)
+			var home = await _unitOfWork.HomeRepository.GetHome();
+			if (home != null)
 			{
-				return Response.Fail<HomeDto>($"[{nameof(HomeCreateHandler)}] There is already a home");
+				return Response.Fail<HomeDto>("Error: There is already a home.");
 			}
 
-			if (_currentUser.User is null)
+			var defaultSetting = new Setting($"{request.Name}_Setting_default",
+				"This is a default setting",
+				true,
+				_optionsSnapshot.CurrentValue.DefaultPluginPath,
+				_optionsSnapshot.CurrentValue.DownloadServerUrl,
+				_currentUser.RequesterName,
+				SettingTypes.Default);
+			var homeEntity = new Home(request.Name, request.Description)
+				.AddSetting(defaultSetting);
+
+			if (request.AutoDetectAddress)
 			{
-				return Response.Fail<HomeDto>( $"[{nameof(HomeCreateHandler)}] There is no User logged in");
+				var locationDto = await _locationService.GetLocation();
+				if (locationDto != null)
+				{
+					homeEntity.AddAddress(locationDto.City, locationDto.Region, locationDto.Country, locationDto.ZipCode);
+				}
 			}
-
-			var defaultSetting = new Setting($"default_Setting_{_random.Next()}", "this is a default setting", true,
-				_optionsSnapshot.CurrentValue.DefaultPluginpath, _optionsSnapshot.CurrentValue.DefaultPluginpath,
-				_optionsSnapshot.CurrentValue.DownloadServerUrl, _currentUser.User.UserName, SettingTypes.Default);
-
-			var homeEntity = new Home(request.Name, request.Description, defaultSetting);
-			homeEntity.AddUser(_currentUser.User);
 
 			var result = await _unitOfWork.HomeRepository.AddAsync(homeEntity);
 			if (!result)
 			{
-				return Response.Fail<HomeDto>( $"[{nameof(Handle)}] Could not create Home");
+				return Response.Fail<HomeDto>("Error: Could not create Home.");
 			}
-			await _unitOfWork.SaveAsync();
-
-			return Response.Ok("Created new Home", _mapper.Map<HomeDto>(homeEntity));
+			_logger.Information("SmartHub successfully created.");
+			return Response.Ok("SmartHub successfully created.", _mapper.Map<HomeDto>(homeEntity));
 		}
 	}
 }

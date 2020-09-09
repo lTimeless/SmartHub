@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Net.Http;
+using System.Threading.Tasks;
 
 namespace SmartHub.Application.Common.Interfaces
 {
@@ -12,7 +13,7 @@ namespace SmartHub.Application.Common.Interfaces
 		/// <param name="query">the data which is send</param>
 		/// <returns>true is request was ok , false if it wasn't</returns>
 		Task<bool> SendAsync(string ipAddress, string query);
-		Task GetAsync(string ipAddress, string query);
+		Task<T> GetAsync<T>(string ipAddress, string? scheme = "http", string? query = null);
 		Task PostAsync(string ipAddress, string query);
 		Task PutAsync(string ipAddress, string query);
 	}

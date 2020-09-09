@@ -1,6 +1,5 @@
-﻿using SmartHub.Application.UseCases.PluginAdapter.Loader;
+﻿using System.Threading.Tasks;
 using SmartHub.BasePlugin;
-using SmartHub.BasePlugin.Interfaces.DeviceTypes;
 
 namespace SmartHub.Application.UseCases.PluginAdapter.Host
 {
@@ -10,20 +9,12 @@ namespace SmartHub.Application.UseCases.PluginAdapter.Host
 	/// </summary>
 	public interface IPluginHostService
 	{
-		/// <summary>
-		/// Loads all Plugins
-		/// </summary>
-		IPluginLoadService<IPlugin> Plugins { get; }
+		Task<TP> GetPluginByNameAsync<TP>(string pluginName) where TP : IPlugin;
 
 		/// <summary>
-		/// Loads only light plugins
+		/// Synchronizes the Dictionary and Database with the Plugin folder
 		/// </summary>
-		IPluginLoadService<ILight> LightPlugins { get; }
-
-		/// <summary>
-		/// Loads only door plugins
-		/// </summary>
-		IPluginLoadService<IDoor> DoorPlugins { get; }
-
+		/// <returns>returns false if there was an error and true if it was successful</returns>
+		Task<bool> SynchronizeDictionaryAndDb();
 	}
 }

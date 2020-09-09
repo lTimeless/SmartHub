@@ -26,13 +26,7 @@
         </h3>
 
         <ul class="max-w-full pl-2 mb-0">
-          <li
-            v-for="page in section.items"
-            :id="page.path"
-            :key="page.path"
-            :class="this.getClassesForAnchor(page.path)"
-            class="hover:text-ui-primary"
-          >
+          <li v-for="page in section.items" :id="page.path" :key="page.path" :class="this.getClassesForAnchor(page.path)" class="hover:text-ui-primary">
             <router-link :to="page.path" class="flex items-center py-1 ">
               <span
                 class="absolute w-2 h-2 -ml-3 rounded-full opacity-0 bg-ui-primary transition transform scale-0 origin-center"
@@ -48,7 +42,7 @@
     </div>
 
     <div class="flex justify-center mt-7 mb-8">
-      <action-button color="indigo" :height="35" :width="150" title="Logout" :callback="logout" />
+      <action-button color="indigo" :height="35" :width="150" title="Logout" :callback="clickLogout" />
     </div>
   </div>
 </template>
@@ -56,10 +50,9 @@
 <script lang="ts">
 import { computed, defineComponent, onMounted, ref } from 'vue';
 import { useRouter } from 'vue-router';
-import { clearStorage, getUserRole } from '@/services/auth/authService';
+import { getUserRole, logout } from '@/services/auth/authService';
 import ActionButton from '@/components/widgets/ActionButton.vue';
 import { useStore } from '@/store';
-import { A_LOGOUT } from '@/store/auth/actions';
 
 export default defineComponent({
   name: 'Sidebar',
@@ -131,14 +124,12 @@ export default defineComponent({
       isRole.value = getUserRole();
     });
 
-    const logout = () => {
-      store.dispatch(A_LOGOUT);
-      clearStorage();
-      router.push('/login');
+    const clickLogout = () => {
+      logout();
     };
 
     return {
-      logout,
+      clickLogout,
       currentPath,
       sidebarLists,
       roleIncluded,

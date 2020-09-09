@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace SmartHub.Application.UseCases.DeviceState.LightState
+﻿namespace SmartHub.Application.UseCases.DeviceState.LightState
 {
 	public class DeviceLightStateRequestDto : DeviceStateDto
 	{

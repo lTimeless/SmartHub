@@ -6,7 +6,7 @@ using SmartHub.Domain.DomainEvents;
 
 namespace SmartHub.Application.Common.Interfaces
 {
-	public interface IChannelManager : IInitialize, IHostedService, IDisposable
+	public interface IChannelManager : IHostedService
 	{
 		/// <summary>
 		/// Gets the given Channel observable.

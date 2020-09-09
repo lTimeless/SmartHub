@@ -18,22 +18,20 @@ namespace SmartHub.Domain.Entities
 
 		public virtual List<Setting> Settings { get; protected set; }
 
-		public virtual Address Address { get; }
+		public virtual Address Address { get; private set; }
 		public virtual List<DomainEvent> Events { get; set; }
 
 		protected Home()
 		{
 		}
 
-		public Home(string name, string description, Setting setting) : base(name, description)
+		public Home(string name, string description) : base(name, description)
 		{
 			Users = new List<User>();
 			Devices = new List<Device>();
 			Groups = new List<Group>();
 			Plugins = new List<Plugin>();
-			Settings = new List<Setting>() { setting };
 			Events = new List<DomainEvent>();
-			Address = new Address("","","","",""); // TODO: add functionality
 		}
 
 		#region Methods
@@ -51,6 +49,11 @@ namespace SmartHub.Domain.Entities
 			Events.Clear();
 		}
 
+		public Home AddAddress(string city, string state, string country, string zipCode, string street = "")
+		{
+			Address = new Address(street, city, state, country, zipCode);
+			return this;
+		}
 		public Home AddUser(User user)
 		{
 			if (Users == null)
@@ -160,28 +163,6 @@ namespace SmartHub.Domain.Entities
 			}
 			return this;
 		}
-
-		public Home UpdateHome(string? name, string? description, Setting? setting, User? user )
-		{
-			if (name != null)
-			{
-				Name = name;
-			}
-			if (description != null)
-			{
-				Description = description;
-			}
-			if (setting != null)
-			{
-				AddSetting(setting);
-			}
-			if (user != null)
-			{
-				AddUser(user);
-			}
-			return this;
-		}
 		#endregion
-
 	}
 }

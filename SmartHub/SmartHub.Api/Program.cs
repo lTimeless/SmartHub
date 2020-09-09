@@ -1,5 +1,7 @@
+using System;
+using System.IO;
+using System.Reflection;
 using System.Threading.Tasks;
-using Autofac.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
@@ -7,6 +9,7 @@ using Microsoft.Extensions.Logging;
 using Serilog;
 using Serilog.Events;
 using Serilog.Sinks.AspNetCore.SignalR.Extensions;
+using Serilog.Sinks.Elasticsearch;
 using SmartHub.Api.Extensions;
 using SmartHub.Application.UseCases.SignalR;
 
@@ -27,24 +30,37 @@ namespace SmartHub.Api
 
 		private static IHostBuilder CreateHostBuilder(string[] args) =>
 			Host.CreateDefaultBuilder(args)
-				.ConfigureAppConfiguration(b =>
+				.ConfigureAppConfiguration((hostingContext, configurationBuilder) =>
 				{
-					b.AddCommandLine(args)
-						.AddEnvironmentVariables();
-				})
-				.ConfigureWebHostDefaults(webBuilder =>
-				{
-					webBuilder.UseKestrel();
-					webBuilder.UseStartup<Startup>();
-				})
+					var env = hostingContext.HostingEnvironment;
+					configurationBuilder
+						.AddJsonFile("appsettings.json", true, true)
+						.AddJsonFile($"appsettings.{env.EnvironmentName}.json", false, true);
 
-				.UseServiceProviderFactory(new AutofacServiceProviderFactory())
-				.UseSerilog((hostingContext, service, loggerConfig) =>
+					if (env.IsDevelopment() && !string.IsNullOrEmpty(env.ApplicationName))
+					{
+						var appAssembly = Assembly.Load(new AssemblyName(env.ApplicationName));
+
+						if (appAssembly != null)
+						{
+							configurationBuilder.AddUserSecrets(appAssembly, true);
+						}
+					}
+					configurationBuilder.AddEnvironmentVariables()
+						.AddCommandLine(args);
+				})
+				.UseSerilog((context, service, loggerConfig) =>
 				{
 					loggerConfig
-						.ReadFrom.Configuration(hostingContext.Configuration)
-						.Enrich.FromLogContext()
-						.Enrich.WithProcessId()
+						.ReadFrom.Configuration(context.Configuration)
+						.WriteTo.Elasticsearch(new ElasticsearchSinkOptions(new Uri(context.Configuration["ElasticConfiguration:Uri"]))
+						{
+							AutoRegisterTemplate = true,
+							NumberOfShards = 2,
+							NumberOfReplicas = 1,
+							IndexFormat = $"{context.Configuration["SmartHub:ApplicationName"]}-logs-{context.HostingEnvironment.EnvironmentName?.ToLower().Replace(".","-")}-{DateTime.UtcNow:yyyy-MM}"
+						})
+						.Enrich.WithProperty("Environment",context.HostingEnvironment.EnvironmentName)
 						.WriteTo.SignalRSink<LogHub, IServerHub>(
 							LogEventLevel.Information,
 							service,
@@ -54,6 +70,11 @@ namespace SmartHub.Api
 							new string[] {}
 							);
 				})
-				.ConfigureLogging((_, config) => config.ClearProviders());
+				.ConfigureLogging((_, config) => config.ClearProviders())
+				.ConfigureWebHostDefaults(webBuilder =>
+				{
+					webBuilder.UseKestrel();
+					webBuilder.UseStartup<Startup>();
+				});
 	}
 }

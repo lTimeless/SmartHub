@@ -1,65 +1,63 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using SmartHub.Application.UseCases.Entity.Homes.Create;
 using SmartHub.Application.UseCases.Entity.Homes.Read;
 using System;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
-using SmartHub.Application.UseCases.Entity.Homes.Update;
+using SmartHub.Application.UseCases.Entity.Homes.Create;
+using SmartHub.Application.UseCases.Entity.Homes.Patch;
 
 namespace SmartHub.Api.Controllers
 {
 	public class HomeController : BaseController
 	{
 		/// <summary>
-		/// GET: api/Home
+		/// Gets the home
 		/// </summary>
-		/// <returns>List of Homes</returns>
-		[AllowAnonymous] // TODO: Create another endpoint which will just return less infos about the home
-		// only name
+		/// <returns>The Home</returns>
 		[HttpGet]
+		[AllowAnonymous]
 		[ProducesResponseType(StatusCodes.Status200OK)]
 		[ProducesResponseType(StatusCodes.Status400BadRequest)]
-		[ProducesResponseType(StatusCodes.Status401Unauthorized)]
 		public async Task<IActionResult> Get()
 		{
 			return Ok(await Mediator.Send(new HomesReadQuery()));
 		}
 
 		/// <summary>
-		/// Creates a new Home
+		/// Partial updates the Home
 		/// </summary>
-		/// /// <remarks>
-		/// Sample request:
-		///
-		///     POST /home
-		///     {
-		///        "name": "Test",
-		///        "description": "Test_2",
-		///     }
-		///
-		/// </remarks>
-		/// <param name="value"></param>
-		/// <returns>A newly created Home and default Setting Object</returns>
-		/// <response code="201">Returns the newly created item</response>
 		[HttpPost]
-		[ProducesResponseType(StatusCodes.Status200OK)]
-		[ProducesResponseType(StatusCodes.Status401Unauthorized)]
+		[AllowAnonymous]
 		public async Task<IActionResult> Post([FromBody] HomeCreateCommand value)
 		{
 			return Ok(await Mediator.Send(value).ConfigureAwait(false));
 		}
 
-		// PUT: api/Home
-		[HttpPut]
-		public async Task<IActionResult> Put([FromBody] HomeUpdateCommand value)
+		/// <summary>
+		/// Partial updates the Home
+		/// </summary>
+		[HttpPatch]
+		public async Task<IActionResult> Patch([FromBody] HomePatchCommand value)
 		{
 			return Ok(await Mediator.Send(value).ConfigureAwait(false));
 		}
 
-		// DELETE: api/ApiWithActions/5
-		[HttpDelete("{id}")]
-		public void Delete(int id)
+
+		/// <summary>
+		/// Full updates the Home
+		/// </summary>
+		[HttpPut]
+		public async Task<IActionResult> Put([FromBody] HomePatchCommand value)
+		{
+			return Ok("This is not implemented at the moment.");
+		}
+
+		/// <summary>
+		/// Deletes the Home
+		/// </summary>
+		[HttpDelete]
+		public void Delete()
 		{
 			throw new NotSupportedException($"[{nameof(Delete)}]Not supported");
 		}

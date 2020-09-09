@@ -17,5 +17,4 @@ export interface HomeState {
 
 export interface AuthState {
   authResponse: AuthResponse | null;
-  isSignInBtnClicked: boolean;
 }

@@ -1,39 +1,34 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using SmartHub.Domain.Common.Enums;
-using SmartHub.Domain.Entities;
+using SmartHub.BasePlugin;
 
 namespace SmartHub.Application.UseCases.PluginAdapter.Loader
 {
 	/// <summary>
-	/// Service for loading Plugins
+	/// Service for loading and searching of IPlugins
 	/// </summary>
-	/// <typeparam name="T">The type to load.</typeparam>
-	public interface IPluginLoadService<T> where T : class
+	public interface IPluginLoadService
 	{
 		/// <summary>
-		/// Gets and loads an iPlugin by name
+		/// Loads an iPlugin by name
 		/// </summary>
 		/// <param name="pluginName">the plugin name from the iPlugin</param>
-		/// <param name="home">the home</param>
-		/// <returns>the wanted iPlugin or null</returns>
-		Task<T> GetAndLoadByName(string pluginName, Home home);
+		/// <param name="pluginPath">the home plugin path</param>
+		/// <returns>the wanted iPlugin or throws Exception</returns>
+		Task<IPlugin> LoadByName(string pluginName, string pluginPath);
 
 		/// <summary>
-		/// Gets and loads IPlugins by path
+		/// Loads and Creates iPlugins from path
 		/// </summary>
-		/// <param name="assemblyPath"></param>
-		/// <returns>the wanted iPlugins</returns>
-		Task<IEnumerable<T>> GetAndLoadByPath(string assemblyPath);
-
+		/// <param name="pluginPath">The path where to look for plugins</param>
+		/// <returns>Dictionary with pluginName and IPlugin</returns>
+		Task<Dictionary<string, IPlugin>> LoadAndCreateIPlugins(string pluginPath);
 
 		/// <summary>
-		/// Loads IPlugins, from multiple assemblies and creates Plugins if they don't exist yet
+		/// Find available iPlugins in all assemblies
 		/// </summary>
-		/// <param name="assemblyPaths">the assemblies where to load all plugin from</param>
-		/// <param name="multiple"></param>
-		/// <returns>task completed, returns, or throws en exception if it could not create new plugin entities</returns>
-		Task<bool> LoadAndAddToHomeAsync(IEnumerable<string> assemblyPaths, LoadStrategy multiple);
-
+		/// <param name="path">The path where to look for plugins</param>
+		/// <returns>Dictionary with pluginName and pluginDto</returns>
+		IReadOnlyDictionary<string, PluginDto> FindPluginsInAssemblies(string path);
 	}
 }

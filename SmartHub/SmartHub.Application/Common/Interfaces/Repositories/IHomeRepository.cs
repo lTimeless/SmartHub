@@ -5,6 +5,6 @@ namespace SmartHub.Application.Common.Interfaces.Repositories
 {
     public interface IHomeRepository : IBaseRepository<Home>
     {
-        Task<Home> GetHome();
+        Task<Home?> GetHome();
     }
 }

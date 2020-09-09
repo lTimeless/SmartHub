@@ -7,11 +7,12 @@ namespace SmartHub.Application.UseCases.Entity.Homes.Create
 	{
 		public string Name { get; set; }
 		public string Description { get; set; }
-
-		public HomeCreateCommand(string name, string description)
+		public bool AutoDetectAddress { get; set; }
+		public HomeCreateCommand(string name, string description, bool autoDetectAddress)
 		{
 			Name = name;
 			Description = description;
+			AutoDetectAddress = autoDetectAddress;
 		}
 	}
 }

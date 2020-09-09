@@ -1,4 +1,6 @@
-﻿using SmartHub.Domain.Entities;
+﻿using System.Collections.Generic;
+using System.Security.Claims;
+using SmartHub.Domain.Entities;
 
 namespace SmartHub.Application.Common.Interfaces
 {
@@ -16,6 +18,6 @@ namespace SmartHub.Application.Common.Interfaces
 		/// </summary>
 		/// <param name="user"></param>
 		/// <returns>The generated jwt token.</returns>
-		string CreateJwtToken(User user);
+		string CreateJwtToken(User user, List<string> roles, List<Claim> claims);
 	}
 }

@@ -20,7 +20,7 @@ namespace SmartHub.Api.Extensions
 			// specifying the Swagger JSON endpoint.
 			app.UseSwaggerUI(c =>
 			{
-				c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
+				c.SwaggerEndpoint("/swagger/v1/swagger.json", "SmartHub API V0.5");
 			});
 		}
 
@@ -34,7 +34,7 @@ namespace SmartHub.Api.Extensions
 			app.UseHangfireDashboard();
 		}
 
-		public static void ShowLocalIpv4(this IApplicationBuilder app)
+		public static void ShowLocalIpv4()
 		{
 			foreach (var ip in NetworkInterface.GetAllNetworkInterfaces()
 				.Select(item => new
@@ -53,7 +53,7 @@ namespace SmartHub.Api.Extensions
 				.Where(t => t.ip.Address.ToString().Contains("192."))
 				.Select(t => t.ip))
 			{
-				Log.Information($"Your server ip is : {ip.Address}");
+				Log.ForContext(typeof(AppExtension)).Information($"Your server ip is : {ip.Address}");
 			}
 		}
 	}

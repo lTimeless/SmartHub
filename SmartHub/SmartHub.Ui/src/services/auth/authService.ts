@@ -1,19 +1,29 @@
-import { AxiosRequestConfig } from 'axios';
 import { AuthResponse } from '@/types/types';
 import { Roles } from '@/types/enums';
+import JwtDecode from 'jwt-decode';
+import { A_LOGOUT } from '@/store/auth/actions';
+import { useStore } from '@/store';
+import router from '@/router';
+
+type TokenPayload = { unique_name: string; jti: string; roles: string[] | string; nbf: number; exp: number; iat: number };
 
 // Storage keys
-const LOCAL_STORAGE_TOKEN = 'token';
-const LOCAL_STORAGE_AUTHRESPONSE = 'authResponse';
-const LOCAL_STORAGE_REFRESH_TOKEN = 'refresh_token';
+const LOCAL_STORAGE_AUTH_RESPONSE = 'authResponse';
 
-const getToken = (): string | null => localStorage.getItem(LOCAL_STORAGE_TOKEN);
+export const getAuthResponse = (): AuthResponse | null => {
+  const storage = localStorage.getItem(LOCAL_STORAGE_AUTH_RESPONSE);
+  if (storage === null) {
+    return null;
+  }
+  return JSON.parse(storage) as AuthResponse;
+};
+
+export const getToken = (): string | null => {
+  const auth = getAuthResponse();
+  return auth === null ? null : auth.token;
+};
 
 export const isAuthenticated = (): boolean => getToken() !== null;
-
-export const getAuthentication = (): AxiosRequestConfig => ({
-  headers: { Authorization: `Bearer ${getToken()}` }
-});
 
 // TODO: logic will be implemented later, when refreshToken will be added
 // public static getNewToken(): Promise<string> {
@@ -32,30 +42,12 @@ export const getAuthentication = (): AxiosRequestConfig => ({
 //   });
 // }
 
-export const storeToken = (token: string): void => {
-  localStorage.setItem(LOCAL_STORAGE_TOKEN, token);
-};
-
 export const storeAuthResponse = (response: AuthResponse): void => {
-  localStorage.setItem(LOCAL_STORAGE_AUTHRESPONSE, JSON.stringify(response));
-};
-
-export const getAuthResponse = (): AuthResponse | null => {
-  const storage = localStorage.getItem(LOCAL_STORAGE_AUTHRESPONSE);
-  if (storage === null) {
-    return null;
-  }
-  return JSON.parse(storage) as AuthResponse;
-};
-
-export const storeRefreshToken = (refreshToken: string): void => {
-  localStorage.setItem(LOCAL_STORAGE_REFRESH_TOKEN, refreshToken);
+  localStorage.setItem(LOCAL_STORAGE_AUTH_RESPONSE, JSON.stringify(response));
 };
 
 export const clearStorage = (): void => {
-  localStorage.removeItem(LOCAL_STORAGE_TOKEN);
-  localStorage.removeItem(LOCAL_STORAGE_REFRESH_TOKEN);
-  localStorage.removeItem(LOCAL_STORAGE_AUTHRESPONSE);
+  localStorage.removeItem(LOCAL_STORAGE_AUTH_RESPONSE);
 };
 
 // export const getRefreshToken = (): string | null => localStorage.getItem(LOCAL_STORAGE_REFRESH_TOKEN);
@@ -65,14 +57,33 @@ export const getUserRole = (): Roles => {
   if (authResponse == null) {
     return Roles.None;
   }
-  if (authResponse.roles.includes('Admin')) {
+  const tokenPayload = JwtDecode(authResponse.token) as TokenPayload;
+  const { roles } = tokenPayload;
+
+  if (roles.includes('Admin')) {
     return Roles.Admin;
   }
-  if (authResponse.roles.includes('User')) {
+  if (roles.includes('User')) {
     return Roles.User;
   }
-  if (authResponse.roles.includes('Guest')) {
+  if (roles.includes('Guest')) {
     return Roles.Guest;
   }
   return Roles.None;
+};
+
+export const getUserName = (): string => {
+  const authResponse = getAuthResponse();
+  if (authResponse === null) {
+    return '';
+  }
+  const tokenPayload = JwtDecode(authResponse.token) as TokenPayload;
+  return tokenPayload.unique_name;
+};
+
+export const logout = () => {
+  const store = useStore();
+  store.dispatch(A_LOGOUT);
+  clearStorage();
+  router.push('/login');
 };

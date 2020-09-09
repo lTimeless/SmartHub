@@ -24,9 +24,6 @@ export interface ServerLog {
 // Auth
 export interface AuthResponse {
   token: string;
-  expiresAt: string; // TODO: DateTime
-  userName: string;
-  roles: string[];
 }
 
 export interface LoginRequest {
@@ -36,8 +33,6 @@ export interface LoginRequest {
 
 export interface RegistrationRequest {
   username: string;
-  firstname: string;
-  lastname: string;
   password: string;
   role: string;
 }
@@ -45,6 +40,7 @@ export interface RegistrationRequest {
 export interface HomeCreateRequest {
   name: string;
   description: string | null;
+  autoDetectAddress: boolean;
 }
 
 export interface HomeUpdateRequest {

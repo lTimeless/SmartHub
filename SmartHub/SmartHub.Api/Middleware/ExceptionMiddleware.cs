@@ -5,11 +5,14 @@ using System;
 using System.Net;
 using System.Text.Json;
 using System.Threading.Tasks;
+using SmartHub.Application.Common.Interfaces.Repositories;
+using SmartHub.Application.Common.Models;
 
 namespace SmartHub.Api.Middleware
 {
 	public class ExceptionMiddleware
 	{
+		private readonly ILogger _log = Log.ForContext(typeof(ExceptionMiddleware));
 		private readonly RequestDelegate _next;
 
 		public ExceptionMiddleware(RequestDelegate next)
@@ -17,7 +20,7 @@ namespace SmartHub.Api.Middleware
 			_next = next;
 		}
 
-		public async Task InvokeAsync(HttpContext httpContext)
+		public async Task InvokeAsync(HttpContext httpContext, IUnitOfWork unitOfWork)
 		{
 			try
 			{
@@ -25,48 +28,48 @@ namespace SmartHub.Api.Middleware
 			}
 			catch (Exception ex)
 			{
-				await HandleExceptionAsync(httpContext, ex);
+				await HandleExceptionAsync(httpContext, ex, unitOfWork).ConfigureAwait(false);
 			}
 		}
 
-		private async Task HandleExceptionAsync(HttpContext httpContext, Exception ex)
+		private async Task HandleExceptionAsync(HttpContext httpContext, Exception ex, IUnitOfWork unitOfWork)
 		{
-			object? errors = null;
-			// TODO: call unitofWork callback function
+			object? errors;
+			await unitOfWork.RollbackAsync();
+			_log.Warning("Rollback all changes from this request {}.", httpContext.TraceIdentifier);
 			switch (ex)
 			{
 				case RestException restException:
-					Log.Warning($"[{nameof(HandleExceptionAsync)}] Rest ERROR: {restException.Code} -- {restException.Errors}");
+					_log.Warning($"Rest ERROR: {restException.Code} -- {restException.Errors}");
 					httpContext.Response.StatusCode = (int)restException.Code;
 					errors = restException.Errors;
 					break;
 
 				case SmartHubException smartHubException:
-					Log.Warning($"[{nameof(HandleExceptionAsync)}] SmartHub ERROR: {smartHubException.Message} -- {smartHubException.Source} -- {smartHubException.StackTrace}");
+					_log.Warning($"SmartHub ERROR: {smartHubException.Message} -- {smartHubException.Source} -- {smartHubException.StackTrace}");
 					errors = string.IsNullOrWhiteSpace(smartHubException.Message) ? "Error" : smartHubException.Message;
 					httpContext.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
 					break;
 
 				case Exception exception:
-					Log.Warning($"[{nameof(HandleExceptionAsync)}] Server ERROR: {exception}");
+					_log.Warning($"Server ERROR: {exception}");
 					errors = string.IsNullOrWhiteSpace(exception.Message) ? "Error" : exception.Message;
 					httpContext.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
 					break;
 
 				default:
-					Log.Warning($"[{nameof(HandleExceptionAsync)}] Unknown Server ERROR");
+					_log.Warning("Unknown Server ERROR");
+					errors = string.IsNullOrWhiteSpace("Unknown Server ERROR");
 					break;
 			}
 
 			httpContext.Response.ContentType = "application/json";
-
 			if (errors != null)
 			{
-				var result = JsonSerializer.Serialize(new
-				{
-					errors
-				});
-				await httpContext.Response.WriteAsync(result).ConfigureAwait(false);
+				var result = JsonSerializer.Serialize(
+					Response.Fail("Server Error", errors)
+				);
+				await httpContext.Response.WriteAsync(result);
 			}
 		}
 	}
