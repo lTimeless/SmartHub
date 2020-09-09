@@ -54,9 +54,7 @@ namespace SmartHub.Api
 						.WriteTo.Map(LogFilePathEnricher.LogFilePathPropertyName,
 							(logFilePath, configuration) =>
 							{
-								var env = context.HostingEnvironment;
-								// Only log to file in Production mode
-								if (!env.IsProduction())
+								if (context.Configuration.GetValue<bool>("LogToFile") || context.HostingEnvironment.IsProduction())
 								{
 									configuration.File($"{logFilePath}");
 								}
