@@ -17,11 +17,12 @@ namespace SmartHub.Application
 {
     public static class ServiceExtension
     {
-        public static void AddApplicationLayer(this IServiceCollection services)
+        public static IServiceCollection AddApplicationLayer(this IServiceCollection services)
         {
             services.AddAutomapper();
             services.AddMediatr();
             services.AddServices();
+            return services;
         }
 
         private static void AddAutomapper(this IServiceCollection services)

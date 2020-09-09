@@ -10,7 +10,7 @@ namespace SmartHub.Domain.Common.Settings.Validators
             {
                 return ValidateOptionsResult.Fail("SmartHub:FolderName must be defined in the appsettings.json file");
             }
-            if (string.IsNullOrEmpty(options.DefaultPluginFolderName))
+            if (string.IsNullOrEmpty(options.PluginFolderName))
             {
                 return ValidateOptionsResult.Fail("SmartHub:DefaultPluginFolderName must be defined in the appsettings.json file");
 

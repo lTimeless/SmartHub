@@ -26,7 +26,7 @@ namespace SmartHub.Api.Extensions
 {
 	public static class ServiceExtension
 	{
-		public static void AddApiLayer(this IServiceCollection services, IConfiguration configuration, IHostEnvironment appEnvironment)
+		public static IServiceCollection AddApiLayer(this IServiceCollection services, IConfiguration configuration, IHostEnvironment appEnvironment)
 		{
 			// Server configuration
 			services.AddServerConfiguration(configuration, appEnvironment);
@@ -43,7 +43,7 @@ namespace SmartHub.Api.Extensions
 			services.AddHttpClientFactory();
 			// Response compression
 			services.AddResponseCompression();
-
+			return services;
 		}
 
 		private static void AddServerConfiguration(this IServiceCollection services, IConfiguration configuration, IHostEnvironment appEnvironment)
