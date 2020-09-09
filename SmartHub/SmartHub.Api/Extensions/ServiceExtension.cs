@@ -10,7 +10,9 @@ using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.AspNetCore.Server.Kestrel.Core;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Options;
 using Microsoft.OpenApi.Models;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
@@ -18,6 +20,7 @@ using NodaTime;
 using NodaTime.Serialization.JsonNet;
 using Polly;
 using SmartHub.Domain.Common.Settings;
+using SmartHub.Domain.Common.Settings.Validators;
 
 namespace SmartHub.Api.Extensions
 {
@@ -51,11 +54,9 @@ namespace SmartHub.Api.Extensions
 
 			// -------------- SmartHubSettings ---------------
 			services.Configure<ApplicationSettings>(configuration.GetSection("SmartHub"));
-			services.PostConfigure<ApplicationSettings>(options =>
-			{
-				options.EnvironmentName = appEnvironment.EnvironmentName;
-				options.DefaultName = appEnvironment.ApplicationName;
-			});
+			services.TryAddSingleton<IValidateOptions<ApplicationSettings>, ApplicationSettingsValidation>();
+
+
 		}
 
 		private static void AddSpaStaticFiles(this IServiceCollection services)

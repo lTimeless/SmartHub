@@ -16,13 +16,13 @@ services:
     restart: unless-stopped
 
 # PostgreSQL pgAdmin Ui
-  pgadmin:
-    image: dpage/pgadmin4
-    restart: unless-stopped
+#  pgadmin:
+#    image: dpage/pgadmin4
+#    restart: unless-stopped
 
 volumes:
   database-data:
-  pgadmin:
+#  pgadmin:
   data01:
     driver: local
 

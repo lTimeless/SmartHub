@@ -42,7 +42,7 @@ namespace SmartHub.Application.UseCases.Entity.Homes.Create
 			var defaultSetting = new Setting($"{request.Name}_Setting_default",
 				"This is a default setting",
 				true,
-				_optionsSnapshot.CurrentValue.DefaultPluginpath,
+				_optionsSnapshot.CurrentValue.DefaultPluginPath,
 				_optionsSnapshot.CurrentValue.DownloadServerUrl,
 				_currentUser.RequesterName,
 				SettingTypes.Default);

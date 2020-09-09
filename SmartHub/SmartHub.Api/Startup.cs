@@ -21,20 +21,8 @@ namespace SmartHub.Api
 
         public Startup(IHostEnvironment env, IConfiguration configuration)
         {
-            var builder = new ConfigurationBuilder()
-                    .AddConfiguration(configuration)
-                    .SetBasePath(Directory.GetCurrentDirectory())
-                    .AddJsonFile("appsettings.json", false, true)
-                    .AddJsonFile($"appsettings.{env.EnvironmentName}.json", false, true)
-                    .AddJsonFile("smarthub.config.json", false, true);
-
-            if (env.IsDevelopment())
-            {
-                builder.AddUserSecrets<Startup>();
-            }
-
             AppEnvironment = env;
-            Configuration = builder.Build();
+            Configuration = configuration;
         }
 
         // This method gets called by the runtime. Use this method to add services to the container.

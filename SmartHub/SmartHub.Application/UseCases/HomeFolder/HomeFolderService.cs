@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
 using Serilog;
 using SmartHub.Application.Common.Exceptions;
@@ -15,15 +16,17 @@ namespace SmartHub.Application.UseCases.HomeFolder
     {
         private readonly IDirectoryService _directoryService;
         private readonly IOptionsMonitor<ApplicationSettings> _applicationSettings;
+        private readonly IHostingEnvironment _hostingEnvironment;
         private readonly ILogger _log = Log.ForContext(typeof(HomeFolderService));
 
         // The overlaying service for creating the SmartHub config folder
         // with functions to create, delete and update it
         public HomeFolderService(IDirectoryService directoryService,
-            IOptionsMonitor<ApplicationSettings> applicationSettings)
+            IOptionsMonitor<ApplicationSettings> applicationSettings, IHostingEnvironment hostingEnvironment)
         {
             _directoryService = directoryService;
             _applicationSettings = applicationSettings;
+            _hostingEnvironment = hostingEnvironment;
         }
 
         /// <inheritdoc cref="IHomeFolderService.Create"/>
@@ -39,7 +42,7 @@ namespace SmartHub.Application.UseCases.HomeFolder
                 return Task.CompletedTask;
             }
             var pluginPath = Path.Combine(homePath, folderName);
-            _applicationSettings.CurrentValue.DefaultPluginpath = pluginPath; // TODO: add plugins folder
+            _applicationSettings.CurrentValue.DefaultPluginPath = pluginPath;
             _directoryService.CreateDirectory(homePath, folderName);
             _log.Information("SmartHub folder is at {@homePath}\\{@folderName}",
                 homePath,
@@ -52,7 +55,7 @@ namespace SmartHub.Application.UseCases.HomeFolder
         /// <inheritdoc cref="IHomeFolderService.GetHomeFolderPath"/>
         public Tuple<string, string> GetHomeFolderPath()
         {
-            return _applicationSettings.CurrentValue.EnvironmentName != "Development"
+            return _hostingEnvironment.EnvironmentName != "Development"
                 ? GetSystemHomeFolderLocation()
                 : GetDevEnvironmentFolderLocation();
         }
@@ -63,7 +66,7 @@ namespace SmartHub.Application.UseCases.HomeFolder
             var homePath = Path.Combine(path, folderName);
             var pluginPath = Path.Combine(homePath, _applicationSettings.CurrentValue.DefaultPluginFolderName);
             _directoryService.CreateDirectory(pluginPath);
-            _applicationSettings.CurrentValue.DefaultPluginpath = pluginPath;
+            _applicationSettings.CurrentValue.DefaultPluginPath = pluginPath;
         }
 
         private Tuple<string, string> GetSystemHomeFolderLocation()

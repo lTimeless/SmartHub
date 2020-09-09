@@ -1,4 +1,6 @@
 using System;
+using System.IO;
+using System.Reflection;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -28,10 +30,24 @@ namespace SmartHub.Api
 
 		private static IHostBuilder CreateHostBuilder(string[] args) =>
 			Host.CreateDefaultBuilder(args)
-				.ConfigureAppConfiguration(b =>
+				.ConfigureAppConfiguration((hostingContext, configurationBuilder) =>
 				{
-					b.AddCommandLine(args)
-						.AddEnvironmentVariables();
+					var env = hostingContext.HostingEnvironment;
+					configurationBuilder
+						.AddJsonFile("appsettings.json", true, true)
+						.AddJsonFile($"appsettings.{env.EnvironmentName}.json", false, true);
+
+					if (env.IsDevelopment() && !string.IsNullOrEmpty(env.ApplicationName))
+					{
+						var appAssembly = Assembly.Load(new AssemblyName(env.ApplicationName));
+
+						if (appAssembly != null)
+						{
+							configurationBuilder.AddUserSecrets(appAssembly, true);
+						}
+					}
+					configurationBuilder.AddEnvironmentVariables()
+						.AddCommandLine(args);
 				})
 				.UseSerilog((context, service, loggerConfig) =>
 				{
@@ -42,7 +58,7 @@ namespace SmartHub.Api
 							AutoRegisterTemplate = true,
 							NumberOfShards = 2,
 							NumberOfReplicas = 1,
-							IndexFormat = $"{context.Configuration["ApplicationName"]}-logs-{context.HostingEnvironment.EnvironmentName?.ToLower().Replace(".","-")}-{DateTime.UtcNow:yyyy-MM}"
+							IndexFormat = $"{context.Configuration["SmartHub:ApplicationName"]}-logs-{context.HostingEnvironment.EnvironmentName?.ToLower().Replace(".","-")}-{DateTime.UtcNow:yyyy-MM}"
 						})
 						.Enrich.WithProperty("Environment",context.HostingEnvironment.EnvironmentName)
 						.WriteTo.SignalRSink<LogHub, IServerHub>(
