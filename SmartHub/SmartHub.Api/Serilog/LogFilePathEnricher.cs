@@ -19,7 +19,11 @@ namespace SmartHub.Api.Serilog
         {
             _options = serviceProvider.GetRequiredService<IOptionsMonitor<ApplicationSettings>>();
         }
-
+        /// <summary>
+        /// Adds a property to each log statement and the logFilepath
+        /// </summary>
+        /// <param name="logEvent">The current LogEvent</param>
+        /// <param name="propertyFactory">The current propertyFactory for each log statement</param>
         public void Enrich(LogEvent logEvent, ILogEventPropertyFactory propertyFactory)
         {
              var logFilePath = _options.CurrentValue.LogFilePath + $"\\log-{DateTime.Now:yyyyMMdd}.txt";// Read path from your appsettings.json

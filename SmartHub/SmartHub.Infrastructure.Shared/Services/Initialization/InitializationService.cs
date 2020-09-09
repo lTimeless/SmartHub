@@ -2,16 +2,10 @@
 using System.Threading;
 using System.Threading.Tasks;
 using Figgle;
-using Microsoft.AspNetCore;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
 using Serilog;
-using SmartHub.Application.Common.Exceptions;
 using SmartHub.Application.Common.Interfaces;
 using SmartHub.Application.Common.Interfaces.Events;
 using SmartHub.Application.UseCases.HomeFolder;
-using SmartHub.Infrastructure.Database;
 using SmartHub.Infrastructure.Shared.Services.Background;
 
 namespace SmartHub.Infrastructure.Shared.Services.Initialization
