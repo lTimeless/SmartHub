@@ -21,11 +21,8 @@ namespace SmartHub.Api.Extensions
 				{
 					if (deleteMode)
 					{
-						// Log.ForContext(typeof(HostExtension)).Information("Delete database");
 						appContext.Database.EnsureDeleted();
 					}
-					// Log.ForContext(typeof(HostExtension)).Information("Update or Create database if needed");
-
 					// adds the current Entity structure
 					// appContext.Database.EnsureCreated(); //creates or updates the db if neccassary
 				}
