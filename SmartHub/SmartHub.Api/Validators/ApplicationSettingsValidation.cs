@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.Options;
+using SmartHub.Domain.Common.Settings;
 
-namespace SmartHub.Domain.Common.Settings.Validators
+namespace SmartHub.Api.Validators
 {
     public class ApplicationSettingsValidation : IValidateOptions<ApplicationSettings>
     {

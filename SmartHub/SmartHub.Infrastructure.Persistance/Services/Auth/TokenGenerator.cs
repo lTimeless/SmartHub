@@ -43,6 +43,8 @@ namespace SmartHub.Infrastructure.Services.Auth
 
 			var tokenDescriptor = new SecurityTokenDescriptor
 			{
+				Audience = _jwtSettings.Audience,
+				Issuer = _jwtSettings.Issuer,
 				Subject = new ClaimsIdentity(claims),
 				Expires = _dateTimeService.Now.ToDateTimeUtc().AddMinutes(_jwtSettings.LifeTimeInMinutes),
 				SigningCredentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256Signature)
@@ -51,14 +53,6 @@ namespace SmartHub.Infrastructure.Services.Auth
 			var tokenHandler = new JwtSecurityTokenHandler();
 			var token = tokenHandler.CreateToken(tokenDescriptor);
 			return tokenHandler.WriteToken(token);
-		}
-
-		public string GenerateToken(int size = 32)
-		{
-			var randomNumber = new byte[size];
-			using var rng = RandomNumberGenerator.Create();
-			rng.GetBytes(randomNumber);
-			return Convert.ToBase64String(randomNumber);
 		}
 	}
 }

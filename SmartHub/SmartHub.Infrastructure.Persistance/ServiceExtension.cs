@@ -15,6 +15,7 @@ using SmartHub.Domain.Common.Settings;
 using SmartHub.Domain.Entities;
 using SmartHub.Infrastructure.Database;
 using SmartHub.Infrastructure.Database.Repositories;
+using SmartHub.Infrastructure.Helpers;
 using SmartHub.Infrastructure.Services.Auth;
 
 namespace SmartHub.Infrastructure
@@ -83,7 +84,8 @@ namespace SmartHub.Infrastructure
                 x.TokenValidationParameters = new TokenValidationParameters
                 {
                     ValidateIssuerSigningKey = true,
-                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(configuration["JwtSettings:Key"])),
+                    IssuerSigningKey = new SymmetricSecurityKey(
+                        Encoding.ASCII.GetBytes(TokenUtils.ValidateAndGenerateToken(configuration["JwtSettings:Key"]))),
                     ValidateIssuer = true,
                     ValidateAudience = true,
                     //RequireExpirationTime = false,

@@ -3,7 +3,6 @@ using Microsoft.Extensions.DependencyInjection;
 using SmartHub.Domain.Entities.ValueObjects;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
 using Serilog;
 using SmartHub.Application.Common.Interfaces.Database;
 using SmartHub.Domain.Common.Enums;
@@ -11,6 +10,7 @@ using SmartHub.Domain.Entities;
 
 namespace SmartHub.Infrastructure.Database
 {
+	/// <inheritdoc cref="IDbSeeder"/>
 	public class DbSeeder : IDbSeeder
 	{
 		private readonly IServiceScopeFactory _scopeFactory;
@@ -23,6 +23,7 @@ namespace SmartHub.Infrastructure.Database
 			_scopeFactory = scopeFactory;
 		}
 
+		/// <inheritdoc cref="IDbSeeder.SeedData"/>
 		public async Task SeedData()
 		{
 			_logger.Information("Start seeding database ...");
