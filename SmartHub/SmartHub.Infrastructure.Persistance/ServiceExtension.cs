@@ -22,7 +22,7 @@ namespace SmartHub.Infrastructure
 {
     public static class ServiceExtension
     {
-        public static void AddInfrastrucurePersistance(this IServiceCollection services, IConfiguration configuration)
+        public static IServiceCollection AddInfrastrucurePersistance(this IServiceCollection services, IConfiguration configuration)
         {
             // Db contexts
             services.AddDbContext(configuration);
@@ -33,12 +33,14 @@ namespace SmartHub.Infrastructure
             services.AddRepositories();
             // Services
             services.AddServices();
+            return services;
         }
 
         private static void AddDbContext(this IServiceCollection services, IConfiguration configuration)
         {
             if (configuration.GetValue<bool>("Use_InMemoryDb"))
             {
+                //TODO: hier fake einrichten
                 services.AddDbContext<AppDbContext>(options =>
                     options.UseInMemoryDatabase("SmartHubDb"));
             }

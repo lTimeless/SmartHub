@@ -7,6 +7,8 @@ namespace SmartHub.Domain.Common.Settings
         public string DefaultPluginPath { get; set; }
         public string FolderName { get; set; }
         public string ApplicationName { get; set; }
-        public string DefaultPluginFolderName { get; set; }
+        public string PluginFolderName { get; set; }
+        public string LogFolderName { get; set; }
+        public string LogFilePath { get; set; }
     }
 }

@@ -17,6 +17,7 @@ namespace SmartHub.Infrastructure.Database
 		private readonly IUnitOfWork _unitOfWork;
 		private readonly ILogger _logger = Log.ForContext<SeedDatabase>();
 
+		// TODO: change to static class https://github.com/ivanpaulovich/clean-architecture-manga/blob/master/accounts-api/src/Infrastructure/DataAccess/SeedData.cs
 		public SeedDatabase(IServiceProvider serviceProvider, IUnitOfWork unitOfWork)
 		{
 			_scopeFactory = serviceProvider.GetRequiredService<IServiceScopeFactory>();
