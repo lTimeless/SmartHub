@@ -3,7 +3,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Serilog;
 using SmartHub.Application.Common.Exceptions;
-using SmartHub.Application.Common.Interfaces.Repositories;
+using SmartHub.Application.Common.Interfaces.Database;
 using SmartHub.Application.UseCases.PluginAdapter.Creator;
 using SmartHub.Application.UseCases.PluginAdapter.Helper;
 using SmartHub.Application.UseCases.PluginAdapter.Loader;

@@ -1,7 +1,7 @@
 ﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using SmartHub.Application.Common.Interfaces;
-using SmartHub.Application.Common.Interfaces.Repositories;
+using SmartHub.Application.Common.Interfaces.Database;
 using SmartHub.Domain.Entities;
 
 namespace SmartHub.Infrastructure.Database.Repositories

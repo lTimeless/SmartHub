@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
-using SmartHub.Application.Common.Interfaces.Repositories;
+using SmartHub.Application.Common.Interfaces.Database;
 
 namespace SmartHub.Infrastructure.Database.Repositories
 {

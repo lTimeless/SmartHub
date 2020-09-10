@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using SmartHub.Application.Common.Interfaces;
-using SmartHub.Application.Common.Interfaces.Repositories;
+using SmartHub.Application.Common.Interfaces.Database;
 using SmartHub.Domain.Common.Enums;
 using SmartHub.Domain.Entities;
 using SmartHub.Infrastructure.Database.Repositories;

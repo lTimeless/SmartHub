@@ -4,7 +4,7 @@ using System.Linq.Expressions;
 using System.Threading.Tasks;
 using SmartHub.Domain.Entities;
 
-namespace SmartHub.Application.Common.Interfaces.Repositories
+namespace SmartHub.Application.Common.Interfaces.Database
 {
 	public interface IBaseRepository<T> where T : BaseEntity
 	{

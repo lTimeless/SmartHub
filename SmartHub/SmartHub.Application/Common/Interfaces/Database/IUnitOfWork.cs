@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 
-namespace SmartHub.Application.Common.Interfaces.Repositories
+namespace SmartHub.Application.Common.Interfaces.Database
 {
 	public interface IUnitOfWork : IDisposable
 	{

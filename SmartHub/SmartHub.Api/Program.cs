@@ -20,7 +20,7 @@ namespace SmartHub.Api
 		public static async Task Main(string[] args) =>
 			await CreateHostBuilder(args)
 				.Build()
-				.MigrateDatabase(false)
+				.MigrateDatabase()
 				.RunAsync()
 				.ConfigureAwait(false);
 

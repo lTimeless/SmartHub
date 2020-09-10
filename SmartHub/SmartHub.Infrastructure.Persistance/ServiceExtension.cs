@@ -4,14 +4,13 @@ using System.Text;
 using Hangfire;
 using Hangfire.PostgreSql;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using SmartHub.Application.Common.Interfaces;
-using SmartHub.Application.Common.Interfaces.Repositories;
+using SmartHub.Application.Common.Interfaces.Database;
 using SmartHub.Domain.Common.Settings;
 using SmartHub.Domain.Entities;
 using SmartHub.Infrastructure.Database;
@@ -22,7 +21,7 @@ namespace SmartHub.Infrastructure
 {
     public static class ServiceExtension
     {
-        public static IServiceCollection AddInfrastrucurePersistance(this IServiceCollection services, IConfiguration configuration)
+        public static IServiceCollection AddInfrastructurePersistence(this IServiceCollection services, IConfiguration configuration)
         {
             // Db contexts
             services.AddDbContext(configuration);
@@ -38,29 +37,19 @@ namespace SmartHub.Infrastructure
 
         private static void AddDbContext(this IServiceCollection services, IConfiguration configuration)
         {
-            if (configuration.GetValue<bool>("Use_InMemoryDb"))
-            {
-                //TODO: hier fake einrichten
-                services.AddDbContext<AppDbContext>(options =>
-                    options.UseInMemoryDatabase("SmartHubDb"));
-            }
-            else
-            {
-                var connectionString = CreateConnectionString(configuration);
-
-                services.AddDbContext<AppDbContext>(builder =>
-                    {
-                        builder.EnableSensitiveDataLogging(false);
-                        builder.UseLazyLoadingProxies();
-                        builder.UseNpgsql(connectionString,
-                            options =>
-                            {
-                                options.MigrationsAssembly(typeof(AppDbContext).Assembly.FullName);
-                                options.UseNodaTime();
-                            });
-                    })
-                    .BuildServiceProvider();
-            }
+            var connectionString = CreateConnectionString(configuration);
+            services.AddDbContext<AppDbContext>(builder =>
+                {
+                    builder.EnableSensitiveDataLogging(false);
+                    builder.UseLazyLoadingProxies();
+                    builder.UseNpgsql(connectionString,
+                        options =>
+                        {
+                            options.MigrationsAssembly(typeof(AppDbContext).Assembly.FullName);
+                            options.UseNodaTime();
+                        });
+                })
+                .BuildServiceProvider();
             services.AddIdentity<User, Role>(options =>
                 {
                     options.SignIn.RequireConfirmedAccount = true;
@@ -129,7 +118,7 @@ namespace SmartHub.Infrastructure
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IHomeRepository, HomeRepositoryAsync>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
-            services.AddTransient<SeedDatabase>();
+            services.AddScoped<IDbSeeder, DbSeeder>();
         }
 
         private static void AddServices(this IServiceCollection services)
@@ -141,7 +130,7 @@ namespace SmartHub.Infrastructure
         #region Helper
         private static string CreateConnectionString(IConfiguration configuration)
         {
-            var oldConnectionString = configuration["ConnectionStrings:sqlConnection"];
+            var oldConnectionString = configuration["Persistence:ConnectionStrings:sqlConnection"];
             var argsUser = configuration.GetValue<string>("Pgsql_User");
             var argsPwd = configuration.GetValue<string>("Pgsql_pwd");
             var dictionary = oldConnectionString

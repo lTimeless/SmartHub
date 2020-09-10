@@ -5,7 +5,7 @@ using System;
 using System.Net;
 using System.Text.Json;
 using System.Threading.Tasks;
-using SmartHub.Application.Common.Interfaces.Repositories;
+using SmartHub.Application.Common.Interfaces.Database;
 using SmartHub.Application.Common.Models;
 
 namespace SmartHub.Api.Middleware
