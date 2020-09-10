@@ -5,8 +5,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Serilog;
 using SmartHub.Api.Extensions;
-using SmartHub.Infrastructure.Database;
-using System.IO;
 using SmartHub.Application;
 using SmartHub.Application.UseCases.SignalR;
 using SmartHub.Infrastructure;
@@ -27,21 +25,18 @@ namespace SmartHub.Api
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services) =>
-            services.AddInfrastrucurePersistance(Configuration)
+            services.AddInfrastructurePersistence(Configuration)
                 .AddInfrastrucureShared()
                 .AddApplicationLayer()
                 .AddApiLayer(Configuration, AppEnvironment);
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, SeedDatabase seedDatabase)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
                 app.UseDatabaseErrorPage();
-
-                // Seed Database
-                seedDatabase.SeedData(Configuration.GetValue<bool>("Seed_Db")).GetAwaiter().GetResult();
             }
             else
             {

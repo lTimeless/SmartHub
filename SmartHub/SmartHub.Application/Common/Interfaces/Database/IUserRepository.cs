@@ -1,7 +1,7 @@
 ﻿using System.Threading.Tasks;
 using SmartHub.Domain.Entities;
 
-namespace SmartHub.Application.Common.Interfaces.Repositories
+namespace SmartHub.Application.Common.Interfaces.Database
 {
     public interface IUserRepository
     {

@@ -2,8 +2,11 @@
 using System.Threading;
 using System.Threading.Tasks;
 using Figgle;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using Serilog;
 using SmartHub.Application.Common.Interfaces;
+using SmartHub.Application.Common.Interfaces.Database;
 using SmartHub.Application.Common.Interfaces.Events;
 using SmartHub.Application.UseCases.HomeFolder;
 using SmartHub.Infrastructure.Shared.Services.Background;
@@ -12,23 +15,29 @@ namespace SmartHub.Infrastructure.Shared.Services.Initialization
 {
     public class InitializationService : IInitializationService
     {
+        private readonly IDbSeeder _dbSeeder;
         private readonly IHomeFolderService _homeFolderService;
         private readonly ILogger _logger = Log.ForContext(typeof(InitializationService));
         private readonly BackgroundServiceStarter<IChannelManager> _channelManagerStarter;
         private readonly BackgroundServiceStarter<IEventDispatcher> _eventDispatcherStarter;
+        private readonly IConfiguration _configuration;
 
         public InitializationService(IHomeFolderService homeFolderService, BackgroundServiceStarter<IChannelManager> channelManagerStarter,
-            BackgroundServiceStarter<IEventDispatcher> eventDispatcherStarter)
+            BackgroundServiceStarter<IEventDispatcher> eventDispatcherStarter, IServiceProvider provider, IConfiguration configuration)
         {
             _homeFolderService = homeFolderService;
             _channelManagerStarter = channelManagerStarter;
             _eventDispatcherStarter = eventDispatcherStarter;
+            using var scope = provider.CreateScope();
+            _dbSeeder = scope.ServiceProvider.GetRequiredService<IDbSeeder>();
+            _configuration = configuration;
         }
 
         public async Task StartAsync(CancellationToken cancellationToken)
         {
             await _homeFolderService.Create().ConfigureAwait(false);
             WelcomeWithAsciiLogo();
+            SeedDatabase();
             var (homePath, folderName) = _homeFolderService.GetHomeFolderPath();
             _logger.Information("SmartHub folder is at {@homePath}\\{@folderName}",
                 homePath,
@@ -59,6 +68,15 @@ namespace SmartHub.Infrastructure.Shared.Services.Initialization
                                 "--------------------------------------------------");
         }
 
+        private void SeedDatabase()
+        {
+            // Seed Database
+            if (_configuration.GetValue<bool>("Persistence:Seed_Db"))
+            {
+                _dbSeeder.SeedData();
+            }
+
+        }
 
     }
 }

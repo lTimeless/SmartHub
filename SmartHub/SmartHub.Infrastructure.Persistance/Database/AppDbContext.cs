@@ -10,11 +10,14 @@ using SmartHub.Infrastructure.Database.Configurations;
 
 namespace SmartHub.Infrastructure.Database
 {
-	public class AppDbContext : IdentityDbContext<User, Role, string>
+	public sealed class AppDbContext : IdentityDbContext<User, Role, string>
 	{
 		private readonly IDateTimeService _dateTimeService;
 		private readonly IUserAccessor _userAccessor;
+
+#pragma warning disable CS8618 // Non-nullable field is uninitialized. Consider declaring as nullable.
 		public AppDbContext(DbContextOptions options, IDateTimeService dateTimeService, IUserAccessor userAccessor) : base(options)
+#pragma warning restore CS8618 // Non-nullable field is uninitialized. Consider declaring as nullable.
 		{
 			_dateTimeService = dateTimeService;
 			_userAccessor = userAccessor;

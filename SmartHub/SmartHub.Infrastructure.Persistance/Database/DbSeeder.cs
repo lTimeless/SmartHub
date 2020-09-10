@@ -1,40 +1,35 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
 using SmartHub.Domain.Entities.ValueObjects;
-using System;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 using Serilog;
-using SmartHub.Application.Common.Interfaces.Repositories;
+using SmartHub.Application.Common.Interfaces.Database;
 using SmartHub.Domain.Common.Enums;
 using SmartHub.Domain.Entities;
 
 namespace SmartHub.Infrastructure.Database
 {
-	public class SeedDatabase
+	public class DbSeeder : IDbSeeder
 	{
 		private readonly IServiceScopeFactory _scopeFactory;
 		private readonly IUnitOfWork _unitOfWork;
-		private readonly ILogger _logger = Log.ForContext<SeedDatabase>();
+		private readonly ILogger _logger = Log.ForContext(typeof(DbSeeder));
 
-		// TODO: change to static class https://github.com/ivanpaulovich/clean-architecture-manga/blob/master/accounts-api/src/Infrastructure/DataAccess/SeedData.cs
-		public SeedDatabase(IServiceProvider serviceProvider, IUnitOfWork unitOfWork)
+		public DbSeeder(IUnitOfWork unitOfWork, IServiceScopeFactory scopeFactory)
 		{
-			_scopeFactory = serviceProvider.GetRequiredService<IServiceScopeFactory>();
 			_unitOfWork = unitOfWork;
+			_scopeFactory = scopeFactory;
 		}
 
-		public async Task SeedData(bool seedDb)
+		public async Task SeedData()
 		{
-			if (!seedDb)
-			{
-				return;
-			}
-			_logger.Information("Start seeding into database ...");
+			_logger.Information("Start seeding database ...");
 			await SeedRoleData();
 			await SeedUserData();
 			await _unitOfWork.SaveAsync();
-			_logger.Information("Finished seeding into database.");
+			_logger.Information("Finished seeding database.");
 		}
 
 		private async Task SeedUserData()

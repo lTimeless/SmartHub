@@ -1,7 +1,7 @@
 ﻿using System.Threading.Tasks;
 using SmartHub.Application.Common.Exceptions;
 using SmartHub.Application.Common.Interfaces;
-using SmartHub.Application.Common.Interfaces.Repositories;
+using SmartHub.Application.Common.Interfaces.Database;
 using SmartHub.Domain.Common.Enums;
 using SmartHub.Domain.Entities;
 using SmartHub.Domain.Entities.ValueObjects;
