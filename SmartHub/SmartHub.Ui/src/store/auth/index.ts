@@ -5,7 +5,8 @@ import { actions, AuthActions } from '@/store/auth/actions';
 import { AuthMutations, mutations } from '@/store/auth/mutations';
 
 export const state: AuthState = {
-  authResponse: null
+  authResponse: null,
+  whoAmI: null
 };
 
 export interface AuthModule<A = ModuleTree<AuthState>> {

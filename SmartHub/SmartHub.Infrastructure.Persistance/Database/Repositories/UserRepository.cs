@@ -34,6 +34,12 @@ namespace SmartHub.Infrastructure.Database.Repositories
         	return false;
         }
 
+        public async Task<bool> UpdateUser(User user)
+        {
+	        var result = await _userManager.UpdateAsync(user);
+	        return result.Succeeded;
+        }
+
         public async Task<bool> UserChangeRole(User user, string newRoleName)
         {
         	var exists = await _roleManager.RoleExistsAsync(newRoleName);
@@ -48,10 +54,6 @@ namespace SmartHub.Infrastructure.Database.Repositories
         		return false;
         	}
         	var resultAdd = await _userManager.AddToRoleAsync(user, newRoleName);
-
-        	// user.LastModifiedAt = DateTimeUtils.NowUtc;
-        	// user.LastModifiedBy = user.UserName;
-
         	return resultAdd.Succeeded;
         }
 

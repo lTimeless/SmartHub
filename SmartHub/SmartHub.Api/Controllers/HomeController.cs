@@ -1,11 +1,11 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using SmartHub.Application.UseCases.Entity.Homes.Read;
 using System;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
-using SmartHub.Application.UseCases.Entity.Homes.Create;
+using SmartHub.Application.UseCases.Entity.Homes.Get;
 using SmartHub.Application.UseCases.Entity.Homes.Patch;
+using SmartHub.Application.UseCases.Entity.Homes.Post;
 
 namespace SmartHub.Api.Controllers
 {
@@ -21,7 +21,7 @@ namespace SmartHub.Api.Controllers
 		[ProducesResponseType(StatusCodes.Status400BadRequest)]
 		public async Task<IActionResult> Get()
 		{
-			return Ok(await Mediator.Send(new HomesReadQuery()));
+			return Ok(await Mediator.Send(new HomeGetQuery()));
 		}
 
 		/// <summary>

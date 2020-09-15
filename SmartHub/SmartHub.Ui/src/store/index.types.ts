@@ -7,14 +7,24 @@ export interface RootState {
   userModule: UserState;
 }
 
+/*
+  State for all users without myself
+*/
 export interface UserState {
   user: User | null;
 }
 
+/*
+  State for the home data
+*/
 export interface HomeState {
   home: Home | null;
 }
 
+/*
+  State for all identity information with my own user data
+*/
 export interface AuthState {
   authResponse: AuthResponse | null;
+  whoAmI: User | null;
 }

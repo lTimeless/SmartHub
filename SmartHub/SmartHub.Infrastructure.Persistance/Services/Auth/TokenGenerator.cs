@@ -6,11 +6,9 @@ using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
-using System.Security.Cryptography;
 using System.Text;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
-using SmartHub.Domain.Common.Enums;
 using SmartHub.Domain.Entities;
 
 namespace SmartHub.Infrastructure.Services.Auth
@@ -35,7 +33,7 @@ namespace SmartHub.Infrastructure.Services.Auth
 			claims.AddRange(new List<Claim>
 			{
 				new Claim(ClaimTypes.Name, user.UserName),
-				new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
+				new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()) // jwt Id
 			});
 			claims.AddRange(roles.Select(role => new Claim("roles", role)));
 

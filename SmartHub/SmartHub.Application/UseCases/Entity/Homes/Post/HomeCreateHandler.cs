@@ -1,7 +1,7 @@
-﻿using MediatR;
-using System.Threading;
+﻿using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
+using MediatR;
 using Microsoft.Extensions.Options;
 using Serilog;
 using SmartHub.Application.Common.Interfaces.Database;
@@ -11,7 +11,7 @@ using SmartHub.Domain.Common.Enums;
 using SmartHub.Domain.Common.Settings;
 using SmartHub.Domain.Entities;
 
-namespace SmartHub.Application.UseCases.Entity.Homes.Create
+namespace SmartHub.Application.UseCases.Entity.Homes.Post
 {
 	public class HomeCreateHandler : IRequestHandler<HomeCreateCommand, Response<HomeDto>>
 	{

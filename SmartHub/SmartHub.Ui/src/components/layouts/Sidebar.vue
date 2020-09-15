@@ -1,17 +1,17 @@
 <template>
   <div ref="sidebar" v-if="this.openSidebar" class="px-4 pt-6 lg:pt-6">
-    <div class="pb-4 mb-1">
-      <router-link :to="person.path">
+    <div v-if="user !== null && user !== undefined" class="pb-4 mb-1">
+      <router-link :to="userPath">
         <div class="md:flex">
           <div
             class="text-white text-center pt-2 text-xl lg:h-12 lg:w-12 md:h-10 md:w-10 sm:w-8 sm:h-8 rounded-full md:mx-0 md:mr-1
                 xl:mr-6"
             :style="{ 'background-color': imageBgColor }"
           >
-            {{ person.firstName.charAt(0) }}{{ person.lastName.charAt(0) }}
+            {{ user.userName.charAt(0).toUpperCase() }}{{ user.userName.charAt(1).toUpperCase() }}
           </div>
           <div class="text-center md:text-left">
-            <h2 class="text-lg">{{ person.userName }}</h2>
+            <h2 class="text-lg">{{ user.userName }}</h2>
             <div class="text-gray-500">Logged in</div>
           </div>
         </div>
@@ -48,11 +48,13 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, onMounted, ref } from 'vue';
+import { computed, defineComponent, onMounted, ref, onBeforeMount } from 'vue';
 import { useRouter } from 'vue-router';
 import { getUserRole, logout } from '@/services/auth/authService';
 import ActionButton from '@/components/widgets/ActionButton.vue';
 import { useStore } from '@/store';
+import { User } from '@/types/types';
+import { A_WHOAMI } from '@/store/auth/actions';
 
 export default defineComponent({
   name: 'Sidebar',
@@ -65,14 +67,11 @@ export default defineComponent({
   setup(props) {
     const router = useRouter();
     const store = useStore();
-    const person = {
-      userName: 'MaxTime',
-      firstName: 'Max',
-      lastName: 'ATestperson',
-      path: '/user'
-    };
+    const user = ref<User | null>(store.state.authModule.whoAmI);
+    const userPath = '/user';
     const imageBgColor = `#${((Math.random() * 0xffffff) << 0).toString(16).padStart(6, '0')}`;
     const isRole = ref('');
+    const openSidebar = ref(props.showSidebar);
 
     const sidebarLists = {
       sections: [
@@ -110,8 +109,6 @@ export default defineComponent({
       ]
     };
 
-    const openSidebar = ref(props.showSidebar);
-
     const getClassesForAnchor = (path: string) => ({
       'text-ui-primary': router.currentRoute.value.path === path,
       'transition transform hover:translate-x-1 hover:text-ui-primary': router.currentRoute.value.path !== path
@@ -119,6 +116,12 @@ export default defineComponent({
 
     const currentPath = computed(() => router.currentRoute.value.path);
     const roleIncluded = (rolesNeeded: string[]) => rolesNeeded.includes(isRole.value);
+
+    onBeforeMount(async () => {
+      await store.dispatch(A_WHOAMI).then(() => {
+        user.value = store.state.authModule.whoAmI;
+      });
+    });
 
     onMounted(() => {
       isRole.value = getUserRole();
@@ -136,7 +139,8 @@ export default defineComponent({
       imageBgColor,
       getClassesForAnchor,
       openSidebar,
-      person
+      user,
+      userPath
     };
   }
 });

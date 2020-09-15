@@ -33,6 +33,8 @@
 import { computed, defineComponent, nextTick, onMounted, ref } from 'vue';
 import LayoutHeader from '@/components/layouts/LayoutHeader.vue';
 import Sidebar from '@/components/layouts/Sidebar.vue';
+import { useStore } from '@/store';
+import { A_WHOAMI } from '@/store/auth/actions';
 
 export default defineComponent({
   name: 'Home',
@@ -41,6 +43,7 @@ export default defineComponent({
     Sidebar
   },
   setup() {
+    const store = useStore();
     const headerHeight = ref(0);
     const headerRef = ref();
     const sidebarOpen = ref(true);

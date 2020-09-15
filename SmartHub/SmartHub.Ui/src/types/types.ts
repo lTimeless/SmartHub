@@ -52,7 +52,15 @@ export interface HomeUpdateRequest {
 
 // User
 export interface User {
-  username: string;
+  userName: string;
+  personInfo: string | null;
+  personName: PersonName;
+}
+
+interface PersonName {
+  firstName: string | null;
+  middleName: string | null;
+  lastName: string | null;
 }
 
 // Home

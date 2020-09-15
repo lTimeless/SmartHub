@@ -19,7 +19,7 @@ namespace SmartHub.Infrastructure.Shared.Services.Dispatchers
 		public Task StartAsync(CancellationToken cancellationToken)
 		{
 			ChannelMessageDictionary = new Dictionary<ChannelNames, Subject<IEvent>>();
-			// Creates channels for all EventTypes
+			// Creates channels for all ChannelNames
 			foreach (var type in (ChannelNames[])Enum.GetValues(typeof(ChannelNames)))
 			{
 				AddChannel(type);
@@ -75,7 +75,7 @@ namespace SmartHub.Infrastructure.Shared.Services.Dispatchers
 		{
 			var channel = ChannelMessageDictionary.GetValueOrDefault(channelName);
 			channel.OnError(exception);
-			_log.Information($"Publish Error to channel => {channelName}");
+			_log.Information($"Error on channel => {channelName}");
 			return Task.CompletedTask;
 		}
 
