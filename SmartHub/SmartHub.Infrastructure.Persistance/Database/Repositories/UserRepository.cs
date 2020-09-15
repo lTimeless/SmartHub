@@ -1,6 +1,5 @@
 ﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
-using SmartHub.Application.Common.Interfaces;
 using SmartHub.Application.Common.Interfaces.Database;
 using SmartHub.Domain.Entities;
 
@@ -25,11 +24,6 @@ namespace SmartHub.Infrastructure.Database.Repositories
         		var role = new Role(roleName, $"This is the {roleName} role");
         		await _roleManager.CreateAsync(role);
         	}
-
-        	// user.CreatedAt = _dateTimeService.NowUtc;
-        	// user.LastModifiedAt = _dateTimeService.NowUtc;
-        	user.CreatedBy = user.UserName;
-        	user.LastModifiedBy = user.UserName;
 
         	var result = await _userManager.CreateAsync(user, pw);
         	if (result.Succeeded)

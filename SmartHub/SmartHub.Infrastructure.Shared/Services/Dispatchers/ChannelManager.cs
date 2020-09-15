@@ -14,13 +14,13 @@ namespace SmartHub.Infrastructure.Shared.Services.Dispatchers
 	public class ChannelManager : IChannelManager
 	{
 		private readonly ILogger _log = Log.ForContext<ChannelManager>();
-		private Dictionary<EventTypes, Subject<IEvent>> ChannelMessageDictionary { get; set; }
+		private Dictionary<ChannelNames, Subject<IEvent>> ChannelMessageDictionary { get; set; }
 
 		public Task StartAsync(CancellationToken cancellationToken)
 		{
-			ChannelMessageDictionary = new Dictionary<EventTypes, Subject<IEvent>>();
+			ChannelMessageDictionary = new Dictionary<ChannelNames, Subject<IEvent>>();
 			// Creates channels for all EventTypes
-			foreach (var type in (EventTypes[])Enum.GetValues(typeof(EventTypes)))
+			foreach (var type in (ChannelNames[])Enum.GetValues(typeof(ChannelNames)))
 			{
 				AddChannel(type);
 			}
@@ -34,16 +34,16 @@ namespace SmartHub.Infrastructure.Shared.Services.Dispatchers
 			return Task.CompletedTask;
 		}
 
-		public Task RemoveChannel(EventTypes eventType)
+		public Task RemoveChannel(ChannelNames channelName)
 		{
-			if (ChannelMessageDictionary.ContainsKey(eventType))
+			if (ChannelMessageDictionary.ContainsKey(channelName))
 			{
-				var res = ChannelMessageDictionary.Remove(eventType);
-				_log.Information(res ? $"Remove channel with name {eventType}" : $"Error removing channel with name {eventType}");
+				var res = ChannelMessageDictionary.Remove(channelName);
+				_log.Information(res ? $"Remove channel with name {channelName}" : $"Error removing channel with name {channelName}");
 				return Task.CompletedTask;
 			}
 
-			_log.Information($"Could not find channel with name {eventType}");
+			_log.Information($"Could not find channel with name {channelName}");
 			return Task.CompletedTask;
 		}
 
@@ -53,51 +53,48 @@ namespace SmartHub.Infrastructure.Shared.Services.Dispatchers
 			return Task.CompletedTask;
 		}
 
-		public IObservable<IEvent> GetChannel(EventTypes eventType)
+		public IObservable<IEvent> GetChannel(ChannelNames channelName)
 		{
-			_log.Information($"Get channel with name {eventType}");
-			return ChannelMessageDictionary[eventType];
+			_log.Information($"Get channel with name {channelName}");
+			return ChannelMessageDictionary[channelName];
 		}
 
-		public Task PublishNextToChannel(EventTypes eventType, IEvent message)
+		public Task PublishNextToChannel(ChannelNames channelName, IEvent message)
 		{
 			if (message is null)
 			{
 				return Task.CompletedTask;
 			}
 
-			var channel = ChannelMessageDictionary[eventType];
+			var channel = ChannelMessageDictionary[channelName];
 			channel.OnNext(message);
-
-			var allEventsChannel = ChannelMessageDictionary[EventTypes.All];
-			allEventsChannel.OnNext(message);
 			return Task.CompletedTask;
 		}
 
-		public Task PublishErrorToChannel(EventTypes eventType, Exception exception)
+		public Task PublishErrorToChannel(ChannelNames channelName, Exception exception)
 		{
-			var channel = ChannelMessageDictionary.GetValueOrDefault(eventType);
+			var channel = ChannelMessageDictionary.GetValueOrDefault(channelName);
 			channel.OnError(exception);
-			_log.Information($"Publish Error to channel => {eventType}");
+			_log.Information($"Publish Error to channel => {channelName}");
 			return Task.CompletedTask;
 		}
 
-		public Task PublishCompleteToChannel(EventTypes eventType)
+		public Task PublishCompleteToChannel(ChannelNames channelName)
 		{
-			var channel = ChannelMessageDictionary.GetValueOrDefault(eventType);
+			var channel = ChannelMessageDictionary.GetValueOrDefault(channelName);
 			channel.OnCompleted();
 			return Task.CompletedTask;
 		}
 
-		private void AddChannel(EventTypes eventType)
+		private void AddChannel(ChannelNames channelName)
 		{
-			if (ChannelMessageDictionary.ContainsKey(eventType))
+			if (ChannelMessageDictionary.ContainsKey(channelName))
 			{
 				return;
 			}
 			var newChannel = new Subject<IEvent>();
-			ChannelMessageDictionary.Add(eventType, newChannel);
-			_log.Information($"Added new channel => {eventType}");
+			ChannelMessageDictionary.Add(channelName, newChannel);
+			_log.Information($"Added new channel => {channelName}");
 		}
 	}
 }

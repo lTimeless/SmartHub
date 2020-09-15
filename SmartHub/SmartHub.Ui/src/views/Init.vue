@@ -32,12 +32,12 @@
             Please type in a name and/or a description for your smartHub.
           </div>
           <div class="md:flex md:items-center mb-6">
-            <label class="block text-gray-500 flex items-center">
+            <label class="text-gray-500 flex items-center">
               <input
                 class="form-checkbox text-ui-primary form-checkbox focus:border-purple-400 focus:outline-none
                   focus:shadow-outlineIndigo dark:focus:shadow-outline-gray"
                 type="checkbox"
-                v-model="homeCreateRequest.useFakeDb"
+                v-model="useFakeDbDisabled"
                 @change="triggerFakeDb"
               />
               <span class="ml-2 text-sm">
@@ -45,8 +45,8 @@
               </span>
             </label>
           </div>
-          <label class="text-left block text-sm">
-            <span class="text-gray-600 dark:text-gray-400">Name</span>
+          <label class="flex flex-col text-sm">
+            <span class="text-gray-600 dark:text-gray-400 justify-start text-left">Name</span>
             <input
               required
               class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-ui-primary
@@ -58,8 +58,8 @@
               :disabled="useFakeDbDisabled"
             />
           </label>
-          <label class="text-left block mt-4 text-sm">
-            <span class="text-gray-600 dark:text-gray-400">Description</span>
+          <label class="flex flex-col text-sm mt-4">
+            <span class="text-gray-600 dark:text-gray-400 justify-start text-left">Description</span>
             <input
               required
               class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-ui-primary
@@ -73,7 +73,7 @@
           </label>
           <div class="mt-4">
             <div class="md:flex md:items-center mb-6">
-              <label class="block text-gray-500 flex items-center">
+              <label class="text-gray-500 flex items-center">
                 <input
                   class="form-checkbox text-ui-primary form-checkbox focus:border-purple-400 focus:outline-none
                   focus:shadow-outlineIndigo dark:focus:shadow-outline-gray"
@@ -88,7 +88,7 @@
               </label>
             </div>
             <div class="md:flex md:items-center mb-6">
-              <label class="block text-gray-500 flex items-center">
+              <label class="text-gray-500 flex items-center">
                 <input
                   class="form-checkbox text-ui-primary"
                   :class="useFakeDbDisabled ? 'bg-gray-300' : ''"

@@ -47,7 +47,7 @@ namespace SmartHub.Infrastructure.Database
 				}
 				foreach (var itemEvent in item.Events)
 				{
-					await _channelManager.PublishNextToChannel(EventTypes.All, itemEvent).ConfigureAwait(false);
+					await _channelManager.PublishNextToChannel(ChannelNames.System, itemEvent).ConfigureAwait(false);
 				}
 				item.ClearDomainEvents();
 			}
