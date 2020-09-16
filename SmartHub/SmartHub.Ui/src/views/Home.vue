@@ -6,7 +6,7 @@
       </header>
 
       <main class="flex justify-start w-full bg-ui-background overflow-auto">
-        <aside v-if="hasSidebar" class="px-4 sidebar bg-ui-background" :class="{ open: sidebarOpen }" :style="sidebarStyle">
+        <aside v-if="hasSidebar" class="px-4 lg:w-56 sidebar bg-ui-background" :class="{ open: sidebarOpen }" :style="sidebarStyle">
           <Sidebar :show-sidebar="this.sidebarOpen" />
         </aside>
 

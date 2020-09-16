@@ -55,6 +55,12 @@ export interface User {
   userName: string;
   personInfo: string | null;
   personName: PersonName;
+  roles: string[] | null;
+  email: string | null;
+  phoneNumber: string | null;
+  twoFactorEnabled: boolean | null;
+  lastModifiedAt: string;
+  lastModifiedBy: string;
 }
 
 interface PersonName {

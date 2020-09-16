@@ -17,6 +17,13 @@
         </div>
       </router-link>
     </div>
+    <div v-else class="pb-4 mb-1">
+      <div class="lg:flex">
+        <div class="text-center md:text-center lg:text-left">
+          <h2 class="text-lg">Loading ...</h2>
+        </div>
+      </div>
+    </div>
 
     <div v-for="section in this.sidebarLists.sections" :key="section.name" class="pb-4 mb-1">
       <template v-if="roleIncluded(section.roleNeeded)">
@@ -50,10 +57,9 @@
 <script lang="ts">
 import { computed, defineComponent, onMounted, ref, onBeforeMount } from 'vue';
 import { useRouter } from 'vue-router';
-import { getUserRole, logout } from '@/services/auth/authService';
+import { getUserRoles, logout } from '@/services/auth/authService';
 import ActionButton from '@/components/widgets/ActionButton.vue';
 import { useStore } from '@/store';
-import { User } from '@/types/types';
 import { A_WHOAMI } from '@/store/auth/actions';
 
 export default defineComponent({
@@ -67,7 +73,6 @@ export default defineComponent({
   setup(props) {
     const router = useRouter();
     const store = useStore();
-    const user = ref<User | null>(store.state.authModule.whoAmI);
     const userPath = '/user';
     const imageBgColor = `#${((Math.random() * 0xffffff) << 0).toString(16).padStart(6, '0')}`;
     const isRole = ref('');
@@ -117,14 +122,14 @@ export default defineComponent({
     const currentPath = computed(() => router.currentRoute.value.path);
     const roleIncluded = (rolesNeeded: string[]) => rolesNeeded.includes(isRole.value);
 
+    const user = computed(() => store.state.authModule.whoAmI);
+
     onBeforeMount(async () => {
-      await store.dispatch(A_WHOAMI).then(() => {
-        user.value = store.state.authModule.whoAmI;
-      });
+      await store.dispatch(A_WHOAMI);
     });
 
     onMounted(() => {
-      isRole.value = getUserRole();
+      isRole.value = getUserRoles();
     });
 
     const clickLogout = () => {

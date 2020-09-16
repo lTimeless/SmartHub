@@ -52,7 +52,7 @@ export const clearStorage = (): void => {
 
 // export const getRefreshToken = (): string | null => localStorage.getItem(LOCAL_STORAGE_REFRESH_TOKEN);
 
-export const getUserRole = (): Roles => {
+export const getUserRoles = (): Roles => {
   const authResponse = getAuthResponse();
   if (authResponse == null) {
     return Roles.None;

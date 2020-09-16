@@ -1,5 +1,5 @@
 import { NavigationGuardNext, RouteLocationNormalized } from 'vue-router';
-import { getToken, getUserRole, isAuthenticated } from '@/services/auth/authService';
+import { getToken, getUserRoles, isAuthenticated } from '@/services/auth/authService';
 import { Roles } from '@/types/enums';
 
 const validateUserRoleToRoute = (to: RouteLocationNormalized, roles: Roles, next: NavigationGuardNext) => {
@@ -35,7 +35,7 @@ export const useRouteAuthGuard = (to: RouteLocationNormalized, from: RouteLocati
       if (token === null) {
         next({ name: 'Login' });
       } else {
-        validateUserRoleToRoute(to, getUserRole(), next);
+        validateUserRoleToRoute(to, getUserRoles(), next);
       }
     }
   } else {

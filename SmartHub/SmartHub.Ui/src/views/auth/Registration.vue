@@ -135,7 +135,7 @@
           <button
             disabled
             class="flex items-center justify-center w-full px-4 py-2 text-sm font-medium leading-5 text-white
-                  text-gray-700 transition-colors duration-150 border border-gray-300 rounded-lg dark:text-gray-400
+                  transition-colors duration-150 border border-gray-300 rounded-lg dark:text-gray-400
                   active:bg-transparent focus:border-gray-500 active:text-gray-500 focus:outline-none focus:shadow-outline-gray"
             :class="true ? 'opacity-50 focus:outline-none cursor-not-allowed' : 'hover:border-gray-500'"
           >
