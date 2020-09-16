@@ -1,18 +1,18 @@
 <template>
-  <div ref="sidebar" v-if="this.openSidebar" class="px-4 pt-6 lg:pt-6">
+  <div ref="sidebar" v-if="this.openSidebar" class="lg:px-4 pt-6">
     <div v-if="user !== null && user !== undefined" class="pb-4 mb-1">
       <router-link :to="userPath">
-        <div class="md:flex">
+        <div class="lg:flex">
           <div
-            class="text-white text-center pt-2 text-xl lg:h-12 lg:w-12 md:h-10 md:w-10 sm:w-8 sm:h-8 rounded-full md:mx-0 md:mr-1
-                xl:mr-6"
+            class="text-white text-center pt-2 text-xl lg:h-12 lg:w-12 md:h-10 md:w-full rounded-full lg:mx-0 lg:mr-1 md:mr-0
+                xl:mr-1"
             :style="{ 'background-color': imageBgColor }"
           >
             {{ user.userName.charAt(0).toUpperCase() }}{{ user.userName.charAt(1).toUpperCase() }}
           </div>
-          <div class="text-center md:text-left">
+          <div class="text-center md:text-center lg:text-left">
             <h2 class="text-lg">{{ user.userName }}</h2>
-            <div class="text-gray-500">Logged in</div>
+            <div class="text-gray-500 text-sm">Logged in</div>
           </div>
         </div>
       </router-link>

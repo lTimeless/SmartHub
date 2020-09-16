@@ -1,7 +1,7 @@
 <template>
-  <div class="container">
+  <div class="w-full">
     <h1 class="text-3xl text-gray-500 font-bold mb-6">Dashboard</h1>
-    <div class="flex justify-between align-middle mx-0 my-4">
+    <div class="flex flex-wrap justify-between align-middle my-4">
       <action-button title="Home" :callback="onClick" />
       <action-button title="Group" color="orange" :callback="onClick" />
       <action-button title="Device" color="green" :callback="onClick" />

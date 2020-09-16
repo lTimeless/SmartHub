@@ -1,5 +1,5 @@
 <template>
-  <div class="flex justify-center mt-7 mb-8">
+  <div class="flex justify-center mt-7 mb-8 mx-1">
     <button
       @click="callback"
       class="flex justify-center items-center text-ui-primary font-bold border border-ui-border rounded-lg

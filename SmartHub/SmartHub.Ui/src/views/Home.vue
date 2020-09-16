@@ -5,27 +5,28 @@
         <LayoutHeader />
       </header>
 
-      <main class="relative flex flex-wrap justify-start flex-1 w-full bg-ui-background overflow-auto">
-        <aside v-if="hasSidebar" class="px-4 sidebar overflow-auto w-56 bg-ui-background" :class="{ open: sidebarOpen }" :style="sidebarStyle">
+      <main class="flex justify-start w-full bg-ui-background overflow-auto">
+        <aside v-if="hasSidebar" class="px-4 sidebar bg-ui-background" :class="{ open: sidebarOpen }" :style="sidebarStyle">
           <Sidebar :show-sidebar="this.sidebarOpen" />
         </aside>
 
-        <div class="container w-10/12 pb-6 flex justify-around">
+        <div class="container pb-6 flex justify-around">
           <router-view />
         </div>
       </main>
     </div>
 
-    <!--    <div v-if="hasSidebar" class="fixed bottom-0 right-0 z-50 p-6 lg:hidden">-->
-    <!--      <button-->
-    <!--        class="p-3 text-white rounded-full shadow-lg bg-ui-primary-->
-    <!--      hover:text-white"-->
-    <!--        @click="sidebarOpen = !sidebarOpen"-->
-    <!--      >-->
-    <!--        <XIcon v-if="sidebarOpen" />-->
-    <!--        <MenuIcon v-else />-->
-    <!--      </button>-->
-    <!--    </div>-->
+    <div v-if="hasSidebar" class="fixed bottom-0 right-0 z-50 p-6 md:hidden">
+      <button
+        class="p-3 text-white rounded-full shadow-lg bg-ui-primary
+         hover:text-white"
+        @click="sidebarOpen = !sidebarOpen"
+      >
+        X
+        <!-- <XIcon v-if="sidebarOpen" />
+           <MenuIcon v-else /> -->
+      </button>
+    </div>
   </div>
 </template>
 
@@ -33,8 +34,6 @@
 import { computed, defineComponent, nextTick, onMounted, ref } from 'vue';
 import LayoutHeader from '@/components/layouts/LayoutHeader.vue';
 import Sidebar from '@/components/layouts/Sidebar.vue';
-import { useStore } from '@/store';
-import { A_WHOAMI } from '@/store/auth/actions';
 
 export default defineComponent({
   name: 'Home',
@@ -43,7 +42,6 @@ export default defineComponent({
     Sidebar
   },
   setup() {
-    const store = useStore();
     const headerHeight = ref(0);
     const headerRef = ref();
     const sidebarOpen = ref(true);

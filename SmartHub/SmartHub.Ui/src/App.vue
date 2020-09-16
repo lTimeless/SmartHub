@@ -230,7 +230,7 @@ table {
     transform: translateX(0);
   }
 
-  @screen lg {
+  @screen md {
     @apply w-1/4 px-0 bg-transparent top-0 bottom-auto inset-x-auto sticky z-0;
     transform: translateX(0);
   }
