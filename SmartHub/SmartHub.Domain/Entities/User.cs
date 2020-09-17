@@ -12,7 +12,7 @@ namespace SmartHub.Domain.Entities
 		public Instant LastModifiedAt { get; set; }
 		public string CreatedBy { get; set; }
 		public string LastModifiedBy { get; set; }
-		public string? PersonInfo { get; }
+		public string? PersonInfo { get; set; }
 
 		public virtual PersonName? PersonName { get; }
 

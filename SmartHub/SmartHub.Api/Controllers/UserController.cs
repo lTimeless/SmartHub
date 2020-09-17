@@ -1,5 +1,6 @@
 ﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using SmartHub.Application.UseCases.Entity.Users.Put;
 
 namespace SmartHub.Api.Controllers
 {
@@ -15,5 +16,15 @@ namespace SmartHub.Api.Controllers
         {
             return Ok();
         }
+
+        /// <summary>
+        /// Full updates the User
+        /// </summary>
+        [HttpPut]
+        public async Task<IActionResult> Put([FromBody] UserPutCommand value)
+        {
+            return Ok(await Mediator.Send(value));
+        }
+
     }
 }

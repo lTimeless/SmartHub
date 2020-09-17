@@ -75,7 +75,7 @@
     <PackageReference Include="Swashbuckle.AspNetCore.Swagger" Version="5.5.1" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\SmartHub.Infrastructure.Persistance\SmartHub.Infrastructure.Persistance.csproj" />
+    <ProjectReference Include="..\SmartHub.Infrastructure.Persistence\SmartHub.Infrastructure.Persistence.csproj" />
     <ProjectReference Include="..\SmartHub.Infrastructure.Shared\SmartHub.Infrastructure.Shared.csproj" />
   </ItemGroup>
 

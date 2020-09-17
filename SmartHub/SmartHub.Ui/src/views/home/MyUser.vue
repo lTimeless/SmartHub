@@ -75,18 +75,6 @@
           placeholder="0000 0011223344"
         />
       </label>
-      <label class="flex items-center dark:text-gray-400 mt-4">
-        <input
-          type="checkbox"
-          v-model="user.twoFactorEnabled"
-          class="text-purple-600 form-checkbox focus:border-purple-400 focus:outline-none
-                  focus:shadow-outlineIndigo dark:focus:shadow-outline-gray"
-        />
-        <span class="ml-2">
-          Two factor authorization enabled
-        </span>
-        <div class="text-gray-500 text-sm text-left">(not implemented at the moment)</div>
-      </label>
       <div class="text-gray-500 text-sm text-left mt-10">Last modified by: {{ user.lastModifiedBy }}</div>
       <div class="text-gray-500 text-sm text-left">Last modified at: {{ user.lastModifiedAt }}</div>
     </div>
