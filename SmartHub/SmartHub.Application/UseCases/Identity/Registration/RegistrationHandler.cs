@@ -29,7 +29,7 @@ namespace SmartHub.Application.UseCases.Identity.Registration
 			{
 				return Response.Fail<AuthResponseDto>("Username already exists.");
 			}
-			var newUser = new User(request.Username, null, new PersonName("", "", ""));
+			var newUser = new User(request.Username, "", new PersonName("", "", ""));
 			var result = await _registrationService.RegisterAsync(request, newUser);
 
 			return result

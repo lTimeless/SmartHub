@@ -21,7 +21,7 @@ export interface ServerLog {
   exception: string;
 }
 
-// Auth
+// Identity
 export interface AuthResponse {
   token: string;
 }
@@ -35,19 +35,6 @@ export interface RegistrationRequest {
   username: string;
   password: string;
   role: string;
-}
-
-export interface HomeCreateRequest {
-  name: string;
-  description: string | null;
-  autoDetectAddress: boolean;
-}
-
-export interface HomeUpdateRequest {
-  name: string | null;
-  description: string | null;
-  userName: string | null;
-  settingName: string | null;
 }
 
 // User
@@ -68,6 +55,17 @@ interface PersonName {
   lastName: string | null;
 }
 
+export interface UserUpdateRequest {
+  userName: string;
+  personInfo: string;
+  firstName: string;
+  middleName: string;
+  lastName: string;
+  email: string;
+  phoneNumber: string;
+  newRole: string;
+}
+
 // Home
 export interface Home {
   id: string;
@@ -76,6 +74,18 @@ export interface Home {
   name: string;
   description?: string;
   settings?: Setting[];
+}
+export interface HomeCreateRequest {
+  name: string;
+  description: string | null;
+  autoDetectAddress: boolean;
+}
+
+export interface HomeUpdateRequest {
+  name: string | null;
+  description: string | null;
+  userName: string | null;
+  settingName: string | null;
 }
 
 // Group

@@ -60,7 +60,7 @@ import { useRouter } from 'vue-router';
 import { getUserRoles, logout } from '@/services/auth/authService';
 import ActionButton from '@/components/widgets/ActionButton.vue';
 import { useStore } from '@/store';
-import { A_WHOAMI } from '@/store/auth/actions';
+import { A_ME } from '@/store/auth/actions';
 
 export default defineComponent({
   name: 'Sidebar',
@@ -122,10 +122,10 @@ export default defineComponent({
     const currentPath = computed(() => router.currentRoute.value.path);
     const roleIncluded = (rolesNeeded: string[]) => rolesNeeded.includes(isRole.value);
 
-    const user = computed(() => store.state.authModule.whoAmI);
+    const user = computed(() => store.state.authModule.Me);
 
     onBeforeMount(async () => {
-      await store.dispatch(A_WHOAMI);
+      await store.dispatch(A_ME);
     });
 
     onMounted(() => {

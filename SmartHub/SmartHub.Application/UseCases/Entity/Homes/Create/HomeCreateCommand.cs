@@ -1,7 +1,7 @@
 ﻿using MediatR;
 using SmartHub.Application.Common.Models;
 
-namespace SmartHub.Application.UseCases.Entity.Homes.Post
+namespace SmartHub.Application.UseCases.Entity.Homes.Create
 {
 	public class HomeCreateCommand : IRequest<Response<HomeDto>>
 	{

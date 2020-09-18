@@ -26,5 +26,5 @@ export interface HomeState {
 */
 export interface AuthState {
   authResponse: AuthResponse | null;
-  whoAmI: User | null;
+  Me: User | null;
 }

@@ -1,13 +1,18 @@
-import { AuthResponse, LoginRequest, RegistrationRequest, ServerResponse, User } from '@/types/types';
+import { AuthResponse, LoginRequest, RegistrationRequest, ServerResponse, User, UserUpdateRequest } from '@/types/types';
 import { Api } from '@/router/axios/axios';
 
-const API_URL_WHOAMI = 'api/Identity/whoami';
+const API_URL_ME = 'api/Identity/me';
 const API_URL_LOGIN = 'api/Identity/login';
 const API_URL_REGISTRATION = 'api/Identity/registration';
 
-export const getWhoAmI = (): Promise<ServerResponse<User>> =>
+export const getMe = (): Promise<ServerResponse<User>> =>
   Api()
-    .get<ServerResponse<User>>(API_URL_WHOAMI)
+    .get<ServerResponse<User>>(API_URL_ME)
+    .then((res) => res.data);
+
+export const putMe = (payload: UserUpdateRequest): Promise<ServerResponse<User>> =>
+  Api()
+    .put<ServerResponse<User>>(API_URL_ME, payload)
     .then((res) => res.data);
 
 export const postLogin = (payload: LoginRequest): Promise<ServerResponse<AuthResponse>> =>

@@ -1,27 +1,27 @@
-﻿using AutoMapper;
+﻿using System.Threading;
+using System.Threading.Tasks;
+using AutoMapper;
 using MediatR;
 using SmartHub.Application.Common.Interfaces.Database;
 using SmartHub.Application.Common.Models;
 using SmartHub.Application.UseCases.Entity.Users;
-using System.Threading;
-using System.Threading.Tasks;
 
-namespace SmartHub.Application.UseCases.Identity.WhoAmI
+namespace SmartHub.Application.UseCases.Identity.Me.Read
 {
-	public class WoAmIHandler : IRequestHandler<WhoAmIQuery, Response<UserDto>>
+	public class MeReadHandler : IRequestHandler<MeReadQuery, Response<UserDto>>
 	{
 		private readonly IUnitOfWork _unitOfWork;
 		private readonly IMapper _mapper;
 		private readonly CurrentUser _currentUser;
 
-		public WoAmIHandler(IUnitOfWork unitOfWork, IMapper mapper, CurrentUser currentUser)
+		public MeReadHandler(IUnitOfWork unitOfWork, IMapper mapper, CurrentUser currentUser)
 		{
 			_unitOfWork = unitOfWork;
 			_mapper = mapper;
 			_currentUser = currentUser;
 		}
 
-		public async Task<Response<UserDto>> Handle(WhoAmIQuery request, CancellationToken cancellationToken)
+		public async Task<Response<UserDto>> Handle(MeReadQuery request, CancellationToken cancellationToken)
 		{
 			if (_currentUser.User == null)
 			{

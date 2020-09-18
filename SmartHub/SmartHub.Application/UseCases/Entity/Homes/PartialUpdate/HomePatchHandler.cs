@@ -4,9 +4,8 @@ using AutoMapper;
 using MediatR;
 using SmartHub.Application.Common.Interfaces.Database;
 using SmartHub.Application.Common.Models;
-using SmartHub.Domain.Entities;
 
-namespace SmartHub.Application.UseCases.Entity.Homes.Patch
+namespace SmartHub.Application.UseCases.Entity.Homes.PartialUpdate
 {
 	public class HomePatchHandler : IRequestHandler<HomePatchCommand, Response<HomeDto>>
 	{

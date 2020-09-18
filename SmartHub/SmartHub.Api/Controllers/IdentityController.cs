@@ -6,7 +6,8 @@ using SmartHub.Application.UseCases.Identity.Login;
 using SmartHub.Application.UseCases.Identity.Registration;
 using System.Threading.Tasks;
 using SmartHub.Application.UseCases.Identity;
-using SmartHub.Application.UseCases.Identity.WhoAmI;
+using SmartHub.Application.UseCases.Identity.Me.Read;
+using SmartHub.Application.UseCases.Identity.Me.Update;
 
 namespace SmartHub.Api.Controllers
 {
@@ -56,12 +57,21 @@ namespace SmartHub.Api.Controllers
 		/// <returns>The user who requests this.</returns>
 		/// <response code="200">Returns myself userDto</response>
 		/// <response code="401">Returns unauthorized</response>
-		[HttpGet("whoami")]
+		[HttpGet("me")]
 		[ProducesResponseType(StatusCodes.Status200OK)]
 		[ProducesResponseType(StatusCodes.Status401Unauthorized)]
 		public async Task<IActionResult> GetMyself(CancellationToken cancellationToken)
 		{
-			return Ok(await Mediator.Send(new WhoAmIQuery(), cancellationToken));
+			return Ok(await Mediator.Send(new MeReadQuery(), cancellationToken));
+		}
+
+		/// <summary>
+		/// Updates the own user data.
+		/// </summary>
+		[HttpPut("me")]
+		public async Task<IActionResult> Put([FromBody] MeUpdateCommand value)
+		{
+			return Ok(await Mediator.Send(value));
 		}
 	}
 }

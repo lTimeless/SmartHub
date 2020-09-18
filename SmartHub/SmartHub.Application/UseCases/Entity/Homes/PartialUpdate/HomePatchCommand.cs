@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.JsonPatch;
 using SmartHub.Application.Common.Models;
 
-namespace SmartHub.Application.UseCases.Entity.Homes.Patch
+namespace SmartHub.Application.UseCases.Entity.Homes.PartialUpdate
 {
 	public class HomePatchCommand : IRequest<Response<HomeDto>>
 	{

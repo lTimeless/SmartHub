@@ -11,7 +11,7 @@ using SmartHub.Domain.Common.Enums;
 using SmartHub.Domain.Common.Settings;
 using SmartHub.Domain.Entities;
 
-namespace SmartHub.Application.UseCases.Entity.Homes.Post
+namespace SmartHub.Application.UseCases.Entity.Homes.Create
 {
 	public class HomeCreateHandler : IRequestHandler<HomeCreateCommand, Response<HomeDto>>
 	{

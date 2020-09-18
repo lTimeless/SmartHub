@@ -3,9 +3,9 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
-using SmartHub.Application.UseCases.Entity.Homes.Get;
-using SmartHub.Application.UseCases.Entity.Homes.Patch;
-using SmartHub.Application.UseCases.Entity.Homes.Post;
+using SmartHub.Application.UseCases.Entity.Homes.Create;
+using SmartHub.Application.UseCases.Entity.Homes.PartialUpdate;
+using SmartHub.Application.UseCases.Entity.Homes.Read;
 
 namespace SmartHub.Api.Controllers
 {

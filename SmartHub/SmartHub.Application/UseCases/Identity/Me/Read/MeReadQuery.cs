@@ -2,9 +2,9 @@
 using SmartHub.Application.Common.Models;
 using SmartHub.Application.UseCases.Entity.Users;
 
-namespace SmartHub.Application.UseCases.Identity.WhoAmI
+namespace SmartHub.Application.UseCases.Identity.Me.Read
 {
-    public class WhoAmIQuery : IRequest<Response<UserDto>>
+    public class MeReadQuery : IRequest<Response<UserDto>>
     {
     }
 }

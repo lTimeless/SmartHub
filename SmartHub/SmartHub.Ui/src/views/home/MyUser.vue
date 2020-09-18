@@ -7,22 +7,28 @@
       <div class="flex mr-2 justify-between">
         <div class="w-1/3 mr-2">
           <label class="text-left block text-sm">
-            <span class="text-gray-600 dark:text-gray-400">Username</span>
+            <span class="text-gray-600 dark:text-gray-400">Username </span>
             <input
               v-model="user.userName"
               class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400
                 focus:outline-none focus:shadow-outlineIndigo dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
+              :placeholder="user.userName"
             />
           </label>
         </div>
         <div class="w-1/3 ml-2">
           <label class="text-left block text-sm">
-            <span class="text-gray-600 dark:text-gray-400">Roles</span>
-            <input
-              v-model="userRoles"
+            <span class="text-gray-600 dark:text-gray-400"
+              >Roles
+              <span class="text-gray-500 text-sm text-left mt-10">(After changing, please re-login)</span>
+            </span>
+            <select
+              v-model="selectedRole"
               class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400
-                focus:outline-none focus:shadow-outlineIndigo dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
-            />
+                focus:outline-none focus:shadow-outlineIndigo dark:text-gray-300 dark:focus:shadow-outline-gray form-select"
+            >
+              <option v-for="role in roles" :key="role" :value="role">{{ role }}</option>
+            </select>
           </label>
         </div>
       </div>
@@ -34,7 +40,7 @@
             v-model="user.personName.firstName"
             class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400
                 focus:outline-none focus:shadow-outlineIndigo dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
-            placeholder="Jane Doe"
+            :placeholder="user.personName.firstName === '' ? '-' : user.personName.firstName"
           />
         </label>
         <label class="text-left block text-sm w-full mr-2">
@@ -43,7 +49,7 @@
             v-model="user.personName.middleName"
             class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400
                 focus:outline-none focus:shadow-outlineIndigo dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
-            placeholder="Jane Doe"
+            :placeholder="user.personName.middleName === '' ? '-' : user.personName.middleName"
           />
         </label>
         <label class="text-left block text-sm w-full mr-2">
@@ -52,7 +58,7 @@
             v-model="user.personName.lastName"
             class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400
                 focus:outline-none focus:shadow-outlineIndigo dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
-            placeholder="Jane Doe"
+            :placeholder="user.personName.lastName === '' ? '-' : user.personName.lastName"
           />
         </label>
       </div>
@@ -63,7 +69,7 @@
           v-model="user.email"
           class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400
                 focus:outline-none focus:shadow-outlineIndigo dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
-          placeholder="test@test.com"
+          :placeholder="user.email === '' || user.email === null ? '-' : user.email"
         />
       </label>
       <label class="text-left block text-sm w-full mr-2 mt-4">
@@ -72,7 +78,16 @@
           v-model="user.phoneNumber"
           class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400
                 focus:outline-none focus:shadow-outlineIndigo dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
-          placeholder="0000 0011223344"
+          :placeholder="user.phoneNumber === '' || user.phoneNumber === null ? '-' : user.phoneNumber"
+        />
+      </label>
+      <label class="text-left block text-sm w-full mr-2 mt-4">
+        <span class="text-gray-600 dark:text-gray-400">Personinfo</span>
+        <input
+          v-model="user.personInfo"
+          class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400
+                focus:outline-none focus:shadow-outlineIndigo dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
+          :placeholder="user.personInfo === '' ? '-' : user.personInfo"
         />
       </label>
       <div class="text-gray-500 text-sm text-left mt-10">Last modified by: {{ user.lastModifiedBy }}</div>
@@ -83,24 +98,19 @@
     </div>
     <!-- Save button -->
     <div class="md:w-2/12 mt-3">
-      <!-- <button
-        class="block w-full px-4 py-2 mt-4 text-sm font-medium leading-5 text-center text-white
-                  transition-colors duration-150 bg-ui-primary border border-transparent rounded-lg active:bg-ui-primary
-                  focus:outline-none focus:shadow-outlineIndigo"
-        :class="true ? 'opacity-50 focus:outline-none cursor-not-allowed' : 'hover:bg-ui-primaryHover'"
-      >
-        Save
-      </button> -->
-      <action-button title="Save" color="indigo" :height="35" :width="150" :callback="onClick" />
+      <action-button title="Save" color="indigo" :height="35" :width="150" :callback="onSaveClick" />
     </div>
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import { useStore } from '@/store';
-import { defineComponent, ref, computed } from 'vue';
+import { defineComponent, ref, computed, reactive } from 'vue';
 import { getUserRoles } from '@/services/auth/authService';
 import ActionButton from '@/components/widgets/ActionButton.vue';
+import { Roles } from '@/types/enums';
+import { UserUpdateRequest } from '@/types/types';
+import { A_UPDATE_ME } from '@/store/auth/actions';
 
 export default defineComponent({
   name: 'MyUser',
@@ -110,16 +120,42 @@ export default defineComponent({
   setup() {
     const store = useStore();
     const title = ref('MyUser');
-    const user = computed(() => store.state.authModule.whoAmI);
+    const user = computed(() => store.state.authModule.Me);
     const userRoles = computed(() => getUserRoles());
-    const onClick = () => {
-      console.log('Click button');
+    const selectedRole = ref(userRoles.value);
+    const roles = Roles;
+    const updateUserRequest: UserUpdateRequest = reactive({
+      userName: '',
+      personInfo: '',
+      firstName: '',
+      middleName: '',
+      lastName: '',
+      email: '',
+      phoneNumber: '',
+      newRole: ''
+    });
+    const onSaveClick = async () => {
+      if (user.value === null) {
+        return;
+      }
+      updateUserRequest.userName = user.value.userName;
+      updateUserRequest.personInfo = user.value.personInfo === null ? '' : user.value.personInfo;
+      updateUserRequest.firstName = user.value.personName.firstName === null ? '' : user.value.personName.firstName;
+      updateUserRequest.middleName = user.value.personName.middleName === null ? '' : user.value.personName.middleName;
+      updateUserRequest.lastName = user.value.personName.lastName === null ? '' : user.value.personName.lastName;
+      updateUserRequest.email = user.value.email === null ? '' : user.value.email;
+      updateUserRequest.phoneNumber = user.value.phoneNumber === null ? '' : user.value.phoneNumber;
+      updateUserRequest.newRole = selectedRole.value;
+      console.log('Click button', updateUserRequest);
+      await store.dispatch(A_UPDATE_ME, updateUserRequest);
     };
     return {
       title,
       user,
-      onClick,
-      userRoles
+      updateUserRequest,
+      onSaveClick,
+      roles,
+      selectedRole
     };
   }
 });

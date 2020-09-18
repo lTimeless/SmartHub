@@ -1,4 +1,6 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using SmartHub.Application.Common.Interfaces.Database;
 using SmartHub.Domain.Entities;
@@ -40,15 +42,21 @@ namespace SmartHub.Infrastructure.Database.Repositories
 	        return result.Succeeded;
         }
 
+        public async Task<IEnumerable<string>> GetUserRoles(User user)
+        {
+	        return await _userManager.GetRolesAsync(user);
+        }
+
         public async Task<bool> UserChangeRole(User user, string newRoleName)
         {
         	var exists = await _roleManager.RoleExistsAsync(newRoleName);
-        	if (!exists)
-        	{
-        		return false;
-        	}
+            if (!exists)
+            {
+	            var role = new Role(newRoleName, $"This is the {newRoleName} role");
+	            await _roleManager.CreateAsync(role);
+            }
         	var roles = await _userManager.GetRolesAsync(user);
-        	var resultRemoved = await _userManager.RemoveFromRoleAsync(user, roles[0]);
+        	var resultRemoved = await _userManager.RemoveFromRoleAsync(user, roles[0]); // because the user can only have one role atm
         	if (!resultRemoved.Succeeded)
         	{
         		return false;

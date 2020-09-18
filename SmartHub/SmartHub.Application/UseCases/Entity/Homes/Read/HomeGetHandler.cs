@@ -5,7 +5,7 @@ using MediatR;
 using SmartHub.Application.Common.Interfaces.Database;
 using SmartHub.Application.Common.Models;
 
-namespace SmartHub.Application.UseCases.Entity.Homes.Get
+namespace SmartHub.Application.UseCases.Entity.Homes.Read
 {
 	public class HomeGetHandler : IRequestHandler<HomeGetQuery, Response<HomeDto>>
 	{

@@ -26,6 +26,8 @@ const validateUserRoleToRoute = (to: RouteLocationNormalized, roles: Roles, next
 
 export const useRouteAuthGuard = (to: RouteLocationNormalized, from: RouteLocationNormalized, next: NavigationGuardNext) => {
   if (to.matched.some((record) => record.meta.requiresAuth)) {
+    // TODO: BE call machen wenn Token noch im storage ist, wenn der noch gültig ist dann weiter zum dashboard wenn nicht dann einen neuen beantragen
+    // Refreshtoken!!!!
     if (!isAuthenticated()) {
       next({ name: 'Login' });
     } else {
