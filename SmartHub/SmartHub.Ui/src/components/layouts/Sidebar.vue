@@ -1,5 +1,6 @@
 <template>
-  <div ref="sidebar" v-if="this.openSidebar" class="lg:px-4 pt-6">
+  <div ref="sidebar" v-if="this.openSidebar" class="lg:px-3 pt-6">
+    <!-- User -->
     <div v-if="user !== null && user !== undefined" class="pb-4 mb-1">
       <router-link :to="userPath">
         <div class="lg:flex">
@@ -24,31 +25,41 @@
         </div>
       </div>
     </div>
+    <!-- Pages -->
+    <div v-for="page in sidebarLists" :key="page.name" class="mb-2">
+      <template v-if="roleIncluded(page.roleNeeded)">
+        <div v-if="page.name === 'Events' || page.name === 'Dashboard'" class="border-ui-border border-t mb-2"></div>
+        <router-link :to="page.path">
+          <h2 class="flex items-center font-bold text-sm uppercase mt-4" :class="this.getClassesForAnchor(page.path)">
+            <span
+              class="mr-2 w-2 h-2 rounded-full opacity-0 bg-ui-primary transition transform scale-1"
+              :class="{
+                'opacity-100 scale-100': this.currentPath === page.path
+              }"
+            ></span>
+            {{ page.name }}
+          </h2>
+        </router-link>
 
-    <div v-for="section in this.sidebarLists.sections" :key="section.name" class="pb-4 mb-1">
-      <template v-if="roleIncluded(section.roleNeeded)">
-        <div class="border-ui-border border-t mb-2"></div>
-        <h3 class="flex pt-0 mt-0 mb-1 font-bold text-sm tracking-tight uppercase">
-          {{ section.name }}
-        </h3>
-
-        <ul class="max-w-full pl-2 mb-0">
-          <li v-for="page in section.items" :id="page.path" :key="page.path" :class="this.getClassesForAnchor(page.path)" class="hover:text-ui-primary">
-            <router-link :to="page.path" class="flex items-center py-1 ">
-              <span
-                class="absolute w-2 h-2 -ml-3 rounded-full opacity-0 bg-ui-primary transition transform scale-0 origin-center"
-                :class="{
-                  'opacity-100 scale-100': this.currentPath === page.path
-                }"
-              ></span>
-              {{ page.title }}
-            </router-link>
+        <ul class="max-w-full pl-4 mb-0">
+          <li v-for="child in page.children" :id="child.path" :key="child.path" :class="this.getClassesForAnchor(child.path)" class="hover:text-ui-primary">
+            <template v-if="roleIncluded(child.roleNeeded)">
+              <router-link :to="child.path" class="flex items-center">
+                <span
+                  class="flex mr-2 w-2 h-2 rounded-full opacity-0 bg-ui-primary transition transform scale-0 origin-center"
+                  :class="{
+                    'opacity-100 scale-100': this.currentPath === child.path
+                  }"
+                ></span>
+                {{ child.name }}
+              </router-link>
+            </template>
           </li>
         </ul>
       </template>
     </div>
-
-    <div class="flex justify-center mt-7 mb-8">
+    <!-- Logout button -->
+    <div class="flex justify-center mt-12">
       <action-button color="indigo" :height="35" :width="150" title="Logout" :callback="clickLogout" />
     </div>
   </div>
@@ -61,6 +72,7 @@ import { getUserRoles, logout } from '@/services/auth/authService';
 import ActionButton from '@/components/widgets/ActionButton.vue';
 import { useStore } from '@/store';
 import { A_ME } from '@/store/auth/actions';
+import { Roles } from '@/types/enums';
 
 export default defineComponent({
   name: 'Sidebar',
@@ -78,41 +90,79 @@ export default defineComponent({
     const isRole = ref('');
     const openSidebar = ref(props.showSidebar);
 
-    const sidebarLists = {
-      sections: [
-        {
-          name: 'All',
-          roleNeeded: ['Guest', 'User', 'Admin'],
-          items: [{ title: 'Dashboard', icon: 'mdi-view-dashboard', path: '/' }]
-        },
-        {
-          name: 'User',
-          roleNeeded: ['User', 'Admin'],
-          items: [
-            { title: 'Plugins', icon: 'mdi-toy-brick', path: '/plugins' },
-            { title: 'Routines', icon: 'mdi-update', path: '/routines' },
-            { title: 'Statistics', icon: 'mdi-chart-arc', path: '/statistics' },
-            { title: 'Settings', icon: 'mdi-cog', path: '/settings' }
-          ]
-        },
-        {
-          name: 'Admin',
-          roleNeeded: ['Admin'],
-          items: [
-            { title: 'Events', icon: 'mdi-calendar-alert', path: '/events' },
-            { title: 'Logs', icon: 'mdi-file-document', path: '/logs' },
-            { title: 'System', icon: 'mdi-desktop-classic', path: '/system' },
-            { title: 'Health', icon: 'mdi-clipboard-pulse', path: '/health' },
-            { title: 'Manager', icon: 'mdi-monitor-edit', path: '/manager' }
-          ]
-        },
-        {
-          name: 'Help',
-          roleNeeded: ['Guest', 'User', 'Admin'],
-          items: [{ title: 'About', icon: 'mdi-information', path: '/about' }]
-        }
-      ]
-    };
+    const sidebarLists = [
+      {
+        name: 'Dashboard',
+        roleNeeded: [Roles.Guest, Roles.User, Roles.Admin],
+        path: '/',
+        icon: 'mdi-view-dashboard',
+        children: []
+      },
+      {
+        name: 'Statistics',
+        roleNeeded: [Roles.User, Roles.Admin],
+        path: '/statistics',
+        icon: 'mdi-chart-arc',
+        children: []
+      },
+      {
+        name: 'Plugins',
+        roleNeeded: [Roles.User, Roles.Admin],
+        path: '/plugins',
+        icon: 'mdi-chart-arc',
+        children: []
+      },
+      {
+        name: 'Configuration',
+        roleNeeded: [Roles.User, Roles.Admin],
+        path: '/settings',
+        icon: 'mdi-cog',
+        children: [
+          {
+            name: 'System',
+            roleNeeded: [Roles.Admin],
+            path: '/system',
+            icon: 'mdi-desktop-classic',
+            children: []
+          },
+          {
+            name: 'Health',
+            roleNeeded: [Roles.Admin],
+            path: '/health',
+            icon: 'mdi-clipboard-pulse',
+            children: []
+          }
+        ]
+      },
+      {
+        name: 'Events',
+        roleNeeded: [Roles.Admin],
+        path: '/events',
+        icon: 'mdi-calendar-alert',
+        children: []
+      },
+      {
+        name: 'Logs',
+        roleNeeded: [Roles.Admin],
+        path: '/logs',
+        icon: 'mdi-file-document',
+        children: []
+      },
+      {
+        name: 'Manager',
+        roleNeeded: [Roles.Admin],
+        path: '/manager',
+        icon: 'mdi-monitor-edit',
+        children: []
+      }
+      // TODO: move to toolbar
+      // {
+      //   name: 'About',
+      //   roleNeeded: ['Guest', 'User', 'Admin'],
+      //   path: '/about',
+      //   children: [{ title: 'About', icon: 'mdi-information', path: '/about' }]
+      // }
+    ];
 
     const getClassesForAnchor = (path: string) => ({
       'text-ui-primary': router.currentRoute.value.path === path,

@@ -1,3 +1,4 @@
+using Hangfire;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -81,8 +82,10 @@ namespace SmartHub.Api
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(
-                    name: "default",
-                    pattern: "{controller}/{action=Index}/{id?}");
+                    "default",
+                    "{controller}/{action=Index}/{id?}");
+
+                endpoints.MapHangfireDashboard();
 
                 endpoints.MapHub<EventHub>("/api/hub/events");
                 endpoints.MapHub<LogHub>("/api/hub/logs");

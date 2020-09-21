@@ -9,6 +9,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
+using Npgsql;
 using SmartHub.Application.Common.Interfaces;
 using SmartHub.Application.Common.Interfaces.Database;
 using SmartHub.Domain.Common.Settings;
@@ -43,7 +44,6 @@ namespace SmartHub.Infrastructure.Persistence
             var connectionString = CreateConnectionString(configuration);
             services.AddDbContext<AppDbContext>(builder =>
                 {
-                    builder.EnableSensitiveDataLogging(false);
                     builder.UseLazyLoadingProxies();
                     builder.UseNpgsql(connectionString,
                         options =>

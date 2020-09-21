@@ -1,11 +1,11 @@
 <template>
   <div class="w-full">
-    <h1 class="text-3xl text-gray-500 font-bold mb-6">Dashboard</h1>
-    <div class="flex flex-wrap justify-between align-middle my-4">
-      <action-button title="Home" :callback="onClick" />
-      <action-button title="Group" color="orange" :callback="onClick" />
-      <action-button title="Device" color="green" :callback="onClick" />
-      <action-button title="Routine" color="teal" :callback="onClick" />
+    <h1 class="text-3xl text-gray-500 font-bold mb-4">Dashboard</h1>
+    <div class="flex flex-wrap justify-between my-4">
+      <action-button title="Home" :callback="onClick" class="mt-2" />
+      <action-button title="Group" color="orange" :callback="onClick" class="mt-2" />
+      <action-button title="Device" color="green" :callback="onClick" class="mt-2" />
+      <action-button title="Routine" color="teal" :callback="onClick" class="mt-2" />
     </div>
     <div class="grid grid-cols-2 gap-6">
       <div class="border-b border-ui-border col-span-2 mb-3">

@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using SmartHub.Application.Common.Exceptions;
-using SmartHub.Infrastructure.Database;
+using SmartHub.Infrastructure.Persistence.Database;
 
 namespace SmartHub.Api.Extensions
 {

@@ -8,7 +8,7 @@ using SmartHub.Application.Common.Interfaces;
 using SmartHub.Domain.Entities;
 using SmartHub.Infrastructure.Persistence.Database.Configurations;
 
-namespace SmartHub.Infrastructure.Database
+namespace SmartHub.Infrastructure.Persistence.Database
 {
 	public sealed class AppDbContext : IdentityDbContext<User, Role, string>
 	{

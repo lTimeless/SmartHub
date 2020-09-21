@@ -20,7 +20,7 @@
           <label class="text-left block text-sm">
             <span class="text-gray-600 dark:text-gray-400"
               >Roles
-              <span class="text-gray-500 text-sm text-left mt-10">(After changing, please re-login)</span>
+              <span class="text-gray-500 text-sm text-left mt-10">(After changing, you need to login again)</span>
             </span>
             <select
               v-model="selectedRole"
@@ -106,7 +106,7 @@
 <script lang="ts">
 import { useStore } from '@/store';
 import { defineComponent, ref, computed, reactive } from 'vue';
-import { getUserRoles } from '@/services/auth/authService';
+import { getUserRoles, logout } from '@/services/auth/authService';
 import ActionButton from '@/components/widgets/ActionButton.vue';
 import { Roles } from '@/types/enums';
 import { UserUpdateRequest } from '@/types/types';
@@ -123,6 +123,7 @@ export default defineComponent({
     const user = computed(() => store.state.authModule.Me);
     const userRoles = computed(() => getUserRoles());
     const selectedRole = ref(userRoles.value);
+    const prevRole = selectedRole.value;
     const roles = Roles;
     const updateUserRequest: UserUpdateRequest = reactive({
       userName: '',
@@ -146,8 +147,10 @@ export default defineComponent({
       updateUserRequest.email = user.value.email === null ? '' : user.value.email;
       updateUserRequest.phoneNumber = user.value.phoneNumber === null ? '' : user.value.phoneNumber;
       updateUserRequest.newRole = selectedRole.value;
-      console.log('Click button', updateUserRequest);
       await store.dispatch(A_UPDATE_ME, updateUserRequest);
+      if (updateUserRequest.newRole !== prevRole) {
+        logout();
+      }
     };
     return {
       title,

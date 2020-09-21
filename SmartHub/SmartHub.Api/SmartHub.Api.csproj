@@ -33,8 +33,8 @@
   <!-- Nuget packages -->
   <ItemGroup>
     <PackageReference Include="AutoMapper" Version="10.0.0" />
-    <PackageReference Include="Hangfire" Version="1.7.12" />
-    <PackageReference Include="Hangfire.AspNetCore" Version="1.7.12" />
+    <PackageReference Include="Hangfire" Version="1.7.13" />
+    <PackageReference Include="Hangfire.AspNetCore" Version="1.7.13" />
     <PackageReference Include="MediatR" Version="8.1.0" />
     <PackageReference Include="Microsoft.AspNetCore.JsonPatch" Version="3.1.7" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="3.1.7" />

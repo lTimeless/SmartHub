@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using SmartHub.Application.Common.Interfaces.Database;
 using SmartHub.Domain.Entities;
+using SmartHub.Infrastructure.Persistence.Database;
 using SmartHub.Infrastructure.Persistence.Database.Repositories;
 
 namespace SmartHub.Infrastructure.Database.Repositories
