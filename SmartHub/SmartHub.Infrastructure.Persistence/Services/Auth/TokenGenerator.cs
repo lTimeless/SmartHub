@@ -1,7 +1,4 @@
-﻿using SmartHub.Application.Common.Exceptions;
-using SmartHub.Application.Common.Interfaces;
-using SmartHub.Domain.Common.Settings;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
@@ -9,9 +6,12 @@ using System.Security.Claims;
 using System.Text;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
+using SmartHub.Application.Common.Exceptions;
+using SmartHub.Application.Common.Interfaces;
+using SmartHub.Domain.Common.Settings;
 using SmartHub.Domain.Entities;
 
-namespace SmartHub.Infrastructure.Services.Auth
+namespace SmartHub.Infrastructure.Persistence.Services.Auth
 {
 	public class TokenGenerator : ITokenGenerator
 	{

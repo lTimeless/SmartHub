@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Security.Cryptography;
 
-namespace SmartHub.Infrastructure.Helpers
+namespace SmartHub.Infrastructure.Persistence.Helpers
 {
     public class TokenUtils
     {

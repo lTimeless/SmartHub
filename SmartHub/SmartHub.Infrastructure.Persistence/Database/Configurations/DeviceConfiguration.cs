@@ -3,9 +3,8 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SmartHub.Domain.Common.Enums;
 using SmartHub.Domain.Entities;
-using SmartHub.Domain.Entities.Devices;
 
-namespace SmartHub.Infrastructure.Database.Configurations
+namespace SmartHub.Infrastructure.Persistence.Database.Configurations
 {
 	public class DeviceConfiguration : IEntityTypeConfiguration<Device>
 	{

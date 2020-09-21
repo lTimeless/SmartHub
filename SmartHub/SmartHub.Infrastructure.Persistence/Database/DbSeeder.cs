@@ -1,14 +1,14 @@
-﻿using Microsoft.AspNetCore.Identity;
-using Microsoft.Extensions.DependencyInjection;
-using SmartHub.Domain.Entities.ValueObjects;
-using System.Linq;
+﻿using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.DependencyInjection;
 using Serilog;
 using SmartHub.Application.Common.Interfaces.Database;
 using SmartHub.Domain.Common.Enums;
 using SmartHub.Domain.Entities;
+using SmartHub.Domain.Entities.ValueObjects;
 
-namespace SmartHub.Infrastructure.Database
+namespace SmartHub.Infrastructure.Persistence.Database
 {
 	/// <inheritdoc cref="IDbSeeder"/>
 	public class DbSeeder : IDbSeeder

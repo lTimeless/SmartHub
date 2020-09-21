@@ -1,13 +1,14 @@
-﻿using Microsoft.EntityFrameworkCore;
-using SmartHub.Domain.Entities;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 using SmartHub.Application.Common.Interfaces.Database;
+using SmartHub.Domain.Entities;
+using SmartHub.Infrastructure.Database;
 
-namespace SmartHub.Infrastructure.Database.Repositories
+namespace SmartHub.Infrastructure.Persistence.Database.Repositories
 {
 	public class BaseRepositoryAsync<T> : IBaseRepository<T> where T : BaseEntity
 	{

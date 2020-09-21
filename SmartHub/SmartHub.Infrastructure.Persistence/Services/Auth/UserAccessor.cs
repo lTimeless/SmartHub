@@ -1,9 +1,9 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using System.Security.Claims;
+using Microsoft.AspNetCore.Http;
 using SmartHub.Application.Common.Interfaces;
-using System.Security.Claims;
 using SmartHub.Domain.Common.Enums;
 
-namespace SmartHub.Infrastructure.Services.Auth
+namespace SmartHub.Infrastructure.Persistence.Services.Auth
 {
 	public class UserAccessor : IUserAccessor
 	{

@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using SmartHub.Application.Common.Interfaces;
 using SmartHub.Domain.Entities;
-using SmartHub.Infrastructure.Database.Configurations;
+using SmartHub.Infrastructure.Persistence.Database.Configurations;
 
 namespace SmartHub.Infrastructure.Database
 {

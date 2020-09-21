@@ -15,10 +15,12 @@ using SmartHub.Domain.Common.Settings;
 using SmartHub.Domain.Entities;
 using SmartHub.Infrastructure.Database;
 using SmartHub.Infrastructure.Database.Repositories;
-using SmartHub.Infrastructure.Helpers;
-using SmartHub.Infrastructure.Services.Auth;
+using SmartHub.Infrastructure.Persistence.Database;
+using SmartHub.Infrastructure.Persistence.Database.Repositories;
+using SmartHub.Infrastructure.Persistence.Helpers;
+using SmartHub.Infrastructure.Persistence.Services.Auth;
 
-namespace SmartHub.Infrastructure
+namespace SmartHub.Infrastructure.Persistence
 {
     public static class ServiceExtension
     {
