@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using SmartHub.Application.Common.Mappings;
-using SmartHub.Application.UseCases.Entity.Plugins;
 using SmartHub.Application.UseCases.Entity.Settings;
 using SmartHub.Application.UseCases.Entity.Users;
 using SmartHub.Domain.Entities;

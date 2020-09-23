@@ -58,8 +58,11 @@ export const getUserRoles = (): Roles => {
     return Roles.None;
   }
   const tokenPayload = JwtDecode(authResponse.token) as TokenPayload;
+  if (Date.now() >= tokenPayload.exp * 1000) {
+    console.log(tokenPayload.exp * 1000, Date.now());
+    return Roles.None;
+  }
   const { roles } = tokenPayload;
-
   if (roles.includes('Admin')) {
     return Roles.Admin;
   }

@@ -1,13 +1,16 @@
 import { ActionContext, ActionTree } from 'vuex';
 import { RootState, HomeState, AuthState } from '@/store/index.types';
-import { HomeCreateRequest, HomeUpdateRequest } from '@/types/types';
+import { GroupCreateRequest, HomeCreateRequest, HomeUpdateRequest } from '@/types/types';
 import { HomeMutations, M_UPDATE_HOME } from '@/store/home/mutations';
 import { getHome, postHome, putHome } from '@/services/apis/home.service';
+import { postGroup } from '@/services/apis/group.service';
 
 // Keys
 export const A_FETCH_HOME = 'A_FETCH_HOME';
 export const A_CREATE_HOME = 'A_CREATE_HOME';
 export const A_UPDATE_HOME = 'A_UPDATE_HOME';
+// Group
+export const A_CREATE_GROUP = 'A_CREATE_GROUP';
 
 // actions context type
 type AugmentedActionContext = {
@@ -55,5 +58,17 @@ export const actions: ActionTree<HomeState, RootState> = {
       .catch((err) => {
         console.log(err);
       });
+  },
+  // Group
+  async [A_CREATE_GROUP]({ commit, dispatch }, payload: GroupCreateRequest): Promise<void> {
+    await postGroup(payload)
+      .then((response) => {
+        if (!response.success) {
+          return Promise.reject(response.message);
+        }
+        dispatch(A_FETCH_HOME);
+        return Promise.resolve();
+      })
+      .catch((error) => Promise.reject(error));
   }
 };

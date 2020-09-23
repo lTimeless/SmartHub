@@ -39,7 +39,7 @@ import { defineComponent, ref, computed } from 'vue';
 import Fuse from 'fuse.js';
 
 export default defineComponent({
-  name: 'Search',
+  name: 'AppSearch',
   props: {
     data: {
       type: Array,

@@ -1,38 +1,119 @@
 <template>
   <div class="w-full">
-    <h1 class="text-3xl text-gray-500 font-bold mb-4">Dashboard</h1>
-    <div class="flex flex-wrap justify-between my-4">
-      <action-button title="Home" :callback="onClick" class="mt-2" />
-      <action-button title="Group" color="orange" :callback="onClick" class="mt-2" />
-      <action-button title="Device" color="green" :callback="onClick" class="mt-2" />
-      <action-button title="Routine" color="teal" :callback="onClick" class="mt-2" />
-    </div>
-    <div class="grid grid-cols-2 gap-6">
-      <div class="border-b border-ui-border col-span-2 mb-3">
-        <h2 class="flex justify-start pt-0 mt-0 mb-1 font-bold text-sm tracking-tight uppercase text-gray-500">Graphs</h2>
-      </div>
-      <div class="border-b border-ui-border col-span-2">
-        <h2 class="flex justify-start pt-0 mt-0 mb-1 font-bold text-sm tracking-tight uppercase text-gray-500">Tables</h2>
-      </div>
-    </div>
+    <h1 class="text-3xl text-gray-500 font-bold mb-4">Dashboard for {{ home.name }}</h1>
+    <AppTabs>
+      <template v-slot:header>
+        <div class="flex flex-wrap justify-between my-4 space-y-2">
+          <AppButton
+            title="Home"
+            :callback="toggleTabs.bind(this, 1)"
+            class="mt-2"
+            :class="{ 'text-ui-primary': openTab !== 1, 'text-white bg-indigo-400': openTab === 1 }"
+          />
+          <AppButton
+            title="Groups"
+            color="orange"
+            :callback="toggleTabs.bind(this, 2)"
+            :class="{ 'text-orange-400': openTab !== 2, 'text-white bg-orange-400': openTab === 2 }"
+          />
+          <AppButton
+            title="Devices"
+            color="green"
+            :callback="toggleTabs.bind(this, 3)"
+            :class="{ 'text-green-400': openTab !== 3, 'text-white bg-green-400': openTab === 3 }"
+          />
+          <AppButton
+            title="Automations"
+            color="teal"
+            :callback="toggleTabs.bind(this, 4)"
+            :class="{ 'text-teal-400': openTab !== 4, 'text-white bg-teal-400': openTab === 4 }"
+          />
+        </div>
+      </template>
+      <template v-slot:content>
+        <div v-bind:class="{ hidden: openTab !== 1, block: openTab === 1 }">
+          <div class="grid grid-cols-2 gap-6">
+            <div class="border-b border-ui-border col-span-2 mb-3">
+              <h2 class="flex justify-start pt-0 mt-0 mb-1 font-bold text-sm tracking-tight uppercase text-gray-500">Graphs</h2>
+            </div>
+            <div class="border-b border-ui-border col-span-2">
+              <h2 class="flex justify-start pt-0 mt-0 mb-1 font-bold text-sm tracking-tight uppercase text-gray-500">Tables</h2>
+            </div>
+          </div>
+        </div>
+        <div v-bind:class="{ hidden: openTab !== 2, block: openTab === 2 }" class="flex flex-wrap justify-between my-4 space-x-2">
+          <AppCard class="bg-white shadow-md">
+            <div class="flex items-center justify-center p-4">
+              <div class="w-full">
+                <p>Group</p>
+              </div>
+            </div>
+          </AppCard>
+          <AppCard class="bg-white shadow-md">
+            <div class="flex items-center justify-center p-4">
+              <div class="w-full">
+                <p>Group</p>
+              </div>
+            </div>
+          </AppCard>
+          <AppCard class="bg-white shadow-md">
+            <div class="flex items-center justify-center p-4">
+              <div class="w-full">
+                <p>Group</p>
+              </div>
+            </div>
+          </AppCard>
+        </div>
+        <div v-bind:class="{ hidden: openTab !== 3, block: openTab === 3 }">
+          <p>
+            Efficiently unleash cross-media information without cross-media value. Quickly maximize timely deliverables for real-time schemas.
+            <br />
+            <br />
+            Dramatically maintain clicks-and-mortar solutions without functional solutions.
+          </p>
+        </div>
+        <div v-bind:class="{ hidden: openTab !== 4, block: openTab === 4 }">
+          <AppAutomation />
+        </div>
+      </template>
+    </AppTabs>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
-import ActionButton from '@/components/widgets/ActionButton.vue';
+import { defineComponent, computed, ref } from 'vue';
+import AppButton from '@/components/widgets/AppButton.vue';
+import AppTabs from '@/components/widgets/AppTabs.vue';
+import AppAutomation from '@/components/AppAutomations.vue';
+import AppCard from '@/components/widgets/AppCard.vue';
+import { useStore } from '@/store';
+import { A_FETCH_HOME } from '@/store/home/actions';
 
 export default defineComponent({
   name: 'Dashboard',
   components: {
-    ActionButton
+    AppButton,
+    AppTabs,
+    AppAutomation,
+    AppCard
   },
   setup() {
-    const onClick = () => {
-      console.log('Click button');
+    const openTab = ref(1);
+    const store = useStore();
+    const home = computed(() => store.state.homeModule.home);
+    store.dispatch(A_FETCH_HOME);
+
+    const toggleTabs = (tabNumber: number) => {
+      openTab.value = tabNumber;
+    };
+    const onClick = (tabNumber: number) => {
+      console.log('Click button', tabNumber);
     };
     return {
-      onClick
+      openTab,
+      toggleTabs,
+      onClick,
+      home
     };
   }
 });

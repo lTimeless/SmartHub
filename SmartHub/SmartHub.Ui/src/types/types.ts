@@ -74,6 +74,7 @@ export interface Home {
   name: string;
   description?: string;
   settings?: Setting[];
+  groups?: Group[];
 }
 export interface HomeCreateRequest {
   name: string;
@@ -90,12 +91,25 @@ export interface HomeUpdateRequest {
 
 // Group
 export interface Group {
+  id: string;
+  createdBy: string;
   name: string;
+  description: string | null;
+  devices?: Device[];
+}
+
+// GroupCreateRequest
+export interface GroupCreateRequest {
+  name: string;
+  description: string;
 }
 
 // Device
 export interface Device {
+  id: string;
+  createdBy: string;
   name: string;
+  description: string | null;
 }
 
 // Setting

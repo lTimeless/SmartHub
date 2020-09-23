@@ -107,7 +107,7 @@
 import { useStore } from '@/store';
 import { defineComponent, ref, computed, reactive } from 'vue';
 import { getUserRoles, logout } from '@/services/auth/authService';
-import ActionButton from '@/components/widgets/ActionButton.vue';
+import ActionButton from '@/components/widgets/AppButton.vue';
 import { Roles } from '@/types/enums';
 import { UserUpdateRequest } from '@/types/types';
 import { A_UPDATE_ME } from '@/store/auth/actions';

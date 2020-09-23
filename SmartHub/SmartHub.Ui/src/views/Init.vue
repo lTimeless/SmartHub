@@ -19,7 +19,7 @@
         and create an issue. 🔥👌🚀❤
       </div>
     </NotImplementedModalAsync>
-    <Card v-if="!doneInit && !showgoToFakeModal">
+    <AppCard v-if="!doneInit && !showgoToFakeModal" class="bg-white shadow-md">
       <div class="h-32 md:h-auto md:w-1/2">
         <img aria-hidden="true" class="object-cover w-full h-full dark:hidden" src="../assets/images/undraw_at_home_octe.svg" alt="Office" />
       </div>
@@ -137,7 +137,7 @@
           </button>
         </div>
       </div>
-    </Card>
+    </AppCard>
   </div>
 </template>
 
@@ -147,7 +147,7 @@ import { HomeCreateRequest } from '@/types/types';
 import { A_CREATE_HOME, A_FETCH_HOME } from '@/store/home/actions';
 import { useStore } from '@/store';
 import { useRouter } from 'vue-router';
-import Card from '@/components/widgets/Card.vue';
+import AppCard from '@/components/widgets/AppCard.vue';
 
 const ConfirmationModalAsync = defineAsyncComponent(() => import(/* webpackChunkName: "ConfirmationModal" */ '../components/modals/ConfirmationModal.vue'));
 const NotImplementedModalAsync = defineAsyncComponent(() => import(/* webpackChunkName: "NotImplementedModal" */ '../components/modals/NotImplementedModal.vue'));
@@ -155,7 +155,7 @@ const NotImplementedModalAsync = defineAsyncComponent(() => import(/* webpackChu
 export default defineComponent({
   name: 'Init',
   components: {
-    Card,
+    AppCard,
     ConfirmationModalAsync,
     NotImplementedModalAsync
   },

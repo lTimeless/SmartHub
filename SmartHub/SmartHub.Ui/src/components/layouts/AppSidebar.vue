@@ -60,7 +60,7 @@
     </div>
     <!-- Logout button -->
     <div class="flex justify-center mt-12">
-      <action-button color="indigo" :height="35" :width="150" title="Logout" :callback="clickLogout" />
+      <AppButton class="text-ui-primary" color="indigo" :height="35" :width="150" title="Logout" :callback="clickLogout" />
     </div>
   </div>
 </template>
@@ -69,15 +69,15 @@
 import { computed, defineComponent, onMounted, ref, onBeforeMount } from 'vue';
 import { useRouter } from 'vue-router';
 import { getUserRoles, logout } from '@/services/auth/authService';
-import ActionButton from '@/components/widgets/ActionButton.vue';
+import AppButton from '@/components/widgets/AppButton.vue';
 import { useStore } from '@/store';
 import { A_ME } from '@/store/auth/actions';
 import { Roles } from '@/types/enums';
 
 export default defineComponent({
-  name: 'Sidebar',
+  name: 'AppSidebar',
   components: {
-    ActionButton
+    AppButton
   },
   props: {
     showSidebar: { type: Boolean, required: true }

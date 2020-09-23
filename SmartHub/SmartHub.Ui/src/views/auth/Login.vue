@@ -1,6 +1,6 @@
 <template>
   <div class="flex items-center min-h-screen p-6 bg-ui-loginBackground dark:bg-gray-900">
-    <Card>
+    <AppCard class="bg-white shadow-md">
       <div class="h-32 md:h-auto md:w-1/2">
         <img aria-hidden="true" class="object-cover w-full h-full dark:hidden" src="../../assets/images/undraw_smart_home_28oy.svg" alt="Office" />
       </div>
@@ -64,7 +64,7 @@
           </p>
         </div>
       </div>
-    </Card>
+    </AppCard>
   </div>
 </template>
 
@@ -75,11 +75,11 @@ import { useRouter } from 'vue-router';
 import { useStore } from '@/store';
 import { A_LOGIN } from '@/store/auth/actions';
 import { A_FETCH_HOME } from '@/store/home/actions';
-import Card from '@/components/widgets/Card.vue';
+import AppCard from '@/components/widgets/AppCard.vue';
 
 export default defineComponent({
   components: {
-    Card
+    AppCard
   },
   setup() {
     const store = useStore();

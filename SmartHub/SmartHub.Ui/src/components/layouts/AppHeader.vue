@@ -33,10 +33,10 @@
 </template>
 
 <script lang="ts">
-// import ToggleDarkMode from '@/components/layouts/ToggleColorMode.vue';
+// import ToggleDarkMode from '@/components/layouts/AppToggleTheme.vue';
 import Logo from '@/components/svgs/Logo.vue';
 import { defineComponent } from 'vue';
-import Search from '@/components/widgets/Search.vue';
+import Search from '@/components/widgets/AppSearch.vue';
 // import { GithubIcon } from 'vue-feather-icons';
 
 export default defineComponent({

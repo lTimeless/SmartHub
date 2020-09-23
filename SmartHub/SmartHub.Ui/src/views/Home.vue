@@ -2,12 +2,12 @@
   <div class="font-sans antialiased text-ui-typo bg-ui-background">
     <div class="flex flex-col justify-start min-h-screen">
       <header ref="headerRef" class="sticky top-0 z-10 w-full border-b bg-ui-background border-ui-border" @resize="setHeaderHeight">
-        <LayoutHeader />
+        <AppHeader />
       </header>
 
       <main class="flex justify-start w-full bg-ui-background overflow-auto">
         <aside v-if="hasSidebar" class="px-4 lg:w-56 sidebar bg-ui-background" :class="{ open: sidebarOpen }" :style="sidebarStyle">
-          <Sidebar :show-sidebar="this.sidebarOpen" />
+          <AppSidebar :show-sidebar="this.sidebarOpen" />
         </aside>
 
         <div class="container pb-6 flex justify-around">
@@ -31,15 +31,15 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, nextTick, onMounted, ref } from 'vue';
-import LayoutHeader from '@/components/layouts/LayoutHeader.vue';
-import Sidebar from '@/components/layouts/Sidebar.vue';
+import { computed, defineComponent, nextTick, onMounted, ref, reactive } from 'vue';
+import AppHeader from '@/components/layouts/AppHeader.vue';
+import AppSidebar from '@/components/layouts/AppSidebar.vue';
 
 export default defineComponent({
   name: 'Home',
   components: {
-    LayoutHeader,
-    Sidebar
+    AppHeader,
+    AppSidebar
   },
   setup() {
     const headerHeight = ref(0);

@@ -17,16 +17,14 @@ namespace SmartHub.Application.UseCases.Entity.Homes.Create
 	{
 		private readonly IMapper _mapper;
 		private readonly IUnitOfWork _unitOfWork;
-		private readonly CurrentUser _currentUser;
 		private readonly ILocationService _locationService;
 		private readonly IOptionsMonitor<ApplicationSettings> _optionsSnapshot;
 		private readonly ILogger _logger = Log.ForContext(typeof(HomeCreateHandler));
 
-		public HomeCreateHandler(IUnitOfWork unitOfWork, IOptionsMonitor<ApplicationSettings> optionsSnapshot, CurrentUser currentUser, ILocationService locationService, IMapper mapper)
+		public HomeCreateHandler(IUnitOfWork unitOfWork, IOptionsMonitor<ApplicationSettings> optionsSnapshot, ILocationService locationService, IMapper mapper)
 		{
 			_unitOfWork = unitOfWork;
 			_optionsSnapshot = optionsSnapshot;
-			_currentUser = currentUser;
 			_locationService = locationService;
 			_mapper = mapper;
 		}
@@ -44,7 +42,6 @@ namespace SmartHub.Application.UseCases.Entity.Homes.Create
 				true,
 				_optionsSnapshot.CurrentValue.DefaultPluginPath,
 				_optionsSnapshot.CurrentValue.DownloadServerUrl,
-				_currentUser.RequesterName,
 				SettingTypes.Default);
 			var homeEntity = new Home(request.Name, request.Description)
 				.AddSetting(defaultSetting);

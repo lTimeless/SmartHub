@@ -17,7 +17,7 @@
 import { defineComponent } from 'vue';
 
 export default defineComponent({
-  name: 'Table',
+  name: 'AppTable',
   props: {
     headers: {
       type: Array,

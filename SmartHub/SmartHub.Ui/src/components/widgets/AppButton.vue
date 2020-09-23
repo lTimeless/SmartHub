@@ -1,22 +1,20 @@
 <template>
-  <div class="flex justify-center">
-    <button
-      @click="callback"
-      class="flex justify-center items-center text-ui-primary font-bold border border-ui-border rounded-lg
+  <button
+    @click="callback"
+    class="flex justify-center items-center font-bold border border-ui-border rounded-lg
         hover:text-white transition-colors"
-      :class="`hover:bg-${color}-${colorSaturation}`"
-      :style="{ height: height + 'px', width: width + 'px' }"
-    >
-      {{ title }}
-    </button>
-  </div>
+    :class="`hover:bg-${color}-${colorSaturation}`"
+    :style="{ height: height + 'px', width: width + 'px' }"
+  >
+    {{ title }}
+  </button>
 </template>
 
 <script lang="ts">
 import { defineComponent, PropType } from 'vue';
 
 export default defineComponent({
-  name: 'ActionButton',
+  name: 'AppButton',
   components: {},
   props: {
     title: {
