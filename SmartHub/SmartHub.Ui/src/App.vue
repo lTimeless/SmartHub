@@ -1,6 +1,10 @@
 <template>
   <div id="app">
-    <router-view></router-view>
+    <router-view v-slot="{ Component }">
+      <transition name="route" mode="out-in">
+        <component :is="Component" />
+      </transition>
+    </router-view>
   </div>
 </template>
 
@@ -31,6 +35,23 @@ export default defineComponent({
 /* width */
 ::-webkit-scrollbar {
   width: 12px;
+}
+/* Router view transitions */
+.route-enter-from,
+.route-leave-to {
+  opacity: 0;
+  transform: translateY(-30px);
+}
+
+.route-enter-active,
+.route-leave-active {
+  transition: all 0.2s ease;
+}
+
+.route-enter-to,
+.route-leave-from {
+  opacity: 1;
+  transform: translateY(0);
 }
 
 /* Track */

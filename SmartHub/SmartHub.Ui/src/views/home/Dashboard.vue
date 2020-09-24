@@ -1,6 +1,6 @@
 <template>
   <div class="w-full">
-    <h1 class="text-3xl text-gray-500 font-bold mb-4">Dashboard for {{ home.name }}</h1>
+    <h1 class="text-3xl text-gray-500 font-bold mb-4">Dashboard for {{ home?.name }}</h1>
     <AppTabs>
       <template v-slot:header>
         <div class="flex flex-wrap justify-between my-4 space-y-2">
@@ -41,28 +41,9 @@
             </div>
           </div>
         </div>
-        <div v-bind:class="{ hidden: openTab !== 2, block: openTab === 2 }" class="flex flex-wrap justify-between my-4 space-x-2">
-          <AppCard class="bg-white shadow-md">
-            <div class="flex items-center justify-center p-4">
-              <div class="w-full">
-                <p>Group</p>
-              </div>
-            </div>
-          </AppCard>
-          <AppCard class="bg-white shadow-md">
-            <div class="flex items-center justify-center p-4">
-              <div class="w-full">
-                <p>Group</p>
-              </div>
-            </div>
-          </AppCard>
-          <AppCard class="bg-white shadow-md">
-            <div class="flex items-center justify-center p-4">
-              <div class="w-full">
-                <p>Group</p>
-              </div>
-            </div>
-          </AppCard>
+        <div v-bind:class="{ hidden: openTab !== 2, block: openTab === 2 }">
+          <AppGroupsOverview v-if="home?.groups !== undefined" />
+          <div v-else>No Groups available</div>
         </div>
         <div v-bind:class="{ hidden: openTab !== 3, block: openTab === 3 }">
           <p>
@@ -85,7 +66,7 @@ import { defineComponent, computed, ref } from 'vue';
 import AppButton from '@/components/widgets/AppButton.vue';
 import AppTabs from '@/components/widgets/AppTabs.vue';
 import AppAutomation from '@/components/AppAutomations.vue';
-import AppCard from '@/components/widgets/AppCard.vue';
+import AppGroupsOverview from '@/components/AppGroupsOverview.vue';
 import { useStore } from '@/store';
 import { A_FETCH_HOME } from '@/store/home/actions';
 
@@ -95,7 +76,7 @@ export default defineComponent({
     AppButton,
     AppTabs,
     AppAutomation,
-    AppCard
+    AppGroupsOverview
   },
   setup() {
     const openTab = ref(1);

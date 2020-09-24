@@ -11,7 +11,11 @@
         </aside>
 
         <div class="container pb-6 flex justify-around">
-          <router-view />
+          <router-view v-slot="{ Component }">
+            <transition name="route" mode="out-in">
+              <component :is="Component" />
+            </transition>
+          </router-view>
         </div>
       </main>
     </div>
@@ -55,8 +59,7 @@ export default defineComponent({
     const hasSidebar = computed(() => headerHeight.value > 0);
 
     const sidebarStyle = computed(() => ({
-      top: `${headerHeight.value}px`,
-      height: `calc(100vh - ${headerHeight.value}px)`
+      top: `${headerHeight.value}px`
     }));
 
     onMounted(() => {
