@@ -60,7 +60,7 @@ export const actions: ActionTree<HomeState, RootState> = {
       });
   },
   // Group
-  async [A_CREATE_GROUP]({ commit, dispatch }, payload: GroupCreateRequest): Promise<void> {
+  async [A_CREATE_GROUP]({ dispatch }, payload: GroupCreateRequest): Promise<void> {
     await postGroup(payload)
       .then((response) => {
         if (!response.success) {

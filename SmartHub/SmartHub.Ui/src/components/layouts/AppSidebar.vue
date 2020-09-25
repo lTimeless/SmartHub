@@ -6,7 +6,7 @@
         <div class="lg:flex">
           <div
             class="text-white text-center pt-2 text-xl lg:h-12 lg:w-12 md:h-10 md:w-full rounded-full lg:mx-0 lg:mr-1 md:mr-0
-                xl:mr-1"
+                xl:mr-1 shadow-md"
             :style="{ 'background-color': imageBgColor }"
           >
             {{ user.userName.charAt(0).toUpperCase() }}{{ user.userName.charAt(1).toUpperCase() }}
@@ -60,7 +60,7 @@
     </div>
     <!-- Logout button -->
     <div class="flex justify-center mt-12">
-      <AppButton class="text-ui-primary" color="indigo" :height="35" :width="150" title="Logout" :callback="clickLogout" />
+      <AppButton class="text-ui-primary shadow-sm" color="indigo" :height="35" :width="150" title="Logout" :callback="clickLogout" />
     </div>
   </div>
 </template>
