@@ -6,11 +6,11 @@
       </header>
 
       <main class="flex justify-start w-full bg-ui-background overflow-auto">
-        <aside v-if="hasSidebar" class="px-4 lg:w-56 sidebar bg-ui-background" :class="{ open: sidebarOpen }" :style="sidebarStyle">
+        <aside v-if="hasSidebar" class="px-4 md:w-56 sidebar bg-ui-background" :class="{ open: sidebarOpen }" :style="sidebarStyle">
           <AppSidebar :show-sidebar="this.sidebarOpen" />
         </aside>
 
-        <div class="container pb-6 flex justify-around">
+        <div class="container pb-6 justify-around overflow-y-auto">
           <router-view v-slot="{ Component }">
             <transition name="route" mode="out-in">
               <component :is="Component" />

@@ -4,10 +4,10 @@
     <div class="flex justify-between items-center mb-4">
       <Search :data="logsArray" :search-keys="searchKeys" @search-result="getSearchResult" @toggle-table="toggleTable" />
       <div class="w-1/3 flex justify-end">
-        <span v-if="connectionEstablished" class="w-1/3 text-xs font-semibold inline-block py-2 px-2 uppercase rounded text-indigo-600 bg-indigo-200 uppercase ml-3">
+        <span v-if="connectionEstablished" class="w-1/3 text-xs font-semibold inline-block py-2 px-2 rounded text-indigo-600 bg-indigo-200 uppercase ml-3">
           Connected
         </span>
-        <span v-if="!connectionEstablished" class="w-1/3 text-xs font-semibold inline-block py-2 px-2 uppercase rounded text-red-600 bg-red-200 uppercase ml-3">
+        <span v-if="!connectionEstablished" class="w-1/3 text-xs font-semibold inline-block py-2 px-2 rounded text-red-600 bg-red-200 uppercase ml-3">
           Not connected
         </span>
       </div>
@@ -72,7 +72,7 @@ export default defineComponent({
       .build();
     const showSearchTable = ref(false);
     const logsArray = reactive<ServerLog[]>([]);
-    const searchResultArray = ref<ServerLog[]>([]);
+    const searchResultArray = ref<any>([]);
     const connectionEstablished = ref(false);
     const headers = [
       { text: 'Timestamp', value: 'timestamp' },
@@ -102,6 +102,7 @@ export default defineComponent({
 
     const getSearchResult = (result: ServerLog[]) => {
       searchResultArray.value = [];
+      console.log(result);
       searchResultArray.value.push(...result);
     };
 
