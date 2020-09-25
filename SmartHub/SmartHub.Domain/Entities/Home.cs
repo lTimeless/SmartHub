@@ -14,8 +14,6 @@ namespace SmartHub.Domain.Entities
 
 		public virtual List<Plugin> Plugins { get; protected set; } // make it so that all plugins will be saved for backup /restore etc.
 
-		public virtual List<Device> Devices { get; protected set; }
-
 		public virtual List<Setting> Settings { get; protected set; }
 
 		public virtual Address Address { get; private set; }
@@ -28,7 +26,6 @@ namespace SmartHub.Domain.Entities
 		public Home(string name, string description) : base(name, description)
 		{
 			Users = new List<User>();
-			Devices = new List<Device>();
 			Groups = new List<Group>();
 			Plugins = new List<Plugin>();
 			Events = new List<DomainEvent>();
@@ -132,36 +129,6 @@ namespace SmartHub.Domain.Entities
 		public bool CheckIfPluginExistAndHasHigherVersion(Plugin newPlugin)
 		{
 			return Plugins.Exists(x => x.Name == newPlugin.Name && x.AssemblyVersion > newPlugin.AssemblyVersion);
-		}
-
-		public Home AddDevice(Device device)
-		{
-			if (Devices == null)
-			{
-				Devices = new List<Device> { device };
-			}
-			else
-			{
-				Devices.Add(device);
-			}
-			return this;
-		}
-
-		public Home RemoveDevice(Device device, string deviceName)
-		{
-			if (device != null)
-			{
-				Devices?.Remove(device);
-			}
-			else if (string.IsNullOrEmpty(deviceName))
-			{
-				var found = Devices.Single(x => x.Name == deviceName);
-				if (Devices != null)
-				{
-					Devices.Remove(found);
-				}
-			}
-			return this;
 		}
 		#endregion
 	}

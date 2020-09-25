@@ -7,8 +7,8 @@
           <!--content-->
           <div class="border-0 rounded-lg shadow-md relative flex flex-col w-full bg-white outline-none focus:outline-none">
             <!--header-->
-            <div class="flex items-start justify-between p-5 border-b border-solid border-gray-300 rounded-t">
-              <h3 class="text-3xl font-semibold">
+            <div class="flex items-start justify-between p-5 border-b border-solid border-gray-300 rounded-t" :class="headerColor">
+              <h3 class="text-3xl font-semibold text-white">
                 {{ title }}
               </h3>
               <button
@@ -26,7 +26,7 @@
               <slot />
             </div>
             <!--footer-->
-            <div class="flex items-center justify-end p-6 border-t border-solid border-gray-300 rounded-b">
+            <div class="flex items-center justify-end p-3 border-t border-solid border-gray-300 rounded-b">
               <button
                 class="text-red-400 background-transparent font-bold uppercase px-6 py-3 text-sm outline-none focus:outline-none mr-1 mb-1"
                 type="button"
@@ -83,6 +83,10 @@ export default defineComponent({
     saveBtnActive: {
       type: Boolean,
       default: true
+    },
+    headerColor: {
+      type: String,
+      default: 'bg-ui-primary'
     }
   },
   components: {},

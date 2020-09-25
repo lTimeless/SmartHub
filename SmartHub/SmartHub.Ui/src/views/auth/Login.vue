@@ -72,7 +72,7 @@
 import { computed, defineComponent, ref } from 'vue';
 import { LoginRequest } from '@/types/types';
 import { useRouter } from 'vue-router';
-import { useStore } from '@/store';
+import { useStore } from 'vuex';
 import { A_LOGIN } from '@/store/auth/actions';
 import { A_FETCH_HOME } from '@/store/home/actions';
 import AppCard from '@/components/widgets/AppCard.vue';

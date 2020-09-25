@@ -158,7 +158,7 @@ import { RegistrationRequest } from '@/types/types';
 import { clearStorage } from '@/services/auth/authService';
 import { useRouter } from 'vue-router';
 import { A_REGISTRATION } from '@/store/auth/actions';
-import { useStore } from '@/store';
+import { useStore } from 'vuex';
 import AppCard from '@/components/widgets/AppCard.vue';
 import Loader from '@/components/Loader.vue';
 

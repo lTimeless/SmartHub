@@ -35,7 +35,7 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, nextTick, onMounted, ref, reactive } from 'vue';
+import { computed, defineComponent, nextTick, onMounted, ref } from 'vue';
 import AppHeader from '@/components/layouts/AppHeader.vue';
 import AppSidebar from '@/components/layouts/AppSidebar.vue';
 

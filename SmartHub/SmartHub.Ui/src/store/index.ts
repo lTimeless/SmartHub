@@ -33,7 +33,7 @@ export const store = createStore({
   plugins: [createLogger()]
 });
 
-// Use this store to have Types
-export function useStore() {
-  return store as Store;
-}
+// // Use this store to have Types
+// export function useStore() {
+//   return store as Store;
+// }

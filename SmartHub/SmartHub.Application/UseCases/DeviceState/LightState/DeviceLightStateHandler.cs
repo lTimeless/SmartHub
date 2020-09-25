@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using AutoMapper.Internal;
 using MediatR;
 using Serilog;
 using SmartHub.Application.Common.Interfaces;
@@ -11,6 +12,7 @@ using SmartHub.Application.UseCases.PluginAdapter.Helper;
 using SmartHub.Application.UseCases.PluginAdapter.Host;
 using SmartHub.BasePlugin.Interfaces.DeviceTypes;
 using SmartHub.Domain.Common.Enums;
+using SmartHub.Domain.Entities;
 
 namespace SmartHub.Application.UseCases.DeviceState.LightState
 {
@@ -40,7 +42,8 @@ namespace SmartHub.Application.UseCases.DeviceState.LightState
 				return Response.Fail<DeviceStateDto>("Error: There is no home created at the moment.");
 
 			}
-			var foundDevice = home.Devices.SingleOrDefault(x => x.Id == request.LightStateDto.DeviceId);
+
+			var foundDevice = home.Groups.SelectMany(x => x.Devices).SingleOrDefault(d => d.Id == request.LightStateDto.DeviceId);
 			if (foundDevice is null)
 			{
 				return Response.Fail<DeviceStateDto>($"Error: No device found by the given deviceId {request.LightStateDto.DeviceId}");

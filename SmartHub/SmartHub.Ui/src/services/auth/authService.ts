@@ -2,8 +2,8 @@ import { AuthResponse } from '@/types/types';
 import { Roles } from '@/types/enums';
 import JwtDecode from 'jwt-decode';
 import { A_LOGOUT } from '@/store/auth/actions';
-import { useStore } from '@/store';
 import router from '@/router';
+import { useStore } from 'vuex';
 
 type TokenPayload = { unique_name: string; jti: string; roles: string[] | string; nbf: number; exp: number; iat: number };
 
@@ -85,8 +85,8 @@ export const getUserName = (): string => {
 };
 
 export const logout = () => {
-  const store = useStore();
-  store.dispatch(A_LOGOUT);
+  // const store = useStore();
+  // store.dispatch(A_LOGOUT);
   clearStorage();
   router.push('/login');
 };

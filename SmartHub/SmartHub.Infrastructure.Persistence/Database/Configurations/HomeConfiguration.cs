@@ -35,12 +35,8 @@ namespace SmartHub.Infrastructure.Persistence.Database.Configurations
 				.OnDelete(DeleteBehavior.Cascade);
 
 			builder.HasMany(x => x.Groups)
-				.WithOne(x => x.Home)
-				.HasForeignKey(x => x.HomeId)
-				.OnDelete(DeleteBehavior.Cascade);
-
-			builder.HasMany(x => x.Devices)
 				.WithOne()
+				// .HasForeignKey(x => x.HomeId)
 				.OnDelete(DeleteBehavior.Cascade);
 
 			builder.HasMany(x => x.Plugins)

@@ -1,4 +1,3 @@
-import { ComponentCustomProperties } from 'vue';
 import { Store } from '@/store';
 import { RootState } from '@/store/index.types';
 

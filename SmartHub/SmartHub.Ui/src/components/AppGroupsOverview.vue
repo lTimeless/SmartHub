@@ -1,8 +1,8 @@
 <template>
-  <CreateEntityModal v-if="showModal" @toggle-modal="toggleModal"></CreateEntityModal>
+  <CreateEntityModal v-if="showAddModal" @toggle-modal="toggleModal" />
+  <GroupDetailsModal v-if="showDetailModal" @toggle-modal="toggleDetailsModal" :group="group" />
 
   <div class="w-full">
-    <!-- <AppButton title="Add Group" color="orange" :callback="createGroup" class="xl:w-1/2" /> -->
     <div class="flex justify-between items-center mb-4">
       <div class="flex justify-start w-full md:w-1/3 xl:w-1/6">
         <button
@@ -19,11 +19,9 @@
     <div class="grid xl:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 gap-4">
       <AppCard class="bg-white shadow-md w-full" v-for="group in home.groups" :key="group.id">
         <div class="p-3 w-full">
-          <router-link to="">
-            <h1 class="text-xl text-left text-gray-600 font-bold">
-              {{ group.name }}
-            </h1>
-          </router-link>
+          <h1 class="text-xl text-left text-gray-600 font-bold cursor-pointer" @click="toggleDetailsModal(true, group.id)">
+            {{ group.name }}
+          </h1>
 
           <div class="text-gray-500 text-sm font-normal text-left">
             Creator: <span class="font-bold">{{ group.createdBy }}</span>
@@ -53,31 +51,49 @@ import { reactive, toRefs, defineComponent, computed } from 'vue';
 import AppCard from '@/components/widgets/AppCard.vue';
 import { useStore } from 'vuex';
 import CreateEntityModal from '@/components/modals/CreateEntityModal.vue';
+import GroupDetailsModal from '@/components/modals/GroupDetailsModal.vue';
+import { A_FETCH_GROUP_ID } from '@/store/home/actions';
+import { Group } from '@/types/types';
 
 export default defineComponent({
   name: 'AppGroupsOverview',
   components: {
     AppCard,
-    CreateEntityModal
+    CreateEntityModal,
+    GroupDetailsModal
   },
   setup() {
     const store = useStore();
     const home = computed(() => store.state.homeModule.home);
     const state = reactive({
-      showModal: false
+      showAddModal: false,
+      showDetailModal: false,
+      selectedGroupId: '',
+      group: {} as Group
     });
 
     const createGroup = () => {
-      state.showModal = true;
+      state.showAddModal = true;
     };
     const toggleModal = (value: boolean) => {
-      state.showModal = value;
+      state.showAddModal = value;
     };
+    const toggleDetailsModal = async (value: boolean, groupId: string) => {
+      if (value) {
+        await store.dispatch(A_FETCH_GROUP_ID, groupId).then((response: Group) => {
+          state.group = response;
+        });
+      }
+      state.selectedGroupId = groupId;
+      state.showDetailModal = value;
+    };
+
     return {
       ...toRefs(state),
       home,
       createGroup,
-      toggleModal
+      toggleModal,
+      toggleDetailsModal
     };
   }
 });

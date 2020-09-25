@@ -20,6 +20,18 @@ namespace SmartHub.Api.Controllers
         }
 
         /// <summary>
+        /// Get all groups
+        /// </summary>
+        /// <returns>All groups</returns>
+        [HttpGet("{id}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> GetById(string id)
+        {
+            return Ok(await Mediator.Send(new GroupGetByIdQuery(id)).ConfigureAwait(false));
+        }
+
+        /// <summary>
         /// Create a group
         /// </summary>
         [HttpPost]

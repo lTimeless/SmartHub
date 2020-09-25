@@ -104,6 +104,12 @@ export interface GroupCreateRequest {
   description: string;
 }
 
+export interface GroupUpdateRequest {
+  name: string;
+  description: string;
+  devices: Device[];
+}
+
 // Device
 export interface Device {
   id: string;

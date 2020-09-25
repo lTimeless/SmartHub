@@ -1,4 +1,4 @@
-import { Group, GroupCreateRequest, ServerResponse } from '@/types/types';
+import { Group, GroupCreateRequest, GroupUpdateRequest, ServerResponse } from '@/types/types';
 import { Api } from '@/router/axios/axios';
 
 const API_GROUP_URL = 'api/Group';
@@ -13,6 +13,15 @@ export const postGroup = (payload: GroupCreateRequest): Promise<ServerResponse<G
     .post<ServerResponse<Group>>(API_GROUP_URL, payload)
     .then((res) => res.data);
 
+export const getByIdGroup = (payload: string): Promise<ServerResponse<Group>> =>
+  Api()
+    .get<ServerResponse<Group>>(`${API_GROUP_URL}/${payload}`)
+    .then((res) => res.data);
+
+export const putByIdGroup = (payload: GroupUpdateRequest): Promise<ServerResponse<Group>> =>
+  Api()
+    .put<ServerResponse<Group>>(API_GROUP_URL, payload)
+    .then((res) => res.data);
 // export const postHome = (payload: HomeCreateRequest): Promise<ServerResponse<Home>> =>
 //     Api()
 //         .post<ServerResponse<Home>>(API_HOME_URL, payload)

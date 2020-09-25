@@ -1,11 +1,9 @@
-﻿using System.Collections.Generic;
-using System.Threading;
+﻿using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
 using MediatR;
 using SmartHub.Application.Common.Interfaces.Database;
 using SmartHub.Application.Common.Models;
-using SmartHub.Application.UseCases.Entity.Devices;
 using SmartHub.Domain.Entities;
 
 namespace SmartHub.Application.UseCases.Entity.Groups
@@ -43,7 +41,7 @@ namespace SmartHub.Application.UseCases.Entity.Groups
             {
                 return Response.Fail<GroupDto>("Error: No home created yet.");
             }
-            var newGroup = new Group(request.Name, request.Description, home);
+            var newGroup = new Group(request.Name, request.Description);
             home.AddGroup(newGroup);
             return Response.Ok(_mapper.Map<GroupDto>(newGroup));
         }

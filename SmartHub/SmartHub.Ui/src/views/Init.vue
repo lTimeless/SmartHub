@@ -145,7 +145,7 @@
 import { defineComponent, defineAsyncComponent, reactive, ref, computed } from 'vue';
 import { HomeCreateRequest } from '@/types/types';
 import { A_CREATE_HOME, A_FETCH_HOME } from '@/store/home/actions';
-import { useStore } from '@/store';
+import { useStore } from 'vuex';
 import { useRouter } from 'vue-router';
 import AppCard from '@/components/widgets/AppCard.vue';
 

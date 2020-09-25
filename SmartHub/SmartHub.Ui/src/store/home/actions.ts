@@ -1,9 +1,9 @@
 import { ActionContext, ActionTree } from 'vuex';
 import { RootState, HomeState, AuthState } from '@/store/index.types';
-import { GroupCreateRequest, HomeCreateRequest, HomeUpdateRequest } from '@/types/types';
+import { Group, GroupCreateRequest, HomeCreateRequest, HomeUpdateRequest } from '@/types/types';
 import { HomeMutations, M_UPDATE_HOME } from '@/store/home/mutations';
 import { getHome, postHome, putHome } from '@/services/apis/home.service';
-import { postGroup } from '@/services/apis/group.service';
+import { getByIdGroup, postGroup } from '@/services/apis/group.service';
 
 // Keys
 export const A_FETCH_HOME = 'A_FETCH_HOME';
@@ -11,6 +11,7 @@ export const A_CREATE_HOME = 'A_CREATE_HOME';
 export const A_UPDATE_HOME = 'A_UPDATE_HOME';
 // Group
 export const A_CREATE_GROUP = 'A_CREATE_GROUP';
+export const A_FETCH_GROUP_ID = 'A_FETCH_GROUP_ID';
 
 // actions context type
 type AugmentedActionContext = {
@@ -68,6 +69,16 @@ export const actions: ActionTree<HomeState, RootState> = {
         }
         dispatch(A_FETCH_HOME);
         return Promise.resolve();
+      })
+      .catch((error) => Promise.reject(error));
+  },
+  async [A_FETCH_GROUP_ID]({}, payload: string): Promise<Group | null> {
+    return await getByIdGroup(payload)
+      .then((response) => {
+        if (!response.success) {
+          return Promise.reject(response.message);
+        }
+        return Promise.resolve(response.data);
       })
       .catch((error) => Promise.reject(error));
   }

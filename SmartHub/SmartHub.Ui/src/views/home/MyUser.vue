@@ -104,7 +104,7 @@
 </template>
 
 <script lang="ts">
-import { useStore } from '@/store';
+import { useStore } from 'vuex';
 import { defineComponent, ref, computed, reactive } from 'vue';
 import { getUserRoles, logout } from '@/services/auth/authService';
 import ActionButton from '@/components/widgets/AppButton.vue';

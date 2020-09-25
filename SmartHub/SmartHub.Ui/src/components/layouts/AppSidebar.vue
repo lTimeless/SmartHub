@@ -70,7 +70,7 @@ import { computed, defineComponent, onMounted, ref, onBeforeMount } from 'vue';
 import { useRouter } from 'vue-router';
 import { getUserRoles, logout } from '@/services/auth/authService';
 import AppButton from '@/components/widgets/AppButton.vue';
-import { useStore } from '@/store';
+import { useStore } from 'vuex';
 import { A_ME } from '@/store/auth/actions';
 import { Roles } from '@/types/enums';
 
