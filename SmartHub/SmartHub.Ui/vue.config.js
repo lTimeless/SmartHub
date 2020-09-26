@@ -5,6 +5,6 @@ module.exports = {
         target: 'https://localhost:5001'
       }
     }
-  },
-  outputDir: '../SmartHub.Api/wwwroot'
+  }
+  // outputDir: '../SmartHub.Api/wwwroot'
 };

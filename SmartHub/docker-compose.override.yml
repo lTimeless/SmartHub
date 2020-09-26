@@ -46,3 +46,18 @@ services:
 #      - PGADMIN_DEFAULT_PASSWORD=admin
 #    volumes:
 #      - pgadmin:/root/.pgadmin
+
+#  smarthub.api:
+#    environment:
+#      - ASPNETCORE_ENVIRONMENT=Production
+#      - ASPNETCORE_URLS=http://*:5000
+#      - Use_StaticFiles=true
+#      - Seed_Db=false
+#      - Pgsql_User=postgres
+#      - Pgsql_pwd=1234
+#    ports:
+#      - "5000:5000"
+#      - "5001:5001"
+#    volumes:
+#      - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
+#      - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
