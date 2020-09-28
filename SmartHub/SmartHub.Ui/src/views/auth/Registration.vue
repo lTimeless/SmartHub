@@ -157,7 +157,7 @@ import { defineComponent, onMounted, ref, reactive, computed, defineAsyncCompone
 import { RegistrationRequest } from '@/types/types';
 import { clearStorage } from '@/services/auth/authService';
 import { useRouter } from 'vue-router';
-import { A_REGISTRATION } from '@/store/auth/actions';
+import { AuthActionTypes } from '@/store/auth/actions';
 import { useStore } from 'vuex';
 import AppCard from '@/components/widgets/AppCard.vue';
 import Loader from '@/components/Loader.vue';
@@ -211,7 +211,7 @@ export default defineComponent({
 
     const onRegistrationClick = async () => {
       await store
-        .dispatch(A_REGISTRATION, registrationRequest)
+        .dispatch(AuthActionTypes.REGISTRATION, registrationRequest)
         .then(() => {
           doneRegistration.value = true;
         })

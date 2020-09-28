@@ -38,7 +38,6 @@
 import { defineComponent, PropType, ref } from 'vue';
 import BaseModal from '@/components/modals/BaseModal.vue';
 import { Group } from '@/types/types';
-import { useStore } from 'vuex';
 
 export default defineComponent({
   name: 'GroupDetailsModal',
@@ -53,9 +52,7 @@ export default defineComponent({
     }
   },
   setup(props, context) {
-    const store = useStore();
     const groupDetail = ref(props.group);
-
     const close = () => {
       context.emit('toggle-modal', false);
     };

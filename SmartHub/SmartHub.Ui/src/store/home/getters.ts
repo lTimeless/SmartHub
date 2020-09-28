@@ -4,7 +4,7 @@ import { Home } from '@/types/types';
 
 // Getter Types
 export type HomeGetters = {
-  getHome(state: HomeState): Home | null;
+  getHome(state: HomeState): Home | null | undefined;
 };
 
 export const getters: GetterTree<HomeState, RootState> = {

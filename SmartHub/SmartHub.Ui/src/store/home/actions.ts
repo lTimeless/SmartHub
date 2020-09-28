@@ -1,38 +1,45 @@
 import { ActionContext, ActionTree } from 'vuex';
 import { RootState, HomeState, AuthState } from '@/store/index.types';
-import { Group, GroupCreateRequest, HomeCreateRequest, HomeUpdateRequest } from '@/types/types';
-import { HomeMutations, M_UPDATE_HOME } from '@/store/home/mutations';
+import { Group, GroupCreateRequest, GroupUpdateRequest, HomeCreateRequest, HomeUpdateRequest } from '@/types/types';
+import { HomeMutations } from '@/store/home/mutations';
 import { getHome, postHome, putHome } from '@/services/apis/home.service';
-import { getByIdGroup, postGroup } from '@/services/apis/group.service';
+import { getByIdGroup, postGroup, putByIdGroup } from '@/services/apis/group.service';
 
 // Keys
-export const A_FETCH_HOME = 'A_FETCH_HOME';
-export const A_CREATE_HOME = 'A_CREATE_HOME';
-export const A_UPDATE_HOME = 'A_UPDATE_HOME';
-// Group
-export const A_CREATE_GROUP = 'A_CREATE_GROUP';
-export const A_FETCH_GROUP_ID = 'A_FETCH_GROUP_ID';
-
-// actions context type
-type AugmentedActionContext = {
-  commit<K extends keyof HomeMutations<AuthState>>(key: K, payload: Parameters<HomeMutations<AuthState>[K]>[1]): ReturnType<HomeMutations<AuthState>[K]>;
-} & Omit<ActionContext<AuthState, RootState>, 'commit'>;
-
-// Action Interface
-export interface HomeActions {
-  [A_FETCH_HOME]({ commit }: AugmentedActionContext): Promise<void>;
-  [A_CREATE_HOME]({ commit }: AugmentedActionContext, payload: HomeCreateRequest): Promise<void>;
-  [A_UPDATE_HOME]({ commit }: AugmentedActionContext, payload: HomeUpdateRequest): Promise<void>;
+export enum HomeActionTypes {
+  FETCH_HOME = 'FETCH_HOME',
+  CREATE_HOME = 'CREATE_HOME',
+  UPDATE_HOME = 'UPDATE_HOME',
+  // Group
+  CREATE_GROUP = 'CREATE_GROUP',
+  FETCH_BY_GROUP_ID = 'FETCH_BY_GROUP_ID',
+  UPDATE_GROUP = 'UPDATE_GROUP'
 }
 
+// actions context type
+type ActionAugments = Omit<ActionContext<AuthState, RootState>, 'commit'> & {
+  commit<K extends keyof HomeMutations>(key: K, payload: Parameters<HomeMutations[K]>[1]): ReturnType<HomeMutations[K]>;
+};
+
+// Action Interface
+export type HomeActions = {
+  [HomeActionTypes.FETCH_HOME]({ commit }: ActionAugments): Promise<void>;
+  [HomeActionTypes.CREATE_HOME]({ commit }: ActionAugments, payload: HomeCreateRequest): Promise<void>;
+  [HomeActionTypes.UPDATE_HOME]({ commit }: ActionAugments, payload: HomeUpdateRequest): Promise<void>;
+  // Group
+  [HomeActionTypes.CREATE_GROUP]({ commit }: ActionAugments, payload: GroupCreateRequest): Promise<void>;
+  [HomeActionTypes.FETCH_BY_GROUP_ID]({ commit }: ActionAugments, payload: string): Promise<Group>;
+  [HomeActionTypes.UPDATE_GROUP]({}: ActionAugments, payload: GroupUpdateRequest): Promise<void>;
+};
+
 export const actions: ActionTree<HomeState, RootState> = {
-  async [A_FETCH_HOME]({ commit }): Promise<void> {
+  async [HomeActionTypes.FETCH_HOME]({ commit }): Promise<void> {
     await getHome()
       .then((response) => {
         if (!response.success) {
           return Promise.reject(response.message);
         }
-        commit(M_UPDATE_HOME, response.data);
+        commit(HomeActionTypes.UPDATE_HOME, response.data);
         return Promise.resolve();
       })
       .catch((err) => {
@@ -40,46 +47,57 @@ export const actions: ActionTree<HomeState, RootState> = {
         return Promise.reject(err);
       });
   },
-  async [A_CREATE_HOME]({ commit }, payload: HomeCreateRequest): Promise<void> {
+  async [HomeActionTypes.CREATE_HOME]({ commit }, payload): Promise<void> {
     await postHome(payload)
       .then((response) => {
         if (!response.success) {
           return Promise.reject(response.message);
         }
-        commit(M_UPDATE_HOME, response.data);
+        commit(HomeActionTypes.UPDATE_HOME, response.data);
         return Promise.resolve(response.data);
       })
       .catch((error) => Promise.reject(error));
   },
-  async [A_UPDATE_HOME]({ commit }, payload: HomeUpdateRequest): Promise<void> {
+  async [HomeActionTypes.UPDATE_HOME]({ commit }, payload): Promise<void> {
     await putHome(payload)
       .then((res) => {
-        commit(M_UPDATE_HOME, res.data);
+        commit(HomeActionTypes.UPDATE_HOME, res.data);
       })
       .catch((err) => {
         console.log(err);
       });
   },
   // Group
-  async [A_CREATE_GROUP]({ dispatch }, payload: GroupCreateRequest): Promise<void> {
+  async [HomeActionTypes.CREATE_GROUP]({ dispatch }, payload): Promise<void> {
     await postGroup(payload)
       .then((response) => {
         if (!response.success) {
           return Promise.reject(response.message);
         }
-        dispatch(A_FETCH_HOME);
+        dispatch(HomeActionTypes.FETCH_HOME);
         return Promise.resolve();
       })
       .catch((error) => Promise.reject(error));
   },
-  async [A_FETCH_GROUP_ID]({}, payload: string): Promise<Group | null> {
+  async [HomeActionTypes.FETCH_BY_GROUP_ID]({}, payload): Promise<Group> {
     return await getByIdGroup(payload)
       .then((response) => {
         if (!response.success) {
           return Promise.reject(response.message);
         }
-        return Promise.resolve(response.data);
+        return Promise.resolve(response.data as Group);
       })
       .catch((error) => Promise.reject(error));
+  },
+  async [HomeActionTypes.UPDATE_GROUP]({}: ActionAugments, payload: GroupUpdateRequest): Promise<void> {
+    await putByIdGroup(payload)
+      .then((response) => {
+        if (!response.success) {
+          return Promise.reject(response.message);
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   }
 };

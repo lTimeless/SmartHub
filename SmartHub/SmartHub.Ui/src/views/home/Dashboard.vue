@@ -1,6 +1,6 @@
 <template>
-  <div class="w-full">
-    <h1 class="text-3xl text-gray-500 font-bold mb-4">Dashboard for {{ home?.name }}</h1>
+  <div class="w-full" v-if="home">
+    <h1 class="text-3xl text-gray-500 font-bold mb-4">Dashboard for {{ home.name }}</h1>
     <AppTabs>
       <template v-slot:header>
         <div class="flex flex-wrap justify-between my-4 space-y-2">
@@ -71,7 +71,7 @@ import AppTabs from '@/components/widgets/AppTabs.vue';
 import AppAutomation from '@/components/AppAutomations.vue';
 import AppGroupsOverview from '@/components/AppGroupsOverview.vue';
 import { useStore } from 'vuex';
-import { A_FETCH_HOME } from '@/store/home/actions';
+import { HomeActionTypes } from '@/store/home/actions';
 
 export default defineComponent({
   name: 'Dashboard',
@@ -85,8 +85,7 @@ export default defineComponent({
     const openTab = ref(1);
     const store = useStore();
     const home = computed(() => store.state.homeModule.home);
-    store.dispatch(A_FETCH_HOME);
-
+    store.dispatch(HomeActionTypes.FETCH_HOME);
     const toggleTabs = (tabNumber: number) => {
       openTab.value = tabNumber;
     };

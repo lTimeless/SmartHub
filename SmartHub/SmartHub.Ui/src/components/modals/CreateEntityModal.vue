@@ -26,7 +26,7 @@ import { defineComponent, reactive, computed } from 'vue';
 import BaseModal from '@/components/modals/BaseModal.vue';
 import { GroupCreateRequest } from '@/types/types';
 import { useStore } from 'vuex';
-import { A_CREATE_GROUP } from '@/store/home/actions';
+import { HomeActionTypes } from '@/store/home/actions';
 
 export default defineComponent({
   name: 'CreateEntityModal',
@@ -46,7 +46,7 @@ export default defineComponent({
     };
     const save = async () => {
       console.log('click save', groupCreateRequest);
-      await store.dispatch(A_CREATE_GROUP, groupCreateRequest).then(() => {
+      await store.dispatch(HomeActionTypes.CREATE_GROUP, groupCreateRequest).then(() => {
         context.emit('toggle-modal', false);
       });
     };

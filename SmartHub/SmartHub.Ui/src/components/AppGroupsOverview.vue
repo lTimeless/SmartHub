@@ -15,7 +15,7 @@
       </div>
     </div>
   </div>
-  <div v-if="home.groups">
+  <div v-if="home && home.groups">
     <div class="grid xl:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 gap-4">
       <AppCard class="bg-white shadow-md w-full" v-for="group in home.groups" :key="group.id">
         <div class="p-3 w-full">
@@ -52,7 +52,7 @@ import AppCard from '@/components/widgets/AppCard.vue';
 import { useStore } from 'vuex';
 import CreateEntityModal from '@/components/modals/CreateEntityModal.vue';
 import GroupDetailsModal from '@/components/modals/GroupDetailsModal.vue';
-import { A_FETCH_GROUP_ID } from '@/store/home/actions';
+import { HomeActionTypes } from '@/store/home/actions';
 import { Group } from '@/types/types';
 
 export default defineComponent({
@@ -69,7 +69,8 @@ export default defineComponent({
       showAddModal: false,
       showDetailModal: false,
       selectedGroupId: '',
-      group: {} as Group
+      group: {} as Group | null | undefined,
+      showLoader: false
     });
 
     const createGroup = () => {
@@ -79,11 +80,13 @@ export default defineComponent({
       state.showAddModal = value;
     };
     const toggleDetailsModal = async (value: boolean, groupId: string) => {
+      state.showLoader = true;
       if (value) {
-        await store.dispatch(A_FETCH_GROUP_ID, groupId).then((response: Group) => {
+        await store.dispatch(HomeActionTypes.FETCH_BY_GROUP_ID, groupId).then((response: Group | null) => {
           state.group = response;
         });
       }
+      state.showLoader = false;
       state.selectedGroupId = groupId;
       state.showDetailModal = value;
     };

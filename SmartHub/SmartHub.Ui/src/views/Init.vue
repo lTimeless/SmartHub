@@ -144,7 +144,7 @@
 <script lang="ts">
 import { defineComponent, defineAsyncComponent, reactive, ref, computed } from 'vue';
 import { HomeCreateRequest } from '@/types/types';
-import { A_CREATE_HOME, A_FETCH_HOME } from '@/store/home/actions';
+import { HomeActionTypes } from '@/store/home/actions';
 import { useStore } from 'vuex';
 import { useRouter } from 'vue-router';
 import AppCard from '@/components/widgets/AppCard.vue';
@@ -174,7 +174,7 @@ export default defineComponent({
       autoDetectAddress: false
     });
 
-    store.dispatch(A_FETCH_HOME).then(() => {
+    store.dispatch(HomeActionTypes.FETCH_HOME).then(() => {
       if (getHomeState.value.home !== null) {
         router.push('/login');
       }
@@ -188,7 +188,7 @@ export default defineComponent({
         homeCreateRequest.description = 'This is an awesome description';
       }
       store
-        .dispatch(A_CREATE_HOME, homeCreateRequest)
+        .dispatch(HomeActionTypes.CREATE_HOME, homeCreateRequest)
         .then(() => {
           doneInit.value = true;
         })

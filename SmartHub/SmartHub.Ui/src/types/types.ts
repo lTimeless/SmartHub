@@ -1,7 +1,7 @@
 // ########## Interfaces ##########
 // ServiceResponse
 export interface ServerResponse<T> {
-  data: T | null;
+  data?: T;
   success: boolean;
   message: string;
   errors: string[];

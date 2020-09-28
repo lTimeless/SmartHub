@@ -3,16 +3,17 @@ import { Home } from '@/types/types';
 import { HomeState } from '@/store/index.types';
 
 // Keys
-export const M_UPDATE_HOME = 'M_UPDATE_HOME';
-
-// Mutation Interface
-export interface HomeMutations<H = HomeState> {
-  [M_UPDATE_HOME](state: H, payload: Home): void;
+export enum HomeMutationTypes {
+  UPDATE_HOME = 'UPDATE_HOME'
 }
+// Mutation Interface
+export type HomeMutations<H = HomeState> = {
+  [HomeMutationTypes.UPDATE_HOME](state: H, payload: Home): void;
+};
 
 // MutationType keys
 export const mutations: MutationTree<HomeState> & HomeMutations = {
-  [M_UPDATE_HOME](state: HomeState, payload: Home) {
+  [HomeMutationTypes.UPDATE_HOME](state, payload) {
     state.home = payload;
   }
 };

@@ -71,7 +71,7 @@ import { useRouter } from 'vue-router';
 import { getUserRoles, logout } from '@/services/auth/authService';
 import AppButton from '@/components/widgets/AppButton.vue';
 import { useStore } from 'vuex';
-import { A_ME } from '@/store/auth/actions';
+import { AuthActionTypes } from '@/store/auth/actions';
 import { Roles } from '@/types/enums';
 
 export default defineComponent({
@@ -175,7 +175,7 @@ export default defineComponent({
     const user = computed(() => store.state.authModule.Me);
 
     onBeforeMount(async () => {
-      await store.dispatch(A_ME);
+      await store.dispatch(AuthActionTypes.ME);
     });
 
     onMounted(() => {

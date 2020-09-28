@@ -5,8 +5,8 @@ import { actions } from '@/store/auth/actions';
 import { mutations } from '@/store/auth/mutations';
 
 export const state: AuthState = {
-  authResponse: null,
-  Me: null
+  authResponse: undefined,
+  Me: undefined
 };
 
 export const authModule: Module<AuthState, RootState> = {

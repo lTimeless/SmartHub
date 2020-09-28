@@ -45,9 +45,9 @@
           <hr class="my-8" />
           <button
             disabled
-            class="flex items-center justify-center w-full px-4 py-2 text-sm font-medium leading-5 text-white
-                  text-gray-700 transition-colors duration-150 border border-gray-300 rounded-lg dark:text-gray-400
-                  active:bg-transparent focus:border-gray-500 active:text-gray-500 focus:outline-none focus:shadow-outline-gray"
+            class="flex items-center justify-center w-full px-4 py-2 text-sm font-medium leading-5 text-gray-700 transition-colors 
+            duration-150 border border-gray-300 rounded-lg dark:text-gray-400 active:bg-transparent focus:border-gray-500 
+            active:text-gray-500 focus:outline-none focus:shadow-outline-gray"
             :class="true ? 'opacity-50 focus:outline-none cursor-not-allowed' : 'hover:border-gray-500'"
           >
             Additional login options....
@@ -73,8 +73,8 @@ import { computed, defineComponent, ref } from 'vue';
 import { LoginRequest } from '@/types/types';
 import { useRouter } from 'vue-router';
 import { useStore } from 'vuex';
-import { A_LOGIN } from '@/store/auth/actions';
-import { A_FETCH_HOME } from '@/store/home/actions';
+import { AuthActionTypes } from '@/store/auth/actions';
+import { HomeActionTypes } from '@/store/home/actions';
 import AppCard from '@/components/widgets/AppCard.vue';
 
 export default defineComponent({
@@ -90,7 +90,7 @@ export default defineComponent({
     const isSignInBtnClicked = ref(false);
     const getHomeState = ref(store.state.homeModule);
 
-    store.dispatch(A_FETCH_HOME).then(() => {
+    store.dispatch(HomeActionTypes.FETCH_HOME).then(() => {
       if (getHomeState.value.home === null) {
         router.push('/init');
       }
@@ -103,7 +103,7 @@ export default defineComponent({
         password: password.value
       };
       await store
-        .dispatch(A_LOGIN, login)
+        .dispatch(AuthActionTypes.LOGIN, login)
         .then(() => {
           isSignInBtnClicked.value = false;
         })

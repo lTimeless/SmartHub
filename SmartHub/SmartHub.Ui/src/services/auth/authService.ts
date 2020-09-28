@@ -1,9 +1,7 @@
 import { AuthResponse } from '@/types/types';
 import { Roles } from '@/types/enums';
 import JwtDecode from 'jwt-decode';
-import { A_LOGOUT } from '@/store/auth/actions';
 import router from '@/router';
-import { useStore } from 'vuex';
 
 type TokenPayload = { unique_name: string; jti: string; roles: string[] | string; nbf: number; exp: number; iat: number };
 

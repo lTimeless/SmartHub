@@ -5,7 +5,7 @@ import { mutations } from '@/store/home/mutations';
 import { actions } from '@/store/home/actions';
 
 export const state: HomeState = {
-  home: null
+  home: undefined
 };
 
 export const homeModule: Module<HomeState, RootState> = {

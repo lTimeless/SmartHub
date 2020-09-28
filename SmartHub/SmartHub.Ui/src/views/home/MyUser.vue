@@ -2,7 +2,7 @@
   <div class="flex-1 w-full justify-end">
     <h1 class="text-3xl text-gray-500 font-bold mb-6">{{ title }}</h1>
     <!-- Form -->
-    <div v-if="user !== null">
+    <div v-if="user">
       <!-- Username -->
       <div class="flex mr-2 justify-between">
         <div class="w-1/3 mr-2">
@@ -110,7 +110,7 @@ import { getUserRoles, logout } from '@/services/auth/authService';
 import ActionButton from '@/components/widgets/AppButton.vue';
 import { Roles } from '@/types/enums';
 import { UserUpdateRequest } from '@/types/types';
-import { A_UPDATE_ME } from '@/store/auth/actions';
+import { AuthActionTypes } from '@/store/auth/actions';
 
 export default defineComponent({
   name: 'MyUser',
@@ -136,7 +136,7 @@ export default defineComponent({
       newRole: ''
     });
     const onSaveClick = async () => {
-      if (user.value === null) {
+      if (user.value === undefined) {
         return;
       }
       updateUserRequest.userName = user.value.userName;
@@ -147,7 +147,7 @@ export default defineComponent({
       updateUserRequest.email = user.value.email === null ? '' : user.value.email;
       updateUserRequest.phoneNumber = user.value.phoneNumber === null ? '' : user.value.phoneNumber;
       updateUserRequest.newRole = selectedRole.value;
-      await store.dispatch(A_UPDATE_ME, updateUserRequest);
+      await store.dispatch(AuthActionTypes.UPDATE_ME, updateUserRequest);
       if (updateUserRequest.newRole !== prevRole) {
         logout();
       }
