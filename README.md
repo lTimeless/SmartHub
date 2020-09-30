@@ -1,5 +1,7 @@
 <h1 align="center">Welcome to SmartHub 👋</h1>
 
+![Discord](https://img.shields.io/discord/760946711794679819?label=Discord&style=plastic)
+
 ![Vue CI](https://github.com/SmartHub-Io/SmartHub/workflows/Vue%20CI/badge.svg)
 ![.Net core CI](https://github.com/SmartHub-Io/SmartHub/workflows/.Net%20core%20CI/badge.svg)
 
