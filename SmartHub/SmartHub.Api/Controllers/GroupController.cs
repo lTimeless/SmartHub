@@ -42,5 +42,17 @@ namespace SmartHub.Api.Controllers
             var response = await Mediator.Send(value).ConfigureAwait(false);
             return CreatedAtAction("Post", response.Data.Id, response);
         }
+
+        /// <summary>
+        /// Update a group
+        /// </summary>
+        [HttpPut]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> Put( [FromBody] GroupUpdateCommand value)
+        {
+            var response = await Mediator.Send(value).ConfigureAwait(false);
+            return Ok(response);
+        }
     }
 }

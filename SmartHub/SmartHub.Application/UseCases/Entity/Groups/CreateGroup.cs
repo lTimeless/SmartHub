@@ -8,7 +8,6 @@ using SmartHub.Domain.Entities;
 
 namespace SmartHub.Application.UseCases.Entity.Groups
 {
-
     public class GroupCreateCommand : IRequest<Response<GroupDto>>
     {
         public string Name { get; set; }

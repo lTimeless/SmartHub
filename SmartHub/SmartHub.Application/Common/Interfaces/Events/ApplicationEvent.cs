@@ -10,7 +10,7 @@ namespace SmartHub.Application.Common.Interfaces.Events
 	public abstract class ApplicationEvent : IEvent
 	{
 		public virtual string EventId { get; }
-		public virtual string EventType => EventTypes.Application.ToString();
+		public virtual string EventType { get; set; } = EventTypes.Application.ToString();
 
 		protected ApplicationEvent()
 		{

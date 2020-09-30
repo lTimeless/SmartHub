@@ -15,5 +15,20 @@ namespace SmartHub.Domain.Entities
 		{
 			Devices = new List<Device>();
 		}
+
+		#region Methods
+		public Group UpdateName(string name)
+		{
+			Name = name;
+			return this;
+		}
+
+		public Group UpdateDescription(string description)
+		{
+			Description = description;
+			return this;
+		}
+		#endregion
+
 	}
 }

@@ -6,7 +6,7 @@ namespace SmartHub.Domain.DomainEvents
 	public abstract class DomainEvent : IEvent
 	{
 		public string EventId { get; }
-		public virtual string EventType => EventTypes.Domain.ToString();
+		public virtual string EventType { get; set; } = EventTypes.Domain.ToString();
 
 		protected DomainEvent()
 		{

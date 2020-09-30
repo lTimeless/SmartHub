@@ -126,9 +126,42 @@ namespace SmartHub.Domain.Entities
 			return this;
 		}
 
+		/// <summary>
+		/// Checks if the new plugin doesn't already exists or if it has a higher version than on db
+		/// </summary>
+		/// <param name="newPlugin">The plugin to check for</param>
+		/// <returns>true if exists of the version is higher on the db</returns>
 		public bool CheckIfPluginExistAndHasHigherVersion(Plugin newPlugin)
 		{
 			return Plugins.Exists(x => x.Name == newPlugin.Name && x.AssemblyVersion > newPlugin.AssemblyVersion);
+		}
+
+		/// <summary>
+		/// Updated a group
+		/// </summary>
+		/// <param name="id">The ID to find the group</param>
+		/// <param name="name">The new name</param>
+		/// <param name="description">The new description</param>
+		/// <returns></returns>
+		public bool UpdateGroup(string id, string? name, string? description)
+		{
+			var foundGroup = Groups.Find(x => x.Id == id);
+			if (foundGroup is null)
+			{
+				return false;
+			}
+
+			if (!string.IsNullOrEmpty(name))
+			{
+				foundGroup.UpdateName(name);
+			}
+			if (!string.IsNullOrEmpty(description))
+			{
+				foundGroup.UpdateDescription(description);
+			}
+
+			AddDomainEvent(new GroupUpdatedEvent(StateTypes.Modified.ToString(), foundGroup.Id));
+			return true;
 		}
 		#endregion
 	}
