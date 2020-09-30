@@ -94,7 +94,7 @@ export interface Group {
   id: string;
   createdBy: string;
   name: string;
-  description: string | null;
+  description?: string;
   devices?: Device[];
 }
 
@@ -105,9 +105,10 @@ export interface GroupCreateRequest {
 }
 
 export interface GroupUpdateRequest {
-  name: string;
-  description: string;
-  devices: Device[];
+  id: string;
+  name?: string;
+  description?: string;
+  devices?: Device[];
 }
 
 // Device

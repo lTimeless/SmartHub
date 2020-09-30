@@ -89,15 +89,15 @@ export const actions: ActionTree<HomeState, RootState> = {
       })
       .catch((error) => Promise.reject(error));
   },
-  async [HomeActionTypes.UPDATE_GROUP]({}: ActionAugments, payload: GroupUpdateRequest): Promise<void> {
+  async [HomeActionTypes.UPDATE_GROUP]({ dispatch }: ActionAugments, payload: GroupUpdateRequest): Promise<void> {
     await putByIdGroup(payload)
       .then((response) => {
         if (!response.success) {
           return Promise.reject(response.message);
         }
+        dispatch(HomeActionTypes.FETCH_HOME);
+        return Promise.resolve();
       })
-      .catch((err) => {
-        console.log(err);
-      });
+      .catch((error) => Promise.reject(error));
   }
 };

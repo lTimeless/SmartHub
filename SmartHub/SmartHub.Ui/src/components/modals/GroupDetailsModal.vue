@@ -37,7 +37,9 @@
 <script lang="ts">
 import { defineComponent, PropType, ref } from 'vue';
 import BaseModal from '@/components/modals/BaseModal.vue';
-import { Group } from '@/types/types';
+import { Group, GroupUpdateRequest } from '@/types/types';
+import { HomeActionTypes } from '@/store/home/actions';
+import { useStore } from 'vuex';
 
 export default defineComponent({
   name: 'GroupDetailsModal',
@@ -52,12 +54,20 @@ export default defineComponent({
     }
   },
   setup(props, context) {
+    const store = useStore();
     const groupDetail = ref(props.group);
     const close = () => {
       context.emit('toggle-modal', false);
     };
     const save = async () => {
-      console.log('Update group', groupDetail.value);
+      const updatedGroup: GroupUpdateRequest = {
+        id: groupDetail.value.id,
+        name: groupDetail.value.name,
+        description: groupDetail.value.description,
+        devices: groupDetail.value.devices
+      };
+      console.log('Update group', updatedGroup);
+      await store.dispatch(HomeActionTypes.UPDATE_GROUP, updatedGroup);
       context.emit('toggle-modal', false);
     };
 
