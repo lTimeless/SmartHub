@@ -29,16 +29,11 @@ namespace SmartHub.Application.UseCases.Entity.Devices.Create
                 return Response.Fail<DeviceDto>("Error: No home created yet.");
             }
 
-            var secConnectionType = request.SecondaryConnection != null
-                ? Enum.Parse<ConnectionTypes>(request.SecondaryConnection)
-                : ConnectionTypes.None;
-            var newDevice = new Device(request.Name, request.Description, request.Ipv4, request.Manufacturer,
-                Enum.Parse<ConnectionTypes>(request.PrimaryConnection),
-                secConnectionType,
-                request.PluginName, Enum.Parse<PluginTypes>(request.PluginTypes));
+            var newDevice = new Device(request.Name, request.Description, request.Ipv4, request.CompanyName,
+                request.PrimaryConnection, request.SecondaryConnection,
+                request.PluginName, request.PluginTypes);
 
-            var group = home.Groups.Find(x => x.Id == request.GroupId);
-            group?.AddDevice(newDevice);
+            home.AddDevice(newDevice, request.GroupId);
             return Response.Ok($"Created new Device with name {newDevice.Name}", _mapper.Map<DeviceDto>(newDevice));
         }
     }

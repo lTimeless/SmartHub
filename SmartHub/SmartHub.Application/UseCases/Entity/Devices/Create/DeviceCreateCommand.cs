@@ -1,5 +1,7 @@
 ﻿using MediatR;
 using SmartHub.Application.Common.Models;
+using SmartHub.Domain.Common.Enums;
+using SmartHub.Domain.Entities.Devices;
 
 namespace SmartHub.Application.UseCases.Entity.Devices.Create
 {
@@ -7,22 +9,22 @@ namespace SmartHub.Application.UseCases.Entity.Devices.Create
         public string Name { get; set; }
         public string? Description { get; set; }
         public string Ipv4 { get; set; }
-        public string Manufacturer { get; set; }
+        public string CompanyName { get; set; }
         public string PluginName { get; set; } // Equals the Name Property in the IPlugin
-        public string PluginTypes { get; set; }// Equals the PluginType Property in the IPlugin
-        public string PrimaryConnection { get; set; }
+        public PluginTypes PluginTypes { get; set; }// Equals the PluginType Property in the IPlugin
+        public ConnectionTypes PrimaryConnection { get; set; }
 
-        public string? SecondaryConnection { get; set; }
+        public ConnectionTypes? SecondaryConnection { get; set; }
         public string GroupId { get; set; }
 
         public DeviceCreateCommand(string name,
             string? description,
             string ipv4,
             string pluginName,
-            string pluginTypes,
-            string primaryConnection,
-            string? secondaryConnection,
-            string groupId, string manufacturer)
+            PluginTypes pluginTypes,
+            ConnectionTypes primaryConnection,
+            ConnectionTypes? secondaryConnection,
+            string groupId, string companyName)
         {
             Name = name;
             Description = description;
@@ -32,7 +34,7 @@ namespace SmartHub.Application.UseCases.Entity.Devices.Create
             PrimaryConnection = primaryConnection;
             SecondaryConnection = secondaryConnection;
             GroupId = groupId;
-            Manufacturer = manufacturer;
+            CompanyName = companyName;
         }
     }
 }

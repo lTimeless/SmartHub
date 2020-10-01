@@ -49,12 +49,8 @@
           <div v-else>No Groups available</div>
         </div>
         <div v-bind:class="{ hidden: openTab !== 3, block: openTab === 3 }">
-          <p>
-            Efficiently unleash cross-media information without cross-media value. Quickly maximize timely deliverables for real-time schemas.
-            <br />
-            <br />
-            Dramatically maintain clicks-and-mortar solutions without functional solutions.
-          </p>
+          <AppDevicesOverview v-if="home?.groups !== undefined" />
+          <div v-else>No Devices available</div>
         </div>
         <div v-bind:class="{ hidden: openTab !== 4, block: openTab === 4 }">
           <AppAutomation />
@@ -70,6 +66,7 @@ import AppButton from '@/components/widgets/AppButton.vue';
 import AppTabs from '@/components/widgets/AppTabs.vue';
 import AppAutomation from '@/components/AppAutomations.vue';
 import AppGroupsOverview from '@/components/AppGroupsOverview.vue';
+import AppDevicesOverview from '@/components/AppDevicesOverview.vue';
 import { useStore } from 'vuex';
 import { HomeActionTypes } from '@/store/home/actions';
 
@@ -79,7 +76,8 @@ export default defineComponent({
     AppButton,
     AppTabs,
     AppAutomation,
-    AppGroupsOverview
+    AppGroupsOverview,
+    AppDevicesOverview
   },
   setup() {
     const openTab = ref(1);

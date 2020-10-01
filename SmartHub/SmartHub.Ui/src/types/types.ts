@@ -1,3 +1,15 @@
+import { ConnectionTypes, PluginTypes } from './enums';
+
+interface BaseEntity {
+  id: string;
+  createdBy: string;
+  createdAt: string;
+  lastModifiedAt: string;
+  lastModifiedBy: string;
+  name: string;
+  description?: string;
+}
+
 // ########## Interfaces ##########
 // ServiceResponse
 export interface ServerResponse<T> {
@@ -67,15 +79,11 @@ export interface UserUpdateRequest {
 }
 
 // Home
-export interface Home {
-  id: string;
-  createdAt: string;
-  modifiedDate: string;
-  name: string;
-  description?: string;
+export interface Home extends BaseEntity {
   settings?: Setting[];
   groups?: Group[];
 }
+
 export interface HomeCreateRequest {
   name: string;
   description: string | null;
@@ -90,11 +98,7 @@ export interface HomeUpdateRequest {
 }
 
 // Group
-export interface Group {
-  id: string;
-  createdBy: string;
-  name: string;
-  description?: string;
+export interface Group extends BaseEntity {
   devices?: Device[];
 }
 
@@ -112,16 +116,41 @@ export interface GroupUpdateRequest {
 }
 
 // Device
-export interface Device {
-  id: string;
-  createdBy: string;
+export interface Device extends BaseEntity {
+  company: Company;
+  ip: IpAddress;
+  pluginName: string;
+  pluginTypes: PluginTypes;
+  primaryCOnnection: ConnectionTypes;
+  secondaryConnection: ConnectionTypes;
+}
+
+interface Company {
   name: string;
-  description: string | null;
+  shortName: string;
+}
+interface IpAddress {
+  ipv4: string;
+}
+
+export interface DeviceCreateRequest {
+  groupId: string;
+  name: string;
+  description?: string;
+  ipv4: string;
+  companyName: string;
+  pluginName: string;
+  pluginTypes: PluginTypes;
+  primaryConnection: ConnectionTypes;
+  secondaryConnection?: ConnectionTypes;
 }
 
 // Setting
-export interface Setting {
-  name: string;
+export interface Setting extends BaseEntity {
+  isActive: boolean;
+  isDefault: boolean;
+  pluginpath: string;
+  filepath: string;
 }
 
 // ########## Types ##########

@@ -63,7 +63,13 @@ namespace SmartHub.Domain.Entities
 			Groups.Add(newGroup);
 			return this;
 		}
-
+		public Home AddDevice(Device newDevice, string groupId)
+		{
+			var group = Groups.Find(x => x.Id == groupId);
+			group?.AddDevice(newDevice);
+			AddDomainEvent(new HomeUpdatedEvent(newDevice));
+			return this;
+		}
 		public Home AddSetting(Setting setting)
 		{
 			Settings.Add(setting);

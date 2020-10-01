@@ -24,7 +24,7 @@ namespace SmartHub.Domain.Entities
 			string name,
 			string? description,
 			string ip,
-			string manufacturer,
+			string company,
 			ConnectionTypes primaryConnection,
 			ConnectionTypes? secondaryConnection,
 			string pluginName,
@@ -32,7 +32,7 @@ namespace SmartHub.Domain.Entities
 			base(name, description)
 		{
 			Ip = new IpAddress(ip);
-			Company = new Company(manufacturer);
+			Company = new Company(company);
 			PrimaryConnection = primaryConnection;
 			SecondaryConnection = secondaryConnection ?? ConnectionTypes.None;
 			PluginName = pluginName;
