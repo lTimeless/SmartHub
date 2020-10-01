@@ -22,12 +22,11 @@ namespace SmartHub.Domain.Entities
 
 		public Device(
 			string name,
-			string description,
+			string? description,
 			string ip,
 			string manufacturer,
 			ConnectionTypes primaryConnection,
-			ConnectionTypes secondaryConnection,
-			string groupCreator,
+			ConnectionTypes? secondaryConnection,
 			string pluginName,
 			PluginTypes? pluginType) :
 			base(name, description)
@@ -35,8 +34,7 @@ namespace SmartHub.Domain.Entities
 			Ip = new IpAddress(ip);
 			Company = new Company(manufacturer);
 			PrimaryConnection = primaryConnection;
-			SecondaryConnection = secondaryConnection;
-			CreatedBy = groupCreator;
+			SecondaryConnection = secondaryConnection ?? ConnectionTypes.None;
 			PluginName = pluginName;
 			PluginTypes = pluginType ?? PluginTypes.None;
 		}

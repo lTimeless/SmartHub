@@ -53,41 +53,20 @@ namespace SmartHub.Domain.Entities
 		}
 		public Home AddUser(User user)
 		{
-			if (Users == null)
-			{
-				Users = new List<User> { user };
-			}
-			else
-			{
-				Users.Add(user);
-			}
+			Users.Add(user);
 			AddDomainEvent(new HomeUpdatedEvent( user ));
 			return this;
 		}
 
-		public Home AddGroup(Group group)
+		public Home AddGroup(Group newGroup)
 		{
-			if (Groups is null)
-			{
-				Groups = new List<Group> { group };
-			}
-			else
-			{
-				Groups.Add(group);
-			}
+			Groups.Add(newGroup);
 			return this;
 		}
 
 		public Home AddSetting(Setting setting)
 		{
-			if (Settings is null)
-			{
-				Settings = new List<Setting> { setting };
-			}
-			else
-			{
-				Settings.Add(setting);
-			}
+			Settings.Add(setting);
 
 			return this;
 		}
@@ -99,14 +78,7 @@ namespace SmartHub.Domain.Entities
 				return this;
 			}
 
-			if (Settings is null)
-			{
-				Settings = new List<Setting> { setting };
-			}
-			else
-			{
-				Settings.Add(setting);
-			}
+			Settings.Add(setting);
 			return this;
 		}
 

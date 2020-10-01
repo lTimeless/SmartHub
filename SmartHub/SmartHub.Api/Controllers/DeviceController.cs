@@ -1,8 +1,8 @@
 ﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using SmartHub.Application.UseCases.Entity.Devices.Create;
 using SmartHub.Application.UseCases.Entity.Devices.Read;
-using SmartHub.Application.UseCases.Entity.Groups;
 
 namespace SmartHub.Api.Controllers
 {
@@ -26,7 +26,7 @@ namespace SmartHub.Api.Controllers
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> Post([FromBody] GroupCreateCommand value)
+        public async Task<IActionResult> Post([FromBody] DeviceCreateCommand value)
         {
             var response = await Mediator.Send(value).ConfigureAwait(false);
             return CreatedAtAction("Post", response.Data.Id, response);

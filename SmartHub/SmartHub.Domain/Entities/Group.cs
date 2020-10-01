@@ -28,6 +28,12 @@ namespace SmartHub.Domain.Entities
 			Description = description;
 			return this;
 		}
+
+		public Group AddDevice(Device newDevice)
+		{
+			Devices.Add(newDevice);
+			return this;
+		}
 		#endregion
 
 	}
