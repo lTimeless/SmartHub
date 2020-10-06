@@ -8,7 +8,7 @@
         <button
           @click="toggleModal(true)"
           class="flex justify-center items-center font-bold border border-ui-border rounded-lg bg-gray-400
-        hover:text-white transition-colors hover:bg-orange-400 h-10 w-full"
+        hover:text-white transition-colors hover:bg-green-400 h-10 w-full"
         >
           Add Device
         </button>
