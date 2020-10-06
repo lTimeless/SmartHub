@@ -1,12 +1,12 @@
 <template>
-  <DeviceCreateModal v-if="showAddModal" @close-modal="toggleModal" />
+  <DeviceCreateModal v-if="showAddModal" v-on:close-modal="toggleModal" />
   <DeviceDetailsModal v-if="showDetailModal" @close-modal="closeDetailsModal" :device="device" />
 
   <div class="w-full">
     <div class="flex justify-between items-center mb-4">
       <div class="flex justify-start w-full md:w-1/3 xl:w-1/6">
         <button
-          @click="openCreateDeviceModal"
+          @click="toggleModal(true)"
           class="flex justify-center items-center font-bold border border-ui-border rounded-lg bg-gray-400
         hover:text-white transition-colors hover:bg-orange-400 h-10 w-full"
         >
@@ -28,7 +28,7 @@
           </div>
           <div class="border-ui-border border-t my-2"></div>
         </div>
-        <div v-else>Error loading device ... {{ device.name }}</div>
+        <div v-else>Error loading device ...</div>
       </AppCard>
     </div>
   </div>
@@ -41,7 +41,6 @@ import AppCard from '@/components/widgets/AppCard.vue';
 import { useStore } from 'vuex';
 import DeviceCreateModal from '@/components/modals/DeviceCreateModal.vue';
 import DeviceDetailsModal from '@/components/modals/DeviceDetailsModal.vue';
-import { HomeActionTypes } from '@/store/home/actions';
 import { Device } from '@/types/types';
 
 export default defineComponent({
@@ -62,11 +61,7 @@ export default defineComponent({
       device: {} as Device | null | undefined,
       showLoader: false
     });
-    console.log('devices', devices.value);
 
-    const openCreateDeviceModal = () => {
-      state.showAddModal = true;
-    };
     const toggleModal = (value: boolean) => {
       state.showAddModal = value;
     };
@@ -89,7 +84,6 @@ export default defineComponent({
       ...toRefs(state),
       home,
       devices,
-      openCreateDeviceModal,
       toggleModal,
       openDetailModal,
       closeDetailsModal

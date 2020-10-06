@@ -1,9 +1,10 @@
 import { ActionContext, ActionTree } from 'vuex';
 import { RootState, HomeState, AuthState } from '@/store/index.types';
-import { Group, GroupCreateRequest, GroupUpdateRequest, HomeCreateRequest, HomeUpdateRequest } from '@/types/types';
+import { DeviceCreateRequest, Group, GroupCreateRequest, GroupUpdateRequest, HomeCreateRequest, HomeUpdateRequest } from '@/types/types';
 import { HomeMutations } from '@/store/home/mutations';
 import { getHome, postHome, putHome } from '@/services/apis/home.service';
 import { getByIdGroup, postGroup, putByIdGroup } from '@/services/apis/group.service';
+import { postDevice } from '@/services/apis/device.service';
 
 // Keys
 export enum HomeActionTypes {
@@ -13,7 +14,11 @@ export enum HomeActionTypes {
   // Group
   CREATE_GROUP = 'CREATE_GROUP',
   FETCH_BY_GROUP_ID = 'FETCH_BY_GROUP_ID',
-  UPDATE_GROUP = 'UPDATE_GROUP'
+  UPDATE_GROUP = 'UPDATE_GROUP',
+  // Device
+  CREATE_DEVICE = 'CREATE_DEVICE',
+  FETCH_BY_DEVICE_ID = 'FETCH_BY_DEVICE_ID',
+  UPDATE_DEVICE = 'UPDATE_DEVICE'
 }
 
 // actions context type
@@ -30,6 +35,8 @@ export type HomeActions = {
   [HomeActionTypes.CREATE_GROUP]({ commit }: ActionAugments, payload: GroupCreateRequest): Promise<void>;
   [HomeActionTypes.FETCH_BY_GROUP_ID]({ commit }: ActionAugments, payload: string): Promise<Group>;
   [HomeActionTypes.UPDATE_GROUP]({}: ActionAugments, payload: GroupUpdateRequest): Promise<void>;
+  // DEvice
+  [HomeActionTypes.CREATE_DEVICE]({ commit }: ActionAugments, payload: DeviceCreateRequest): Promise<void>
 };
 
 export const actions: ActionTree<HomeState, RootState> = {
@@ -91,6 +98,18 @@ export const actions: ActionTree<HomeState, RootState> = {
   },
   async [HomeActionTypes.UPDATE_GROUP]({ dispatch }: ActionAugments, payload: GroupUpdateRequest): Promise<void> {
     await putByIdGroup(payload)
+      .then((response) => {
+        if (!response.success) {
+          return Promise.reject(response.message);
+        }
+        dispatch(HomeActionTypes.FETCH_HOME);
+        return Promise.resolve();
+      })
+      .catch((error) => Promise.reject(error));
+  },
+  // Device
+  async [HomeActionTypes.CREATE_DEVICE]({ dispatch }, payload): Promise<void> {
+    await postDevice(payload)
       .then((response) => {
         if (!response.success) {
           return Promise.reject(response.message);

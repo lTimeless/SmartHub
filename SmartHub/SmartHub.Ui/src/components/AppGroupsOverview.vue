@@ -1,12 +1,12 @@
 <template>
-  <GroupCreateModal v-if="showAddModal" @close-modal="toggleModal" />
-  <GroupDetailsModal v-if="showDetailModal" @close-modal="closeDetailsModal" :group="group" />
+  <GroupCreateModal v-if="showAddModal" @close="toggleModal" />
+  <GroupDetailsModal v-if="showDetailModal" @close="closeDetailsModal" :group="group" />
 
   <div class="w-full">
     <div class="flex justify-between items-center mb-4">
       <div class="flex justify-start w-full md:w-1/3 xl:w-1/6">
         <button
-          @click="openCreateGroupModal"
+          @click="toggleModal(true)"
           class="flex justify-center items-center font-bold border border-ui-border rounded-lg bg-gray-400
         hover:text-white transition-colors hover:bg-orange-400 h-10 w-full"
         >
@@ -73,13 +73,10 @@ export default defineComponent({
       showLoader: false
     });
 
-    const openCreateGroupModal = () => {
-      state.showAddModal = true;
-    };
     const toggleModal = (value: boolean) => {
       state.showAddModal = value;
     };
-    const closeDetailsModal = async (value: boolean) => {
+    const closeDetailsModal = (value: boolean) => {
       state.showDetailModal = value;
     };
 
@@ -98,7 +95,6 @@ export default defineComponent({
     return {
       ...toRefs(state),
       home,
-      openCreateGroupModal,
       toggleModal,
       openDetailModal,
       closeDetailsModal

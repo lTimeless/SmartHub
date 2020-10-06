@@ -29,6 +29,7 @@ namespace SmartHub.Domain.Entities
 			Groups = new List<Group>();
 			Plugins = new List<Plugin>();
 			Events = new List<DomainEvent>();
+			Settings = new List<Setting>();
 		}
 
 		#region Methods
@@ -73,7 +74,6 @@ namespace SmartHub.Domain.Entities
 		public Home AddSetting(Setting setting)
 		{
 			Settings.Add(setting);
-
 			return this;
 		}
 

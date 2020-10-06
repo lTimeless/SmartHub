@@ -43,7 +43,7 @@ import { useStore } from 'vuex';
 
 export default defineComponent({
   name: 'GroupDetailsModal',
-  emits: ['close-modal'],
+  emits: ['close'],
   components: {
     BaseModal
   },
@@ -57,7 +57,7 @@ export default defineComponent({
     const store = useStore();
     const groupDetail = ref(props.group);
     const close = () => {
-      context.emit('close-modal', false);
+      context.emit('close', false);
     };
 
     const save = async () => {
@@ -69,7 +69,7 @@ export default defineComponent({
       };
       console.log('Update group', updatedGroup);
       await store.dispatch(HomeActionTypes.UPDATE_GROUP, updatedGroup);
-      context.emit('close-modal', false);
+      context.emit('close', false);
     };
 
     return {

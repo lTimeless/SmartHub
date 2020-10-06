@@ -30,7 +30,7 @@ import { HomeActionTypes } from '@/store/home/actions';
 
 export default defineComponent({
   name: 'GroupCreateModal',
-  emits: ['close-modal'],
+  emits: ['close'],
   components: {
     BaseModal
   },
@@ -42,12 +42,11 @@ export default defineComponent({
     });
     const saveBtnActive = computed(() => groupCreateRequest.name !== '' && groupCreateRequest.description !== '');
     const close = () => {
-      context.emit('close-modal', false);
+      context.emit('close', false);
     };
     const save = async () => {
-      console.log('click save', groupCreateRequest);
       await store.dispatch(HomeActionTypes.CREATE_GROUP, groupCreateRequest).then(() => {
-        context.emit('close-modal', false);
+        context.emit('close', false);
       });
     };
     return {
