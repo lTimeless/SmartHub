@@ -5,7 +5,7 @@ using AutoMapper;
 using MediatR;
 using SmartHub.Application.Common.Interfaces.Database;
 using SmartHub.Application.Common.Models;
-using SmartHub.Domain.Common.Enums;
+using SmartHub.Domain.Common;
 using SmartHub.Domain.Entities;
 
 namespace SmartHub.Application.UseCases.Entity.Devices.Create
@@ -33,7 +33,11 @@ namespace SmartHub.Application.UseCases.Entity.Devices.Create
                 request.PrimaryConnection, request.SecondaryConnection,
                 request.PluginName, request.PluginTypes);
 
-            home.AddDevice(newDevice, request.GroupId);
+            if (string.IsNullOrEmpty(request.GroupName))
+            {
+                request.GroupName = DefaultNames.DefaultGroup;
+            }
+            home.AddDevice(newDevice, request.GroupName);
             return Response.Ok($"Created new Device with name {newDevice.Name}", _mapper.Map<DeviceDto>(newDevice));
         }
     }

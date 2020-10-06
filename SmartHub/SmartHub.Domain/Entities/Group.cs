@@ -17,13 +17,13 @@ namespace SmartHub.Domain.Entities
 		}
 
 		#region Methods
-		public Group UpdateName(string name)
+		public Group SetName(string name)
 		{
 			Name = name;
 			return this;
 		}
 
-		public Group UpdateDescription(string description)
+		public Group SetDescription(string description)
 		{
 			Description = description;
 			return this;

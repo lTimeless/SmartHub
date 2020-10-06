@@ -20,7 +20,7 @@ namespace SmartHub.Api.Controllers
         }
 
         /// <summary>
-        /// Get all groups
+        /// Get group by Id
         /// </summary>
         /// <returns>All groups</returns>
         [HttpGet("{id}")]

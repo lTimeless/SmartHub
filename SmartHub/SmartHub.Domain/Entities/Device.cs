@@ -38,5 +38,34 @@ namespace SmartHub.Domain.Entities
 			PluginName = pluginName;
 			PluginTypes = pluginType ?? PluginTypes.None;
 		}
+
+		#region Methods
+		public Device SetName(string name)
+		{
+			Name = name;
+			return this;
+		}
+
+		public Device SetDescription(string description)
+		{
+			Description = description;
+			return this;
+		}
+		public Device SetIp(string ip)
+		{
+			Ip = new IpAddress(ip);
+			return this;
+		}
+
+		public Device SetConnectionTypes(ConnectionTypes primary, ConnectionTypes secondary)
+		{
+			PrimaryConnection = primary;
+			SecondaryConnection = secondary;
+			return this;
+		}
+
+
+
+		#endregion
 	}
 }

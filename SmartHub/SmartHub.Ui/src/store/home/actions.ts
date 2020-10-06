@@ -17,7 +17,6 @@ export enum HomeActionTypes {
   UPDATE_GROUP = 'UPDATE_GROUP',
   // Device
   CREATE_DEVICE = 'CREATE_DEVICE',
-  FETCH_BY_DEVICE_ID = 'FETCH_BY_DEVICE_ID',
   UPDATE_DEVICE = 'UPDATE_DEVICE'
 }
 
@@ -32,11 +31,11 @@ export type HomeActions = {
   [HomeActionTypes.CREATE_HOME]({ commit }: ActionAugments, payload: HomeCreateRequest): Promise<void>;
   [HomeActionTypes.UPDATE_HOME]({ commit }: ActionAugments, payload: HomeUpdateRequest): Promise<void>;
   // Group
-  [HomeActionTypes.CREATE_GROUP]({ commit }: ActionAugments, payload: GroupCreateRequest): Promise<void>;
-  [HomeActionTypes.FETCH_BY_GROUP_ID]({ commit }: ActionAugments, payload: string): Promise<Group>;
+  [HomeActionTypes.CREATE_GROUP]({}: ActionAugments, payload: GroupCreateRequest): Promise<void>;
+  [HomeActionTypes.FETCH_BY_GROUP_ID]({}: ActionAugments, payload: string): Promise<Group>;
   [HomeActionTypes.UPDATE_GROUP]({}: ActionAugments, payload: GroupUpdateRequest): Promise<void>;
   // DEvice
-  [HomeActionTypes.CREATE_DEVICE]({ commit }: ActionAugments, payload: DeviceCreateRequest): Promise<void>
+  [HomeActionTypes.CREATE_DEVICE]({}: ActionAugments, payload: DeviceCreateRequest): Promise<void>;
 };
 
 export const actions: ActionTree<HomeState, RootState> = {

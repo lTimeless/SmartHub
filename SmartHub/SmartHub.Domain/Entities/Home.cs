@@ -64,9 +64,9 @@ namespace SmartHub.Domain.Entities
 			Groups.Add(newGroup);
 			return this;
 		}
-		public Home AddDevice(Device newDevice, string groupId)
+		public Home AddDevice(Device newDevice, string groupName)
 		{
-			var group = Groups.Find(x => x.Id == groupId);
+			var group = Groups.Find(x => x.Name == groupName);
 			group?.AddDevice(newDevice);
 			AddDomainEvent(new HomeUpdatedEvent(newDevice));
 			return this;
@@ -131,14 +131,38 @@ namespace SmartHub.Domain.Entities
 
 			if (!string.IsNullOrEmpty(name))
 			{
-				foundGroup.UpdateName(name);
+				foundGroup.SetName(name);
 			}
 			if (!string.IsNullOrEmpty(description))
 			{
-				foundGroup.UpdateDescription(description);
+				foundGroup.SetDescription(description);
 			}
 
 			AddDomainEvent(new GroupUpdatedEvent(StateTypes.Modified.ToString(), foundGroup.Id));
+			return true;
+		}
+
+		public bool UpdateDevice(string id, string? name, string? description, string? ipv4, ConnectionTypes primary, ConnectionTypes secondary)
+		{
+			var foundDevice = Groups.SelectMany(x => x.Devices).ToList().Find(d => d.Id == id);
+			if (foundDevice is null)
+			{
+				return false;
+			}
+			if (!string.IsNullOrEmpty(name))
+			{
+				foundDevice.SetName(name);
+			}
+			if (!string.IsNullOrEmpty(description))
+			{
+				foundDevice.SetDescription(description);
+			}
+			if (!string.IsNullOrEmpty(ipv4))
+			{
+				foundDevice.SetIp(ipv4);
+			}
+			foundDevice.SetConnectionTypes(primary, secondary);
+			AddDomainEvent(new DeviceUpdatedEvent(StateTypes.Modified.ToString(), foundDevice.Id));
 			return true;
 		}
 		#endregion

@@ -121,7 +121,7 @@ export interface Device extends BaseEntity {
   ip: IpAddress;
   pluginName: string;
   pluginTypes: PluginTypes;
-  primaryCOnnection: ConnectionTypes;
+  primaryConnection: ConnectionTypes;
   secondaryConnection: ConnectionTypes;
 }
 
@@ -134,7 +134,7 @@ interface IpAddress {
 }
 
 export interface DeviceCreateRequest {
-  groupId: string;
+  groupName?: string;
   name: string;
   description?: string;
   ipv4: string;
@@ -142,7 +142,17 @@ export interface DeviceCreateRequest {
   pluginName: string;
   pluginTypes: PluginTypes;
   primaryConnection: ConnectionTypes;
-  secondaryConnection?: ConnectionTypes;
+  secondaryConnection: ConnectionTypes;
+}
+
+export interface DeviceUpdateRequest {
+  id: string;
+  groupName?: string;
+  name?: string;
+  description?: string;
+  ipv4?: string;
+  primaryConnection: ConnectionTypes;
+  secondaryConnection: ConnectionTypes;
 }
 
 // Setting

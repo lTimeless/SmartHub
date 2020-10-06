@@ -42,6 +42,7 @@ import { useStore } from 'vuex';
 import DeviceCreateModal from '@/components/modals/DeviceCreateModal.vue';
 import DeviceDetailsModal from '@/components/modals/DeviceDetailsModal.vue';
 import { Device } from '@/types/types';
+import { getByIdDevice } from '@/services/apis/device.service';
 
 export default defineComponent({
   name: 'AppDevicesOverview',
@@ -57,7 +58,7 @@ export default defineComponent({
     const state = reactive({
       showAddModal: false,
       showDetailModal: false,
-      selectedGroupId: '',
+      selectedDeviceId: '',
       device: {} as Device | null | undefined,
       showLoader: false
     });
@@ -69,15 +70,21 @@ export default defineComponent({
       state.showDetailModal = value;
     };
 
-    const openDetailModal = async (value: boolean, groupId: string) => {
+    const openDetailModal = async (value: boolean, deviceId: string) => {
       state.showLoader = true;
       if (value) {
-        // await store.dispatch(HomeActionTypes.FETCH_BY_GROUP_ID, groupId).then((response: Group | null) => {
-        //   state.device = response;
-        // });
+        state.device = await getByIdDevice(deviceId)
+          .then((response) => {
+            if (!response.success) {
+              return Promise.reject(response.message);
+            }
+            return Promise.resolve(response.data as Device);
+          })
+          .catch((error) => Promise.reject(error));
       }
       state.showLoader = false;
-      state.selectedGroupId = groupId;
+      state.selectedDeviceId = deviceId;
+      state.showDetailModal = value;
     };
 
     return {
