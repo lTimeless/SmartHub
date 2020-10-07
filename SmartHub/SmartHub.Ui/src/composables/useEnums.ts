@@ -1,5 +1,5 @@
 import { ConnectionTypes, PluginTypes } from '@/types/enums';
-import { ComputedRef, reactive, UnwrapRef, watchEffect } from 'vue';
+import { reactive, toRefs } from 'vue';
 
 export function useEnumTypes() {
     const state = reactive({
@@ -16,6 +16,6 @@ export function useEnumTypes() {
     state.connectionTypesValues = Object.keys(ConnectionTypes).filter((e) => !isNaN(+e)).map(num => parseInt(num));
 
     return {
-        ...state
+        ...toRefs(state)
     }
-};
+}

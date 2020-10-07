@@ -163,7 +163,7 @@ export default defineComponent({
     const save = async () => {
       const { pluginTypesValues } = useEnumTypes();
 
-      deviceCreateRequest.pluginTypes = pluginTypesValues[deviceCreateRequest.pluginTypes];
+      deviceCreateRequest.pluginTypes = pluginTypesValues.value[deviceCreateRequest.pluginTypes];
       console.log(pluginTypesValues, deviceCreateRequest);
       await store.dispatch(HomeActionTypes.CREATE_DEVICE, deviceCreateRequest);
       context.emit('close-modal', false);

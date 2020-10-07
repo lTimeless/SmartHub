@@ -147,9 +147,9 @@ export default defineComponent({
   setup(props, context) {
     const store = useStore();
     const deviceDetail = ref(props.device);
-    const selectedPluginType = ref(useEnumTypes().pluginTypesValues.indexOf(deviceDetail.value.pluginTypes));
-    const selectedPConnType = ref(useEnumTypes().pluginTypesValues.indexOf(deviceDetail.value.primaryConnection));
-    const selectedSConnType = ref(useEnumTypes().pluginTypesValues.indexOf(deviceDetail.value.secondaryConnection));
+    const selectedPluginType = ref(useEnumTypes().pluginTypesValues.value.indexOf(deviceDetail.value.pluginTypes));
+    const selectedPConnType = ref(useEnumTypes().pluginTypesValues.value.indexOf(deviceDetail.value.primaryConnection));
+    const selectedSConnType = ref(useEnumTypes().pluginTypesValues.value.indexOf(deviceDetail.value.secondaryConnection));
     
     const close = () => {
       context.emit('close-modal', false);
