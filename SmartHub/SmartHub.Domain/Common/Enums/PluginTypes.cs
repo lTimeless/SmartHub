@@ -13,6 +13,5 @@ namespace SmartHub.Domain.Common.Enums
 		Ht = 16, // humidity and temperature sensor
 		Sensor = 32, //  default if it is not defined
 		Rgb = 64 // red green blue
-
 	}
 }

@@ -32,7 +32,10 @@ namespace SmartHub.Application.UseCases.Identity.Registration
 			if (created)
 			{
 				homeEntity.AddUser(user);
-				await _channelManager.PublishNextToChannel(EventTypes.Registration, new RegistrationEvent(user.UserName, created));
+				await _channelManager.PublishNextToChannel(ChannelNames.System,
+					new IdentityEvent(user.UserName,
+						created,
+						EventTypes.Registration));
 				return true;
 			}
 			throw new SmartHubException("Problem Registering new User.");

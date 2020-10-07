@@ -23,4 +23,8 @@
     <ProjectReference Include="..\SmartHub.Domain\SmartHub.Domain.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="UseCases\Identity\Me" />
+  </ItemGroup>
+
 </Project>

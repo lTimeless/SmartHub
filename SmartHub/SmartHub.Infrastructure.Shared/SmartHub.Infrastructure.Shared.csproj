@@ -6,7 +6,7 @@
 
     <ItemGroup>
       <PackageReference Include="Figgle" Version="0.4.0" />
-      <PackageReference Include="Hangfire" Version="1.7.12" />
+      <PackageReference Include="Hangfire" Version="1.7.13" />
       <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="2.2.0" />
       <PackageReference Include="Microsoft.Extensions.Http" Version="3.1.7" />
       <PackageReference Include="NodaTime" Version="3.0.0" />
@@ -14,7 +14,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\SmartHub.Application\SmartHub.Application.csproj" />
-      <ProjectReference Include="..\SmartHub.Infrastructure.Persistance\SmartHub.Infrastructure.Persistance.csproj" />
+      <ProjectReference Include="..\SmartHub.Infrastructure.Persistence\SmartHub.Infrastructure.Persistence.csproj" />
     </ItemGroup>
 
 </Project>

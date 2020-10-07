@@ -1,37 +1,42 @@
 import { ActionContext, ActionTree } from 'vuex';
-import { LoginRequest, AuthResponse, RegistrationRequest, ServerResponse } from '@/types/types';
+import { LoginRequest, AuthResponse, RegistrationRequest, UserUpdateRequest, User } from '@/types/types';
 import { RootState, AuthState } from '@/store/index.types';
 import { storeAuthResponse } from '@/services/auth/authService';
-import { AuthMutations, M_AUTH_USER } from '@/store/auth/mutations';
-import { postLogin, postRegistration } from '@/services/apis/user.service';
+import { AuthMutations, AuthMutationTypes } from '@/store/auth/mutations';
+import { postLogin, postRegistration, getMe, putMe } from '@/services/apis/identity.service';
 
 // Keys
-export const A_LOGIN = 'A_LOGIN';
-export const A_REGISTRATION = 'A_REGISTRATION';
-export const A_LOGOUT = 'A_LOGOUT';
+export enum AuthActionTypes {
+  ME = 'ME',
+  UPDATE_ME = 'UPDATE_ME',
+  LOGIN = 'LOGIN',
+  REGISTRATION = 'REGISTRATION',
+  LOGOUT = 'LOGOUT'
+}
 
 // Actions
-type AugmentedActionContext = {
-  commit<K extends keyof AuthMutations>(key: K, payload: Parameters<AuthMutations[K]>[1] | null): ReturnType<AuthMutations[K]>;
-} & Omit<ActionContext<AuthState, RootState>, 'commit'>;
+type ActionAugments = Omit<ActionContext<AuthState, RootState>, 'commit'> & {
+  commit<K extends keyof AuthMutations>(key: K, payload: Parameters<AuthMutations[K]>[1]): ReturnType<AuthMutations[K]>;
+};
 
 // Action Interface
-export interface AuthActions {
-  [A_LOGIN]({ commit }: AugmentedActionContext, payload: LoginRequest): Promise<void>;
-  [A_REGISTRATION](state: AugmentedActionContext, payload: RegistrationRequest): Promise<void>;
-  [A_LOGOUT]({ commit }: AugmentedActionContext): void;
-}
+export type AuthActions = {
+  [AuthActionTypes.ME]({ commit }: ActionAugments): Promise<void>;
+  [AuthActionTypes.UPDATE_ME]({ commit }: ActionAugments, payload: UserUpdateRequest): Promise<void>;
+  [AuthActionTypes.LOGIN]({ commit }: ActionAugments, payload: LoginRequest): Promise<void>;
+  [AuthActionTypes.REGISTRATION](state: ActionAugments, payload: RegistrationRequest): Promise<void>;
+  [AuthActionTypes.LOGOUT]({ commit }: ActionAugments): void;
+};
 
 // Define Actions
 export const actions: ActionTree<AuthState, RootState> & AuthActions = {
-  async [A_LOGIN]({ commit }, payload: LoginRequest): Promise<void> {
-    await postLogin(payload)
+  async [AuthActionTypes.ME]({ commit }): Promise<void> {
+    await getMe()
       .then((response) => {
         if (!response.success) {
           return Promise.reject(response.message);
         }
-        storeAuthResponse(response.data as AuthResponse);
-        commit(M_AUTH_USER, response.data);
+        commit(AuthMutationTypes.ME, response.data as User);
         return Promise.resolve(response.data);
       })
       .catch((err) => {
@@ -39,14 +44,43 @@ export const actions: ActionTree<AuthState, RootState> & AuthActions = {
         return Promise.reject(err);
       });
   },
-  async [A_REGISTRATION](state, payload: RegistrationRequest): Promise<void> {
+  async [AuthActionTypes.UPDATE_ME]({ commit }, payload: UserUpdateRequest): Promise<void> {
+    await putMe(payload)
+      .then((response) => {
+        if (!response.success) {
+          return Promise.reject(response.message);
+        }
+        commit(AuthMutationTypes.ME, response.data as User);
+        return Promise.resolve(response.data);
+      })
+      .catch((err) => {
+        console.log(err);
+        return Promise.reject(err);
+      });
+  },
+  async [AuthActionTypes.LOGIN]({ commit }, payload: LoginRequest): Promise<void> {
+    await postLogin(payload)
+      .then((response) => {
+        if (!response.success) {
+          return Promise.reject(response.message);
+        }
+        storeAuthResponse(response.data as AuthResponse);
+        commit(AuthMutationTypes.AUTH, response.data as AuthResponse);
+        return Promise.resolve(response.data);
+      })
+      .catch((err) => {
+        console.log(err);
+        return Promise.reject(err);
+      });
+  },
+  async [AuthActionTypes.REGISTRATION](state, payload: RegistrationRequest): Promise<void> {
     await postRegistration(payload)
       .then((response) => {
         if (!response.success) {
           return Promise.reject(response.message);
         }
         storeAuthResponse(response.data as AuthResponse);
-        state.commit(M_AUTH_USER, response.data);
+        state.commit(AuthMutationTypes.AUTH, response.data as AuthResponse);
         return Promise.resolve();
       })
       .catch((err) => {
@@ -54,7 +88,7 @@ export const actions: ActionTree<AuthState, RootState> & AuthActions = {
         return Promise.reject(err);
       });
   },
-  async [A_LOGOUT]({ commit }) {
+  async [AuthActionTypes.LOGOUT]() {
     console.log('logout');
   }
 };

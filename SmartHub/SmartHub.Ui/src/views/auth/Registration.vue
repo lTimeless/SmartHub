@@ -8,7 +8,7 @@
       <!--  TODO: Email activation -->
     </ConfirmationModalAsync>
     <!-- Top Navigation Info -->
-    <Card v-if="!doneRegistration">
+    <AppCard v-if="!doneRegistration" class="bg-white shadow-md">
       <div class="h-32 md:h-auto md:w-1/2">
         <img aria-hidden="true" class="object-cover w-full h-full dark:hidden" src="../../assets/images/undraw_smart_home_28oy.svg" alt="Office" />
       </div>
@@ -135,7 +135,7 @@
           <button
             disabled
             class="flex items-center justify-center w-full px-4 py-2 text-sm font-medium leading-5 text-white
-                  text-gray-700 transition-colors duration-150 border border-gray-300 rounded-lg dark:text-gray-400
+                  transition-colors duration-150 border border-gray-300 rounded-lg dark:text-gray-400
                   active:bg-transparent focus:border-gray-500 active:text-gray-500 focus:outline-none focus:shadow-outline-gray"
             :class="true ? 'opacity-50 focus:outline-none cursor-not-allowed' : 'hover:border-gray-500'"
           >
@@ -148,7 +148,7 @@
           </p>
         </div>
       </div>
-    </Card>
+    </AppCard>
   </div>
 </template>
 
@@ -157,9 +157,9 @@ import { defineComponent, onMounted, ref, reactive, computed, defineAsyncCompone
 import { RegistrationRequest } from '@/types/types';
 import { clearStorage } from '@/services/auth/authService';
 import { useRouter } from 'vue-router';
-import { A_REGISTRATION } from '@/store/auth/actions';
-import { useStore } from '@/store';
-import Card from '@/components/widgets/Card.vue';
+import { AuthActionTypes } from '@/store/auth/actions';
+import { useStore } from 'vuex';
+import AppCard from '@/components/widgets/AppCard.vue';
 import Loader from '@/components/Loader.vue';
 
 const ConfirmationModalAsync = defineAsyncComponent({
@@ -171,7 +171,7 @@ const ConfirmationModalAsync = defineAsyncComponent({
 export default defineComponent({
   name: 'Registration',
   components: {
-    Card,
+    AppCard,
     ConfirmationModalAsync
   },
   setup() {
@@ -211,7 +211,7 @@ export default defineComponent({
 
     const onRegistrationClick = async () => {
       await store
-        .dispatch(A_REGISTRATION, registrationRequest)
+        .dispatch(AuthActionTypes.REGISTRATION, registrationRequest)
         .then(() => {
           doneRegistration.value = true;
         })

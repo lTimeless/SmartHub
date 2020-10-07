@@ -14,8 +14,6 @@ namespace SmartHub.Domain.Entities
 
 		public virtual List<Plugin> Plugins { get; protected set; } // make it so that all plugins will be saved for backup /restore etc.
 
-		public virtual List<Device> Devices { get; protected set; }
-
 		public virtual List<Setting> Settings { get; protected set; }
 
 		public virtual Address Address { get; private set; }
@@ -28,10 +26,10 @@ namespace SmartHub.Domain.Entities
 		public Home(string name, string description) : base(name, description)
 		{
 			Users = new List<User>();
-			Devices = new List<Device>();
 			Groups = new List<Group>();
 			Plugins = new List<Plugin>();
 			Events = new List<DomainEvent>();
+			Settings = new List<Setting>();
 		}
 
 		#region Methods
@@ -56,42 +54,26 @@ namespace SmartHub.Domain.Entities
 		}
 		public Home AddUser(User user)
 		{
-			if (Users == null)
-			{
-				Users = new List<User> { user };
-			}
-			else
-			{
-				Users.Add(user);
-			}
+			Users.Add(user);
 			AddDomainEvent(new HomeUpdatedEvent( user ));
 			return this;
 		}
 
-		public Home AddGroup(Group group)
+		public Home AddGroup(Group newGroup)
 		{
-			if (Groups is null)
-			{
-				Groups = new List<Group> { group };
-			}
-			else
-			{
-				Groups.Add(group);
-			}
+			Groups.Add(newGroup);
 			return this;
 		}
-
+		public Home AddDevice(Device newDevice, string groupName)
+		{
+			var group = Groups.Find(x => x.Name == groupName);
+			group?.AddDevice(newDevice);
+			AddDomainEvent(new HomeUpdatedEvent(newDevice));
+			return this;
+		}
 		public Home AddSetting(Setting setting)
 		{
-			if (Settings is null)
-			{
-				Settings = new List<Setting> { setting };
-			}
-			else
-			{
-				Settings.Add(setting);
-			}
-
+			Settings.Add(setting);
 			return this;
 		}
 
@@ -102,14 +84,7 @@ namespace SmartHub.Domain.Entities
 				return this;
 			}
 
-			if (Settings is null)
-			{
-				Settings = new List<Setting> { setting };
-			}
-			else
-			{
-				Settings.Add(setting);
-			}
+			Settings.Add(setting);
 			return this;
 		}
 
@@ -129,39 +104,66 @@ namespace SmartHub.Domain.Entities
 			return this;
 		}
 
+		/// <summary>
+		/// Checks if the new plugin doesn't already exists or if it has a higher version than on db
+		/// </summary>
+		/// <param name="newPlugin">The plugin to check for</param>
+		/// <returns>true if exists of the version is higher on the db</returns>
 		public bool CheckIfPluginExistAndHasHigherVersion(Plugin newPlugin)
 		{
 			return Plugins.Exists(x => x.Name == newPlugin.Name && x.AssemblyVersion > newPlugin.AssemblyVersion);
 		}
 
-		public Home AddDevice(Device device)
+		/// <summary>
+		/// Updated a group
+		/// </summary>
+		/// <param name="id">The ID to find the group</param>
+		/// <param name="name">The new name</param>
+		/// <param name="description">The new description</param>
+		/// <returns></returns>
+		public bool UpdateGroup(string id, string? name, string? description)
 		{
-			if (Devices == null)
+			var foundGroup = Groups.Find(x => x.Id == id);
+			if (foundGroup is null)
 			{
-				Devices = new List<Device> { device };
+				return false;
 			}
-			else
+
+			if (!string.IsNullOrEmpty(name))
 			{
-				Devices.Add(device);
+				foundGroup.SetName(name);
 			}
-			return this;
+			if (!string.IsNullOrEmpty(description))
+			{
+				foundGroup.SetDescription(description);
+			}
+
+			AddDomainEvent(new GroupUpdatedEvent(StateTypes.Modified.ToString(), foundGroup.Id));
+			return true;
 		}
 
-		public Home RemoveDevice(Device device, string deviceName)
+		public bool UpdateDevice(string id, string? name, string? description, string? ipv4, ConnectionTypes primary, ConnectionTypes secondary)
 		{
-			if (device != null)
+			var foundDevice = Groups.SelectMany(x => x.Devices).ToList().Find(d => d.Id == id);
+			if (foundDevice is null)
 			{
-				Devices?.Remove(device);
+				return false;
 			}
-			else if (string.IsNullOrEmpty(deviceName))
+			if (!string.IsNullOrEmpty(name))
 			{
-				var found = Devices.Single(x => x.Name == deviceName);
-				if (Devices != null)
-				{
-					Devices.Remove(found);
-				}
+				foundDevice.SetName(name);
 			}
-			return this;
+			if (!string.IsNullOrEmpty(description))
+			{
+				foundDevice.SetDescription(description);
+			}
+			if (!string.IsNullOrEmpty(ipv4))
+			{
+				foundDevice.SetIp(ipv4);
+			}
+			foundDevice.SetConnectionTypes(primary, secondary);
+			AddDomainEvent(new DeviceUpdatedEvent(StateTypes.Modified.ToString(), foundDevice.Id));
+			return true;
 		}
 		#endregion
 	}

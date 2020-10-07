@@ -5,12 +5,12 @@ namespace SmartHub.Domain.DomainEvents
 {
 	public abstract class DomainEvent : IEvent
 	{
-		public string Id { get; }
-		public virtual string EventType => EventTypes.Domain.ToString();
+		public string EventId { get; }
+		public virtual string EventType { get; set; } = EventTypes.Domain.ToString();
 
 		protected DomainEvent()
 		{
-			Id = Guid.NewGuid().ToString();
+			EventId = Guid.NewGuid().ToString();
 		}
 	}
 }

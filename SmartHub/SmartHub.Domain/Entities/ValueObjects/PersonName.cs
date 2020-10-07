@@ -4,9 +4,9 @@ namespace SmartHub.Domain.Entities.ValueObjects
 {
 	public class PersonName : ValueObject
 	{
-		public string FirstName { get; }
-		public string? MiddleName { get; }
-		public string LastName { get; }
+		public string FirstName { get; set; }
+		public string? MiddleName { get; set; }
+		public string LastName { get; set; }
 
 		protected PersonName()
 		{

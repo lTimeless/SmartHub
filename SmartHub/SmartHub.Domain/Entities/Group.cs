@@ -5,22 +5,36 @@ namespace SmartHub.Domain.Entities
 {
 	public class Group : BaseEntity
 	{
-		public string? HomeId { get; protected set; }
-		public virtual Home Home { get; protected set; }
-		public virtual ICollection<Device> Devices { get; protected set; }
-
-		public string CreatorName { get; set; }
+		public virtual List<Device> Devices { get; set; }
 
 		protected Group()
 		{
 		}
 
-		public Group(string name, string description, Home home, List<Device> devices, string groupCreator) :
-			base(name, description)
+		public Group(string name, string description) : base(name, description)
 		{
-			Home = home;
-			Devices = devices;
-			CreatorName = groupCreator;
+			Devices = new List<Device>();
 		}
+
+		#region Methods
+		public Group SetName(string name)
+		{
+			Name = name;
+			return this;
+		}
+
+		public Group SetDescription(string description)
+		{
+			Description = description;
+			return this;
+		}
+
+		public Group AddDevice(Device newDevice)
+		{
+			Devices.Add(newDevice);
+			return this;
+		}
+		#endregion
+
 	}
 }

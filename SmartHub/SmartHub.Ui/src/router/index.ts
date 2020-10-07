@@ -89,17 +89,7 @@ const routes: Array<RouteRecordRaw> = [
       {
         path: '/plugins',
         name: 'Plugins',
-        component: () => import(/* webpackChunkName: "plugins" */ '../views/home/Routines.vue'),
-
-        meta: {
-          requiresAuth: true,
-          isUser: true
-        }
-      },
-      {
-        path: '/routines',
-        name: 'Routines',
-        component: () => import(/* webpackChunkName: "routines" */ '../views/home/Routines.vue'),
+        component: () => import(/* webpackChunkName: "plugins" */ '../views/home/Plugins.vue'),
 
         meta: {
           requiresAuth: true,

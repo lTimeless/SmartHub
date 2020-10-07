@@ -14,7 +14,5 @@ namespace SmartHub.Application.UseCases.Entity.Settings
 		public string PluginPath { get; set; }
 		public string DownloadServerUrl { get; set; }
 		public string? Filepath { get; set; }
-
-		public string CreatorName { get; set; }
 	}
 }

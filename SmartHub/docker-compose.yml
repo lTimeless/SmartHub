@@ -2,23 +2,32 @@ version: '3.4'
 
 services:
 # Elastic and Kibana
-  elastic:
-    image: docker.elastic.co/elasticsearch/elasticsearch:7.9.1
-    restart: unless-stopped
+  # elastic:
+  #   image: docker.elastic.co/elasticsearch/elasticsearch:7.9.1
+  #   restart: unless-stopped
 
-  kibana:
-    image: docker.elastic.co/kibana/kibana:7.9.1
-    restart: unless-stopped
+  # kibana:
+  #   image: docker.elastic.co/kibana/kibana:7.9.1
+  #   restart: unless-stopped
 
 # PostgreSQL database
   postgres_database:
     image: postgres:alpine
     restart: unless-stopped
 
+
 # PostgreSQL pgAdmin Ui
 #  pgadmin:
 #    image: dpage/pgadmin4
 #    restart: unless-stopped
+
+#  smarthub.api:
+#    image: ${DOCKER_REGISTRY-}smarthubapi
+#    build:
+#      context: .
+#      dockerfile: Dockerfile
+#    depends_on:
+#        - postgres_database
 
 volumes:
   database-data:

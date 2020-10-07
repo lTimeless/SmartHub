@@ -44,8 +44,8 @@
 import { defineComponent, onUnmounted, ref, reactive } from 'vue';
 import { HubConnectionBuilder, LogLevel, HubConnection } from '@microsoft/signalr';
 import { ModifiedEvent, ServerEvent } from '@/types/types';
-import Search from '@/components/widgets/Search.vue';
-import Table from '@/components/widgets/Table.vue';
+import Search from '@/components/widgets/AppSearch.vue';
+import Table from '@/components/widgets/AppTable.vue';
 
 export default defineComponent({
   name: 'Events',

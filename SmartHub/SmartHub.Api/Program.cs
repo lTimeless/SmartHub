@@ -42,8 +42,9 @@ namespace SmartHub.Api
 							configurationBuilder.AddUserSecrets(appAssembly, true);
 						}
 					}
-					configurationBuilder.AddEnvironmentVariables()
-						.AddCommandLine(args);
+					configurationBuilder
+						.AddCommandLine(args)
+						.AddEnvironmentVariables();
 				})
 				.UseSerilog((context, service, loggerConfig) =>
 				{

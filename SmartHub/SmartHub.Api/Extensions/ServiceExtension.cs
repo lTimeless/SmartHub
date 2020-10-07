@@ -19,8 +19,8 @@ using Newtonsoft.Json.Serialization;
 using NodaTime;
 using NodaTime.Serialization.JsonNet;
 using Polly;
+using SmartHub.Api.Validators;
 using SmartHub.Domain.Common.Settings;
-using SmartHub.Domain.Common.Settings.Validators;
 
 namespace SmartHub.Api.Extensions
 {
@@ -55,8 +55,7 @@ namespace SmartHub.Api.Extensions
 			// -------------- SmartHubSettings ---------------
 			services.Configure<ApplicationSettings>(configuration.GetSection("SmartHub"));
 			services.TryAddSingleton<IValidateOptions<ApplicationSettings>, ApplicationSettingsValidation>();
-
-
+			services.TryAddSingleton<IValidateOptions<JwtSettings>, JwtSettingsValidation>();
 		}
 
 		private static void AddSpaStaticFiles(this IServiceCollection services)
