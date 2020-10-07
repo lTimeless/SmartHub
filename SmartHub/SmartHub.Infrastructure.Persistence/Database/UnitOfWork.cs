@@ -38,7 +38,7 @@ namespace SmartHub.Infrastructure.Persistence.Database
 			var aggregateRoots = AppDbContext.ChangeTracker.Entries().Where(x => x.Entity is IAggregateRoot)
 				.Select(x => x.Entity as IAggregateRoot).ToList();
 
-			await AppDbContext.SaveChangesAsync();
+			await AppDbContext.SaveChangesAsync().ConfigureAwait(false);
 
 			foreach (var item in aggregateRoots.Where(item => item?.Events != null))
 			{
@@ -65,7 +65,7 @@ namespace SmartHub.Infrastructure.Persistence.Database
 				.Where(e => e.Entity != null) // vlt das hinzufügen => && (e.State == EntityState.Added || e.State == EntityState.Modified)
 				.ToList()
 				.ForEach(e => e.State = EntityState.Detached);
-			await SaveAsync();
+			await SaveAsync().ConfigureAwait(false);
 		}
 	}
 }

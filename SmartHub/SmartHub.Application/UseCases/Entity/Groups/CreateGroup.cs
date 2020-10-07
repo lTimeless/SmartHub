@@ -10,15 +10,13 @@ namespace SmartHub.Application.UseCases.Entity.Groups
 {
     public class GroupCreateCommand : IRequest<Response<GroupDto>>
     {
-        public string Name { get; set; }
-        public string Description { get; set; }
-        // public List<DeviceDto> DeviceDtos { get; set; }
+        public string Name { get; }
+        public string Description { get; }
 
         public GroupCreateCommand(string description, string name)
         {
             Description = description;
             Name = name;
-            // DeviceDtos = deviceDtos;
         }
     }
 

@@ -3,7 +3,7 @@ using System.Security.Cryptography;
 
 namespace SmartHub.Infrastructure.Persistence.Helpers
 {
-    public class TokenUtils
+    public static class TokenUtils
     {
         private static string _staticToken= "";
 

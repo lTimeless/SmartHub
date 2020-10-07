@@ -52,11 +52,11 @@ namespace SmartHub.Infrastructure.Persistence.Database.Repositories
 			try
 			{
 				await _entities.AddAsync(entity);
-				return await Task.FromResult(true);
+				return true;
 			}
 			catch (Exception)
 			{
-				return await Task.FromResult(false);
+				return false;
 			}
 		}
 
@@ -64,12 +64,12 @@ namespace SmartHub.Infrastructure.Persistence.Database.Repositories
 		{
 			try
 			{
-				_entities.AddRange(entities);
-				return await Task.FromResult(true);
+				await _entities.AddRangeAsync(entities);
+				return true;
 			}
 			catch (Exception)
 			{
-				return await Task.FromResult(false);
+				return false;
 			}
 		}
 
@@ -83,11 +83,11 @@ namespace SmartHub.Infrastructure.Persistence.Database.Repositories
 			{
 				_entities.Attach(entity);
 				_appDbContext.Entry(entity).State = EntityState.Modified;
-				return await Task.FromResult(true);
+				return true;
 			}
 			catch (Exception)
 			{
-				return await Task.FromResult(false);
+				return await Task.FromResult(false).ConfigureAwait(false);
 			}
 		}
 
@@ -97,28 +97,27 @@ namespace SmartHub.Infrastructure.Persistence.Database.Repositories
 			{
 				_entities.AttachRange(entities);
 				_appDbContext.Entry(entities).State = EntityState.Modified;
-				return await Task.FromResult(true);
+				return await Task.FromResult(true).ConfigureAwait(false);
 			}
 			catch (Exception)
 			{
-				return await Task.FromResult(false);
+				return await Task.FromResult(false).ConfigureAwait(false);
 			}
 		}
 
 		#endregion Update
 
 		#region Remove
-
 		public async Task<bool> RemoveAsync(T entity)
 		{
 			try
 			{
 				_entities.Remove(entity);
-				return await Task.FromResult(true);
+				return await Task.FromResult(true).ConfigureAwait(false);
 			}
 			catch (Exception)
 			{
-				return await Task.FromResult(false);
+				return await Task.FromResult(false).ConfigureAwait(false);
 			}
 		}
 
@@ -127,11 +126,11 @@ namespace SmartHub.Infrastructure.Persistence.Database.Repositories
 			try
 			{
 				_entities.RemoveRange(entities);
-				return await Task.FromResult(true);
+				return await Task.FromResult(true).ConfigureAwait(false);
 			}
 			catch (Exception)
 			{
-				return await Task.FromResult(false);
+				return await Task.FromResult(false).ConfigureAwait(false);
 			}
 		}
 

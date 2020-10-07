@@ -9,17 +9,15 @@ namespace SmartHub.Application.UseCases.Entity.Groups
 {
     public class GroupUpdateCommand : IRequest<Response<GroupDto>>
     {
-        public string Id { get; set; }
-        public string? Name { get; set; }
-        public string? Description { get; set; }
-        // public List<DeviceDto> DeviceDtos { get; set; }
+        public string Id { get; }
+        public string? Name { get; }
+        public string? Description { get; }
 
         public GroupUpdateCommand(string? description, string? name, string id)
         {
             Description = description;
             Name = name;
             Id = id;
-            // DeviceDtos = deviceDtos;
         }
     }
 

@@ -2,7 +2,7 @@ import axios from 'axios';
 import { getToken, logout } from '@/services/auth/authService';
 import { useRouter } from 'vue-router';
 
-export const Api = () => {
+export const api = () => {
   const axiosInstance = axios.create({
     headers: {
       'Content-type': 'application/json'

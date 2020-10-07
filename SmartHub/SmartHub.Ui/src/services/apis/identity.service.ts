@@ -1,26 +1,26 @@
 import { AuthResponse, LoginRequest, RegistrationRequest, ServerResponse, User, UserUpdateRequest } from '@/types/types';
-import { Api } from '@/router/axios/axios';
+import { api } from '@/router/axios/axios';
 
 const API_URL_ME = 'api/Identity/me';
 const API_URL_LOGIN = 'api/Identity/login';
 const API_URL_REGISTRATION = 'api/Identity/registration';
 
 export const getMe = (): Promise<ServerResponse<User>> =>
-  Api()
+  api()
     .get<ServerResponse<User>>(API_URL_ME)
     .then((res) => res.data);
 
 export const putMe = (payload: UserUpdateRequest): Promise<ServerResponse<User>> =>
-  Api()
+  api()
     .put<ServerResponse<User>>(API_URL_ME, payload)
     .then((res) => res.data);
 
 export const postLogin = (payload: LoginRequest): Promise<ServerResponse<AuthResponse>> =>
-  Api()
+  api()
     .post<ServerResponse<AuthResponse>>(API_URL_LOGIN, payload)
     .then((res) => res.data);
 
 export const postRegistration = (payload: RegistrationRequest): Promise<ServerResponse<AuthResponse>> =>
-  Api()
+  api()
     .post<ServerResponse<AuthResponse>>(API_URL_REGISTRATION, payload)
     .then((res) => res.data);

@@ -27,8 +27,8 @@ namespace SmartHub.Infrastructure.Persistence.Database
 		public async Task SeedData()
 		{
 			_logger.Information("Start seeding database ...");
-			await SeedRoleData();
-			await SeedUserData();
+			await SeedRoleData().ConfigureAwait(false);
+			await SeedUserData().ConfigureAwait(false);
 			await _unitOfWork.SaveAsync();
 			_logger.Information("Finished seeding database.");
 		}

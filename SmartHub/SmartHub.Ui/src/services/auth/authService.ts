@@ -4,7 +4,7 @@ import JwtDecode from 'jwt-decode';
 import router from '@/router';
 
 type TokenPayload = { unique_name: string; jti: string; roles: string[] | string; nbf: number; exp: number; iat: number };
-
+const numberThousand = 1000; // uesed for tokenpayload exp date conversion
 // Storage keys
 const LOCAL_STORAGE_AUTH_RESPONSE = 'authResponse';
 
@@ -56,8 +56,8 @@ export const getUserRoles = (): Roles => {
     return Roles.None;
   }
   const tokenPayload = JwtDecode(authResponse.token) as TokenPayload;
-  if (Date.now() >= tokenPayload.exp * 1000) {
-    console.log(tokenPayload.exp * 1000, Date.now());
+  if (Date.now() >= tokenPayload.exp * numberThousand) {
+    console.log(tokenPayload.exp * numberThousand, Date.now());
     return Roles.None;
   }
   const { roles } = tokenPayload;

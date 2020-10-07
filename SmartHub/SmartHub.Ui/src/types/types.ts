@@ -50,6 +50,12 @@ export interface RegistrationRequest {
 }
 
 // User
+interface PersonName {
+  firstName: string | null;
+  middleName: string | null;
+  lastName: string | null;
+}
+
 export interface User {
   userName: string;
   personInfo: string | null;
@@ -59,12 +65,6 @@ export interface User {
   phoneNumber: string | null;
   lastModifiedAt: string;
   lastModifiedBy: string;
-}
-
-interface PersonName {
-  firstName: string | null;
-  middleName: string | null;
-  lastName: string | null;
 }
 
 export interface UserUpdateRequest {
@@ -78,44 +78,15 @@ export interface UserUpdateRequest {
   newRole: string;
 }
 
-// Home
-export interface Home extends BaseEntity {
-  settings?: Setting[];
-  groups?: Group[];
-}
-
-export interface HomeCreateRequest {
-  name: string;
-  description: string | null;
-  autoDetectAddress: boolean;
-}
-
-export interface HomeUpdateRequest {
-  name: string | null;
-  description: string | null;
-  userName: string | null;
-  settingName: string | null;
-}
-
-// Group
-export interface Group extends BaseEntity {
-  devices?: Device[];
-}
-
-// GroupCreateRequest
-export interface GroupCreateRequest {
-  name: string;
-  description: string;
-}
-
-export interface GroupUpdateRequest {
-  id: string;
-  name?: string;
-  description?: string;
-  devices?: Device[];
-}
-
 // Device
+interface Company {
+  name: string;
+  shortName: string;
+}
+interface IpAddress {
+  ipv4: string;
+}
+
 export interface Device extends BaseEntity {
   company: Company;
   ip: IpAddress;
@@ -123,14 +94,6 @@ export interface Device extends BaseEntity {
   pluginTypes: PluginTypes;
   primaryConnection: ConnectionTypes;
   secondaryConnection: ConnectionTypes;
-}
-
-interface Company {
-  name: string;
-  shortName: string;
-}
-interface IpAddress {
-  ipv4: string;
 }
 
 export interface DeviceCreateRequest {
@@ -155,12 +118,48 @@ export interface DeviceUpdateRequest {
   secondaryConnection: ConnectionTypes;
 }
 
+// Group
+export interface Group extends BaseEntity {
+  devices?: Device[];
+}
+
+export interface GroupCreateRequest {
+  name: string;
+  description: string;
+}
+
+export interface GroupUpdateRequest {
+  id: string;
+  name?: string;
+  description?: string;
+  devices?: Device[];
+}
+
 // Setting
 export interface Setting extends BaseEntity {
   isActive: boolean;
   isDefault: boolean;
   pluginpath: string;
   filepath: string;
+}
+
+// Home
+export interface Home extends BaseEntity {
+  settings?: Setting[];
+  groups?: Group[];
+}
+
+export interface HomeCreateRequest {
+  name: string;
+  description: string | null;
+  autoDetectAddress: boolean;
+}
+
+export interface HomeUpdateRequest {
+  name: string | null;
+  description: string | null;
+  userName: string | null;
+  settingName: string | null;
 }
 
 // ########## Types ##########

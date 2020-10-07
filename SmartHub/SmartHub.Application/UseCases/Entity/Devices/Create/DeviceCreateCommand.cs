@@ -6,15 +6,15 @@ namespace SmartHub.Application.UseCases.Entity.Devices.Create
 {
     public class DeviceCreateCommand : IRequest<Response<DeviceDto>>
     {
-        public string Name { get; set; }
-        public string? Description { get; set; }
-        public string Ipv4 { get; set; }
-        public string CompanyName { get; set; }
-        public string PluginName { get; set; } // Equals the Name Property in the IPlugin
-        public PluginTypes PluginTypes { get; set; }// Equals the PluginType Property in the IPlugin
-        public ConnectionTypes PrimaryConnection { get; set; }
+        public string Name { get; }
+        public string? Description { get; }
+        public string Ipv4 { get; }
+        public string CompanyName { get; }
+        public string PluginName { get;} // Equals the Name Property in the IPlugin
+        public PluginTypes PluginTypes { get; }// Equals the PluginType Property in the IPlugin
+        public ConnectionTypes PrimaryConnection { get; }
 
-        public ConnectionTypes SecondaryConnection { get; set; }
+        public ConnectionTypes SecondaryConnection { get; }
         public string GroupName { get; set; }
 
         public DeviceCreateCommand(string name,
