@@ -148,7 +148,8 @@ import { HomeActionTypes } from '@/store/home/actions';
 import { useStore } from 'vuex';
 import { useRouter } from 'vue-router';
 import AppCard from '@/components/widgets/AppCard.vue';
-import { checkHome, checkUsers } from '@/services/apis/init.services.ts';
+import { checkHome } from '@/services/apis/init.services.ts';
+
 const ConfirmationModalAsync = defineAsyncComponent(() => import(/* webpackChunkName: "ConfirmationModal" */ '../components/modals/ConfirmationModal.vue'));
 const NotImplementedModalAsync = defineAsyncComponent(() => import(/* webpackChunkName: "NotImplementedModal" */ '../components/modals/NotImplementedModal.vue'));
 
@@ -167,7 +168,6 @@ export default defineComponent({
     const acceptWip = ref(false);
     const doneInit = ref(false);
     const useFakeDbDisabled = ref(false);
-    const getHomeState = ref(store.state.homeModule);
     const homeCreateRequest: HomeCreateRequest = reactive({
       name: '',
       description: '',

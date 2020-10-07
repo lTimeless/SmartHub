@@ -74,7 +74,6 @@ import { LoginRequest } from '@/types/types';
 import { useRouter } from 'vue-router';
 import { useStore } from 'vuex';
 import { AuthActionTypes } from '@/store/auth/actions';
-import { HomeActionTypes } from '@/store/home/actions';
 import AppCard from '@/components/widgets/AppCard.vue';
 import { checkHome, checkUsers } from '@/services/apis/init.services';
 
@@ -89,7 +88,6 @@ export default defineComponent({
     const password = ref('');
     const username = ref('');
     const isSignInBtnClicked = ref(false);
-    const getHomeState = ref(store.state.homeModule);
 
     checkHome()
       .then((response) => {
