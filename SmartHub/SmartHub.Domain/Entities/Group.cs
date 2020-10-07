@@ -3,7 +3,7 @@ using SmartHub.Domain.Entities.Devices;
 
 namespace SmartHub.Domain.Entities
 {
-	public class Group : BaseEntity
+	public class Group : Entity
 	{
 		public virtual List<Device> Devices { get; set; }
 

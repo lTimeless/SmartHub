@@ -7,7 +7,7 @@ using SmartHub.Domain.Entities.ValueObjects;
 
 namespace SmartHub.Domain.Entities
 {
-	public class Home : BaseEntity, IAggregateRoot
+	public class Home : Entity, IAggregateRoot
 	{
 		public virtual List<User> Users { get; protected set; }
 		public virtual List<Group> Groups { get; protected set; }
@@ -17,7 +17,7 @@ namespace SmartHub.Domain.Entities
 		public virtual List<Setting> Settings { get; protected set; }
 
 		public virtual Address Address { get; private set; }
-		public virtual List<DomainEvent> Events { get; set; }
+		public virtual List<BaseDomainEvent> Events { get; set; }
 
 		protected Home()
 		{
@@ -28,16 +28,16 @@ namespace SmartHub.Domain.Entities
 			Users = new List<User>();
 			Groups = new List<Group>();
 			Plugins = new List<Plugin>();
-			Events = new List<DomainEvent>();
+			Events = new List<BaseDomainEvent>();
 			Settings = new List<Setting>();
 		}
 
 		#region Methods
-		public void AddDomainEvent(DomainEvent domainEvent)
+		public void AddDomainEvent(BaseDomainEvent domainEvent)
 		{
 			if (Events.IsNullOrEmpty())
 			{
-				Events = new List<DomainEvent>();
+				Events = new List<BaseDomainEvent>();
 			}
 			Events.Add(domainEvent);
 		}
