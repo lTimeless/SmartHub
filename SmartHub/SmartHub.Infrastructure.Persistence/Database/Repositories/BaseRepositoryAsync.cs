@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using SmartHub.Application.Common.Interfaces.Database;
 using SmartHub.Domain.Entities;
-using SmartHub.Infrastructure.Database;
 
 namespace SmartHub.Infrastructure.Persistence.Database.Repositories
 {

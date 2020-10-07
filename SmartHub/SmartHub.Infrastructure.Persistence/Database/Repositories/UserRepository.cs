@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using SmartHub.Application.Common.Interfaces.Database;
 using SmartHub.Domain.Entities;
 
@@ -62,6 +63,11 @@ namespace SmartHub.Infrastructure.Persistence.Database.Repositories
         	}
         	var resultAdd = await _userManager.AddToRoleAsync(user, newRoleName);
         	return resultAdd.Succeeded;
+        }
+
+        public async Task<bool> UsersExist()
+        {
+	        return await _userManager.Users.AnyAsync();
         }
 
         public Task<User> GetUserByName(string username)

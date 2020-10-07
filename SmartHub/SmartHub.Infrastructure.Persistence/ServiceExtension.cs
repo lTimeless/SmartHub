@@ -13,7 +13,6 @@ using SmartHub.Application.Common.Interfaces;
 using SmartHub.Application.Common.Interfaces.Database;
 using SmartHub.Domain.Common.Settings;
 using SmartHub.Domain.Entities;
-using SmartHub.Infrastructure.Database.Repositories;
 using SmartHub.Infrastructure.Persistence.Database;
 using SmartHub.Infrastructure.Persistence.Database.Repositories;
 using SmartHub.Infrastructure.Persistence.Helpers;

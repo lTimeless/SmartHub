@@ -6,7 +6,6 @@ using SmartHub.Application.Common.Interfaces;
 using SmartHub.Application.Common.Interfaces.Database;
 using SmartHub.Domain.Common.Enums;
 using SmartHub.Domain.Entities;
-using SmartHub.Infrastructure.Database.Repositories;
 using SmartHub.Infrastructure.Persistence.Database.Repositories;
 
 namespace SmartHub.Infrastructure.Persistence.Database

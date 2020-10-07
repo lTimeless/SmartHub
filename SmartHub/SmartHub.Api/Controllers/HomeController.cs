@@ -16,12 +16,11 @@ namespace SmartHub.Api.Controllers
 		/// </summary>
 		/// <returns>The Home</returns>
 		[HttpGet]
-		[AllowAnonymous]
 		[ProducesResponseType(StatusCodes.Status200OK)]
 		[ProducesResponseType(StatusCodes.Status400BadRequest)]
 		public async Task<IActionResult> Get()
 		{
-			return Ok(await Mediator.Send(new HomeGetQuery()));
+			return Ok(await Mediator.Send(new HomeGetQuery()).ConfigureAwait(false));
 		}
 
 		/// <summary>

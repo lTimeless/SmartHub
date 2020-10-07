@@ -2,10 +2,8 @@
 using Microsoft.EntityFrameworkCore;
 using SmartHub.Application.Common.Interfaces.Database;
 using SmartHub.Domain.Entities;
-using SmartHub.Infrastructure.Persistence.Database;
-using SmartHub.Infrastructure.Persistence.Database.Repositories;
 
-namespace SmartHub.Infrastructure.Database.Repositories
+namespace SmartHub.Infrastructure.Persistence.Database.Repositories
 {
     public class HomeRepositoryAsync : BaseRepositoryAsync<Home> , IHomeRepository
     {
@@ -16,9 +14,14 @@ namespace SmartHub.Infrastructure.Database.Repositories
             _entities = appDbContext.Homes;
         }
 
-        public async Task<Home?> GetHome()
+        public async Task<Home> GetHome()
         {
             return await _entities.FirstOrDefaultAsync();
+        }
+
+        public async Task<bool> Exist()
+        {
+            return await _entities.AnyAsync();
         }
     }
 }
