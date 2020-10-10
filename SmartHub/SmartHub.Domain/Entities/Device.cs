@@ -22,23 +22,50 @@ namespace SmartHub.Domain.Entities
 
 		public Device(
 			string name,
-			string description,
+			string? description,
 			string ip,
-			string manufacturer,
+			string company,
 			ConnectionTypes primaryConnection,
-			ConnectionTypes secondaryConnection,
-			string groupCreator,
+			ConnectionTypes? secondaryConnection,
 			string pluginName,
 			PluginTypes? pluginType) :
 			base(name, description)
 		{
 			Ip = new IpAddress(ip);
-			Company = new Company(manufacturer);
+			Company = new Company(company);
 			PrimaryConnection = primaryConnection;
-			SecondaryConnection = secondaryConnection;
-			CreatedBy = groupCreator;
+			SecondaryConnection = secondaryConnection ?? ConnectionTypes.None;
 			PluginName = pluginName;
 			PluginTypes = pluginType ?? PluginTypes.None;
 		}
+
+		#region Methods
+		public Device SetName(string name)
+		{
+			Name = name;
+			return this;
+		}
+
+		public Device SetDescription(string description)
+		{
+			Description = description;
+			return this;
+		}
+		public Device SetIp(string ip)
+		{
+			Ip = new IpAddress(ip);
+			return this;
+		}
+
+		public Device SetConnectionTypes(ConnectionTypes primary, ConnectionTypes secondary)
+		{
+			PrimaryConnection = primary;
+			SecondaryConnection = secondary;
+			return this;
+		}
+
+
+
+		#endregion
 	}
 }

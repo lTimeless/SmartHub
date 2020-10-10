@@ -19,7 +19,7 @@
         and create an issue. 🔥👌🚀❤
       </div>
     </NotImplementedModalAsync>
-    <Card v-if="!doneInit && !showgoToFakeModal">
+    <AppCard v-if="!doneInit && !showgoToFakeModal" class="bg-white shadow-md">
       <div class="h-32 md:h-auto md:w-1/2">
         <img aria-hidden="true" class="object-cover w-full h-full dark:hidden" src="../assets/images/undraw_at_home_octe.svg" alt="Office" />
       </div>
@@ -32,12 +32,12 @@
             Please type in a name and/or a description for your smartHub.
           </div>
           <div class="md:flex md:items-center mb-6">
-            <label class="block text-gray-500 flex items-center">
+            <label class="text-gray-500 flex items-center">
               <input
                 class="form-checkbox text-ui-primary form-checkbox focus:border-purple-400 focus:outline-none
                   focus:shadow-outlineIndigo dark:focus:shadow-outline-gray"
                 type="checkbox"
-                v-model="homeCreateRequest.useFakeDb"
+                v-model="useFakeDbDisabled"
                 @change="triggerFakeDb"
               />
               <span class="ml-2 text-sm">
@@ -45,8 +45,8 @@
               </span>
             </label>
           </div>
-          <label class="text-left block text-sm">
-            <span class="text-gray-600 dark:text-gray-400">Name</span>
+          <label class="flex flex-col text-sm">
+            <span class="text-gray-600 dark:text-gray-400 justify-start text-left">Name</span>
             <input
               required
               class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-ui-primary
@@ -58,8 +58,8 @@
               :disabled="useFakeDbDisabled"
             />
           </label>
-          <label class="text-left block mt-4 text-sm">
-            <span class="text-gray-600 dark:text-gray-400">Description</span>
+          <label class="flex flex-col text-sm mt-4">
+            <span class="text-gray-600 dark:text-gray-400 justify-start text-left">Description</span>
             <input
               required
               class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-ui-primary
@@ -73,7 +73,7 @@
           </label>
           <div class="mt-4">
             <div class="md:flex md:items-center mb-6">
-              <label class="block text-gray-500 flex items-center">
+              <label class="text-gray-500 flex items-center">
                 <input
                   class="form-checkbox text-ui-primary form-checkbox focus:border-purple-400 focus:outline-none
                   focus:shadow-outlineIndigo dark:focus:shadow-outline-gray"
@@ -88,7 +88,7 @@
               </label>
             </div>
             <div class="md:flex md:items-center mb-6">
-              <label class="block text-gray-500 flex items-center">
+              <label class="text-gray-500 flex items-center">
                 <input
                   class="form-checkbox text-ui-primary"
                   :class="useFakeDbDisabled ? 'bg-gray-300' : ''"
@@ -137,17 +137,17 @@
           </button>
         </div>
       </div>
-    </Card>
+    </AppCard>
   </div>
 </template>
 
 <script lang="ts">
 import { defineComponent, defineAsyncComponent, reactive, ref, computed } from 'vue';
 import { HomeCreateRequest } from '@/types/types';
-import { A_CREATE_HOME, A_FETCH_HOME } from '@/store/home/actions';
-import { useStore } from '@/store';
+import { HomeActionTypes } from '@/store/home/actions';
+import { useStore } from 'vuex';
 import { useRouter } from 'vue-router';
-import Card from '@/components/widgets/Card.vue';
+import AppCard from '@/components/widgets/AppCard.vue';
 
 const ConfirmationModalAsync = defineAsyncComponent(() => import(/* webpackChunkName: "ConfirmationModal" */ '../components/modals/ConfirmationModal.vue'));
 const NotImplementedModalAsync = defineAsyncComponent(() => import(/* webpackChunkName: "NotImplementedModal" */ '../components/modals/NotImplementedModal.vue'));
@@ -155,7 +155,7 @@ const NotImplementedModalAsync = defineAsyncComponent(() => import(/* webpackChu
 export default defineComponent({
   name: 'Init',
   components: {
-    Card,
+    AppCard,
     ConfirmationModalAsync,
     NotImplementedModalAsync
   },
@@ -174,7 +174,7 @@ export default defineComponent({
       autoDetectAddress: false
     });
 
-    store.dispatch(A_FETCH_HOME).then(() => {
+    store.dispatch(HomeActionTypes.FETCH_HOME).then(() => {
       if (getHomeState.value.home !== null) {
         router.push('/login');
       }
@@ -188,7 +188,7 @@ export default defineComponent({
         homeCreateRequest.description = 'This is an awesome description';
       }
       store
-        .dispatch(A_CREATE_HOME, homeCreateRequest)
+        .dispatch(HomeActionTypes.CREATE_HOME, homeCreateRequest)
         .then(() => {
           doneInit.value = true;
         })

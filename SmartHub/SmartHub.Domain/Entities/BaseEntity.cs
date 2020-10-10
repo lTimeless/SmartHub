@@ -27,7 +27,7 @@ namespace SmartHub.Domain.Entities
 		{
 		}
 
-		protected BaseEntity(string name, string description)
+		protected BaseEntity(string name, string? description)
 		{
 			Id = Guid.NewGuid().ToString();
 			Name = name;

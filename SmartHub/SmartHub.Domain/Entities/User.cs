@@ -12,9 +12,9 @@ namespace SmartHub.Domain.Entities
 		public Instant LastModifiedAt { get; set; }
 		public string CreatedBy { get; set; }
 		public string LastModifiedBy { get; set; }
-		public string? PersonInfo { get; }
+		public string PersonInfo { get; set; }
 
-		public virtual PersonName? PersonName { get; }
+		public virtual PersonName PersonName { get; }
 
 		public string? HomeId { get; private set; }
 		public virtual Home? Home { get; }
@@ -23,7 +23,7 @@ namespace SmartHub.Domain.Entities
 		{
 		}
 
-		public User(string userName, string? personInfo, PersonName? fullname) :
+		public User(string userName, string personInfo, PersonName fullname) :
 			base(userName)
 		{
 			Id = Guid.NewGuid().ToString();

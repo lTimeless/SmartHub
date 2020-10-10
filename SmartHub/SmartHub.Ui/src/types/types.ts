@@ -1,7 +1,19 @@
+import { ConnectionTypes, PluginTypes } from './enums';
+
+interface BaseEntity {
+  id: string;
+  createdBy: string;
+  createdAt: string;
+  lastModifiedAt: string;
+  lastModifiedBy: string;
+  name: string;
+  description?: string;
+}
+
 // ########## Interfaces ##########
 // ServiceResponse
 export interface ServerResponse<T> {
-  data: T | null;
+  data?: T;
   success: boolean;
   message: string;
   errors: string[];
@@ -21,7 +33,7 @@ export interface ServerLog {
   exception: string;
 }
 
-// Auth
+// Identity
 export interface AuthResponse {
   token: string;
 }
@@ -37,6 +49,106 @@ export interface RegistrationRequest {
   role: string;
 }
 
+// User
+interface PersonName {
+  firstName: string | null;
+  middleName: string | null;
+  lastName: string | null;
+}
+
+export interface User {
+  userName: string;
+  personInfo: string | null;
+  personName: PersonName;
+  roles: string[] | null;
+  email: string | null;
+  phoneNumber: string | null;
+  lastModifiedAt: string;
+  lastModifiedBy: string;
+}
+
+export interface UserUpdateRequest {
+  userName: string;
+  personInfo: string;
+  firstName: string;
+  middleName: string;
+  lastName: string;
+  email: string;
+  phoneNumber: string;
+  newRole: string;
+}
+
+// Device
+interface Company {
+  name: string;
+  shortName: string;
+}
+interface IpAddress {
+  ipv4: string;
+}
+
+export interface Device extends BaseEntity {
+  company: Company;
+  ip: IpAddress;
+  pluginName: string;
+  pluginTypes: PluginTypes;
+  primaryConnection: ConnectionTypes;
+  secondaryConnection: ConnectionTypes;
+}
+
+export interface DeviceCreateRequest {
+  groupName?: string;
+  name: string;
+  description?: string;
+  ipv4: string;
+  companyName: string;
+  pluginName: string;
+  pluginTypes: PluginTypes;
+  primaryConnection: ConnectionTypes;
+  secondaryConnection: ConnectionTypes;
+}
+
+export interface DeviceUpdateRequest {
+  id: string;
+  groupName?: string;
+  name?: string;
+  description?: string;
+  ipv4?: string;
+  primaryConnection: ConnectionTypes;
+  secondaryConnection: ConnectionTypes;
+}
+
+// Group
+export interface Group extends BaseEntity {
+  devices?: Device[];
+}
+
+export interface GroupCreateRequest {
+  name: string;
+  description: string;
+}
+
+export interface GroupUpdateRequest {
+  id: string;
+  name?: string;
+  description?: string;
+  devices?: Device[];
+}
+
+// Setting
+export interface Setting extends BaseEntity {
+  isActive: boolean;
+  isDefault: boolean;
+  pluginpath: string;
+  filepath: string;
+}
+
+// Home
+export interface Home extends BaseEntity {
+  settings?: Setting[];
+  groups?: Group[];
+}
+
 export interface HomeCreateRequest {
   name: string;
   description: string | null;
@@ -48,36 +160,6 @@ export interface HomeUpdateRequest {
   description: string | null;
   userName: string | null;
   settingName: string | null;
-}
-
-// User
-export interface User {
-  username: string;
-}
-
-// Home
-export interface Home {
-  id: string;
-  createdAt: string;
-  modifiedDate: string;
-  name: string;
-  description?: string;
-  settings?: Setting[];
-}
-
-// Group
-export interface Group {
-  name: string;
-}
-
-// Device
-export interface Device {
-  name: string;
-}
-
-// Setting
-export interface Setting {
-  name: string;
 }
 
 // ########## Types ##########

@@ -2,8 +2,8 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using SmartHub.Application.Common.Exceptions;
-using SmartHub.Infrastructure.Database;
+using Serilog;
+using SmartHub.Infrastructure.Persistence.Database;
 
 namespace SmartHub.Api.Extensions
 {
@@ -21,7 +21,7 @@ namespace SmartHub.Api.Extensions
 			}
 			catch (Exception ex)
 			{
-				throw new SmartHubException($"Error while migrating the DB on startup -- {ex.Message} \n {ex.Source}");
+				Log.Error($"Error while migrating the DB on startup -- {ex.Message} \n {ex.Source}");
 			}
 			return host;
 		}

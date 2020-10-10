@@ -26,7 +26,10 @@ namespace SmartHub.Application.UseCases.Identity.Login
 			{
 				return false;
 			}
-			await _channelManager.PublishNextToChannel(EventTypes.Login, new LoginEvent(foundUser.UserName, result.Succeeded));
+			await _channelManager.PublishNextToChannel(ChannelNames.System,
+				new IdentityEvent(foundUser.UserName,
+					result.Succeeded,
+			EventTypes.Login));
 			return true;
 		}
 	}

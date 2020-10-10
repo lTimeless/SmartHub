@@ -13,7 +13,7 @@ namespace SmartHub.Infrastructure.Shared
 {
     public static class ServiceExtension
     {
-        public static IServiceCollection AddInfrastrucureShared(this IServiceCollection services)
+        public static IServiceCollection AddInfrastructureShared(this IServiceCollection services)
         {
             services.AddBackgroundServices();
             services.AddApplicationServices();

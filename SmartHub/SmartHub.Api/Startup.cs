@@ -1,3 +1,4 @@
+using Hangfire;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -8,6 +9,7 @@ using SmartHub.Api.Extensions;
 using SmartHub.Application;
 using SmartHub.Application.UseCases.SignalR;
 using SmartHub.Infrastructure;
+using SmartHub.Infrastructure.Persistence;
 using SmartHub.Infrastructure.Shared;
 
 namespace SmartHub.Api
@@ -26,7 +28,7 @@ namespace SmartHub.Api
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services) =>
             services.AddInfrastructurePersistence(Configuration)
-                .AddInfrastrucureShared()
+                .AddInfrastructureShared()
                 .AddApplicationLayer()
                 .AddApiLayer(Configuration, AppEnvironment);
 
@@ -80,8 +82,10 @@ namespace SmartHub.Api
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(
-                    name: "default",
-                    pattern: "{controller}/{action=Index}/{id?}");
+                    "default",
+                    "{controller}/{action=Index}/{id?}");
+
+                endpoints.MapHangfireDashboard();
 
                 endpoints.MapHub<EventHub>("/api/hub/events");
                 endpoints.MapHub<LogHub>("/api/hub/logs");

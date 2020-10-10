@@ -16,22 +16,18 @@ namespace SmartHub.Domain.Entities
 		public string DownloadServerUrl { get; private set; }
 		public string? Filepath { get; private set; } // logic will come with file Import Userstory
 
-		public string CreatorName { get; private set; }
-
-
 		protected Setting()
 		{
 		}
 
 		public Setting(string name, string description, bool isActive, string pluginPath, string downloadServerUrl,
-			string creator, SettingTypes type) :
+			SettingTypes type) :
 			base(name, description)
 		{
 			IsActive = isActive;
 			PluginPath = pluginPath;
 			IsDefault = type == SettingTypes.Default;
 			DownloadServerUrl = downloadServerUrl;
-			CreatorName = creator;
 			Type = type;
 		}
 	}

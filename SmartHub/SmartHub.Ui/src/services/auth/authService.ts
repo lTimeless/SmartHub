@@ -1,12 +1,10 @@
 import { AuthResponse } from '@/types/types';
 import { Roles } from '@/types/enums';
 import JwtDecode from 'jwt-decode';
-import { A_LOGOUT } from '@/store/auth/actions';
-import { useStore } from '@/store';
 import router from '@/router';
 
 type TokenPayload = { unique_name: string; jti: string; roles: string[] | string; nbf: number; exp: number; iat: number };
-
+const numberThousand = 1000; // uesed for tokenpayload exp date conversion
 // Storage keys
 const LOCAL_STORAGE_AUTH_RESPONSE = 'authResponse';
 
@@ -52,14 +50,17 @@ export const clearStorage = (): void => {
 
 // export const getRefreshToken = (): string | null => localStorage.getItem(LOCAL_STORAGE_REFRESH_TOKEN);
 
-export const getUserRole = (): Roles => {
+export const getUserRoles = (): Roles => {
   const authResponse = getAuthResponse();
   if (authResponse == null) {
     return Roles.None;
   }
   const tokenPayload = JwtDecode(authResponse.token) as TokenPayload;
+  if (Date.now() >= tokenPayload.exp * numberThousand) {
+    console.log(tokenPayload.exp * numberThousand, Date.now());
+    return Roles.None;
+  }
   const { roles } = tokenPayload;
-
   if (roles.includes('Admin')) {
     return Roles.Admin;
   }
@@ -82,8 +83,8 @@ export const getUserName = (): string => {
 };
 
 export const logout = () => {
-  const store = useStore();
-  store.dispatch(A_LOGOUT);
+  // const store = useStore();
+  // store.dispatch(A_LOGOUT);
   clearStorage();
   router.push('/login');
 };

@@ -12,31 +12,31 @@ namespace SmartHub.Application.Common.Interfaces
 		/// Gets the given Channel observable.
 		/// if channel does not exists it will create a new channel.
 		/// </summary>
-		/// <param name="eventType">The channel eventType.</param>
+		/// <param name="channelName">The channel eventType.</param>
 		/// <returns></returns>
-		public IObservable<IEvent> GetChannel(EventTypes eventType);
+		public IObservable<IEvent> GetChannel(ChannelNames channelName);
 
 		/// <summary>
 		/// Publishes an object to the channel.
 		/// </summary>
-		/// <param name="eventType">The channel eventType.</param>
+		/// <param name="channelName">The channel name</param>
 		/// <param name="message">Any event object.</param>
-		public Task PublishNextToChannel(EventTypes eventType, IEvent message);
+		public Task PublishNextToChannel(ChannelNames channelName, IEvent message);
 
 		/// <summary>
 		/// Publishes an error to the channel.
 		/// </summary>
-		/// <param name="eventType">The channel eventType.</param>
+		/// <param name="channelName">The channel name</param>
 		/// <param name="exception">Any exception that gets throws during the subscription.</param>
-		public Task PublishErrorToChannel(EventTypes eventType, Exception exception);
+		public Task PublishErrorToChannel(ChannelNames channelName, Exception exception);
 
-		public Task PublishCompleteToChannel(EventTypes eventType);
+		public Task PublishCompleteToChannel(ChannelNames channelName);
 
 		/// <summary>
 		/// Removes given channel
 		/// </summary>
-		/// <param name="eventType">The channel eventType.</param>
-		public Task RemoveChannel(EventTypes eventType);
+		/// <param name="channelName">The channel name</param>
+		public Task RemoveChannel(ChannelNames channelName);
 
 		/// <summary>
 		/// Clears all channels

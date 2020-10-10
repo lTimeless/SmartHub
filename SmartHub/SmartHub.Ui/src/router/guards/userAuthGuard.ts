@@ -1,5 +1,5 @@
 import { NavigationGuardNext, RouteLocationNormalized } from 'vue-router';
-import { getToken, getUserRole, isAuthenticated } from '@/services/auth/authService';
+import { getUserRoles, isAuthenticated, logout } from '@/services/auth/authService';
 import { Roles } from '@/types/enums';
 
 const validateUserRoleToRoute = (to: RouteLocationNormalized, roles: Roles, next: NavigationGuardNext) => {
@@ -19,24 +19,22 @@ const validateUserRoleToRoute = (to: RouteLocationNormalized, roles: Roles, next
     if (roles === Roles.Admin || roles === Roles.User || roles === Roles.Guest) {
       next();
     } else {
-      next({ name: 'NotAuthorized' });
+      logout();
+      next({ name: 'Login' });
     }
   }
 };
 
 export const useRouteAuthGuard = (to: RouteLocationNormalized, from: RouteLocationNormalized, next: NavigationGuardNext) => {
   if (to.matched.some((record) => record.meta.requiresAuth)) {
+    // TODO: BE call machen wenn Token noch im storage ist, wenn der noch gültig ist dann weiter zum dashboard wenn nicht dann einen neuen beantragen
+    // Refreshtoken!!!!
     if (!isAuthenticated()) {
       next({ name: 'Login' });
     } else {
       //  anstatt den authresponse zu nehmen um die rollen zu prüfen
       // TODO: vlt den token nehmen ans BE schicken- prüfen lassen ob es noch valide ist und darauf dann userberechtigungen/authresponse bekommen
-      const token = getToken();
-      if (token === null) {
-        next({ name: 'Login' });
-      } else {
-        validateUserRoleToRoute(to, getUserRole(), next);
-      }
+      validateUserRoleToRoute(to, getUserRoles(), next);
     }
   } else {
     next();

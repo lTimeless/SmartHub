@@ -4,9 +4,7 @@ import { getters } from '@/store/home/getters';
 import { mutations } from '@/store/home/mutations';
 import { actions } from '@/store/home/actions';
 
-export const state: HomeState = {
-  home: null
-};
+export const state: HomeState = {};
 
 export const homeModule: Module<HomeState, RootState> = {
   state,
