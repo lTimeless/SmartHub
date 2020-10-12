@@ -1,3 +1,8 @@
+## Hacktoberfest
+🎃🦇🕸🕷 I'm accepting [Hacktoberfest](https://hacktoberfest.digitalocean.com/) contributions - Please check the Issues, or create a new Issue before raising a Pull Request 🎃🦇🕸🕷
+
+---
+
 <h1 align="center">Welcome to SmartHub 👋</h1>
 
 [![Discord](https://img.shields.io/discord/760946711794679819?label=Discord&style=plastic)](https://discord.com/channels/760946711794679819/760946713024004175)

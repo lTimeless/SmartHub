@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <TargetFramework>net5.0</TargetFramework>
     <Nullable>enable</Nullable>
     <RootNamespace>SmartHub.Infrastructure</RootNamespace>
   </PropertyGroup>
@@ -12,28 +12,28 @@
 
   <ItemGroup>
     <PackageReference Include="Figgle" Version="0.4.0" />
-    <PackageReference Include="Hangfire" Version="1.7.13" />
+    <PackageReference Include="Hangfire" Version="1.7.15" />
     <PackageReference Include="Hangfire.PostgreSql" Version="1.7.1" />
-    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="3.1.7" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="5.0.0-rc.1.20451.17" />
     <PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.Identity" Version="2.2.0" />
-    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="3.1.7" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="3.1.7" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="5.0.0-rc.1.20451.17" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="5.0.0-rc.1.20451.13" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="3.1.7">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="3.1.7" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Proxies" Version="3.1.7" />
-    <PackageReference Include="Microsoft.Extensions.DependencyModel" Version="3.1.6" />
-    <PackageReference Include="Microsoft.IdentityModel.Tokens" Version="6.7.1" />
-    <PackageReference Include="NodaTime" Version="3.0.0" />
-    <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="3.1.4" />
-    <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL.NodaTime" Version="3.1.4" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="5.0.0-rc.1.20451.13" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Proxies" Version="5.0.0-rc.1.20451.13" />
+    <PackageReference Include="Microsoft.Extensions.DependencyModel" Version="5.0.0-rc.1.20451.14" />
+    <PackageReference Include="Microsoft.IdentityModel.Tokens" Version="6.7.2-preview-10803222715" />
+    <PackageReference Include="NodaTime" Version="3.0.1" />
+    <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="5.0.0-rc1" />
+    <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL.NodaTime" Version="5.0.0-rc1" />
     <PackageReference Include="Serilog" Version="2.9.0" />
     <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.7.1" />
-    <PackageReference Include="System.Reactive" Version="4.4.1" />
-    <PackageReference Include="System.Text.Json" Version="4.7.2" />
+    <PackageReference Include="System.Reactive" Version="5.0.0-preview.16" />
+    <PackageReference Include="System.Text.Json" Version="5.0.0-rc.1.20451.14" />
   </ItemGroup>
 
   <ItemGroup>

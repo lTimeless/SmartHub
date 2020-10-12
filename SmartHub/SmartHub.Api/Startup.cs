@@ -9,7 +9,6 @@ using SmartHub.Api.Extensions;
 using SmartHub.Application;
 using SmartHub.Application.UseCases.SignalR;
 using SmartHub.Infrastructure;
-using SmartHub.Infrastructure.Persistence;
 using SmartHub.Shared;
 
 namespace SmartHub.Api
