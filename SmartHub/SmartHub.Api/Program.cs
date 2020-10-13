@@ -71,10 +71,10 @@ namespace SmartHub.Api
 							LogEventLevel.Information,
 							service,
 							null,
-							new string[] {},
-							new string[] {},
-							new string[] {}
-							);
+                            Array.Empty<string>(),
+                            Array.Empty<string>(),
+                            Array.Empty<string>()
+                            );
 				})
 				.ConfigureLogging((_, config) => config.ClearProviders())
 				.ConfigureWebHostDefaults(webBuilder =>

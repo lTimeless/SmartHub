@@ -22,10 +22,10 @@ export const api = () => {
 
   axiosInstance.interceptors.response.use(
     (response) => {
-      if (!response.data.success) {
+      // if (!response.data.success) {
         // TODO: trigger toast notification
-        return Promise.reject(response.data.message);
-      }
+      //   return Promise.reject(response.data.message);
+      // }
       const router = useRouter();
       if (response.status === 401) {
         logout();

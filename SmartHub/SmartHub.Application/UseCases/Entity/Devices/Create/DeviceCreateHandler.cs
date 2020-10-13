@@ -3,6 +3,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
 using MediatR;
+using SmartHub.Application.Common.Interfaces;
 using SmartHub.Application.Common.Interfaces.Database;
 using SmartHub.Application.Common.Models;
 using SmartHub.Domain.Common;
@@ -14,11 +15,12 @@ namespace SmartHub.Application.UseCases.Entity.Devices.Create
     {
         private readonly IMapper _mapper;
         private readonly IUnitOfWork _unitOfWork;
-
-        public DeviceCreateHandler(IMapper mapper, IUnitOfWork unitOfWork)
+        private readonly IHomeDispatcherService _homeDispatcherService;
+        public DeviceCreateHandler(IMapper mapper, IUnitOfWork unitOfWork, IHomeDispatcherService homeDispatcherService)
         {
             _mapper = mapper;
             _unitOfWork = unitOfWork;
+            _homeDispatcherService = homeDispatcherService;
         }
 
         public async Task<Response<DeviceDto>> Handle(DeviceCreateCommand request, CancellationToken cancellationToken)
@@ -38,6 +40,7 @@ namespace SmartHub.Application.UseCases.Entity.Devices.Create
                 request.GroupName = DefaultNames.DefaultGroup;
             }
             home.AddDevice(newDevice, request.GroupName);
+            await _homeDispatcherService.SendHomeOverSignalR();
             return Response.Ok($"Created new Device with name {newDevice.Name}", _mapper.Map<DeviceDto>(newDevice));
         }
     }

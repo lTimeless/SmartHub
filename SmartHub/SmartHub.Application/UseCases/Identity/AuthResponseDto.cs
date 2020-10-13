@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using NodaTime;
-
-namespace SmartHub.Application.UseCases.Identity
+﻿namespace SmartHub.Application.UseCases.Identity
 {
 	public class AuthResponseDto
 	{

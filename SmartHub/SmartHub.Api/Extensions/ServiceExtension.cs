@@ -16,8 +16,6 @@ using Microsoft.Extensions.Options;
 using Microsoft.OpenApi.Models;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
-using NodaTime;
-using NodaTime.Serialization.JsonNet;
 using Polly;
 using SmartHub.Api.Validators;
 using SmartHub.Domain.Common.Settings;
@@ -128,7 +126,6 @@ namespace SmartHub.Api.Extensions
 					var settings = options.SerializerSettings;
 
 					settings.DateParseHandling = DateParseHandling.None;
-					settings.ConfigureForNodaTime(DateTimeZoneProviders.Tzdb);
 					settings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
 					settings.DateFormatHandling = DateFormatHandling.IsoDateFormat;
 					settings.ContractResolver = new CamelCasePropertyNamesContractResolver();

@@ -4,31 +4,30 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using NodaTime;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using SmartHub.Infrastructure.Database;
 
 namespace SmartHub.Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20200918100918_UserUpdateNullValues")]
-    partial class UserUpdateNullValues
+    [Migration("20201013171321_RemoveNodaTime")]
+    partial class RemoveNodaTime
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
                 .HasDefaultSchema("smarthub")
-                .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn)
-                .HasAnnotation("ProductVersion", "3.1.7")
-                .HasAnnotation("Relational:MaxIdentifierLength", 63);
+                .UseIdentityByDefaultColumns()
+                .HasAnnotation("Relational:MaxIdentifierLength", 63)
+                .HasAnnotation("ProductVersion", "5.0.0-rc.1.20451.13");
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer")
-                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+                        .UseIdentityByDefaultColumn();
 
                     b.Property<string>("ClaimType")
                         .HasColumnType("text");
@@ -52,7 +51,7 @@ namespace SmartHub.Infrastructure.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer")
-                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+                        .UseIdentityByDefaultColumn();
 
                     b.Property<string>("ClaimType")
                         .HasColumnType("text");
@@ -132,8 +131,8 @@ namespace SmartHub.Infrastructure.Migrations
                     b.Property<string>("Id")
                         .HasColumnType("text");
 
-                    b.Property<Instant>("CreatedAt")
-                        .HasColumnType("timestamp");
+                    b.Property<DateTimeOffset>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("CreatedBy")
                         .IsRequired()
@@ -145,11 +144,8 @@ namespace SmartHub.Infrastructure.Migrations
                     b.Property<string>("GroupId")
                         .HasColumnType("text");
 
-                    b.Property<string>("HomeId")
-                        .HasColumnType("text");
-
-                    b.Property<Instant>("LastModifiedAt")
-                        .HasColumnType("timestamp");
+                    b.Property<DateTimeOffset>("LastModifiedAt")
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("LastModifiedBy")
                         .IsRequired()
@@ -179,8 +175,6 @@ namespace SmartHub.Infrastructure.Migrations
 
                     b.HasIndex("GroupId");
 
-                    b.HasIndex("HomeId");
-
                     b.HasIndex("Name")
                         .IsUnique();
 
@@ -192,14 +186,10 @@ namespace SmartHub.Infrastructure.Migrations
                     b.Property<string>("Id")
                         .HasColumnType("text");
 
-                    b.Property<Instant>("CreatedAt")
-                        .HasColumnType("timestamp");
+                    b.Property<DateTimeOffset>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("CreatedBy")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("CreatorName")
                         .IsRequired()
                         .HasColumnType("text");
 
@@ -209,8 +199,8 @@ namespace SmartHub.Infrastructure.Migrations
                     b.Property<string>("HomeId")
                         .HasColumnType("text");
 
-                    b.Property<Instant>("LastModifiedAt")
-                        .HasColumnType("timestamp");
+                    b.Property<DateTimeOffset>("LastModifiedAt")
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("LastModifiedBy")
                         .IsRequired()
@@ -235,8 +225,8 @@ namespace SmartHub.Infrastructure.Migrations
                     b.Property<string>("Id")
                         .HasColumnType("text");
 
-                    b.Property<Instant>("CreatedAt")
-                        .HasColumnType("timestamp");
+                    b.Property<DateTimeOffset>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("CreatedBy")
                         .IsRequired()
@@ -245,8 +235,8 @@ namespace SmartHub.Infrastructure.Migrations
                     b.Property<string>("Description")
                         .HasColumnType("text");
 
-                    b.Property<Instant>("LastModifiedAt")
-                        .HasColumnType("timestamp");
+                    b.Property<DateTimeOffset>("LastModifiedAt")
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("LastModifiedBy")
                         .IsRequired()
@@ -283,8 +273,8 @@ namespace SmartHub.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<Instant>("CreatedAt")
-                        .HasColumnType("timestamp");
+                    b.Property<DateTimeOffset>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("CreatedBy")
                         .IsRequired()
@@ -299,8 +289,8 @@ namespace SmartHub.Infrastructure.Migrations
                     b.Property<bool>("IsDownloaded")
                         .HasColumnType("boolean");
 
-                    b.Property<Instant>("LastModifiedAt")
-                        .HasColumnType("timestamp");
+                    b.Property<DateTimeOffset>("LastModifiedAt")
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("LastModifiedBy")
                         .IsRequired()
@@ -333,8 +323,8 @@ namespace SmartHub.Infrastructure.Migrations
                         .IsConcurrencyToken()
                         .HasColumnType("text");
 
-                    b.Property<Instant>("CreatedAt")
-                        .HasColumnType("timestamp");
+                    b.Property<DateTimeOffset>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("CreatedBy")
                         .IsRequired()
@@ -343,20 +333,20 @@ namespace SmartHub.Infrastructure.Migrations
                     b.Property<string>("Description")
                         .HasColumnType("text");
 
-                    b.Property<Instant>("LastModifiedAt")
-                        .HasColumnType("timestamp");
+                    b.Property<DateTimeOffset>("LastModifiedAt")
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("LastModifiedBy")
                         .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("Name")
-                        .HasColumnType("character varying(256)")
-                        .HasMaxLength(256);
+                        .HasMaxLength(256)
+                        .HasColumnType("character varying(256)");
 
                     b.Property<string>("NormalizedName")
-                        .HasColumnType("character varying(256)")
-                        .HasMaxLength(256);
+                        .HasMaxLength(256)
+                        .HasColumnType("character varying(256)");
 
                     b.HasKey("Id");
 
@@ -365,7 +355,7 @@ namespace SmartHub.Infrastructure.Migrations
 
                     b.HasIndex("NormalizedName")
                         .IsUnique()
-                        .HasName("RoleNameIndex");
+                        .HasDatabaseName("RoleNameIndex");
 
                     b.ToTable("Roles");
                 });
@@ -375,14 +365,10 @@ namespace SmartHub.Infrastructure.Migrations
                     b.Property<string>("Id")
                         .HasColumnType("text");
 
-                    b.Property<Instant>("CreatedAt")
-                        .HasColumnType("timestamp");
+                    b.Property<DateTimeOffset>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("CreatedBy")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("CreatorName")
                         .IsRequired()
                         .HasColumnType("text");
 
@@ -405,8 +391,8 @@ namespace SmartHub.Infrastructure.Migrations
                     b.Property<bool>("IsDefault")
                         .HasColumnType("boolean");
 
-                    b.Property<Instant>("LastModifiedAt")
-                        .HasColumnType("timestamp");
+                    b.Property<DateTimeOffset>("LastModifiedAt")
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("LastModifiedBy")
                         .IsRequired()
@@ -446,16 +432,16 @@ namespace SmartHub.Infrastructure.Migrations
                         .IsConcurrencyToken()
                         .HasColumnType("text");
 
-                    b.Property<Instant>("CreatedAt")
-                        .HasColumnType("timestamp");
+                    b.Property<DateTimeOffset>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("CreatedBy")
                         .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("Email")
-                        .HasColumnType("character varying(256)")
-                        .HasMaxLength(256);
+                        .HasMaxLength(256)
+                        .HasColumnType("character varying(256)");
 
                     b.Property<bool>("EmailConfirmed")
                         .HasColumnType("boolean");
@@ -463,8 +449,8 @@ namespace SmartHub.Infrastructure.Migrations
                     b.Property<string>("HomeId")
                         .HasColumnType("text");
 
-                    b.Property<Instant>("LastModifiedAt")
-                        .HasColumnType("timestamp");
+                    b.Property<DateTimeOffset>("LastModifiedAt")
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("LastModifiedBy")
                         .IsRequired()
@@ -477,12 +463,12 @@ namespace SmartHub.Infrastructure.Migrations
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("NormalizedEmail")
-                        .HasColumnType("character varying(256)")
-                        .HasMaxLength(256);
+                        .HasMaxLength(256)
+                        .HasColumnType("character varying(256)");
 
                     b.Property<string>("NormalizedUserName")
-                        .HasColumnType("character varying(256)")
-                        .HasMaxLength(256);
+                        .HasMaxLength(256)
+                        .HasColumnType("character varying(256)");
 
                     b.Property<string>("PasswordHash")
                         .HasColumnType("text");
@@ -504,19 +490,19 @@ namespace SmartHub.Infrastructure.Migrations
                         .HasColumnType("boolean");
 
                     b.Property<string>("UserName")
-                        .HasColumnType("character varying(256)")
-                        .HasMaxLength(256);
+                        .HasMaxLength(256)
+                        .HasColumnType("character varying(256)");
 
                     b.HasKey("Id");
 
                     b.HasIndex("HomeId");
 
                     b.HasIndex("NormalizedEmail")
-                        .HasName("EmailIndex");
+                        .HasDatabaseName("EmailIndex");
 
                     b.HasIndex("NormalizedUserName")
                         .IsUnique()
-                        .HasName("UserNameIndex");
+                        .HasDatabaseName("UserNameIndex");
 
                     b.HasIndex("UserName")
                         .IsUnique();
@@ -581,11 +567,6 @@ namespace SmartHub.Infrastructure.Migrations
                         .WithMany("Devices")
                         .HasForeignKey("GroupId");
 
-                    b.HasOne("SmartHub.Domain.Entities.Home", null)
-                        .WithMany("Devices")
-                        .HasForeignKey("HomeId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
                     b.OwnsOne("SmartHub.Domain.Entities.Devices.Company", "Company", b1 =>
                         {
                             b1.Property<string>("DeviceId")
@@ -593,16 +574,14 @@ namespace SmartHub.Infrastructure.Migrations
 
                             b1.Property<string>("Name")
                                 .IsRequired()
-                                .ValueGeneratedOnAdd()
-                                .HasColumnType("character varying(200)")
                                 .HasMaxLength(200)
+                                .HasColumnType("character varying(200)")
                                 .HasDefaultValue("");
 
                             b1.Property<string>("ShortName")
                                 .IsRequired()
-                                .ValueGeneratedOnAdd()
-                                .HasColumnType("character varying(4)")
                                 .HasMaxLength(4)
+                                .HasColumnType("character varying(4)")
                                 .HasDefaultValue("");
 
                             b1.HasKey("DeviceId");
@@ -621,8 +600,8 @@ namespace SmartHub.Infrastructure.Migrations
                             b1.Property<string>("Ipv4")
                                 .IsRequired()
                                 .ValueGeneratedOnAdd()
-                                .HasColumnType("character varying(15)")
                                 .HasMaxLength(15)
+                                .HasColumnType("character varying(15)")
                                 .HasDefaultValue("0.0.0.0");
 
                             b1.HasKey("DeviceId");
@@ -632,11 +611,17 @@ namespace SmartHub.Infrastructure.Migrations
                             b1.WithOwner()
                                 .HasForeignKey("DeviceId");
                         });
+
+                    b.Navigation("Company")
+                        .IsRequired();
+
+                    b.Navigation("Ip")
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("SmartHub.Domain.Entities.Group", b =>
                 {
-                    b.HasOne("SmartHub.Domain.Entities.Home", "Home")
+                    b.HasOne("SmartHub.Domain.Entities.Home", null)
                         .WithMany("Groups")
                         .HasForeignKey("HomeId")
                         .OnDelete(DeleteBehavior.Cascade);
@@ -652,36 +637,36 @@ namespace SmartHub.Infrastructure.Migrations
                             b1.Property<string>("City")
                                 .IsRequired()
                                 .ValueGeneratedOnAdd()
-                                .HasColumnType("character varying(100)")
                                 .HasMaxLength(100)
+                                .HasColumnType("character varying(100)")
                                 .HasDefaultValue("");
 
                             b1.Property<string>("Country")
                                 .IsRequired()
                                 .ValueGeneratedOnAdd()
-                                .HasColumnType("character varying(100)")
                                 .HasMaxLength(100)
+                                .HasColumnType("character varying(100)")
                                 .HasDefaultValue("");
 
                             b1.Property<string>("State")
                                 .IsRequired()
                                 .ValueGeneratedOnAdd()
-                                .HasColumnType("character varying(100)")
                                 .HasMaxLength(100)
+                                .HasColumnType("character varying(100)")
                                 .HasDefaultValue("");
 
                             b1.Property<string>("Street")
                                 .IsRequired()
                                 .ValueGeneratedOnAdd()
-                                .HasColumnType("character varying(200)")
                                 .HasMaxLength(200)
+                                .HasColumnType("character varying(200)")
                                 .HasDefaultValue("");
 
                             b1.Property<string>("ZipCode")
                                 .IsRequired()
                                 .ValueGeneratedOnAdd()
-                                .HasColumnType("character varying(20)")
                                 .HasMaxLength(20)
+                                .HasColumnType("character varying(20)")
                                 .HasDefaultValue("");
 
                             b1.HasKey("HomeId");
@@ -691,6 +676,9 @@ namespace SmartHub.Infrastructure.Migrations
                             b1.WithOwner()
                                 .HasForeignKey("HomeId");
                         });
+
+                    b.Navigation("Address")
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("SmartHub.Domain.Entities.Plugin", b =>
@@ -708,15 +696,15 @@ namespace SmartHub.Infrastructure.Migrations
                             b1.Property<string>("Name")
                                 .IsRequired()
                                 .ValueGeneratedOnAdd()
-                                .HasColumnType("character varying(200)")
                                 .HasMaxLength(200)
+                                .HasColumnType("character varying(200)")
                                 .HasDefaultValue("");
 
                             b1.Property<string>("ShortName")
                                 .IsRequired()
                                 .ValueGeneratedOnAdd()
-                                .HasColumnType("character varying(4)")
                                 .HasMaxLength(4)
+                                .HasColumnType("character varying(4)")
                                 .HasDefaultValue("");
 
                             b1.HasKey("PluginId");
@@ -726,6 +714,9 @@ namespace SmartHub.Infrastructure.Migrations
                             b1.WithOwner()
                                 .HasForeignKey("PluginId");
                         });
+
+                    b.Navigation("Company")
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("SmartHub.Domain.Entities.Setting", b =>
@@ -751,21 +742,21 @@ namespace SmartHub.Infrastructure.Migrations
                             b1.Property<string>("FirstName")
                                 .IsRequired()
                                 .ValueGeneratedOnAdd()
-                                .HasColumnType("character varying(100)")
                                 .HasMaxLength(100)
+                                .HasColumnType("character varying(100)")
                                 .HasDefaultValue("");
 
                             b1.Property<string>("LastName")
                                 .IsRequired()
                                 .ValueGeneratedOnAdd()
-                                .HasColumnType("character varying(200)")
                                 .HasMaxLength(200)
+                                .HasColumnType("character varying(200)")
                                 .HasDefaultValue("");
 
                             b1.Property<string>("MiddleName")
                                 .ValueGeneratedOnAdd()
-                                .HasColumnType("character varying(100)")
                                 .HasMaxLength(100)
+                                .HasColumnType("character varying(100)")
                                 .HasDefaultValue("");
 
                             b1.HasKey("UserId");
@@ -775,6 +766,27 @@ namespace SmartHub.Infrastructure.Migrations
                             b1.WithOwner()
                                 .HasForeignKey("UserId");
                         });
+
+                    b.Navigation("Home");
+
+                    b.Navigation("PersonName")
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("SmartHub.Domain.Entities.Group", b =>
+                {
+                    b.Navigation("Devices");
+                });
+
+            modelBuilder.Entity("SmartHub.Domain.Entities.Home", b =>
+                {
+                    b.Navigation("Groups");
+
+                    b.Navigation("Plugins");
+
+                    b.Navigation("Settings");
+
+                    b.Navigation("Users");
                 });
 #pragma warning restore 612, 618
         }

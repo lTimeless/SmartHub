@@ -1,13 +1,12 @@
 ﻿using System;
 using Microsoft.AspNetCore.Identity;
-using NodaTime;
 
 namespace SmartHub.Domain.Entities
 {
 	public class Role : IdentityRole<string>, IEntity
 	{
-		public Instant CreatedAt { get; set; }
-		public Instant LastModifiedAt { get; set; }
+		public DateTimeOffset CreatedAt { get; set; }
+		public DateTimeOffset LastModifiedAt { get; set; }
 		public string CreatedBy { get; set; }
 		public string LastModifiedBy { get; set; }
 

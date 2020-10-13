@@ -18,7 +18,7 @@ namespace SmartHub.Application.UseCases.InitCheck.CheckUsers
         public async Task<Response<bool>> Handle(CheckUsersQuery request, CancellationToken cancellationToken)
         {
             var usersExist = await _unitOfWork.UserRepository.UsersExist().ConfigureAwait(false);
-            return usersExist ? Response.Ok("", true) : Response.Fail("",false);
+            return usersExist ? Response.Ok(true) : Response.Fail("No users exist.",false);
         }
     }
 }

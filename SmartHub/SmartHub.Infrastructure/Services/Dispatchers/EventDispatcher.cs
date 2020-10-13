@@ -2,6 +2,8 @@
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using Hangfire;
+using MediatR;
 using Microsoft.AspNetCore.SignalR;
 using Serilog;
 using SmartHub.Application.Common.Interfaces;
@@ -17,12 +19,12 @@ namespace SmartHub.Infrastructure.Services.Dispatchers
 	{
 		private readonly IChannelManager _channelManager;
 		private IDisposable _disposable;
-		private readonly IHubContext<EventHub, IServerHub> _hubContext;
-		private readonly ILogger _log = Log.ForContext(typeof(EventDispatcher));
-		public EventDispatcher(IChannelManager channelManager, IHubContext<EventHub, IServerHub> hubContext)
+		private readonly IHubContext<EventHub, IServerHub> _eventHubContext;
+		private readonly ILogger _logger = Log.ForContext(typeof(EventDispatcher));
+		public EventDispatcher(IChannelManager channelManager, IHubContext<EventHub, IServerHub> eventHubContext)
 		{
 			_channelManager = channelManager;
-			_hubContext = hubContext;
+			_eventHubContext = eventHubContext;
 		}
 
 		public Task StartAsync(CancellationToken cancellationToken)
@@ -30,26 +32,22 @@ namespace SmartHub.Infrastructure.Services.Dispatchers
 			_disposable = _channelManager
 				.GetChannel(ChannelNames.System)
 				.Subscribe(Dispatch);
-			_log.Information("Start EventDispatcher in background.");
+			_logger.Information("Start EventDispatcher in background.");
 			return Task.CompletedTask;
 		}
 
 		public Task StopAsync(CancellationToken cancellationToken)
 		{
 			_disposable.Dispose();
-			_log.Information("Stop EventDispatcher.");
+			_logger.Information("Stop EventDispatcher.");
 			return Task.CompletedTask;
 		}
 
 		private void Dispatch(IBaseEvent baseEvent)
 		{
-			if (baseEvent == null)
-			{
-				return;
-			}
-			_hubContext.Clients.All.SendEvent(baseEvent);
+			_eventHubContext.Clients.All.SendEvent(baseEvent);
 			var outputString = BuildOutputString(baseEvent);
-			_log.Information(outputString);
+			_logger.Information(outputString);
 			// hier dann alle aus den events EventEntities bauen und in die db speichern
 		}
 

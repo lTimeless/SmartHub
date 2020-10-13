@@ -38,7 +38,7 @@
 import { computed, defineComponent, nextTick, onMounted, ref } from 'vue';
 import AppHeader from '@/components/layouts/AppHeader.vue';
 import AppSidebar from '@/components/layouts/AppSidebar.vue';
-
+import { useSignalRHub } from '@/composables/useSignalR.ts';
 export default defineComponent({
   name: 'Home',
   components: {
@@ -49,7 +49,9 @@ export default defineComponent({
     const headerHeight = ref(0);
     const headerRef = ref();
     const sidebarOpen = ref(true);
-
+    const { data } = useSignalRHub('home','SendHome');
+    console.log(data);
+    
     const setHeaderHeight = () => {
       nextTick(() => {
         headerHeight.value = headerRef.value.offsetHeight;
