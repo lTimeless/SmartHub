@@ -91,10 +91,9 @@ export default defineComponent({
 
     checkHome()
       .then((response) => {
-        console.log(response);
-        
         if (!response.data) {
           router.push('/init');
+          return Promise.resolve();
         }
         checkUsers()
           .then((response) => {
@@ -103,7 +102,8 @@ export default defineComponent({
             }
           })
         return Promise.resolve();
-      });
+      })
+      .catch((err) => Promise.reject(err));
 
 
     const onLoginClick = async () => {
