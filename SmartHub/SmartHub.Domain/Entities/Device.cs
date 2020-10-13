@@ -3,7 +3,7 @@ using SmartHub.Domain.Entities.Devices;
 
 namespace SmartHub.Domain.Entities
 {
-	public class Device : BaseEntity
+	public class Device : Entity
 	{
 		public virtual IpAddress Ip { get; private set; }
 

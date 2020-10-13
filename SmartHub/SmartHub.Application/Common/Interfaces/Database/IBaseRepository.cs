@@ -6,7 +6,7 @@ using SmartHub.Domain.Entities;
 
 namespace SmartHub.Application.Common.Interfaces.Database
 {
-	public interface IBaseRepository<T> where T : BaseEntity
+	public interface IBaseRepository<T> where T : Entity
 	{
 		Task<T> GetByIdAsync(string id);
 

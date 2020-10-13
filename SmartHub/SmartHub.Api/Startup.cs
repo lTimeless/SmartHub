@@ -9,8 +9,7 @@ using SmartHub.Api.Extensions;
 using SmartHub.Application;
 using SmartHub.Application.UseCases.SignalR;
 using SmartHub.Infrastructure;
-using SmartHub.Infrastructure.Persistence;
-using SmartHub.Infrastructure.Shared;
+using SmartHub.Shared;
 
 namespace SmartHub.Api
 {
@@ -28,7 +27,7 @@ namespace SmartHub.Api
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services) =>
             services.AddInfrastructurePersistence(Configuration)
-                .AddInfrastructureShared()
+                .AddShared()
                 .AddApplicationLayer()
                 .AddApiLayer(Configuration, AppEnvironment);
 

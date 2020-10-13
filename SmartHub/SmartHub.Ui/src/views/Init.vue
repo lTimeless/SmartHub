@@ -148,6 +148,7 @@ import { HomeActionTypes } from '@/store/home/actions';
 import { useStore } from 'vuex';
 import { useRouter } from 'vue-router';
 import AppCard from '@/components/widgets/AppCard.vue';
+import { checkHome } from '@/services/apis/init.services.ts';
 
 const ConfirmationModalAsync = defineAsyncComponent(() => import(/* webpackChunkName: "ConfirmationModal" */ '../components/modals/ConfirmationModal.vue'));
 const NotImplementedModalAsync = defineAsyncComponent(() => import(/* webpackChunkName: "NotImplementedModal" */ '../components/modals/NotImplementedModal.vue'));
@@ -167,18 +168,27 @@ export default defineComponent({
     const acceptWip = ref(false);
     const doneInit = ref(false);
     const useFakeDbDisabled = ref(false);
-    const getHomeState = ref(store.state.homeModule);
     const homeCreateRequest: HomeCreateRequest = reactive({
       name: '',
       description: '',
       autoDetectAddress: false
     });
 
-    store.dispatch(HomeActionTypes.FETCH_HOME).then(() => {
-      if (getHomeState.value.home !== null) {
-        router.push('/login');
-      }
-    });
+    checkHome()
+      .then((response) => {
+        if (!response.success) {
+          return Promise.reject(response.message);
+        }
+        if (response.data) {
+          router.push('/login');
+        }
+        return Promise.resolve();
+      })
+      .catch((err) => {
+        console.log(err);
+        return Promise.reject(err);
+      });
+
 
     const InitHome = () => {
       if (homeCreateRequest.name === '') {

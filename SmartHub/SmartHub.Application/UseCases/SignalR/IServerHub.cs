@@ -13,7 +13,7 @@ namespace SmartHub.Application.UseCases.SignalR
         /// </summary>
         /// <param name="eventObject">The event to send.</param>
         /// <returns>Task.</returns>
-        Task SendEvent(IEvent eventObject);
+        Task SendEvent(IBaseEvent eventObject);
 
     }
 }

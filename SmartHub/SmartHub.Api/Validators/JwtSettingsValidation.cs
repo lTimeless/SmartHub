@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.Options;
 using SmartHub.Domain.Common.Settings;
-using SmartHub.Infrastructure.Persistence.Helpers;
+using SmartHub.Infrastructure.Helpers;
 
 namespace SmartHub.Api.Validators
 {

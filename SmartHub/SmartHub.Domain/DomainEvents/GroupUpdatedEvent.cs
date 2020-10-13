@@ -2,7 +2,7 @@
 
 namespace SmartHub.Domain.DomainEvents
 {
-    public sealed class GroupUpdatedEvent : DomainEvent
+    public sealed class GroupUpdatedEvent : BaseDomainEvent
     {
         public string GroupId { get; set; }
         public string State { get; set; }

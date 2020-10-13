@@ -12,7 +12,7 @@ namespace SmartHub.Domain.Entities
 	}
 
 
-	public abstract class BaseEntity : IEntity
+	public abstract class Entity : IEntity
 	{
 		public string Id { get; }
 		public Instant CreatedAt { get; set; }
@@ -23,11 +23,11 @@ namespace SmartHub.Domain.Entities
 		public string Name { get; protected set; }
 		public string? Description { get; protected set; }
 
-		protected BaseEntity()
+		protected Entity()
 		{
 		}
 
-		protected BaseEntity(string name, string? description)
+		protected Entity(string name, string? description)
 		{
 			Id = Guid.NewGuid().ToString();
 			Name = name;
@@ -36,7 +36,7 @@ namespace SmartHub.Domain.Entities
 
 		public override bool Equals(object? obj)
 		{
-			if (!(obj is BaseEntity baseEntity))
+			if (!(obj is Entity baseEntity))
 			{
 				return false;
 			}
@@ -67,7 +67,7 @@ namespace SmartHub.Domain.Entities
 			return type;
 		}
 
-		public static bool operator ==(BaseEntity a, BaseEntity b)
+		public static bool operator ==(Entity a, Entity b)
 		{
 			if (a is null && b is null)
 			{
@@ -80,7 +80,7 @@ namespace SmartHub.Domain.Entities
 			return a.Equals(b);
 		}
 
-		public static bool operator !=(BaseEntity a, BaseEntity b)
+		public static bool operator !=(Entity a, Entity b)
 		{
 			return !(a == b);
 		}

@@ -74,8 +74,8 @@ import { LoginRequest } from '@/types/types';
 import { useRouter } from 'vue-router';
 import { useStore } from 'vuex';
 import { AuthActionTypes } from '@/store/auth/actions';
-import { HomeActionTypes } from '@/store/home/actions';
 import AppCard from '@/components/widgets/AppCard.vue';
+import { checkHome, checkUsers } from '@/services/apis/init.services';
 
 export default defineComponent({
   components: {
@@ -88,13 +88,31 @@ export default defineComponent({
     const password = ref('');
     const username = ref('');
     const isSignInBtnClicked = ref(false);
-    const getHomeState = ref(store.state.homeModule);
 
-    store.dispatch(HomeActionTypes.FETCH_HOME).then(() => {
-      if (getHomeState.value.home === null) {
-        router.push('/init');
-      }
-    });
+    checkHome()
+      .then((response) => {
+        if (!response.success) {
+          return Promise.reject(response.message);
+        }
+        if (!response.data) {
+          router.push('/init');
+        }
+        checkUsers()
+          .then((response) => {
+            if (!response.success) {
+              return Promise.reject(response.message);
+            }
+            if (!response.data) {
+              router.push('/registration');
+            }
+          })
+        return Promise.resolve();
+      })
+      .catch((err) => {
+        console.log(err);
+        return Promise.reject(err);
+      });
+
 
     const onLoginClick = async () => {
       isSignInBtnClicked.value = true;
