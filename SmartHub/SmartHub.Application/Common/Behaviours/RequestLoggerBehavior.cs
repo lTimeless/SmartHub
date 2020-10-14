@@ -9,12 +9,12 @@ using SmartHub.Domain.Entities;
 
 namespace SmartHub.Application.Common.Behaviours
 {
-    public class RequestLoggerBehaviour<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse>
+    public class RequestLoggerBehavior<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse>
     {
-        private readonly ILogger _logger = Log.ForContext(typeof(RequestLoggerBehaviour<,>));
+        private readonly ILogger _logger = Log.ForContext(typeof(RequestLoggerBehavior<,>));
         private readonly CurrentUser _currentUser;
 
-        public RequestLoggerBehaviour(CurrentUser currentUser)
+        public RequestLoggerBehavior(CurrentUser currentUser)
         {
             _currentUser = currentUser;
         }

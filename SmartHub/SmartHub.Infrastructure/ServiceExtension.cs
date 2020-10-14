@@ -145,7 +145,6 @@ namespace SmartHub.Infrastructure
             services.AddTransient<IDirectoryService, DirectoryService>();
             services.AddScoped<IPingService, PingService>();
             services.AddScoped<IHttpService, HttpService>();
-            services.AddTransient<IHomeDispatcherService, HomeDispatcherService>();
         }
 
 

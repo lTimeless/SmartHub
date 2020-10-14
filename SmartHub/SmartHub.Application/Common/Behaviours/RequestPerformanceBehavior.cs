@@ -7,13 +7,13 @@ using SmartHub.Application.Common.Interfaces;
 
 namespace SmartHub.Application.Common.Behaviours
 {
-    public class RequestPerformanceBehaviour<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse>
+    public class RequestPerformanceBehavior<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse>
     {
         private readonly Stopwatch _timer;
-        private readonly ILogger _logger = Log.ForContext(typeof(RequestPerformanceBehaviour<,>));
+        private readonly ILogger _logger = Log.ForContext(typeof(RequestPerformanceBehavior<,>));
         private readonly IUserAccessor _currentUserService;
 
-        public RequestPerformanceBehaviour(IUserAccessor currentUserService)
+        public RequestPerformanceBehavior(IUserAccessor currentUserService)
         {
             _timer = new Stopwatch();
             _currentUserService = currentUserService;

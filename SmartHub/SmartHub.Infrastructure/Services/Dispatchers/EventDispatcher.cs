@@ -2,8 +2,6 @@
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using Hangfire;
-using MediatR;
 using Microsoft.AspNetCore.SignalR;
 using Serilog;
 using SmartHub.Application.Common.Interfaces;

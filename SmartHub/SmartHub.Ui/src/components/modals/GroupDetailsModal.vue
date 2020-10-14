@@ -67,7 +67,6 @@ export default defineComponent({
         description: groupDetail.value.description,
         devices: groupDetail.value.devices
       };
-      console.log('Update group', updatedGroup);
       await store.dispatch(HomeActionTypes.UPDATE_GROUP, updatedGroup);
       context.emit('close', false);
     };

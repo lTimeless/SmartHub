@@ -40,7 +40,7 @@ namespace SmartHub.Api.Controllers
         public async Task<IActionResult> Post([FromBody] GroupCreateCommand value)
         {
             var response = await Mediator.Send(value).ConfigureAwait(false);
-            return CreatedAtAction("Post", response.Data.Id, response);
+            return Created("Post", response);
         }
 
         /// <summary>

@@ -1,14 +1,13 @@
 import { ActionContext, ActionTree } from 'vuex';
 import { RootState, HomeState, AuthState } from '@/store/index.types';
 import { DeviceCreateRequest, Group, GroupCreateRequest, GroupUpdateRequest, HomeCreateRequest, HomeUpdateRequest } from '@/types/types';
-import { HomeMutations } from '@/store/home/mutations';
+import { HomeMutations, HomeMutationTypes } from '@/store/home/mutations';
 import { getHome, postHome, putHome } from '@/services/apis/home.service';
 import { getByIdGroup, postGroup, putByIdGroup } from '@/services/apis/group.service';
 import { postDevice } from '@/services/apis/device.service';
 
 // Keys
 export enum HomeActionTypes {
-  FETCH_HOME = 'FETCH_HOME',
   CREATE_HOME = 'CREATE_HOME',
   UPDATE_HOME = 'UPDATE_HOME',
   // Group
@@ -27,7 +26,6 @@ type ActionAugments = Omit<ActionContext<AuthState, RootState>, 'commit'> & {
 
 // Action Interface
 export type HomeActions = {
-  [HomeActionTypes.FETCH_HOME]({ commit }: ActionAugments): Promise<void>;
   [HomeActionTypes.CREATE_HOME]({ commit }: ActionAugments, payload: HomeCreateRequest): Promise<void>;
   [HomeActionTypes.UPDATE_HOME]({ commit }: ActionAugments, payload: HomeUpdateRequest): Promise<void>;
   // Group
@@ -39,20 +37,6 @@ export type HomeActions = {
 };
 
 export const actions: ActionTree<HomeState, RootState> = {
-  async [HomeActionTypes.FETCH_HOME]({ commit }): Promise<void> {
-    await getHome()
-      .then((response) => {
-        if (!response.success) {
-          return Promise.reject(response.message);
-        }
-        commit(HomeActionTypes.UPDATE_HOME, response.data);
-        return Promise.resolve();
-      })
-      .catch((err) => {
-        console.log(err);
-        return Promise.reject(err);
-      });
-  },
   async [HomeActionTypes.CREATE_HOME]({ commit }, payload): Promise<void> {
     await postHome(payload)
       .then((response) => {
@@ -80,7 +64,6 @@ export const actions: ActionTree<HomeState, RootState> = {
         if (!response.success) {
           return Promise.reject(response.message);
         }
-        dispatch(HomeActionTypes.FETCH_HOME);
         return Promise.resolve();
       })
       .catch((error) => Promise.reject(error));
@@ -101,7 +84,6 @@ export const actions: ActionTree<HomeState, RootState> = {
         if (!response.success) {
           return Promise.reject(response.message);
         }
-        dispatch(HomeActionTypes.FETCH_HOME);
         return Promise.resolve();
       })
       .catch((error) => Promise.reject(error));
@@ -113,7 +95,6 @@ export const actions: ActionTree<HomeState, RootState> = {
         if (!response.success) {
           return Promise.reject(response.message);
         }
-        dispatch(HomeActionTypes.FETCH_HOME);
         return Promise.resolve();
       })
       .catch((error) => Promise.reject(error));
