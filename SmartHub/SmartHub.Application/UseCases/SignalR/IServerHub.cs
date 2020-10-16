@@ -1,7 +1,7 @@
 ﻿using System.Threading.Tasks;
 using Serilog.Sinks.AspNetCore.SignalR.Interfaces;
+using SmartHub.Application.Common.Models;
 using SmartHub.Application.UseCases.Entity.Homes;
-using SmartHub.Domain.DomainEvents;
 
 namespace SmartHub.Application.UseCases.SignalR
 {
@@ -10,11 +10,11 @@ namespace SmartHub.Application.UseCases.SignalR
     public interface IServerHub : IHub
     {
         /// <summary>
-        /// Sends an event to the clients
+        /// Sends an activity object to the clients
         /// </summary>
-        /// <param name="eventObject">The event to send</param>
+        /// <param name="activity">The Activity to send</param>
         /// <returns>Task</returns>
-        Task SendEvent(IBaseEvent eventObject);
+        Task SendActivity(Activity activity);
 
         /// <summary>
         /// Sends the homeDto

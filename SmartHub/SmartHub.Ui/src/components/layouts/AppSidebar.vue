@@ -135,9 +135,9 @@ export default defineComponent({
         ]
       },
       {
-        name: 'Events',
+        name: 'Activity',
         roleNeeded: [Roles.Admin],
-        path: '/events',
+        path: '/activity',
         icon: 'mdi-calendar-alert',
         children: []
       },

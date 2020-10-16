@@ -19,10 +19,13 @@ export interface ServerResponse<T> {
   errors: string[];
 }
 
-export interface ServerEvent {
+export interface ServerActivity {
   id: string;
-  eventType: string;
-  data: object;
+  dateTime: string;
+  username: string;
+  message: string;
+  executionTime: Number;
+  successfulRequest?: boolean;
 }
 
 export interface ServerLog {
@@ -162,9 +165,3 @@ export interface HomeUpdateRequest {
   settingName: string | null;
 }
 
-// ########## Types ##########
-export type ModifiedEvent = {
-  id: string;
-  eventType: string;
-  data: string;
-};

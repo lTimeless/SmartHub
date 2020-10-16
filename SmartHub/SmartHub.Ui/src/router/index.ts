@@ -6,7 +6,7 @@ import Login from '@/views/auth/Login.vue';
 import Registration from '@/views/auth/Registration.vue';
 import Init from '@/views/Init.vue';
 import Statistics from '@/views/home/Statistics.vue';
-import Events from '@/views/home/admin/Events.vue';
+import Activity from '@/views/home/admin/Activity.vue';
 import Logs from '@/views/home/admin/Logs.vue';
 import System from '@/views/home/admin/System.vue';
 import Health from '@/views/home/admin/Health.vue';
@@ -107,9 +107,9 @@ const routes: Array<RouteRecordRaw> = [
       },
       // Admin paths #####
       {
-        path: '/events',
-        name: 'events',
-        component: Events,
+        path: '/activity',
+        name: 'activity',
+        component: Activity,
         meta: {
           requiresAuth: true,
           isAdmin: true

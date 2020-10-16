@@ -17,12 +17,10 @@ namespace SmartHub.Infrastructure.Services.Dispatchers
 	{
 		private readonly IChannelManager _channelManager;
 		private IDisposable _disposable;
-		private readonly IHubContext<EventHub, IServerHub> _eventHubContext;
 		private readonly ILogger _logger = Log.ForContext(typeof(EventDispatcher));
-		public EventDispatcher(IChannelManager channelManager, IHubContext<EventHub, IServerHub> eventHubContext)
+		public EventDispatcher(IChannelManager channelManager)
 		{
 			_channelManager = channelManager;
-			_eventHubContext = eventHubContext;
 		}
 
 		public Task StartAsync(CancellationToken cancellationToken)
@@ -43,7 +41,6 @@ namespace SmartHub.Infrastructure.Services.Dispatchers
 
 		private void Dispatch(IBaseEvent baseEvent)
 		{
-			_eventHubContext.Clients.All.SendEvent(baseEvent);
 			var outputString = BuildOutputString(baseEvent);
 			_logger.Information(outputString);
 			// hier dann alle aus den events EventEntities bauen und in die db speichern

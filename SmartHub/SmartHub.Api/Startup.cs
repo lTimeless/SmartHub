@@ -90,7 +90,7 @@ namespace SmartHub.Api
 
                 endpoints.MapHangfireDashboard();
 
-                endpoints.MapHub<EventHub>("/api/hub/events");
+                endpoints.MapHub<ActivityHub>("/api/hub/activity");
                 endpoints.MapHub<LogHub>("/api/hub/logs");
                 endpoints.MapHub<HomeHub>("/api/hub/home");
             });
