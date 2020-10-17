@@ -9,7 +9,7 @@ using SmartHub.Domain.Entities;
 
 namespace SmartHub.Infrastructure.Database.Repositories
 {
-	public class BaseRepositoryAsync<T> : IBaseRepository<T> where T : Entity
+	public class BaseRepositoryAsync<T> : IBaseRepository<T> where T : BaseEntity
 	{
 		private readonly DbSet<T> _entities;
 		private readonly AppDbContext _appDbContext;

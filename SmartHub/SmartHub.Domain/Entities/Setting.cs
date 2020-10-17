@@ -2,7 +2,7 @@
 
 namespace SmartHub.Domain.Entities
 {
-	public class Setting : Entity
+	public class Setting : BaseEntity
 	{
 		/// <summary>
 		/// Tells what kind of setting this is

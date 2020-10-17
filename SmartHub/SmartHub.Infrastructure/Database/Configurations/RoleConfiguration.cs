@@ -10,6 +10,9 @@ namespace SmartHub.Infrastructure.Database.Configurations
 		{
 			builder.ToTable("Roles");
 			builder.HasKey(x => x.Id);
+			builder.Property(x => x.Id)
+				.HasDefaultValueSql("uuid_generate_v4()");
+
 			builder.HasIndex(x => x.Name).IsUnique();
 		}
 	}

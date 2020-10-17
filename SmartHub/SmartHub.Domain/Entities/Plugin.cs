@@ -3,7 +3,7 @@ using SmartHub.Domain.Entities.Devices;
 
 namespace SmartHub.Domain.Entities
 {
-	public class Plugin : Entity
+	public class Plugin : BaseEntity
 	{
 		public PluginTypes PluginTypes { get; private set; }
 		public string AssemblyFilepath { get; private set; }

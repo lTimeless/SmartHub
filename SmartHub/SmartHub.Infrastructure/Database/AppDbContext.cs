@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Infrastructure;
 using SmartHub.Application.Common.Interfaces;
 using SmartHub.Domain.Entities;
 using SmartHub.Infrastructure.Database.Configurations;
@@ -29,10 +30,10 @@ namespace SmartHub.Infrastructure.Database
 		protected override void OnModelCreating(ModelBuilder builder)
 		{
 			base.OnModelCreating(builder);
-
 			// Naming the schema
 			builder.HasDefaultSchema("smarthub");
-
+			// Set Extension for autogenerate the Id property
+			builder.HasPostgresExtension("uuid-ossp");
 			// Rename alle Identity Tables
 			builder.Entity<IdentityUserLogin<string>>().ToTable("UserLogins");
 			builder.Entity<IdentityUserToken<string>>().ToTable("UserTokens");

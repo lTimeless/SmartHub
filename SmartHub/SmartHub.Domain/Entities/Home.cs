@@ -7,7 +7,7 @@ using SmartHub.Domain.Entities.ValueObjects;
 
 namespace SmartHub.Domain.Entities
 {
-	public class Home : Entity, IAggregateRoot
+	public class Home : BaseEntity, IAggregateRoot
 	{
 		public virtual List<User> Users { get; protected set; }
 		public virtual List<Group> Groups { get; protected set; }
