@@ -11,9 +11,10 @@
           Not connected
         </span>
       </div>
+    </div>
+    <div>
       <span class="text-red-600 flex items-center">{{ error }}</span>
     </div>
-
     <template v-if="!showSearchTable">
       <Table :headers="headers">
         <tr v-for="activity in activityArray" :key="activity.id" class="hover:bg-indigo-200">
@@ -80,7 +81,7 @@ export default defineComponent({
     const searchResultArray = ref<ServerActivity[]>([]);
     const headers = [
       { text: 'Date', value: 'dateTime' },
-      { text: 'Requestor', value: 'userName' },
+      { text: 'Requester', value: 'userName' },
       { text: 'Message', value: 'message' },
       { text: 'SuccessfulRequest', value: 'successfulRequest' },
       { text: 'ExecutionTime', value: 'executionTime' }
@@ -90,7 +91,7 @@ export default defineComponent({
         activityArray.push(newData);
       }
     });
-    const searchKeys = ['DateTime', 'Requestor', 'SuccessfulRequest', 'ExecutionTime' ];
+    const searchKeys = ['DateTime', 'Requester', 'SuccessfulRequest', 'ExecutionTime' ];
 
     onUnmounted(() => {
       connection.value.stop();

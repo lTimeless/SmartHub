@@ -2,6 +2,9 @@
 
 namespace SmartHub.Application.Common.Models
 {
+    /// <summary>
+    /// It actually is the current request but with only relevant Infos
+    /// </summary>
     public class Activity
     {
         public string Id { get; }

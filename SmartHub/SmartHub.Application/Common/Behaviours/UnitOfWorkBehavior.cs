@@ -5,7 +5,7 @@ using SmartHub.Application.Common.Interfaces.Database;
 
 namespace SmartHub.Application.Common.Behaviours
 {
-    public class UnitOfWorkBehavior<TRequest, TResponse> : IRequestPostProcessor<TRequest, TResponse>
+    public class UnitOfWorkBehavior<TRequest, TResponse> : IRequestPostProcessor<TRequest, TResponse> where TRequest : notnull
     {
         private readonly IUnitOfWork _unitOfWork;
 

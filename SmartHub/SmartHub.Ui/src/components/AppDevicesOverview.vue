@@ -16,7 +16,7 @@
     </div>
   </div>
   <div v-if="devices">
-    <div class="grid grid-cols-1 gap-4">
+    <div class="grid xl:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 gap-4">
       <AppCard class="bg-white shadow-md w-full" v-for="device in devices" :key="device.id">
         <div v-if="device" class="p-3 w-full">
           <h1 class="text-xl text-left text-gray-600 font-bold cursor-pointer" @click="openDetailModal(true, device.id)">

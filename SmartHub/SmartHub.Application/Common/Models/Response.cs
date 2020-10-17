@@ -1,7 +1,9 @@
-﻿using System.Collections.Generic;
-
+﻿
 namespace SmartHub.Application.Common.Models
 {
+    /// <summary>
+    /// A Class which represents the Reponse
+    /// </summary>
     public static class Response
     {
         /// <summary>

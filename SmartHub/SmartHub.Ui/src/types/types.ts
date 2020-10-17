@@ -22,7 +22,7 @@ export interface ServerResponse<T> {
 export interface ServerActivity {
   id: string;
   dateTime: string;
-  username: string;
+  userName: string;
   message: string;
   executionTime: Number;
   successfulRequest?: boolean;
