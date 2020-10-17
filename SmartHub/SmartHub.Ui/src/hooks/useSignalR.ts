@@ -1,11 +1,18 @@
 import { HubConnectionBuilder, LogLevel, HubConnection } from '@microsoft/signalr';
-import { reactive, toRefs } from 'vue';
+import { reactive, toRefs, UnwrapRef } from 'vue';
+
+interface SignalrState<T> {
+    connectionEstablished: boolean,
+    connection: HubConnection,
+    data: T | null,
+    error: null
+}
 
 export function useSignalRHub<T>(hubRoute: string, listenToFunctionName: string) {
-    const state = reactive({
+    const state = reactive<SignalrState<T>>({
         connectionEstablished: false,
         connection: {} as HubConnection,
-        data: {} as T,
+        data: null,
         error: null
     });
 
@@ -16,23 +23,23 @@ export function useSignalRHub<T>(hubRoute: string, listenToFunctionName: string)
 
     state.connection.onclose(() => {
         state.connectionEstablished = false;
-        state.data =  Object.assign({});
+        state.data = null;
     });
 
     state.connection
         .start()
         .then(() => {
             state.connectionEstablished = true;
-            state.connection.on(listenToFunctionName, (data: any) => {
+            state.connection.on(listenToFunctionName, (data: UnwrapRef<T>) => {
                 state.data = data;
             });
         })
         .catch((err) => {
             state.error = err;
-            return console.error(err);
+            console.error(err);
         });
 
     return {
         ...toRefs(state)
-    }
+    };
 }

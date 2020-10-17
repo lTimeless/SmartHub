@@ -6,7 +6,6 @@ using SmartHub.Application.UseCases.Entity.Homes;
 namespace SmartHub.Application.UseCases.SignalR
 {
     // Diese Funktionen werden vom Server aufgerufen um Daten an den Client zu schicken
-    // im client mit: connection.on("<SendEvent>",data);
     public interface IServerHub : IHub
     {
         /// <summary>

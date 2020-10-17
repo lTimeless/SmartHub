@@ -86,7 +86,9 @@ export default defineComponent({
       { text: 'ExecutionTime', value: 'executionTime' }
     ];
     watch(data, (newData) => {
-      activityArray.push(newData);
+      if (newData) {
+        activityArray.push(newData);
+      }
     });
     const searchKeys = ['DateTime', 'Requestor', 'SuccessfulRequest', 'ExecutionTime' ];
 

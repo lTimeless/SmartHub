@@ -55,9 +55,11 @@ export default defineComponent({
     const headerRef = ref();
     const sidebarOpen = ref(true);
     const { data } = useSignalRHub<Home>('home','SendHome');
-    
+
     watch(data, (newHomeData) => {
-      store.commit(HomeMutationTypes.UPDATE_HOME, newHomeData);
+      if (newHomeData){
+        store.commit(HomeMutationTypes.UPDATE_HOME, newHomeData);
+      }
     });
     const setHeaderHeight = () => {
       nextTick(() => {
