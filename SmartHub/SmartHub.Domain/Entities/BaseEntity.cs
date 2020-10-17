@@ -1,12 +1,11 @@
 ﻿using System;
-using NodaTime;
 
 namespace SmartHub.Domain.Entities
 {
 	public interface IEntity
 	{
-		public Instant CreatedAt { get; set; }
-		public Instant LastModifiedAt { get; set; }
+		public DateTimeOffset CreatedAt { get; set; }
+		public DateTimeOffset LastModifiedAt { get; set; }
 		public string CreatedBy { get; set; }
 		public string LastModifiedBy { get; set; }
 	}
@@ -15,8 +14,8 @@ namespace SmartHub.Domain.Entities
 	public abstract class Entity : IEntity
 	{
 		public string Id { get; }
-		public Instant CreatedAt { get; set; }
-		public Instant LastModifiedAt { get; set; }
+		public DateTimeOffset CreatedAt { get; set; }
+		public DateTimeOffset LastModifiedAt { get; set; }
 		public string CreatedBy { get; set; }
 		public string LastModifiedBy { get; set; }
 

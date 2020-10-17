@@ -1,8 +1,8 @@
 <template>
   <div class="w-full">
-    <h1 class="text-3xl text-gray-500 font-bold mb-6">Logs</h1>
+    <h1 class="text-3xl text-gray-500 font-bold mb-6">Events</h1>
     <div class="flex justify-between items-center mb-4">
-      <Search :data="logsArray" :search-keys="searchKeys" @search-result="getSearchResult" @toggle-table="toggleTable" />
+      <Search :data="activityArray" :search-keys="searchKeys" @search-result="getSearchResult" @toggle-table="toggleTable" />
       <div class="w-1/3 flex justify-end">
         <span v-if="connectionEstablished" class="w-1/3 text-xs font-semibold inline-block py-2 px-2 rounded text-indigo-600 bg-indigo-200 uppercase ml-3">
           Connected
@@ -17,36 +17,42 @@
     </div>
     <template v-if="!showSearchTable">
       <Table :headers="headers">
-        <tr v-for="log in logsArray" :key="log.id" class="hover:bg-indigo-200">
+        <tr v-for="activity in activityArray" :key="activity.id" class="hover:bg-indigo-200">
           <td>
-            <span class="text-gray-700 flex items-center" v-text="log.timestamp"></span>
+            <span class="text-gray-700 flex items-center" v-text="activity.dateTime"></span>
           </td>
           <td>
-            <span class="text-gray-700 flex items-center" v-text="log.level"></span>
+            <span class="text-gray-700 flex items-center" v-text="activity.username"></span>
           </td>
           <td>
-            <span class="text-gray-700 flex items-center" v-text="log.message"></span>
+            <span class="text-gray-700 flex items-center" v-text="activity.message"></span>
           </td>
           <td>
-            <span class="text-gray-700 flex items-center" v-text="log.exception"></span>
+            <span class="text-gray-700 flex items-center"> {{ activity.successfulRequest ?? '-' }}</span>
+          </td>
+          <td>
+            <span class="text-gray-700 flex items-center">{{ activity.executionTime }} <span class="font-normal">ms</span></span>
           </td>
         </tr>
       </Table>
     </template>
     <template v-else>
       <Table :headers="headers">
-        <tr v-for="log in searchResultArray" :key="log.id" class="hover:bg-indigo-200">
+        <tr v-for="activity in searchResultArray" :key="activity.id" class="hover:bg-indigo-200">
           <td>
-            <span class="text-gray-700 flex items-center" v-text="log.item.timestamp"></span>
+            <span class="text-gray-700 flex items-center" v-text="activity.item.dateTime"></span>
           </td>
           <td>
-            <span class="text-gray-700 flex items-center" v-text="log.item.level"></span>
+            <span class="text-gray-700 flex items-center" v-text="activity.item.username"></span>
           </td>
           <td>
-            <span class="text-gray-700 flex items-center" v-text="log.item.message"></span>
+            <span class="text-gray-700 flex items-center" v-text="activity.item.message"></span>
           </td>
           <td>
-            <span class="text-gray-700 flex items-center" v-text="log.item.exception"></span>
+            <span class="text-gray-700 flex items-center" v-text="activity.item.successfulRequest"></span>
+          </td>
+          <td>
+            <span class="text-gray-700 flex items-center" v-text="activity.item.executionTime"></span>
           </td>
         </tr>
       </Table>
@@ -56,44 +62,43 @@
 
 <script lang="ts">
 import { defineComponent, onUnmounted, ref, reactive, watch } from 'vue';
-import { ServerLog } from '@/types/types';
+import { ServerActivity } from '@/types/types';
 import Search from '@/components/widgets/AppSearch.vue';
 import Table from '@/components/widgets/AppTable.vue';
 import { useSignalRHub } from '@/hooks/useSignalR';
 
 export default defineComponent({
-  name: 'Logs',
+  name: 'Events',
   components: {
     Search,
     Table
   },
   setup() {
-    const { connectionEstablished, data, error, connection } = useSignalRHub<ServerLog>('logs','SendLogAsObject');
+    const {connectionEstablished, data, error, connection} = useSignalRHub<ServerActivity>('activity','SendActivity');
 
     const showSearchTable = ref(false);
-    const logsArray = reactive<ServerLog[]>([]);
-    const searchResultArray = ref<any>([]);
+    const activityArray = reactive<ServerActivity[]>([]);
+    const searchResultArray = ref<ServerActivity[]>([]);
     const headers = [
-      { text: 'Timestamp', value: 'timestamp' },
-      { text: 'Level', value: 'level' },
+      { text: 'Date', value: 'dateTime' },
+      { text: 'Requester', value: 'userName' },
       { text: 'Message', value: 'message' },
-      { text: 'Exception', value: 'exception' }
+      { text: 'SuccessfulRequest', value: 'successfulRequest' },
+      { text: 'ExecutionTime', value: 'executionTime' }
     ];
-    const searchKeys = ['timestamp', 'level', 'message', 'exception'];
-
     watch(data, (newData) => {
       if (newData) {
-        logsArray.push(newData);
+        activityArray.push(newData);
       }
     });
+    const searchKeys = ['DateTime', 'Requester', 'SuccessfulRequest', 'ExecutionTime' ];
 
     onUnmounted(() => {
       connection.value.stop();
     });
 
-    const getSearchResult = (result: ServerLog[]) => {
+    const getSearchResult = (result: ServerActivity[]) => {
       searchResultArray.value = [];
-      console.log(result);
       searchResultArray.value.push(...result);
     };
 
@@ -103,7 +108,7 @@ export default defineComponent({
     };
 
     return {
-      logsArray,
+      activityArray,
       error,
       connectionEstablished,
       headers,

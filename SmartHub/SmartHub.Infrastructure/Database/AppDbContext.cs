@@ -12,14 +12,12 @@ namespace SmartHub.Infrastructure.Database
 {
 	public sealed class AppDbContext : IdentityDbContext<User, Role, string>
 	{
-		private readonly IDateTimeService _dateTimeService;
 		private readonly IUserAccessor _userAccessor;
 
 #pragma warning disable CS8618 // Non-nullable field is uninitialized. Consider declaring as nullable.
-		public AppDbContext(DbContextOptions options, IDateTimeService dateTimeService, IUserAccessor userAccessor) : base(options)
+		public AppDbContext(DbContextOptions options, IUserAccessor userAccessor) : base(options)
 #pragma warning restore CS8618 // Non-nullable field is uninitialized. Consider declaring as nullable.
 		{
-			_dateTimeService = dateTimeService;
 			_userAccessor = userAccessor;
 		}
 
@@ -57,7 +55,7 @@ namespace SmartHub.Infrastructure.Database
 			// TODO: vlt wird das für User und Role nicht funktionieren
 			foreach (var entry in ChangeTracker.Entries<IEntity>())
 			{
-				var dateTime = _dateTimeService.NowUtc;
+				var dateTime = DateTimeOffset.Now;
 				var userName = _userAccessor.GetCurrentUsername();
 				switch (entry.State)
 				{

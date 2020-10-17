@@ -1,6 +1,4 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
-using SmartHub.Application.Common.Interfaces;
-using SmartHub.Shared.Services;
 
 namespace SmartHub.Shared
 {
@@ -14,7 +12,6 @@ namespace SmartHub.Shared
 
         private static void AddServices(this IServiceCollection services)
         {
-            services.AddTransient<IDateTimeService, DateTimeService>();
         }
     }
 }

@@ -1,6 +1,5 @@
 ﻿using System;
 using Microsoft.AspNetCore.Identity;
-using NodaTime;
 using SmartHub.Domain.Entities.ValueObjects;
 
 namespace SmartHub.Domain.Entities
@@ -8,8 +7,8 @@ namespace SmartHub.Domain.Entities
 	/// <inheritdoc cref="Microsoft.AspNetCore.Identity.IdentityUser" />
 	public class User : IdentityUser<string>, IEntity
 	{
-		public Instant CreatedAt { get; set; }
-		public Instant LastModifiedAt { get; set; }
+		public DateTimeOffset CreatedAt { get; set; }
+		public DateTimeOffset LastModifiedAt { get; set; }
 		public string CreatedBy { get; set; }
 		public string LastModifiedBy { get; set; }
 		public string PersonInfo { get; set; }

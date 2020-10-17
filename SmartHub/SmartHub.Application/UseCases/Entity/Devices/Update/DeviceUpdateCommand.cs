@@ -4,7 +4,7 @@ using SmartHub.Domain.Common.Enums;
 
 namespace SmartHub.Application.UseCases.Entity.Devices.Update
 {
-    public class DeviceUpdateCommand : IRequest<Response<DeviceDto>>
+    public class DeviceUpdateCommand : IRequest<Response<string>>
     {
         public string Id { get; set; }
         public string? Name { get; set; }

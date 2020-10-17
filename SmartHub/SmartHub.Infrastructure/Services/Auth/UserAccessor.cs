@@ -14,10 +14,12 @@ namespace SmartHub.Infrastructure.Services.Auth
 			_httpContextAccessor = httpContextAccessor;
 		}
 
-		public string GetCurrentUsername() =>
-			_httpContextAccessor
+		public string GetCurrentUsername()
+		{
+			return _httpContextAccessor
 				.HttpContext?
-				.User?
+				.User
 				.FindFirstValue(ClaimTypes.Name) ?? Roles.System.ToString();
+		}
 	}
 }

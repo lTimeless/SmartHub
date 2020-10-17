@@ -68,7 +68,6 @@ import AppAutomation from '@/components/AppAutomations.vue';
 import AppGroupsOverview from '@/components/AppGroupsOverview.vue';
 import AppDevicesOverview from '@/components/AppDevicesOverview.vue';
 import { useStore } from 'vuex';
-import { HomeActionTypes } from '@/store/home/actions';
 
 export default defineComponent({
   name: 'Dashboard',
@@ -83,7 +82,6 @@ export default defineComponent({
     const openTab = ref(1);
     const store = useStore();
     const home = computed(() => store.state.homeModule.home);
-    store.dispatch(HomeActionTypes.FETCH_HOME);
     const toggleTabs = (tabNumber: number) => {
       openTab.value = tabNumber;
     };

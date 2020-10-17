@@ -16,12 +16,10 @@ namespace SmartHub.Infrastructure.Services.Auth
 	public class TokenGenerator : ITokenGenerator
 	{
 		private readonly JwtSettings _jwtSettings;
-		private readonly IDateTimeService _dateTimeService;
 
-		public TokenGenerator(IOptions<JwtSettings> jwtSettings, IDateTimeService dateTimeService)
+		public TokenGenerator(IOptions<JwtSettings> jwtSettings)
 		{
 			_jwtSettings = jwtSettings.Value;
-			_dateTimeService = dateTimeService;
 		}
 
 		public string CreateJwtToken(User user, List<string> roles, List<Claim> claims)
@@ -44,7 +42,7 @@ namespace SmartHub.Infrastructure.Services.Auth
 				Audience = _jwtSettings.Audience,
 				Issuer = _jwtSettings.Issuer,
 				Subject = new ClaimsIdentity(claims),
-				Expires = _dateTimeService.Now.ToDateTimeUtc().AddMinutes(_jwtSettings.LifeTimeInMinutes),
+				Expires = DateTime.Now.AddMinutes(_jwtSettings.LifeTimeInMinutes),
 				SigningCredentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256Signature)
 			};
 

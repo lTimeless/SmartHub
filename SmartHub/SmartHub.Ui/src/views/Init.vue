@@ -176,9 +176,6 @@ export default defineComponent({
 
     checkHome()
       .then((response) => {
-        if (!response.success) {
-          return Promise.reject(response.message);
-        }
         if (response.data) {
           router.push('/login');
         }

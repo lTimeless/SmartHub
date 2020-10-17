@@ -128,7 +128,7 @@ import { defineComponent, PropType, ref } from 'vue';
 import BaseModal from '@/components/modals/BaseModal.vue';
 import { Device, DeviceUpdateRequest } from '@/types/types';
 import { useStore } from 'vuex';
-import { useEnumTypes } from '@/composables/useEnums';
+import { useEnumTypes } from '@/hooks/useEnums';
 import { putByIdDevice } from '@/services/apis/device.service';
 import { HomeActionTypes } from '@/store/home/actions';
 
@@ -164,14 +164,12 @@ export default defineComponent({
           secondaryConnection: deviceDetail.value.secondaryConnection,
           ipv4: deviceDetail.value.ip.ipv4
         };
-      console.log('update', updatedGroup);
       
       await putByIdDevice(updatedGroup)
         .then((response) => {
           if (!response.success) {
             return Promise.reject(response.message);
           }
-          store.dispatch(HomeActionTypes.FETCH_HOME);
           return Promise.resolve();
         })
         .catch((error) => Promise.reject(error));

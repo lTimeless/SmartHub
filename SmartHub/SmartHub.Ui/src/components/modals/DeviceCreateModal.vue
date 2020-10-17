@@ -133,7 +133,7 @@ import BaseModal from '@/components/modals/BaseModal.vue';
 import { DeviceCreateRequest } from '@/types/types';
 import { useStore } from 'vuex';
 import { ConnectionTypes, PluginTypes } from '@/types/enums';
-import { useEnumTypes } from '@/composables/useEnums.ts';
+import { useEnumTypes } from '@/hooks/useEnums.ts';
 import { HomeActionTypes } from '@/store/home/actions';
 
 export default defineComponent({
@@ -164,7 +164,6 @@ export default defineComponent({
       const { pluginTypesValues } = useEnumTypes();
 
       deviceCreateRequest.pluginTypes = pluginTypesValues.value[deviceCreateRequest.pluginTypes];
-      console.log(pluginTypesValues, deviceCreateRequest);
       await store.dispatch(HomeActionTypes.CREATE_DEVICE, deviceCreateRequest);
       context.emit('close-modal', false);
     };

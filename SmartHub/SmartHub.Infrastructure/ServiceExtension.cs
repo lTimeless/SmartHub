@@ -55,7 +55,6 @@ namespace SmartHub.Infrastructure
                         options =>
                         {
                             options.MigrationsAssembly(typeof(AppDbContext).Assembly.FullName);
-                            options.UseNodaTime();
                         });
                 })
                 .BuildServiceProvider();
@@ -135,7 +134,6 @@ namespace SmartHub.Infrastructure
         {
             services.AddTransient(typeof(BackgroundServiceStarter<>));
             services.AddSingleton<IChannelManager,ChannelManager>();
-            services.AddSingleton<IHangfireDispatcher, HangfireDispatcher>();
             services.AddSingleton<IEventDispatcher, EventDispatcher>();
             services.AddSingleton(typeof(IInitializationService),typeof(InitializationService));
             services.AddHostedService<BackgroundServiceStarter<IInitializationService>>();

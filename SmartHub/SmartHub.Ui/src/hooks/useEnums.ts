@@ -17,5 +17,5 @@ export function useEnumTypes() {
 
     return {
         ...toRefs(state)
-    }
+    };
 }

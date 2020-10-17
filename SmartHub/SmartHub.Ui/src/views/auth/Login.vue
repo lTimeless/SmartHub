@@ -91,27 +91,19 @@ export default defineComponent({
 
     checkHome()
       .then((response) => {
-        if (!response.success) {
-          return Promise.reject(response.message);
-        }
         if (!response.data) {
           router.push('/init');
+          return Promise.resolve();
         }
         checkUsers()
           .then((response) => {
-            if (!response.success) {
-              return Promise.reject(response.message);
-            }
             if (!response.data) {
               router.push('/registration');
             }
           })
         return Promise.resolve();
       })
-      .catch((err) => {
-        console.log(err);
-        return Promise.reject(err);
-      });
+      .catch((err) => Promise.reject(err));
 
 
     const onLoginClick = async () => {

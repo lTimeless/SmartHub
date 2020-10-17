@@ -35,9 +35,13 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, nextTick, onMounted, ref } from 'vue';
+import { computed, defineComponent, nextTick, onMounted, ref, watch } from 'vue';
 import AppHeader from '@/components/layouts/AppHeader.vue';
 import AppSidebar from '@/components/layouts/AppSidebar.vue';
+import { useSignalRHub } from '@/hooks/useSignalR.ts';
+import { useStore } from 'vuex';
+import { HomeMutationTypes } from '@/store/home/mutations';
+import { Home } from '@/types/types';
 
 export default defineComponent({
   name: 'Home',
@@ -46,10 +50,17 @@ export default defineComponent({
     AppSidebar
   },
   setup() {
+    const store = useStore();
     const headerHeight = ref(0);
     const headerRef = ref();
     const sidebarOpen = ref(true);
+    const { data } = useSignalRHub<Home>('home','SendHome');
 
+    watch(data, (newHomeData) => {
+      if (newHomeData){
+        store.commit(HomeMutationTypes.UPDATE_HOME, newHomeData);
+      }
+    });
     const setHeaderHeight = () => {
       nextTick(() => {
         headerHeight.value = headerRef.value.offsetHeight;
