@@ -1,8 +1,15 @@
 import { ActionContext, ActionTree } from 'vuex';
 import { RootState, HomeState, AuthState } from '@/store/index.types';
-import { DeviceCreateRequest, Group, GroupCreateRequest, GroupUpdateRequest, HomeCreateRequest, HomeUpdateRequest } from '@/types/types';
-import { HomeMutations, HomeMutationTypes } from '@/store/home/mutations';
-import { getHome, postHome, putHome } from '@/services/apis/home.service';
+import {
+  DeviceCreateRequest,
+  Group,
+  GroupCreateRequest,
+  GroupUpdateRequest,
+  HomeCreateRequest,
+  HomeUpdateRequest
+} from '@/types/types';
+import { HomeMutations } from '@/store/home/mutations';
+import { postHome, putHome } from '@/services/apis/home.service';
 import { getByIdGroup, postGroup, putByIdGroup } from '@/services/apis/group.service';
 import { postDevice } from '@/services/apis/device.service';
 
@@ -21,7 +28,10 @@ export enum HomeActionTypes {
 
 // actions context type
 type ActionAugments = Omit<ActionContext<AuthState, RootState>, 'commit'> & {
-  commit<K extends keyof HomeMutations>(key: K, payload: Parameters<HomeMutations[K]>[1]): ReturnType<HomeMutations[K]>;
+  commit<K extends keyof HomeMutations>(
+    key: K,
+    payload: Parameters<HomeMutations[K]>[1]
+  ): ReturnType<HomeMutations[K]>;
 };
 
 // Action Interface
@@ -29,11 +39,11 @@ export type HomeActions = {
   [HomeActionTypes.CREATE_HOME]({ commit }: ActionAugments, payload: HomeCreateRequest): Promise<void>;
   [HomeActionTypes.UPDATE_HOME]({ commit }: ActionAugments, payload: HomeUpdateRequest): Promise<void>;
   // Group
-  [HomeActionTypes.CREATE_GROUP]({}: ActionAugments, payload: GroupCreateRequest): Promise<void>;
-  [HomeActionTypes.FETCH_BY_GROUP_ID]({}: ActionAugments, payload: string): Promise<Group>;
-  [HomeActionTypes.UPDATE_GROUP]({}: ActionAugments, payload: GroupUpdateRequest): Promise<void>;
+  [HomeActionTypes.CREATE_GROUP]({ commit }: ActionAugments, payload: GroupCreateRequest): Promise<void>;
+  [HomeActionTypes.FETCH_BY_GROUP_ID]({ commit }: ActionAugments, payload: string): Promise<Group>;
+  [HomeActionTypes.UPDATE_GROUP]({ commit }: ActionAugments, payload: GroupUpdateRequest): Promise<void>;
   // DEvice
-  [HomeActionTypes.CREATE_DEVICE]({}: ActionAugments, payload: DeviceCreateRequest): Promise<void>;
+  [HomeActionTypes.CREATE_DEVICE]({ commit }: ActionAugments, payload: DeviceCreateRequest): Promise<void>;
 };
 
 export const actions: ActionTree<HomeState, RootState> = {
@@ -68,7 +78,7 @@ export const actions: ActionTree<HomeState, RootState> = {
       })
       .catch((error) => Promise.reject(error));
   },
-  async [HomeActionTypes.FETCH_BY_GROUP_ID]({}, payload): Promise<Group> {
+  async [HomeActionTypes.FETCH_BY_GROUP_ID]({ dispatch }, payload): Promise<Group> {
     return await getByIdGroup(payload)
       .then((response) => {
         if (!response.success) {
