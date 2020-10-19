@@ -3,7 +3,14 @@ import { Roles } from '@/types/enums';
 import JwtDecode from 'jwt-decode';
 import router from '@/router';
 
-type TokenPayload = { unique_name: string; jti: string; roles: string[] | string; nbf: number; exp: number; iat: number };
+type TokenPayload = {
+  unique_name: string;
+  jti: string;
+  roles: string[] | string;
+  nbf: number;
+  exp: number;
+  iat: number;
+};
 const numberThousand = 1000; // uesed for tokenpayload exp date conversion
 // Storage keys
 const LOCAL_STORAGE_AUTH_RESPONSE = 'authResponse';
@@ -82,7 +89,7 @@ export const getUserName = (): string => {
   return tokenPayload.unique_name;
 };
 
-export const logout = () => {
+export const logout = (): void => {
   // const store = useStore();
   // store.dispatch(A_LOGOUT);
   clearStorage();

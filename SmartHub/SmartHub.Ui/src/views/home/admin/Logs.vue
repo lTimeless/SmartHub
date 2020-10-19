@@ -2,12 +2,23 @@
   <div class="w-full">
     <h1 class="text-3xl text-gray-500 font-bold mb-6">Logs</h1>
     <div class="flex justify-between items-center mb-4">
-      <Search :data="logsArray" :search-keys="searchKeys" @search-result="getSearchResult" @toggle-table="toggleTable" />
+      <Search
+        :data="logsArray"
+        :search-keys="searchKeys"
+        @search-result="getSearchResult"
+        @toggle-table="toggleTable"
+      />
       <div class="w-1/3 flex justify-end">
-        <span v-if="connectionEstablished" class="w-1/3 text-xs font-semibold inline-block py-2 px-2 rounded text-indigo-600 bg-indigo-200 uppercase ml-3">
+        <span
+          v-if="connectionEstablished"
+          class="w-1/3 text-xs font-semibold inline-block py-2 px-2 rounded text-indigo-600 bg-indigo-200 uppercase ml-3"
+        >
           Connected
         </span>
-        <span v-if="!connectionEstablished" class="w-1/3 text-xs font-semibold inline-block py-2 px-2 rounded text-red-600 bg-red-200 uppercase ml-3">
+        <span
+          v-if="!connectionEstablished"
+          class="w-1/3 text-xs font-semibold inline-block py-2 px-2 rounded text-red-600 bg-red-200 uppercase ml-3"
+        >
           Not connected
         </span>
       </div>
@@ -68,7 +79,10 @@ export default defineComponent({
     Table
   },
   setup() {
-    const { connectionEstablished, data, error, connection } = useSignalRHub<ServerLog>('logs','SendLogAsObject');
+    const { connectionEstablished, data, error, connection } = useSignalRHub<ServerLog>(
+      'logs',
+      'SendLogAsObject'
+    );
 
     const showSearchTable = ref(false);
     const logsArray = reactive<ServerLog[]>([]);

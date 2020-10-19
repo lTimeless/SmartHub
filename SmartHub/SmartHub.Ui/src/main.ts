@@ -4,7 +4,13 @@ import router from './router';
 import { store } from './store';
 import './assets/tailwind.css';
 
-createApp(App)
+const app = createApp(App)
   .use(router)
-  .use(store)
-  .mount('#app');
+  .use(store);
+
+  // app.config.errorHandler((err, vueInstance, vueInfo) => {
+  //   // send to Sentry e.g
+  // });
+  app.config.performance = true;
+app.mount('#app');
+

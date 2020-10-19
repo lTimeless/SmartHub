@@ -10,8 +10,7 @@
             <span class="text-gray-600 dark:text-gray-400">Username </span>
             <input
               v-model="user.userName"
-              class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400
-                focus:outline-none focus:shadow-outlineIndigo dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
+              class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outlineIndigo dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
               :placeholder="user.userName"
             />
           </label>
@@ -24,8 +23,7 @@
             </span>
             <select
               v-model="selectedRole"
-              class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400
-                focus:outline-none focus:shadow-outlineIndigo dark:text-gray-300 dark:focus:shadow-outline-gray form-select"
+              class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outlineIndigo dark:text-gray-300 dark:focus:shadow-outline-gray form-select"
             >
               <option v-for="role in roles" :key="role" :value="role">{{ role }}</option>
             </select>
@@ -34,12 +32,11 @@
       </div>
       <!-- Personname -->
       <div class="flex justify-between mt-4">
-        <label class="text-left block text-sm w-full  mr-2">
+        <label class="text-left block text-sm w-full mr-2">
           <span class="text-gray-600 dark:text-gray-400">Firstname</span>
           <input
             v-model="user.personName.firstName"
-            class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400
-                focus:outline-none focus:shadow-outlineIndigo dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
+            class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outlineIndigo dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
             :placeholder="user.personName.firstName === '' ? '-' : user.personName.firstName"
           />
         </label>
@@ -47,8 +44,7 @@
           <span class="text-gray-600 dark:text-gray-400">Middlename</span>
           <input
             v-model="user.personName.middleName"
-            class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400
-                focus:outline-none focus:shadow-outlineIndigo dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
+            class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outlineIndigo dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
             :placeholder="user.personName.middleName === '' ? '-' : user.personName.middleName"
           />
         </label>
@@ -56,8 +52,7 @@
           <span class="text-gray-600 dark:text-gray-400">Lastname</span>
           <input
             v-model="user.personName.lastName"
-            class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400
-                focus:outline-none focus:shadow-outlineIndigo dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
+            class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outlineIndigo dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
             :placeholder="user.personName.lastName === '' ? '-' : user.personName.lastName"
           />
         </label>
@@ -67,8 +62,7 @@
         <span class="text-gray-600 dark:text-gray-400">Email</span>
         <input
           v-model="user.email"
-          class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400
-                focus:outline-none focus:shadow-outlineIndigo dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
+          class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outlineIndigo dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
           :placeholder="user.email === '' || user.email === null ? '-' : user.email"
         />
       </label>
@@ -76,8 +70,7 @@
         <span class="text-gray-600 dark:text-gray-400">Phonenumber</span>
         <input
           v-model="user.phoneNumber"
-          class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400
-                focus:outline-none focus:shadow-outlineIndigo dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
+          class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outlineIndigo dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
           :placeholder="user.phoneNumber === '' || user.phoneNumber === null ? '-' : user.phoneNumber"
         />
       </label>
@@ -85,17 +78,14 @@
         <span class="text-gray-600 dark:text-gray-400">Personinfo</span>
         <input
           v-model="user.personInfo"
-          class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400
-                focus:outline-none focus:shadow-outlineIndigo dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
+          class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outlineIndigo dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
           :placeholder="user.personInfo === '' ? '-' : user.personInfo"
         />
       </label>
       <div class="text-gray-500 text-sm text-left mt-10">Last modified by: {{ user.lastModifiedBy }}</div>
       <div class="text-gray-500 text-sm text-left">Last modified at: {{ user.lastModifiedAt }}</div>
     </div>
-    <div v-else>
-      Something went wrong loading your accound data...
-    </div>
+    <div v-else>Something went wrong loading your accound data...</div>
     <!-- Save button -->
     <div class="md:w-2/12 mt-3">
       <action-button title="Save" color="indigo" :height="35" :width="150" :callback="onSaveClick" />

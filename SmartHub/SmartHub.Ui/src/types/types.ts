@@ -24,7 +24,7 @@ export interface ServerActivity {
   dateTime: string;
   userName: string;
   message: string;
-  executionTime: Number;
+  executionTime: number;
   successfulRequest?: boolean;
 }
 
@@ -164,4 +164,3 @@ export interface HomeUpdateRequest {
   userName: string | null;
   settingName: string | null;
 }
-

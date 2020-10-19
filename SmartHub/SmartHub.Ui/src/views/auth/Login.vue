@@ -2,7 +2,12 @@
   <div class="flex items-center min-h-screen p-6 bg-ui-loginBackground dark:bg-gray-900">
     <AppCard class="bg-white shadow-md">
       <div class="h-32 md:h-auto md:w-1/2">
-        <img aria-hidden="true" class="object-cover w-full h-full dark:hidden" src="../../assets/images/undraw_smart_home_28oy.svg" alt="Office" />
+        <img
+          aria-hidden="true"
+          class="object-cover w-full h-full dark:hidden"
+          src="../../assets/images/undraw_smart_home_28oy.svg"
+          alt="Office"
+        />
       </div>
       <div class="flex items-center justify-center p-6 sm:p-12 md:w-1/2">
         <div class="w-full">
@@ -14,8 +19,7 @@
             <input
               required
               v-model="username"
-              class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-ui-primary
-                    focus:outline-none focus:shadow-outlineIndigo dark:text-gray-300 dark:focus:shadow-outline form-input"
+              class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-ui-primary focus:outline-none focus:shadow-outlineIndigo dark:text-gray-300 dark:focus:shadow-outline form-input"
               placeholder="Jane Doe"
             />
           </label>
@@ -24,8 +28,7 @@
             <input
               required
               v-model="password"
-              class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-ui-primary
-                    focus:outline-none focus:shadow-outlineIndigo dark:text-gray-300 dark:focus:shadow-outline form-input"
+              class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-ui-primary focus:outline-none focus:shadow-outlineIndigo dark:text-gray-300 dark:focus:shadow-outline form-input"
               placeholder="***************"
               type="password"
               @keyup.enter="onLoginClick"
@@ -33,10 +36,10 @@
           </label>
 
           <button
-            class="block w-full px-4 py-2 mt-4 text-sm font-medium leading-5 text-center text-white
-                  transition-colors duration-150 bg-ui-primary border border-transparent rounded-lg active:bg-ui-primary
-                  focus:outline-none focus:shadow-outlineIndigo"
-            :class="signInDisabled ? 'opacity-50 focus:outline-none cursor-not-allowed' : 'hover:bg-ui-primaryHover'"
+            class="block w-full px-4 py-2 mt-4 text-sm font-medium leading-5 text-center text-white transition-colors duration-150 bg-ui-primary border border-transparent rounded-lg active:bg-ui-primary focus:outline-none focus:shadow-outlineIndigo"
+            :class="
+              signInDisabled ? 'opacity-50 focus:outline-none cursor-not-allowed' : 'hover:bg-ui-primaryHover'
+            "
             @click="onLoginClick"
             :disabled="signInDisabled"
           >
@@ -45,20 +48,24 @@
           <hr class="my-8" />
           <button
             disabled
-            class="flex items-center justify-center w-full px-4 py-2 text-sm font-medium leading-5 text-gray-700 transition-colors 
-            duration-150 border border-gray-300 rounded-lg dark:text-gray-400 active:bg-transparent focus:border-gray-500 
-            active:text-gray-500 focus:outline-none focus:shadow-outline-gray"
+            class="flex items-center justify-center w-full px-4 py-2 text-sm font-medium leading-5 text-gray-700 transition-colors duration-150 border border-gray-300 rounded-lg dark:text-gray-400 active:bg-transparent focus:border-gray-500 active:text-gray-500 focus:outline-none focus:shadow-outline-gray"
             :class="true ? 'opacity-50 focus:outline-none cursor-not-allowed' : 'hover:border-gray-500'"
           >
             Additional login options....
           </button>
           <p class="mt-4 text-left">
-            <router-link class="text-sm font-medium text-ui-primary dark:text-ui-primary hover:underline" to="/forgotpassword">
+            <router-link
+              class="text-sm font-medium text-ui-primary dark:text-ui-primary hover:underline"
+              to="/forgotpassword"
+            >
               Forgot your password?
             </router-link>
           </p>
           <p class="mt-1 text-left">
-            <router-link class="text-sm font-medium text-ui-primary dark:text-ui-primary hover:underline" to="/registration">
+            <router-link
+              class="text-sm font-medium text-ui-primary dark:text-ui-primary hover:underline"
+              to="/registration"
+            >
               Create account
             </router-link>
           </p>
@@ -95,16 +102,14 @@ export default defineComponent({
           router.push('/init');
           return Promise.resolve();
         }
-        checkUsers()
-          .then((response) => {
-            if (!response.data) {
-              router.push('/registration');
-            }
-          })
+        checkUsers().then((response) => {
+          if (!response.data) {
+            router.push('/registration');
+          }
+        });
         return Promise.resolve();
       })
       .catch((err) => Promise.reject(err));
-
 
     const onLoginClick = async () => {
       isSignInBtnClicked.value = true;
@@ -123,7 +128,9 @@ export default defineComponent({
       await router.push('/');
     };
 
-    const signInDisabled = computed(() => username.value.length === 0 || password.value.length < 4 || isSignInBtnClicked.value);
+    const signInDisabled = computed(
+      () => username.value.length === 0 || password.value.length < 4 || isSignInBtnClicked.value
+    );
 
     return {
       title,

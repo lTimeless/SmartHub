@@ -5,8 +5,7 @@
       <slot />
       <button
         @click="callback"
-        class="w-50 block mx-auto focus:outline-none py-2 px-5 rounded-lg shadow-sm text-center
-                          text-gray-600 bg-white hover:bg-gray-100 font-medium border"
+        class="w-50 block mx-auto focus:outline-none py-2 px-5 rounded-lg shadow-sm text-center text-gray-600 bg-white hover:bg-gray-100 font-medium border"
       >
         {{ buttonTitle }}
       </button>
