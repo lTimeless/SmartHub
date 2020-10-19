@@ -56,9 +56,7 @@ export default defineComponent({
   setup() {
     const store = useStore();
     const home = computed(() => store.state.homeModule.home);
-    const devices = computed(() =>
-      home.value === undefined ? undefined : home.value.groups?.flatMap((x) => x.devices)
-    );
+    const devices = computed(() => home.value===undefined? undefined:home.value.groups?.flatMap((x) => x.devices));
     const state = reactive({
       showAddModal: false,
       showDetailModal: false,
