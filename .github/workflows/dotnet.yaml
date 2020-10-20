@@ -18,7 +18,10 @@ jobs:
       uses: actions/setup-dotnet@v1
       with:
         dotnet-version: 5.0.100-rc.2.20479.15
-        
+
+    - name: Use latest Node.js version
+      uses: actions/setup-node@master
+      
     - name: Install dependencies
       run: dotnet restore $folderName$solution
       
