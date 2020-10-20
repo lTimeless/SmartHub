@@ -19,9 +19,6 @@ jobs:
       with:
         dotnet-version: 5.0.100-rc.2.20479.15
 
-    - name: Use latest Node.js version
-      uses: actions/setup-node@master
-      
     - name: Install dependencies
       run: dotnet restore $folderName$solution
       
@@ -30,6 +27,3 @@ jobs:
       
     - name: Run Test
       run: dotnet test ${{ format('{0}/{1}', '$folderName', '$solution') }} --no-restore --verbosity normal
-
-    - name: Run Publish
-      run: dotnet publish ${{ format('{0}/{1}', '$folderName', '$solution') }} --no-build --configuration Release
