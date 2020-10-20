@@ -1,4 +1,4 @@
-name: .Net core CI
+name: .Net5 CI
 on:
   push:
     branches: [ master, develop ]
@@ -30,3 +30,6 @@ jobs:
       
     - name: Run Test
       run: dotnet test ${{ format('{0}/{1}', '$folderName', '$solution') }} --no-restore --verbosity normal
+
+    - name: Run Publish
+      run: dotnet publish ${{ format('{0}/{1}', '$folderName', '$solution') }} --no-build --configuration Release
