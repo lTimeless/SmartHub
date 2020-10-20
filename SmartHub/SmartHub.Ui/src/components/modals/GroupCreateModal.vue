@@ -1,11 +1,18 @@
 <template>
-  <BaseModal title="Create new Group" saveBtnTitle="Create" closeBtnTitle="Cancel" :close="close" :save="save" :saveBtnActive="saveBtnActive" headerColor="bg-orange-400">
+  <BaseModal
+    title="Create new Group"
+    save-btn-title="Create"
+    close-btn-title="Cancel"
+    :close="close"
+    :save="save"
+    :save-btn-active="saveBtnActive"
+    header-color="bg-orange-400"
+  >
     <label class="text-left block text-sm">
       <span class="text-gray-600 dark:text-gray-400">Name</span>
       <input
         v-model="groupCreateRequest.name"
-        class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400
-            focus:outline-none focus:shadow-outlineIndigo dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
+        class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outlineIndigo dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
         placeholder="Group name"
       />
     </label>
@@ -13,8 +20,7 @@
       <span class="text-gray-600 dark:text-gray-400">Description</span>
       <input
         v-model="groupCreateRequest.description"
-        class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400
-            focus:outline-none focus:shadow-outlineIndigo dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
+        class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outlineIndigo dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
         placeholder="Group description"
       />
     </label>
@@ -40,7 +46,9 @@ export default defineComponent({
       name: '',
       description: ''
     });
-    const saveBtnActive = computed(() => groupCreateRequest.name !== '' && groupCreateRequest.description !== '');
+    const saveBtnActive = computed(
+      () => groupCreateRequest.name !== '' && groupCreateRequest.description !== ''
+    );
     const close = () => {
       context.emit('close', false);
     };

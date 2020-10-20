@@ -3,7 +3,13 @@
     <table class="border-collapse table-auto w-full whitespace-no-wrap bg-white table-striped relative">
       <thead>
         <tr class="text-left">
-          <th v-for="heading in headers" :key="heading.value" class="sticky top-0 border-b py-2" v-text="heading.text" :class="{ [heading.value]: true }"></th>
+          <th
+            v-for="heading in headers"
+            :key="heading.value"
+            class="sticky top-0 border-b py-2"
+            v-text="heading.text"
+            :class="{ [heading.value]: true }"
+          ></th>
         </tr>
       </thead>
       <tbody>

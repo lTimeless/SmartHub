@@ -2,12 +2,23 @@
   <div class="w-full">
     <h1 class="text-3xl text-gray-500 font-bold mb-6">Events</h1>
     <div class="flex justify-between items-center mb-4">
-      <Search :data="activityArray" :search-keys="searchKeys" @search-result="getSearchResult" @toggle-table="toggleTable" />
+      <Search
+        :data="activityArray"
+        :search-keys="searchKeys"
+        @search-result="getSearchResult"
+        @toggle-table="toggleTable"
+      />
       <div class="w-1/3 flex justify-end">
-        <span v-if="connectionEstablished" class="w-1/3 text-xs font-semibold inline-block py-2 px-2 rounded text-indigo-600 bg-indigo-200 uppercase ml-3">
+        <span
+          v-if="connectionEstablished"
+          class="w-1/3 text-xs font-semibold inline-block py-2 px-2 rounded text-indigo-600 bg-indigo-200 uppercase ml-3"
+        >
           Connected
         </span>
-        <span v-if="!connectionEstablished" class="w-1/3 text-xs font-semibold inline-block py-2 px-2 rounded text-red-600 bg-red-200 uppercase ml-3">
+        <span
+          v-if="!connectionEstablished"
+          class="w-1/3 text-xs font-semibold inline-block py-2 px-2 rounded text-red-600 bg-red-200 uppercase ml-3"
+        >
           Not connected
         </span>
       </div>
@@ -28,10 +39,14 @@
             <span class="text-gray-700 flex items-center" v-text="activity.message"></span>
           </td>
           <td>
-            <span class="text-gray-700 flex items-center"> {{ activity.successfulRequest ?? '-' }}</span>
+            <span class="text-gray-700 flex items-center">
+              {{ activity.successfulRequest ?? '-' }}</span
+            >
           </td>
           <td>
-            <span class="text-gray-700 flex items-center">{{ activity.executionTime }} <span class="font-normal">ms</span></span>
+            <span class="text-gray-700 flex items-center"
+              >{{ activity.executionTime }} <span class="font-normal">ms</span></span
+            >
           </td>
         </tr>
       </Table>
@@ -49,10 +64,16 @@
             <span class="text-gray-700 flex items-center" v-text="activity.item.message"></span>
           </td>
           <td>
-            <span class="text-gray-700 flex items-center" v-text="activity.item.successfulRequest"></span>
+            <span
+              class="text-gray-700 flex items-center"
+              v-text="activity.item.successfulRequest"
+            ></span>
           </td>
           <td>
-            <span class="text-gray-700 flex items-center" v-text="activity.item.executionTime"></span>
+            <span
+              class="text-gray-700 flex items-center"
+              v-text="activity.item.executionTime"
+            ></span>
           </td>
         </tr>
       </Table>
@@ -74,7 +95,10 @@ export default defineComponent({
     Table
   },
   setup() {
-    const {connectionEstablished, data, error, connection} = useSignalRHub<ServerActivity>('activity','SendActivity');
+    const { connectionEstablished, data, error, connection } = useSignalRHub<ServerActivity>(
+      'activity',
+      'SendActivity'
+    );
 
     const showSearchTable = ref(false);
     const activityArray = reactive<ServerActivity[]>([]);
@@ -91,7 +115,7 @@ export default defineComponent({
         activityArray.push(newData);
       }
     });
-    const searchKeys = ['DateTime', 'Requester', 'SuccessfulRequest', 'ExecutionTime' ];
+    const searchKeys = ['DateTime', 'Requester', 'SuccessfulRequest', 'ExecutionTime'];
 
     onUnmounted(() => {
       connection.value.stop();

@@ -12,7 +12,7 @@
 
   <ItemGroup>
     <PackageReference Include="Figgle" Version="0.4.0" />
-    <PackageReference Include="Hangfire" Version="1.7.15" />
+    <PackageReference Include="Hangfire" Version="1.7.16" />
     <PackageReference Include="Hangfire.PostgreSql" Version="1.7.1" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="5.0.0-rc.2.20475.17" />
     <PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.2.0" />
@@ -23,14 +23,14 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="5.0.0-rc.2.20475.6" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Proxies" Version="5.0.0-rc.2.20475.6" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="5.0.0-rc.2.20475.5" />
     <PackageReference Include="Microsoft.Extensions.DependencyModel" Version="5.0.0-rc.2.20475.5" />
     <PackageReference Include="Microsoft.IdentityModel.Tokens" Version="6.8.0" />
-    <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="5.0.0-rc1" />
+    <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="5.0.0-rc2" />
     <PackageReference Include="Serilog" Version="2.10.1-dev-01249" />
     <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.8.0" />
-    <PackageReference Include="System.Reactive" Version="5.0.0-preview.16" />
+    <PackageReference Include="System.Reactive" Version="5.0.0-preview.220" />
     <PackageReference Include="System.Text.Json" Version="5.0.0-rc.2.20475.5" />
   </ItemGroup>
 

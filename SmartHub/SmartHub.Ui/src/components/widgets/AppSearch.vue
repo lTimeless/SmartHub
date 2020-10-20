@@ -70,6 +70,7 @@ export default defineComponent({
       default: '6'
     }
   },
+  emits: ['toggle-table', 'search-result'],
   setup(props, context) {
     const searchInput = ref('');
     const iconPadding = ref(2);

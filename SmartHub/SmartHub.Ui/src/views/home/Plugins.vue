@@ -1,7 +1,5 @@
 <template>
-  <div>
-    Plugins
-  </div>
+  <div>Plugins</div>
 </template>
 
 <script lang="ts">

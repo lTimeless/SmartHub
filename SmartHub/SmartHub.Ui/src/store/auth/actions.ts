@@ -16,7 +16,10 @@ export enum AuthActionTypes {
 
 // Actions
 type ActionAugments = Omit<ActionContext<AuthState, RootState>, 'commit'> & {
-  commit<K extends keyof AuthMutations>(key: K, payload: Parameters<AuthMutations[K]>[1]): ReturnType<AuthMutations[K]>;
+  commit<K extends keyof AuthMutations>(
+    key: K,
+    payload: Parameters<AuthMutations[K]>[1]
+  ): ReturnType<AuthMutations[K]>;
 };
 
 // Action Interface

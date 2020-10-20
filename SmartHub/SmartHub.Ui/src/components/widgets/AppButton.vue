@@ -1,8 +1,7 @@
 <template>
   <button
     @click="callback"
-    class="flex justify-center items-center font-bold border border-ui-border rounded-lg
-        hover:text-white transition-colors"
+    class="flex justify-center items-center font-bold border border-ui-border rounded-lg hover:text-white transition-colors"
     :class="`hover:bg-${color}-${colorSaturation}`"
     :style="{ height: height + 'px', width: width + 'px' }"
   >
