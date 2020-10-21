@@ -32,7 +32,7 @@ namespace SmartHub.Domain.Tests.Entities
         {
             const string newDescription = "test";
 
-            string actual = group.SetDescription(newDescription).Description;
+            string? actual = group.SetDescription(newDescription).Description;
 
             Assert.Equal(newDescription, actual);
         }
@@ -48,7 +48,7 @@ namespace SmartHub.Domain.Tests.Entities
         {
             Device device = new Device("name", default, "ip", "company", ConnectionTypes.None, default, "pluginName", default);
 
-            Device addedDevice = group.AddDevice(device).Devices.FirstOrDefault();
+            Device? addedDevice = group.AddDevice(device).Devices.FirstOrDefault();
 
             Assert.Same(device, addedDevice);
         }
