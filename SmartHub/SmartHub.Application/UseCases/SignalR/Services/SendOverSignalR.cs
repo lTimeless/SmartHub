@@ -31,9 +31,9 @@ namespace SmartHub.Application.UseCases.SignalR.Services
 		}
 
 		/// <inheritdoc cref="ISendOverSignalR.SendActivity"/>
-		public async Task SendActivity(Activity activity)
+		public async Task SendActivity(ActivityDto activityDto)
 		{
-			await _activityHubContext.Clients.All.SendActivity(activity);
+			await _activityHubContext.Clients.All.SendActivity(activityDto);
 			// Here also send it to the database
 			// unit of Work will trigger after this(if this is executed from the ""RequestLoggerBehavior)
 		}

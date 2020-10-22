@@ -18,8 +18,8 @@ namespace SmartHub.Application.UseCases.SignalR.Services
 		/// Sends an activity object -> it is the current request but with only
 		/// the needed info
 		/// </summary>
-		/// <param name="activity">The given activity object</param>
+		/// <param name="activityDto">The given activity object</param>
 		/// <returns>Task state</returns>
-		Task SendActivity(Activity activity);
+		Task SendActivity(ActivityDto activityDto);
 	}
 }
