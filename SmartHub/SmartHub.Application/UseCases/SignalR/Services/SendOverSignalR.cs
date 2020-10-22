@@ -1,9 +1,12 @@
-﻿using AutoMapper;
+﻿using System;
+using AutoMapper;
 using Microsoft.AspNetCore.SignalR;
 using SmartHub.Application.Common.Interfaces.Database;
 using SmartHub.Application.UseCases.Entity.Homes;
 using System.Threading.Tasks;
 using SmartHub.Application.Common.Models;
+using SmartHub.Application.UseCases.Entity.Activities;
+using SmartHub.Domain.Entities;
 
 namespace SmartHub.Application.UseCases.SignalR.Services
 {
@@ -31,11 +34,23 @@ namespace SmartHub.Application.UseCases.SignalR.Services
 		}
 
 		/// <inheritdoc cref="ISendOverSignalR.SendActivity"/>
-		public async Task SendActivity(ActivityDto activityDto)
+		public async Task SendActivity(string userName,string requestName, string message, long execTime,bool success)
 		{
+			//das failt hier da am anfang eine activit erstellt wird und am ende aber beide ohen ID
+			// da erst am ganz ende eines requests SaveDb gemacht wird und dann erst die DB  die IDs erstellt
+			var activityDto = new ActivityDto
+			{
+				DateTime = DateTime.Now.ToString("HH:mm:ss"),
+				Username = userName,
+				Message = message,
+				ExecutionTime = execTime,
+				SuccessfulRequest = success
+			};
 			await _activityHubContext.Clients.All.SendActivity(activityDto);
-			// Here also send it to the database
-			// unit of Work will trigger after this(if this is executed from the ""RequestLoggerBehavior)
+			var home = await _unitOfWork.HomeRepository.GetHome();
+			var activity = _mapper.Map<Activity>(activityDto);
+			activity.UpdateName(requestName + "_" + activityDto.DateTime);
+			home.AddActivity(activity);
 		}
 	}
 }

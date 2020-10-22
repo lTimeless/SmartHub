@@ -164,6 +164,12 @@ namespace SmartHub.Domain.Entities
 			AddDomainEvent(new DeviceUpdatedEvent(StateTypes.Modified.ToString(), foundDevice.Id));
 			return true;
 		}
+
+		public Home AddActivity(Activity newActivity)
+		{
+			Activities.Add(newActivity);
+			return this;
+		}
 		#endregion
 	}
 }

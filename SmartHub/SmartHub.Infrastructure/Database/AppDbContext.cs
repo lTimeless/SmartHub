@@ -48,7 +48,8 @@ namespace SmartHub.Infrastructure.Database
 				.ApplyConfiguration(new RoleConfiguration())
 				.ApplyConfiguration(new UserConfiguration())
 				.ApplyConfiguration(new PluginConfiguration())
-				.ApplyConfiguration(new SettingConfiguration());
+				.ApplyConfiguration(new SettingConfiguration())
+				.ApplyConfiguration(new ActivityConfiguration());
 		}
 
 		public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = new CancellationToken())
