@@ -101,7 +101,11 @@ namespace SmartHub.Api
                 // see https://go.microsoft.com/fwlink/?linkid=864501
                 spa.Options.SourcePath = "wwwroot";
 
-                if (Configuration.GetValue<bool>("Use_StaticFiles")) return;
+                if (Configuration.GetValue<bool>("Use_StaticFiles"))
+                {
+                    return;
+                }
+
                 Log.ForContext(typeof(Startup)).Warning("Not serving frontend from staticfiles");
                 // Start seperate FE server and Server listens to it
                 spa.UseProxyToSpaDevelopmentServer("http://localhost:8080");
