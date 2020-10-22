@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
@@ -27,7 +28,7 @@ namespace SmartHub.Application.UseCases.Entity.Groups
         {
             var home = await _unitOfWork.HomeRepository.GetHome();
             return home == null
-                ? Response.Fail<IEnumerable<GroupDto>>("Error: No home created yet.")
+                ? Response.Fail<IEnumerable<GroupDto>>("Error: No home created yet.", Array.Empty<GroupDto>())
                 : Response.Ok(_mapper.Map<IEnumerable<GroupDto>>(home.Groups));
         }
     }

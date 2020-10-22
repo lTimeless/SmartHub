@@ -35,12 +35,12 @@ namespace SmartHub.Application.UseCases.Entity.Groups
             var home = await _unitOfWork.HomeRepository.GetHome();
             if (home == null)
             {
-                return Response.Fail<GroupDto>("Error: No home created yet.");
+                return Response.Fail<GroupDto>("Error: No home created yet.", new GroupDto());
             }
 
             var group = home.Groups.SingleOrDefault(x => x.Id == request.Id);
             return group == null
-                ? Response.Fail<GroupDto>("Error: No group found.")
+                ? Response.Fail<GroupDto>("Error: No group found.", new GroupDto())
                 : Response.Ok(_mapper.Map<GroupDto>(group));
 
         }

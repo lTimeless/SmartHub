@@ -24,12 +24,12 @@ namespace SmartHub.Application.UseCases.Entity.Devices.Read.ById
             var home = await _unitOfWork.HomeRepository.GetHome();
             if (home == null)
             {
-                return Response.Fail<DeviceDto>("Error: No home created yet.");
+                return Response.Fail<DeviceDto>("Error: No home created yet.", new DeviceDto());
             }
 
             var device = home.Groups.SelectMany(d => d.Devices).SingleOrDefault(x => x.Id == request.Id);
             return device == null
-                ? Response.Fail<DeviceDto>("Error: No device found.")
+                ? Response.Fail<DeviceDto>("Error: No device found.", new DeviceDto())
                 : Response.Ok(_mapper.Map<DeviceDto>(device));
         }
     }

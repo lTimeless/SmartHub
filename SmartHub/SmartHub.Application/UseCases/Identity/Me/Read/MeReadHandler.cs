@@ -25,7 +25,7 @@ namespace SmartHub.Application.UseCases.Identity.Me.Read
 		{
 			if (_currentUser.User == null)
 			{
-				return Response.Fail<UserDto>("Error: Something went wrong retrieving your account data");
+				return Response.Fail<UserDto>("Error: Something went wrong retrieving your account data", new UserDto());
 			}
 			var user = await _unitOfWork.UserRepository.GetUserByName(_currentUser.User.UserName);
 			return Response.Ok(_mapper.Map<UserDto>(user));
