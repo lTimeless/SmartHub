@@ -73,16 +73,16 @@ namespace SmartHub.Application.Tests.UseCases.Entity.Devices.Read
 
         private static Home CreateHome()
         {
-            Home home = new Home("name", "description");
+            Home returnedHome = new Home("name", "description");
             Group group = new Group("groupName", "description");
 
             group
                 .AddDevice(new Device("name1", default, "ip", "company", ConnectionTypes.None, default, "pluginName", default))
                 .AddDevice(new Device("name2", default, "ip", "company", ConnectionTypes.None, default, "pluginName", default));
 
-            home.AddGroup(group);
+            returnedHome.AddGroup(group);
 
-            return home;
+            return returnedHome;
         }
 
         private static IUnitOfWork CreateUnitOfWorkSubstitute(IHomeRepository homeRepository)
