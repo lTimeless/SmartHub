@@ -35,7 +35,7 @@ namespace SmartHub.Infrastructure.Services.Auth
 			});
 			claims.AddRange(roles.Select(role => new Claim("roles", role)));
 
-			var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtSettings.Key));
+			var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtSettings.Key ?? string.Empty));
 
 			var tokenDescriptor = new SecurityTokenDescriptor
 			{

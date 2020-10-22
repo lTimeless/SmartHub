@@ -13,25 +13,25 @@ namespace SmartHub.Infrastructure.Database
 {
 	public class UnitOfWork : IUnitOfWork
 	{
-		private IHomeRepository _homeRepository;
-		private IUserRepository _userRepository;
 		private readonly IChannelManager _channelManager;
-		private readonly UserManager<User> _userManager;
-		private readonly RoleManager<Role> _roleManager;
 
 		public AppDbContext AppDbContext { get; }
 
-		public UnitOfWork(AppDbContext appDbContext, IChannelManager channelManager,
-			UserManager<User> userManager, RoleManager<Role> roleManager)
+		public UnitOfWork(
+			AppDbContext appDbContext,
+			IChannelManager channelManager,
+			UserManager<User> userManager,
+			RoleManager<Role> roleManager)
 		{
 			AppDbContext = appDbContext;
 			_channelManager = channelManager;
-			_userManager = userManager;
-			_roleManager = roleManager;
+			HomeRepository = new HomeRepositoryAsync(AppDbContext);
+			UserRepository = new UserRepository(userManager, roleManager);
 		}
 
-		public IHomeRepository HomeRepository => _homeRepository ??= new HomeRepositoryAsync(AppDbContext);
-		public IUserRepository UserRepository => _userRepository ??= new UserRepository(_userManager, _roleManager);
+		public IHomeRepository HomeRepository { get; }
+
+		public IUserRepository UserRepository { get; }
 
 		public async Task SaveAsync()
 		{

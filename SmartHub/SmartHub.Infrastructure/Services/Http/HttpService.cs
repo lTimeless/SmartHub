@@ -42,7 +42,7 @@ namespace SmartHub.Infrastructure.Services.Http
 
 			using var response = await _httpClient.GetAsync(uri.ToString());
 			var responseAsString = await response.Content.ReadAsStringAsync();
-			return JsonSerializer.Deserialize<T>(responseAsString);
+			return JsonSerializer.Deserialize<T>(responseAsString)!;
 		}
 
 		/// <inheritdoc cref="IHttpService.PostAsync"/>

@@ -14,11 +14,10 @@ namespace SmartHub.Infrastructure.Services.Dispatchers
 	public class ChannelManager : IChannelManager
 	{
 		private readonly ILogger _log = Log.ForContext<ChannelManager>();
-		private Dictionary<ChannelNames, Subject<IBaseEvent>>? ChannelMessageDictionary { get; set; }
+		private Dictionary<ChannelNames, Subject<IBaseEvent>> ChannelMessageDictionary { get; set; } = new Dictionary<ChannelNames, Subject<IBaseEvent>>();
 
 		public Task StartAsync(CancellationToken cancellationToken)
 		{
-			ChannelMessageDictionary = new Dictionary<ChannelNames, Subject<IBaseEvent>>();
 			// Creates channels for all ChannelNames
 			foreach (var type in (ChannelNames[])Enum.GetValues(typeof(ChannelNames)))
 			{
@@ -56,10 +55,10 @@ namespace SmartHub.Infrastructure.Services.Dispatchers
 		public IObservable<IBaseEvent> GetChannel(ChannelNames channelName)
 		{
 			_log.Information($"Get channel with name {channelName}");
-			return ChannelMessageDictionary[channelName];
+			return ChannelMessageDictionary[channelName] ?? new Subject<IBaseEvent>();
 		}
 
-		public Task PublishNextToChannel(ChannelNames channelName, IBaseEvent message)
+		public Task PublishNextToChannel(ChannelNames channelName, IBaseEvent? message)
 		{
 			if (message is null)
 			{
@@ -67,14 +66,14 @@ namespace SmartHub.Infrastructure.Services.Dispatchers
 			}
 
 			var channel = ChannelMessageDictionary[channelName];
-			channel.OnNext(message);
+			channel?.OnNext(message);
 			return Task.CompletedTask;
 		}
 
 		public Task PublishErrorToChannel(ChannelNames channelName, Exception exception)
 		{
 			var channel = ChannelMessageDictionary.GetValueOrDefault(channelName);
-			channel.OnError(exception);
+			channel?.OnError(exception);
 			_log.Information($"Error on channel => {channelName}");
 			return Task.CompletedTask;
 		}
@@ -82,7 +81,7 @@ namespace SmartHub.Infrastructure.Services.Dispatchers
 		public Task PublishCompleteToChannel(ChannelNames channelName)
 		{
 			var channel = ChannelMessageDictionary.GetValueOrDefault(channelName);
-			channel.OnCompleted();
+			channel?.OnCompleted();
 			return Task.CompletedTask;
 		}
 

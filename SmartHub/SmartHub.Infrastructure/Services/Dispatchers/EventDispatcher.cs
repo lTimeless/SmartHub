@@ -2,11 +2,9 @@
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.SignalR;
 using Serilog;
 using SmartHub.Application.Common.Interfaces;
 using SmartHub.Application.Common.Interfaces.Events;
-using SmartHub.Application.UseCases.SignalR;
 using SmartHub.Domain.Common.Enums;
 using SmartHub.Domain.DomainEvents;
 
@@ -16,7 +14,7 @@ namespace SmartHub.Infrastructure.Services.Dispatchers
 	public class EventDispatcher : IEventDispatcher
 	{
 		private readonly IChannelManager _channelManager;
-		private IDisposable _disposable;
+		private IDisposable? _disposable;
 		private readonly ILogger _logger = Log.ForContext(typeof(EventDispatcher));
 		public EventDispatcher(IChannelManager channelManager)
 		{
@@ -34,7 +32,7 @@ namespace SmartHub.Infrastructure.Services.Dispatchers
 
 		public Task StopAsync(CancellationToken cancellationToken)
 		{
-			_disposable.Dispose();
+			_disposable?.Dispose();
 			_logger.Information("Stop EventDispatcher.");
 			return Task.CompletedTask;
 		}

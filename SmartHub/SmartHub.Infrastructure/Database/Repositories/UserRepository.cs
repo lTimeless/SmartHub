@@ -70,9 +70,9 @@ namespace SmartHub.Infrastructure.Database.Repositories
 	        return await _userManager.Users.AnyAsync();
         }
 
-        public Task<User> GetUserByName(string username)
+        public async Task<User?> GetUserByName(string username)
         {
-	        return _userManager.FindByNameAsync(username);
+	        return await _userManager.FindByNameAsync(username);
         }
     }
 }
