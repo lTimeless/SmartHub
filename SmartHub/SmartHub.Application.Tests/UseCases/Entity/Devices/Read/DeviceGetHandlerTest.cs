@@ -92,17 +92,17 @@ namespace SmartHub.Application.Tests.UseCases.Entity.Devices.Read
             return substitute;
         }
 
-        private static IHomeRepository CreateHomeRepository(Home home)
+        private static IHomeRepository CreateHomeRepository(Home returnedHome)
         {
             IHomeRepository substitute = Substitute.For<IHomeRepository>();
-            substitute.GetHome().ReturnsForAnyArgs(home);
+            substitute.GetHome().ReturnsForAnyArgs(returnedHome);
             return substitute;
         }
 
-        private static IMapper CreateMapperSubstitute(IReadOnlyCollection<DeviceDto> deviceDtos)
+        private static IMapper CreateMapperSubstitute(IReadOnlyCollection<DeviceDto> returnedDeviceDtos)
         {
             var substitute = Substitute.For<IMapper>();
-            substitute.Map<IEnumerable<DeviceDto>>(default).ReturnsForAnyArgs(deviceDtos);
+            substitute.Map<IEnumerable<DeviceDto>>(default).ReturnsForAnyArgs(returnedDeviceDtos);
             return substitute;
         }
     }
