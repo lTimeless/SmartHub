@@ -11,11 +11,9 @@ namespace SmartHub.Domain.Entities
 	{
 		public virtual List<User> Users { get; protected set; }
 		public virtual List<Group> Groups { get; protected set; }
-
 		public virtual List<Plugin> Plugins { get; protected set; } // make it so that all plugins will be saved for backup /restore etc.
-
 		public virtual List<Setting> Settings { get; protected set; }
-
+		public virtual List<Activity> Activities { get; protected set; }
 		public virtual Address Address { get; private set; }
 		public virtual List<BaseDomainEvent> Events { get; set; }
 
@@ -30,6 +28,7 @@ namespace SmartHub.Domain.Entities
 			Plugins = new List<Plugin>();
 			Events = new List<BaseDomainEvent>();
 			Settings = new List<Setting>();
+			Activities = new List<Activity>();
 		}
 
 		#region Methods

@@ -11,9 +11,9 @@ namespace SmartHub.Application.UseCases.SignalR
         /// <summary>
         /// Sends an activity object to the clients
         /// </summary>
-        /// <param name="activity">The Activity to send</param>
+        /// <param name="activityDto">The Activity to send</param>
         /// <returns>Task</returns>
-        Task SendActivity(Activity activity);
+        Task SendActivity(ActivityDto activityDto);
 
         /// <summary>
         /// Sends the homeDto

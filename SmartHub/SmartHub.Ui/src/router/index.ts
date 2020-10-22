@@ -11,10 +11,11 @@ import Logs from '@/views/home/admin/Logs.vue';
 import System from '@/views/home/admin/System.vue';
 import Health from '@/views/home/admin/Health.vue';
 import Manager from '@/views/home/admin/Manager.vue';
+import { Routes } from '@/types/enums';
 
 const routes: Array<RouteRecordRaw> = [
   {
-    path: '/login',
+    path: Routes.Login,
     name: 'Login',
     component: Login,
     meta: {
@@ -22,7 +23,7 @@ const routes: Array<RouteRecordRaw> = [
     }
   },
   {
-    path: '/registration',
+    path: Routes.Registration,
     name: 'Registration',
     component: Registration,
     meta: {
@@ -30,7 +31,7 @@ const routes: Array<RouteRecordRaw> = [
     }
   },
   {
-    path: '/init',
+    path: Routes.Init,
     name: 'init',
     component: Init,
     meta: {
@@ -38,7 +39,7 @@ const routes: Array<RouteRecordRaw> = [
     }
   },
   {
-    path: '/',
+    path: Routes.Home,
     component: () => import(/* webpackChunkName: "home" */ '../views/Home.vue'),
     meta: {
       requiresAuth: true,
@@ -47,7 +48,7 @@ const routes: Array<RouteRecordRaw> = [
     children: [
       // Guest paths #####
       {
-        path: '',
+        path: Routes.Dashboard,
         name: 'Dashboard',
         component: () => import(/* webpackChunkName: "dashboard" */ '../views/home/Dashboard.vue'),
         meta: {
@@ -56,7 +57,7 @@ const routes: Array<RouteRecordRaw> = [
         }
       },
       {
-        path: '/user',
+        path: Routes.User,
         name: 'User',
         component: () => import(/* webpackChunkName: "user" */ '../views/home/MyUser.vue'),
         meta: {
@@ -65,7 +66,7 @@ const routes: Array<RouteRecordRaw> = [
         }
       },
       {
-        path: '/about',
+        path: Routes.About,
         name: 'About',
         // route level code-splitting
         // this generates a separate chunk (about.[hash].js) for this route
@@ -78,7 +79,7 @@ const routes: Array<RouteRecordRaw> = [
       },
       // User paths #####
       {
-        path: '/settings',
+        path: Routes.Settings,
         name: 'Settings',
         component: () => import(/* webpackChunkName: "init" */ '../views/home/Settings.vue'),
         meta: {
@@ -87,7 +88,7 @@ const routes: Array<RouteRecordRaw> = [
         }
       },
       {
-        path: '/plugins',
+        path: Routes.Plugins,
         name: 'Plugins',
         component: () => import(/* webpackChunkName: "plugins" */ '../views/home/Plugins.vue'),
 
@@ -97,7 +98,7 @@ const routes: Array<RouteRecordRaw> = [
         }
       },
       {
-        path: '/statistics',
+        path: Routes.Statistics,
         name: 'Statistics',
         component: Statistics,
         meta: {
@@ -107,7 +108,7 @@ const routes: Array<RouteRecordRaw> = [
       },
       // Admin paths #####
       {
-        path: '/activity',
+        path: Routes.Activity,
         name: 'activity',
         component: Activity,
         meta: {
@@ -116,7 +117,7 @@ const routes: Array<RouteRecordRaw> = [
         }
       },
       {
-        path: '/logs',
+        path: Routes.Logs,
         name: 'Logs',
         component: Logs,
         meta: {
@@ -125,7 +126,7 @@ const routes: Array<RouteRecordRaw> = [
         }
       },
       {
-        path: '/system',
+        path: Routes.System,
         name: 'System',
         component: System,
         meta: {
@@ -134,7 +135,7 @@ const routes: Array<RouteRecordRaw> = [
         }
       },
       {
-        path: '/health',
+        path: Routes.Health,
         name: 'Health',
         component: Health,
         meta: {
@@ -143,7 +144,7 @@ const routes: Array<RouteRecordRaw> = [
         }
       },
       {
-        path: '/manager',
+        path: Routes.Manager,
         name: 'Manager',
         component: Manager,
         meta: {
@@ -152,21 +153,22 @@ const routes: Array<RouteRecordRaw> = [
         }
       },
       {
-        path: '/notauth',
+        path: Routes.NotAuthorized,
         name: 'NotAuthorized',
         component: NotAuthorized
       },
       {
-        path: '/:catchAll(.*)',
+        path: Routes.NotFound,
         component: NotFound
       }
     ]
   },
   {
-    path: '/:catchAll(.*)',
+    path: Routes.NotFound,
     component: NotFound
   }
 ];
+
 const router = createRouter({
   history: createWebHistory(),
   routes

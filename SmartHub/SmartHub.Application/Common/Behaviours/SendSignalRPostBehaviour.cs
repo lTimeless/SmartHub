@@ -2,17 +2,16 @@
 using SmartHub.Application.UseCases.SignalR.Services;
 using System.Threading;
 using System.Threading.Tasks;
-using MediatR;
 
 namespace SmartHub.Application.Common.Behaviours
 {
 	/// <summary>
 	/// Sends at the end of the request pipeline objects over SignalR
 	/// </summary>
-	public class SendSignalRPostBehavior<TRequest, TResponse> : IRequestPostProcessor<TRequest, TResponse> where TRequest : notnull
+	public class SendSignalRPostBehaviour<TRequest, TResponse> : IRequestPostProcessor<TRequest, TResponse> where TRequest : notnull
 	{
 		private readonly ISendOverSignalR _sendOverSignalR;
-		public SendSignalRPostBehavior(ISendOverSignalR sendOverSignalR)
+		public SendSignalRPostBehaviour(ISendOverSignalR sendOverSignalR)
 		{
 			_sendOverSignalR = sendOverSignalR;
 		}

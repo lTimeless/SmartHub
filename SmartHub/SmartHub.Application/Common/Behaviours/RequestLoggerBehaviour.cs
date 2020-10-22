@@ -6,23 +6,23 @@ using System.Threading.Tasks;
 using MediatR;
 using Serilog;
 using SmartHub.Application.Common.Models;
+using SmartHub.Application.UseCases.SignalR;
 using SmartHub.Application.UseCases.SignalR.Services;
 using SmartHub.Domain.Common.Enums;
-using Activity = SmartHub.Application.Common.Models.Activity;
 
 namespace SmartHub.Application.Common.Behaviours
 {
     /// <summary>
     /// Logs and stops the time for the current Request
     /// </summary>
-    public class RequestLoggerBehavior<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse> where TRequest : notnull
+    public class RequestLoggerBehaviour<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse> where TRequest : notnull
     {
         private readonly Stopwatch _timer;
-        private readonly ILogger _logger = Log.ForContext(typeof(RequestLoggerBehavior<,>));
+        private readonly ILogger _logger = Log.ForContext(typeof(RequestLoggerBehaviour<,>));
         private readonly CurrentUser _currentUser;
         private readonly ISendOverSignalR _sendOverSignalR;
 
-        public RequestLoggerBehavior(CurrentUser currentUser, ISendOverSignalR sendOverSignalR)
+        public RequestLoggerBehaviour(CurrentUser currentUser, ISendOverSignalR sendOverSignalR)
         {
             _currentUser = currentUser;
             _sendOverSignalR = sendOverSignalR;
@@ -34,7 +34,7 @@ namespace SmartHub.Application.Common.Behaviours
             var name = typeof(TRequest).Name;
             var userName = _currentUser.RequesterName;
 
-            var act = new Activity(DateTime.Now.ToString("HH:mm:ss"),
+            var act = new ActivityDto(DateTime.Now.ToString("HH:mm:ss"),
                 userName,
                 $"{name} started.",
                 _timer.ElapsedMilliseconds);
@@ -59,7 +59,7 @@ namespace SmartHub.Application.Common.Behaviours
                     name, userName, request);
             }
 
-            act = new Activity(DateTime.Now.ToString("HH:mm:ss"),
+            act = new ActivityDto(DateTime.Now.ToString("HH:mm:ss"),
                 userName,
                 $"{name} finished: {successMessage}",
                 _timer.ElapsedMilliseconds,
