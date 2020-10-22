@@ -66,7 +66,7 @@ namespace SmartHub.Domain.Entities
 			return type;
 		}
 
-		public static bool operator ==(BaseEntity a, BaseEntity b)
+		public static bool operator ==(BaseEntity? a, BaseEntity? b)
 		{
 			if (a is null && b is null)
 			{
@@ -79,7 +79,7 @@ namespace SmartHub.Domain.Entities
 			return a.Equals(b);
 		}
 
-		public static bool operator !=(BaseEntity a, BaseEntity b)
+		public static bool operator !=(BaseEntity? a, BaseEntity? b)
 		{
 			return !(a == b);
 		}

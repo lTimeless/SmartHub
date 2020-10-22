@@ -10,7 +10,7 @@ namespace SmartHub.Application.UseCases.NetworkScanner
 {
     public static class NetworkScannerUtils
     {
-        public static string MakeNameFromHostname(string hostname)
+        public static string MakeNameFromHostname(string? hostname)
         {
             if (hostname == null)
             {
@@ -93,7 +93,7 @@ namespace SmartHub.Application.UseCases.NetworkScanner
                 Log.ForContext(typeof(NetworkScannerUtils)).Warning($"Error {e.Message}");
             }
 
-            return null;
+            return string.Empty;
         }
     }
 }

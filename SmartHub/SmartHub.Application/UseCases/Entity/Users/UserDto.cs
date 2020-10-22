@@ -28,7 +28,7 @@ namespace SmartHub.Application.UseCases.Entity.Users
 
 			profile.CreateMap<UserDto, User>()
 				.ForMember(x => x.LastModifiedAt, opt =>
-					opt.MapFrom(x => DateTimeOffset.Parse(x.LastModifiedAt)));
+					opt.MapFrom(x => DateTimeOffset.Parse(x.LastModifiedAt ?? string.Empty)));
 		}
 	}
 }

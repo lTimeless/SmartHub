@@ -69,7 +69,7 @@ namespace SmartHub.Application.UseCases.PluginAdapter.Host
 			}
 			var setting = home.Settings.FirstOrDefault(c => c.IsActive);
 
-			var foundPlugins = _pluginLoadService.FindPluginsInAssemblies(setting.PluginPath);
+			var foundPlugins = _pluginLoadService.FindPluginsInAssemblies(setting?.PluginPath ?? string.Empty);
 			var onlyNewPlugins = PluginHelper.FilterByFunction(foundPlugins, key => home.Plugins.Any(x => x.Name == key));
 
 			if (onlyNewPlugins.IsNullOrEmpty())

@@ -48,7 +48,7 @@ namespace SmartHub.Application.UseCases.Entity.Groups
             {
                 Response.Fail<GroupDto>($"Error: Couldn't update group with id {request.Id}.", new GroupDto());
             }
-            return Response.Ok<GroupDto>($"Updated group with name {request.Name}", null);
+            return Response.Ok<GroupDto>($"Updated group with name {request.Name}", new GroupDto());
         }
     }
 }

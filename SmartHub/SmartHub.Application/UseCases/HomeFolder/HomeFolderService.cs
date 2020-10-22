@@ -60,7 +60,7 @@ namespace SmartHub.Application.UseCases.HomeFolder
         {
             var (path, folderName) = GetHomeFolderPath();
             var homePath = Path.Combine(path, folderName);
-            var pluginPath = Path.Combine(homePath, _applicationSettings.CurrentValue.PluginFolderName);
+            var pluginPath = Path.Combine(homePath, _applicationSettings.CurrentValue.PluginFolderName ?? string.Empty);
             _directoryService.CreateDirectory(pluginPath);
             _applicationSettings.CurrentValue.DefaultPluginPath = pluginPath;
         }
@@ -69,7 +69,7 @@ namespace SmartHub.Application.UseCases.HomeFolder
         {
             var (path, folderName) = GetHomeFolderPath();
             var homePath = Path.Combine(path, folderName);
-            var logPath = Path.Combine(homePath, _applicationSettings.CurrentValue.LogFolderName);
+            var logPath = Path.Combine(homePath, _applicationSettings.CurrentValue.LogFolderName ?? string.Empty);
             _directoryService.CreateDirectory(logPath);
             _applicationSettings.CurrentValue.LogFilePath = logPath;
         }
@@ -86,7 +86,7 @@ namespace SmartHub.Application.UseCases.HomeFolder
                     : Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData,
                         Environment.SpecialFolderOption.DoNotVerify))
                 ?? throw new SmartHubException("Could not find system path"),
-                _applicationSettings.CurrentValue.FolderName);
+                _applicationSettings.CurrentValue.FolderName ?? string.Empty);
         }
 
         private Tuple<string, string> GetDevEnvironmentFolderLocation()

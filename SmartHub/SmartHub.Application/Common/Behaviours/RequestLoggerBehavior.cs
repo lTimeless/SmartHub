@@ -1,13 +1,11 @@
 ﻿using System;
 using System.Diagnostics;
-using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
 using MediatR;
 using Serilog;
 using SmartHub.Application.Common.Models;
 using SmartHub.Application.UseCases.SignalR.Services;
-using SmartHub.Domain.Common.Enums;
 using Activity = SmartHub.Application.Common.Models.Activity;
 
 namespace SmartHub.Application.Common.Behaviours
@@ -35,7 +33,7 @@ namespace SmartHub.Application.Common.Behaviours
             var userName = _currentUser.RequesterName;
 
             var act = new Activity(DateTime.Now.ToString("HH:mm:ss"),
-                userName,
+                userName ?? string.Empty,
                 $"{name} started.",
                 _timer.ElapsedMilliseconds);
             await _sendOverSignalR.SendActivity(act);
@@ -60,7 +58,7 @@ namespace SmartHub.Application.Common.Behaviours
             }
 
             act = new Activity(DateTime.Now.ToString("HH:mm:ss"),
-                userName,
+                userName ?? string.Empty,
                 $"{name} finished: {successMessage}",
                 _timer.ElapsedMilliseconds,
                 successProp);

@@ -29,7 +29,14 @@ namespace SmartHub.Application.UseCases.Identity.Me.Update
 			{
 				return Response.Fail<UserDto>("Error: New username can't be empty.", new UserDto());
 			}
-			var userEntity = await _unitOfWork.UserRepository.GetUserByName(_currentUser.User.UserName);
+
+			var userName = _currentUser.User?.UserName ?? string.Empty;
+			var userEntity = await _unitOfWork.UserRepository.GetUserByName(userName);
+
+			if (userEntity == null)
+			{
+				return Response.Fail<UserDto>($"Error: Something went wrong updating user {userName}.", new UserDto());
+			}
 			userEntity.UserName = request.UserName;
 			userEntity.PersonInfo = request.PersonInfo;
 			userEntity.PersonName.FirstName = request.FirstName;
