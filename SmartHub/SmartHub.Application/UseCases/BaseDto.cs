@@ -1,7 +1,11 @@
 ﻿using System;
+using SmartHub.Application.Common.Mappings;
 
 namespace SmartHub.Application.UseCases
 {
+	/// <summary>
+	/// The base DTO from which DTO can inherit from if it has the same props.
+	/// </summary>
 	public abstract class BaseDto
 	{
 		public string? Id { get;  set; }

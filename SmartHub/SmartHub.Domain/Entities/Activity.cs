@@ -2,16 +2,25 @@
 {
     public class Activity : BaseEntity
     {
-        public string DateTime { get; }
-        public string Username { get; }
-        public string Message { get; }
-        public long ExecutionTime { get; }
-        public bool? SuccessfulRequest { get; }
+        public string DateTime { get; protected set; }
+        public string Username { get; protected set; }
+        public string Message { get; protected set; }
+        public long ExecutionTime { get; protected set; }
+        public bool SuccessfulRequest { get; protected set; }
 
-        public Activity(string dateTime, string userName, string message, long execTime, bool? successfullRequest = default)
+        protected Activity()
         {
-            SuccessfulRequest = successfullRequest;
+        }
+        public Activity(string dateTime, string userName, string message, long execTime, bool successfulRequest = default)
+        {
+            SuccessfulRequest = successfulRequest;
             (DateTime, Username, Message, ExecutionTime) = (dateTime, userName, message, execTime);
+        }
+
+        public Activity UpdateName(string name)
+        {
+            Name = name;
+            return this;
         }
     }
 }

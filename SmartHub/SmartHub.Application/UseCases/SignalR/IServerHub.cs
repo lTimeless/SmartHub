@@ -1,6 +1,7 @@
 ﻿using System.Threading.Tasks;
 using Serilog.Sinks.AspNetCore.SignalR.Interfaces;
 using SmartHub.Application.Common.Models;
+using SmartHub.Application.UseCases.Entity.Activities;
 using SmartHub.Application.UseCases.Entity.Homes;
 
 namespace SmartHub.Application.UseCases.SignalR

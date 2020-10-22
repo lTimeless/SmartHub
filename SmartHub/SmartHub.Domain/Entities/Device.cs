@@ -10,9 +10,7 @@ namespace SmartHub.Domain.Entities
 		public virtual Company Company { get; }
 
 		public ConnectionTypes PrimaryConnection { get; private set; }
-
 		public ConnectionTypes SecondaryConnection { get; private set; }
-
 		public string PluginName { get; } // Equals the Name Property in the IPlugin
 		public PluginTypes PluginTypes { get; }// Equals the PluginType Property in the IPlugin
 
