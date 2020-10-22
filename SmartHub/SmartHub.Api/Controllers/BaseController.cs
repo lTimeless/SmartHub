@@ -8,6 +8,6 @@ namespace SmartHub.Api.Controllers
 	[ApiController]
 	public abstract class BaseController : ControllerBase
 	{
-		protected IMediator Mediator => HttpContext.RequestServices.GetService<IMediator>();
+		protected IMediator Mediator => HttpContext.RequestServices.GetService<IMediator>()!;
 	}
 }
