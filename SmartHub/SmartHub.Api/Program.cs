@@ -17,12 +17,29 @@ namespace SmartHub.Api
 {
 	public static class Program
 	{
-		public static async Task Main(string[] args) =>
-			await CreateHostBuilder(args)
-				.Build()
-				.MigrateDatabase()
-				.RunAsync()
-				.ConfigureAwait(false);
+		public static async Task Main(string[] args)
+		{
+			Log.Logger = new LoggerConfiguration()
+				.WriteTo.Console()
+				.CreateBootstrapLogger();
+
+			try
+			{
+				await CreateHostBuilder(args)
+					.Build()
+					.MigrateDatabase()
+					.RunAsync()
+					.ConfigureAwait(false);
+			}
+			catch (Exception ex)
+			{
+				Log.Fatal(ex, "An unhandled exception occured during bootstrapping");
+			}
+			finally
+			{
+				Log.CloseAndFlush();
+			}
+		}
 
 		private static IHostBuilder CreateHostBuilder(string[] args) =>
 			Host.CreateDefaultBuilder(args)
