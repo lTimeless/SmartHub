@@ -1,4 +1,4 @@
-import axios, { AxiosInstance, AxiosRequestConfig } from 'axios';
+import axios, { AxiosRequestConfig } from 'axios';
 import { getToken, logout } from '@/services/auth/authService';
 import { useRouter } from 'vue-router';
 
