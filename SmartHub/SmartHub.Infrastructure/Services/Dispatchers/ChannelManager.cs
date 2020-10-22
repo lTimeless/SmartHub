@@ -14,7 +14,7 @@ namespace SmartHub.Infrastructure.Services.Dispatchers
 	public class ChannelManager : IChannelManager
 	{
 		private readonly ILogger _log = Log.ForContext<ChannelManager>();
-		private Dictionary<ChannelNames, Subject<IBaseEvent>> ChannelMessageDictionary { get; set; }
+		private Dictionary<ChannelNames, Subject<IBaseEvent>>? ChannelMessageDictionary { get; set; }
 
 		public Task StartAsync(CancellationToken cancellationToken)
 		{

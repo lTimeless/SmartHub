@@ -1,5 +1,4 @@
 ﻿using SmartHub.Domain.Entities;
-using SmartHub.Domain.Entities.Devices;
 using SmartHub.Domain.Entities.ValueObjects;
 
 namespace SmartHub.Domain.DomainEvents

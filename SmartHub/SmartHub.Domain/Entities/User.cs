@@ -18,10 +18,6 @@ namespace SmartHub.Domain.Entities
 		public string? HomeId { get; private set; }
 		public virtual Home? Home { get; }
 
-		protected User()
-		{
-		}
-
 		public User(string userName, string personInfo, PersonName fullname) :
 			base(userName)
 		{
@@ -30,6 +26,10 @@ namespace SmartHub.Domain.Entities
 			PersonInfo = personInfo;
 			PersonName = fullname;
 			Home = null;
+			CreatedAt = DateTimeOffset.Now;
+			LastModifiedAt = DateTimeOffset.Now;
+			CreatedBy = string.Empty;
+			LastModifiedBy = string.Empty;
 		}
 	}
 }

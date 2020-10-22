@@ -50,7 +50,7 @@ namespace SmartHub.Application.UseCases.PluginAdapter.Host
 			{
 				throw new PluginException("Error: There is no home created at the moment");
 			}
-			var setting = home.Settings.FirstOrDefault(c => c.IsActive);
+			var setting = home.Settings.First(c => c.IsActive);
 
 			var foundIplugin= await _pluginLoadService.LoadByName(pluginName, setting.PluginPath);
 			PluginsDictionary[foundIplugin.Name] = foundIplugin; // add or update key

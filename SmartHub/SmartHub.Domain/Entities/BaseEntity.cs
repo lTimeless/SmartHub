@@ -10,27 +10,27 @@ namespace SmartHub.Domain.Entities
 		public string LastModifiedBy { get; set; }
 	}
 
-
 	public abstract class BaseEntity : IEntity
 	{
-		public string Id { get; }
+		public string Id { get; set; }
+
+		public string Name { get; protected set; }
+		public string? Description { get; protected set; }
+
 		public DateTimeOffset CreatedAt { get; set; }
 		public DateTimeOffset LastModifiedAt { get; set; }
 		public string CreatedBy { get; set; }
 		public string LastModifiedBy { get; set; }
 
-		public string Name { get; protected set; }
-		public string? Description { get; protected set; }
-
-		protected BaseEntity()
-		{
-		}
-
 		protected BaseEntity(string name, string? description)
 		{
-			// Id = Guid.NewGuid().ToString();
+			Id = Guid.NewGuid().ToString();
 			Name = name;
 			Description = description;
+			CreatedAt = DateTimeOffset.Now;
+			LastModifiedAt = DateTimeOffset.Now;
+			CreatedBy = string.Empty;
+			LastModifiedBy = string.Empty;
 		}
 
 		public override bool Equals(object? obj)
@@ -61,7 +61,7 @@ namespace SmartHub.Domain.Entities
 
 			if (type.ToString().Contains("Castle.Proxies"))
 			{
-				return type.BaseType;
+				return type.BaseType ?? type;
 			}
 			return type;
 		}

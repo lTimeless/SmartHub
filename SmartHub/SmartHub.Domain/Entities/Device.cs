@@ -1,5 +1,5 @@
 ﻿using SmartHub.Domain.Common.Enums;
-using SmartHub.Domain.Entities.Devices;
+using SmartHub.Domain.Entities.ValueObjects;
 
 namespace SmartHub.Domain.Entities
 {
@@ -7,7 +7,7 @@ namespace SmartHub.Domain.Entities
 	{
 		public virtual IpAddress Ip { get; private set; }
 
-		public virtual Company Company { get; private set; }
+		public virtual Company Company { get; }
 
 		public ConnectionTypes PrimaryConnection { get; private set; }
 
@@ -15,10 +15,6 @@ namespace SmartHub.Domain.Entities
 
 		public string PluginName { get; } // Equals the Name Property in the IPlugin
 		public PluginTypes PluginTypes { get; }// Equals the PluginType Property in the IPlugin
-
-		protected Device()
-		{
-		}
 
 		public Device(
 			string name,

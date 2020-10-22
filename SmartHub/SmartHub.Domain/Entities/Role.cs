@@ -12,14 +12,14 @@ namespace SmartHub.Domain.Entities
 
 		public string? Description { get; set; }
 
-		protected Role()
-		{
-		}
-
 		public Role(string name, string description) : base(name)
 		{
 			Id = Guid.NewGuid().ToString();
 			Description = description;
+			CreatedAt = DateTimeOffset.Now;
+			LastModifiedAt = DateTimeOffset.Now;
+			CreatedBy = string.Empty;
+			LastModifiedBy = string.Empty;
 		}
 
 	}

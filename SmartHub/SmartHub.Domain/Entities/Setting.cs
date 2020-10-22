@@ -14,11 +14,6 @@ namespace SmartHub.Domain.Entities
 		public string PluginPath { get; private set; }
 
 		public string DownloadServerUrl { get; private set; }
-		public string? Filepath { get; private set; } // logic will come with file Import Userstory
-
-		protected Setting()
-		{
-		}
 
 		public Setting(string name, string description, bool isActive, string pluginPath, string downloadServerUrl,
 			SettingTypes type) :

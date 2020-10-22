@@ -5,19 +5,19 @@ namespace SmartHub.Application.UseCases.GeoLocation
     public class LocationDto
     {
         [JsonPropertyName("ip")]
-        public string Ip { get; set; }
+        public string? Ip { get; set; }
 
         [JsonPropertyName("city")]
-        public string City { get; set; }
+        public string? City { get; set; }
 
         [JsonPropertyName("region")]
-        public string Region { get; set; }
+        public string? Region { get; set; }
 
         [JsonPropertyName("country_name")]
-        public string Country { get; set; }
+        public string? Country { get; set; }
 
         [JsonPropertyName("postal")]
-        public string ZipCode { get; set; }
+        public string? ZipCode { get; set; }
 
         [JsonPropertyName("latitude")]
         public float Latitude { get; set; }
