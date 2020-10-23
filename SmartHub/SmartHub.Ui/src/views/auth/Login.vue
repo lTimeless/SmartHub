@@ -97,11 +97,13 @@ export default defineComponent({
     const username = ref('');
     const isSignInBtnClicked = ref(false);
 
-    const { loading, data, error } = useCheckHome();
-    if (!data) {
+    const { data } = useCheckHome();
+    console.log(data);
+    if (!data.value) {
+      console.log(data);
       router.push('/init');
     } else {
-      const { loading, data, error } = useCheckUsers();
+      const { data } = useCheckUsers();
       if (!data) {
         router.push('/registration');
       }

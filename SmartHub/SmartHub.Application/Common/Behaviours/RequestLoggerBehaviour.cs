@@ -34,7 +34,7 @@ namespace SmartHub.Application.Common.Behaviours
             var requestName = typeof(TRequest).Name;
             var userName = _currentUser.RequesterName;
             
-            await _sendOverSignalR.SendActivity(userName, requestName, $"{requestName} started." ,_timer.ElapsedMilliseconds, false);
+            await _sendOverSignalR.SendActivity(userName, $"{requestName}_Started", $"{requestName} started." ,_timer.ElapsedMilliseconds, false);
 
             _timer.Start();
             var response = await next();
@@ -55,7 +55,7 @@ namespace SmartHub.Application.Common.Behaviours
                     requestName, userName, request);
             }
 
-            await _sendOverSignalR.SendActivity(userName, requestName, $"{requestName} finished: {successMessage}" ,_timer.ElapsedMilliseconds, successProp);
+            await _sendOverSignalR.SendActivity(userName, $"{requestName}_Finished", $"{requestName} finished: {successMessage}" ,_timer.ElapsedMilliseconds, successProp);
             return response;
         }
     }

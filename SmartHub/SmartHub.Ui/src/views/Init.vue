@@ -178,8 +178,8 @@ export default defineComponent({
       autoDetectAddress: false
     });
 
-    const { loading, data, error } = useCheckHome();
-    if (data) {
+    const { data } = useCheckHome();
+    if (data.value) {
       router.push('/login');
     }
     const InitHome = () => {

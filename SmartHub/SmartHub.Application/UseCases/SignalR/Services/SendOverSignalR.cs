@@ -48,8 +48,12 @@ namespace SmartHub.Application.UseCases.SignalR.Services
 			};
 			await _activityHubContext.Clients.All.SendActivity(activityDto);
 			var home = await _unitOfWork.HomeRepository.GetHome();
+			if (home is null)
+			{
+				return;
+			}
 			var activity = _mapper.Map<Activity>(activityDto);
-			activity.UpdateName(requestName + "_" + activityDto.DateTime);
+			activity.UpdateName(requestName);
 			home.AddActivity(activity);
 		}
 	}
