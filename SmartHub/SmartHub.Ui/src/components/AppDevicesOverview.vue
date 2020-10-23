@@ -1,5 +1,5 @@
 <template>
-  <DeviceCreateModal v-if="showAddModal" @close-modal="toggleModal" />
+  <DeviceCreateModal v-if="showAddModal" @close="toggleModal" />
   <DeviceDetailsModal v-if="showDetailModal" @close-modal="closeDetailsModal" :device="device" />
 
   <div class="w-full">
