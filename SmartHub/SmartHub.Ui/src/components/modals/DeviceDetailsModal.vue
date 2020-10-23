@@ -127,7 +127,7 @@ import { defineComponent, PropType, ref } from 'vue';
 import BaseModal from '@/components/modals/BaseModal.vue';
 import { Device, DeviceUpdateRequest } from '@/types/types';
 import { useEnumTypes } from '@/hooks/useEnums';
-import { putByIdDevice } from '@/services/apis/device.service';
+import { putByIdDevice } from '@/services/apis/device';
 
 export default defineComponent({
   name: 'DeviceDetailsModal',

@@ -1,6 +1,4 @@
 ﻿using System.Threading.Tasks;
-using SmartHub.Application.Common.Models;
-using SmartHub.Application.UseCases.Entity.Activities;
 
 namespace SmartHub.Application.UseCases.SignalR.Services
 {
@@ -19,7 +17,6 @@ namespace SmartHub.Application.UseCases.SignalR.Services
 		/// Sends an activity object -> it is the current request but with only
 		/// the needed info
 		/// </summary>
-		/// <param name="activityDto">The given activity object</param>
 		/// <param name="userName"></param>
 		/// <param name="requestName"></param>
 		/// <param name="message"></param>
