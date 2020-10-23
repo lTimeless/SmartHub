@@ -76,13 +76,14 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, ref } from 'vue';
+import { computed, defineComponent, ref, watch } from 'vue';
 import { LoginRequest } from '@/types/types';
 import { useRouter } from 'vue-router';
 import { useStore } from 'vuex';
 import { AuthActionTypes } from '@/store/auth/actions';
 import AppCard from '@/components/widgets/AppCard.vue';
-import { checkHome, checkUsers } from '@/services/apis/init.services';
+import { checkHome, checkUsers } from '@/services/apis/init';
+import { useCheckHome, useCheckUsers } from '@/hooks/api/inits';
 
 export default defineComponent({
   components: {
@@ -96,20 +97,15 @@ export default defineComponent({
     const username = ref('');
     const isSignInBtnClicked = ref(false);
 
-    checkHome()
-      .then((response) => {
-        if (!response.data) {
-          router.push('/init');
-          return Promise.resolve();
-        }
-        checkUsers().then((response) => {
-          if (!response.data) {
-            router.push('/registration');
-          }
-        });
-        return Promise.resolve();
-      })
-      .catch((err) => Promise.reject(err));
+    const { loading, data, error } = useCheckHome();
+    if (!data) {
+      router.push('/init');
+    } else {
+      const { loading, data, error } = useCheckUsers();
+      if (!data) {
+        router.push('/registration');
+      }
+    }
 
     const onLoginClick = async () => {
       isSignInBtnClicked.value = true;

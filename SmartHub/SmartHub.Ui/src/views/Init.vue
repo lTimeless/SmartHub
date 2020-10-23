@@ -22,8 +22,8 @@
       <div class="text-gray-600 mb-8">
         <h2 class="text-orange-500">This feature is not implemented at the moment</h2>
         You want to test SmartHub with fake data?
-        <br />Than click the button and you will be redirected to the official testwebsite. <br />If
-        you encounter any problems or have any suggestions, please visit
+        <br />Than click the button and you will be redirected to the official testwebsite. <br />If you
+        encounter any problems or have any suggestions, please visit
         <a class="text-ui-primary" href="https://github.com/SmartHub-Io/SmartHub">github</a>
         and create an issue. 🔥👌🚀❤
       </div>
@@ -69,9 +69,7 @@
             />
           </label>
           <label class="flex flex-col text-sm mt-4">
-            <span class="text-gray-600 dark:text-gray-400 justify-start text-left"
-              >Description</span
-            >
+            <span class="text-gray-600 dark:text-gray-400 justify-start text-left">Description</span>
             <input
               required
               class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-ui-primary focus:outline-none focus:shadow-outlineIndigo dark:text-gray-300 dark:focus:shadow-outline form-input"
@@ -113,9 +111,7 @@
               @click="InitHome"
               class="block w-full px-4 py-2 mt-4 text-sm font-medium leading-5 text-center text-white transition-colors duration-150 bg-ui-primary border border-transparent rounded-lg active:bg-ui-primary focus:outline-none focus:shadow-outlineIndigo"
               :class="
-                allDeactive
-                  ? 'opacity-50 focus:outline-none cursor-not-allowed'
-                  : 'hover:bg-ui-primaryHover'
+                allDeactive ? 'opacity-50 focus:outline-none cursor-not-allowed' : 'hover:bg-ui-primaryHover'
               "
               :disabled="allDeactive"
             >
@@ -135,9 +131,7 @@
           <button
             disabled
             class="flex items-center justify-center w-full px-4 py-2 text-sm font-medium leading-5 text-white text-gray-700 transition-colors duration-150 border border-gray-300 rounded-lg dark:text-gray-400 active:bg-transparent focus:border-gray-500 active:text-gray-500 focus:outline-none focus:shadow-outline-gray"
-            :class="
-              true ? 'opacity-50 focus:outline-none cursor-not-allowed' : 'hover:border-gray-500'
-            "
+            :class="true ? 'opacity-50 focus:outline-none cursor-not-allowed' : 'hover:border-gray-500'"
           >
             Additional options....
           </button>
@@ -154,17 +148,13 @@ import { HomeActionTypes } from '@/store/home/actions';
 import { useStore } from 'vuex';
 import { useRouter } from 'vue-router';
 import AppCard from '@/components/widgets/AppCard.vue';
-import { checkHome } from '@/services/apis/init.services.ts';
+import { useCheckHome } from '@/hooks/api/inits';
 
 const ConfirmationModalAsync = defineAsyncComponent(
-  () =>
-    import(/* webpackChunkName: "ConfirmationModal" */ '../components/modals/ConfirmationModal.vue')
+  () => import(/* webpackChunkName: "ConfirmationModal" */ '../components/modals/ConfirmationModal.vue')
 );
 const NotImplementedModalAsync = defineAsyncComponent(
-  () =>
-    import(
-      /* webpackChunkName: "NotImplementedModal" */ '../components/modals/NotImplementedModal.vue'
-    )
+  () => import(/* webpackChunkName: "NotImplementedModal" */ '../components/modals/NotImplementedModal.vue')
 );
 
 export default defineComponent({
@@ -188,18 +178,10 @@ export default defineComponent({
       autoDetectAddress: false
     });
 
-    checkHome()
-      .then((response) => {
-        if (response.data) {
-          router.push('/login');
-        }
-        return Promise.resolve();
-      })
-      .catch((err) => {
-        console.log(err);
-        return Promise.reject(err);
-      });
-
+    const { loading, data, error } = useCheckHome();
+    if (data) {
+      router.push('/login');
+    }
     const InitHome = () => {
       if (homeCreateRequest.name === '') {
         homeCreateRequest.name = 'SmartHub';
