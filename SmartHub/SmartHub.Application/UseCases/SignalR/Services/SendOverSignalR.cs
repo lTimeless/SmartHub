@@ -4,7 +4,6 @@ using Microsoft.AspNetCore.SignalR;
 using SmartHub.Application.Common.Interfaces.Database;
 using SmartHub.Application.UseCases.Entity.Homes;
 using System.Threading.Tasks;
-using SmartHub.Application.Common.Models;
 using SmartHub.Application.UseCases.Entity.Activities;
 using SmartHub.Domain.Entities;
 
@@ -18,7 +17,9 @@ namespace SmartHub.Application.UseCases.SignalR.Services
 		private readonly IHubContext<HomeHub, IServerHub> _homeHubContext;
 		private readonly IHubContext<ActivityHub, IServerHub> _activityHubContext;
 
-		public SendOverSignalR(IUnitOfWork unitOfWork, IMapper mapper, IHubContext<HomeHub, IServerHub> homeHubContext, IHubContext<ActivityHub, IServerHub> activityHubContext)
+		public SendOverSignalR(IUnitOfWork unitOfWork, IMapper mapper, IHubContext<HomeHub, IServerHub> homeHubContext,
+			IHubContext<ActivityHub, IServerHub> activityHubContext
+			)
 		{
 			_unitOfWork = unitOfWork;
 			_mapper = mapper;
@@ -48,13 +49,29 @@ namespace SmartHub.Application.UseCases.SignalR.Services
 			};
 			await _activityHubContext.Clients.All.SendActivity(activityDto);
 			var home = await _unitOfWork.HomeRepository.GetHome();
-			if (home is null)
+			if (home is not null)
 			{
-				return;
+				var activity = _mapper.Map<Activity>(activityDto);
+				activity.UpdateName(requestName);
+				home.AddActivity(activity);
 			}
-			var activity = _mapper.Map<Activity>(activityDto);
-			activity.UpdateName(requestName);
-			home.AddActivity(activity);
 		}
+		// public async Task CheckActivitiesLimit()
+		// {
+		//     var home = await _unitOfWork.HomeRepository.GetHome();
+		//     if (home is not null)
+		//     {
+		//         var amount = home.Activities.Count;
+		//         if (amount >= _optionsSnapshot.Value.SaveXLimit)
+		//         {
+		//             Log.Information($"Activities will be reduces by {_optionsSnapshot.Value.DeleteXAmountAfterLimit}, current {amount}");
+		//             var lastActivities = home.Activities.TakeLast(_optionsSnapshot.Value.DeleteXAmountAfterLimit);
+		//             foreach (var lastActivity in lastActivities)
+		//             {
+		//                 home.Activities.Remove(lastActivity);
+		//             }
+		//         }
+		//     }
+		// }
 	}
 }

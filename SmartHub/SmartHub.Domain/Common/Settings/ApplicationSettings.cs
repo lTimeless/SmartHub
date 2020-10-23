@@ -10,5 +10,7 @@ namespace SmartHub.Domain.Common.Settings
         public string PluginFolderName { get; set; }
         public string LogFolderName { get; set; }
         public string LogFilePath { get; set; }
+        public int SaveXLimit { get; set; }
+        public int DeleteXAmountAfterLimit { get; set; }
     }
 }

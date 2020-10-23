@@ -19,13 +19,14 @@ namespace SmartHub.Application.Common.Behaviours
 
         public async Task Process(TRequest request, TResponse response, CancellationToken cancellationToken)
         {
+            await _unitOfWork.SaveAsync();
             // If the Request is a command than it probably updated the home Entity
             // so every client needs to be updated with the new State
-            if (request.GetType().Name.EndsWith("Command"))
-            {
-                await _unitOfWork.SaveAsync();
+
+            // if (request.GetType().Name.EndsWith("Command"))
+            // {
                 await _sendOverSignalR.SendHome();
-            }
+            // }
         }
     }
 }

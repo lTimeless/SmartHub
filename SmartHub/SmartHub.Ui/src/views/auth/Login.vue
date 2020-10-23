@@ -99,15 +99,18 @@ export default defineComponent({
 
     const { data } = useCheckHome();
     console.log(data);
-    if (!data.value) {
-      console.log(data);
-      router.push('/init');
-    } else {
-      const { data } = useCheckUsers();
-      if (!data) {
-        router.push('/registration');
+    watch(data, (newData) => {
+      if (!newData) {
+        console.log(newData);
+        router.push('/init');
+      } else {
+        const { data } = useCheckUsers();
+        if (!data) {
+          router.push('/registration');
+        }
       }
-    }
+    })
+
 
     const onLoginClick = async () => {
       isSignInBtnClicked.value = true;
