@@ -20,6 +20,7 @@ namespace SmartHub.Application.Common.Behaviours
         private readonly ILogger _logger = Log.ForContext(typeof(RequestLoggerBehaviour<,>));
         private readonly CurrentUser _currentUser;
         private readonly ISendOverSignalR _sendOverSignalR;
+        private const int MaxElapsableTime = 500;
 
         public RequestLoggerBehaviour(CurrentUser currentUser, ISendOverSignalR sendOverSignalR)
         {
@@ -34,16 +35,16 @@ namespace SmartHub.Application.Common.Behaviours
             var requestName = typeof(TRequest).Name;
             var userName = _currentUser.RequesterName;
             
-            await _sendOverSignalR.SendActivity(userName, $"{requestName}_Started", $"{requestName} started." ,_timer.ElapsedMilliseconds, false);
+            // await _sendOverSignalR.SendActivity(userName, $"{requestName}_Started", $"{requestName} started." ,_timer.ElapsedMilliseconds, false);
 
             _timer.Start();
             var response = await next();
             _timer.Stop();
 
             var successProp = response?.GetType().GetProperty("Success")?.GetValue(response) as bool? ?? false;
-            var successMessage = response?.GetType().GetProperty("Message")?.GetValue(response) as string;
+            var message = response?.GetType().GetProperty("Message")?.GetValue(response) as string;
 
-            if (_timer.ElapsedMilliseconds > 500)
+            if (_timer.ElapsedMilliseconds > MaxElapsableTime)
             {
                 _logger.Warning(
                     "Long Request: {Name} - {@UserName} - {@Request} [{ElapsedMilliseconds} milliseconds]",
@@ -55,7 +56,7 @@ namespace SmartHub.Application.Common.Behaviours
                     requestName, userName, request);
             }
 
-            await _sendOverSignalR.SendActivity(userName, $"{requestName}_Finished", $"{requestName} finished: {successMessage}" ,_timer.ElapsedMilliseconds, successProp);
+            await _sendOverSignalR.SendActivity(userName, $"{requestName}", $"{requestName}: {message}" ,_timer.ElapsedMilliseconds, successProp);
             return response;
         }
     }
