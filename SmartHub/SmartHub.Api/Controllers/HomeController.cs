@@ -43,19 +43,19 @@ namespace SmartHub.Api.Controllers
 		}
 
 
-		/// <summary>
-		/// Full updates the Home
-		/// </summary>
-		[HttpPut]
-		public async Task<IActionResult> Put([FromBody] HomePatchCommand value)
-		{
-			return Ok("This is not implemented at the moment.");
-		}
+        /// <summary>
+        /// Full updates the Home
+        /// </summary>
+        [HttpPut]
+        public IActionResult Put([FromBody] HomePatchCommand value)
+        {
+            return Ok("This is not implemented at the moment.");
+        }
 
-		/// <summary>
-		/// Deletes the Home
-		/// </summary>
-		[HttpDelete]
+        /// <summary>
+        /// Deletes the Home
+        /// </summary>
+        [HttpDelete]
 		public void Delete()
 		{
 			throw new NotSupportedException($"[{nameof(Delete)}]Not supported");

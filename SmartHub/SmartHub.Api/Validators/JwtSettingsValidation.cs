@@ -10,7 +10,7 @@ namespace SmartHub.Api.Validators
         {
             if (string.IsNullOrEmpty(options.Key) || options.Key.Contains("<"))
             {
-                options.Key = TokenUtils.ValidateAndGenerateToken(options.Key);
+                options.Key = TokenUtils.ValidateAndGenerateToken(options.Key ?? string.Empty);
             }
             return ValidateOptionsResult.Success;
         }

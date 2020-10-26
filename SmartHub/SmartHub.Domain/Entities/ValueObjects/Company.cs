@@ -1,18 +1,11 @@
-﻿using SmartHub.Domain.Entities.ValueObjects;
-using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 
-namespace SmartHub.Domain.Entities.Devices
+namespace SmartHub.Domain.Entities.ValueObjects
 {
 	public class Company : ValueObject
 	{
-		public string Name { get; set; }
-		public string ShortName { get; set; }
-
-		protected Company()
-		{
-		}
+		public string Name { get; }
+		public string ShortName { get; }
 
 		public Company(string name)
 		{

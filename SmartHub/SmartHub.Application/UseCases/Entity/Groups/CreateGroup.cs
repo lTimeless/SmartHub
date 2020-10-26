@@ -1,7 +1,5 @@
-﻿using System.Data.SqlTypes;
-using System.Threading;
+﻿using System.Threading;
 using System.Threading.Tasks;
-using AutoMapper;
 using MediatR;
 using SmartHub.Application.Common.Interfaces.Database;
 using SmartHub.Application.Common.Models;
@@ -34,7 +32,7 @@ namespace SmartHub.Application.UseCases.Entity.Groups
         {
             var home = await _unitOfWork.HomeRepository.GetHome();
             var newGroup = new Group(request.Name, request.Description);
-            home.AddGroup(newGroup);
+            home?.AddGroup(newGroup);
             return Response.Ok<string>($"Created new Group with name {request.Name}");
         }
     }

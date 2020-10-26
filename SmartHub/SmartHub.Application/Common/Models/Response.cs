@@ -13,7 +13,7 @@ namespace SmartHub.Application.Common.Models
         /// <param name="data">The data you want to send</param>
         /// <typeparam name="T">This can be any type</typeparam>
         /// <returns>A new Failed Response</returns>
-        public static Response<T> Fail<T>(string message, T data = default) =>
+        public static Response<T> Fail<T>(string message, T data) =>
             new Response<T>(data, false, message);
 
         /// <summary>
@@ -23,7 +23,7 @@ namespace SmartHub.Application.Common.Models
         /// <param name="data">The data you want to send</param>
         /// <typeparam name="T">This can be any type</typeparam>
         /// <returns>A new Ok Response</returns>
-        public static Response<T> Ok<T>(string message, T data = default)
+        public static Response<T> Ok<T>(string message, T data)
         {
             return new Response<T>(data, true, message);
         }
@@ -34,7 +34,7 @@ namespace SmartHub.Application.Common.Models
         /// <param name="data">The data you want to send</param>
         /// <typeparam name="T">This can be any type</typeparam>
         /// <returns>A new Ok Response, without a message</returns>
-        public static Response<T> Ok<T>(T data = default) =>
+        public static Response<T> Ok<T>(T data) =>
             new Response<T>(data, true, null);
     }
 

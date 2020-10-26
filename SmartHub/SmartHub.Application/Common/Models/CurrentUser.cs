@@ -15,6 +15,6 @@ namespace SmartHub.Application.Common.Models
         /// This current RequesterName, this can also be "System".
         /// For the logic look into "UserAccessor"
         /// </summary>
-        public string RequesterName { get; set; }
+        public string? RequesterName { get; set; }
     }
 }

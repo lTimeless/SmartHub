@@ -17,22 +17,22 @@ namespace SmartHub.Infrastructure.Database.Configurations
 
 			builder.OwnsOne(x => x.Address, c =>
 			{
-				c.Property(v => v.Street).HasMaxLength(200)
+				c.Property(v => v!.Street).HasMaxLength(200)
 				.HasDefaultValue("");
-				c.Property(v => v.City).HasMaxLength(100)
+				c.Property(v => v!.City).HasMaxLength(100)
 				.HasDefaultValue("");
-				c.Property(v => v.State).HasMaxLength(100)
+				c.Property(v => v!.State).HasMaxLength(100)
 				.HasDefaultValue("");
-				c.Property(v => v.Country).HasMaxLength(100)
+				c.Property(v => v!.Country).HasMaxLength(100)
 				.HasDefaultValue("");
-				c.Property(v => v.ZipCode).HasMaxLength(20)
+				c.Property(v => v!.ZipCode).HasMaxLength(20)
 				.HasDefaultValue("");
 			});
 
 			builder.Ignore(x => x.Events);
 
 			builder.HasMany(x => x.Users)
-				.WithOne(x => x.Home)
+				.WithOne(x => x.Home!)
 				.HasForeignKey(x => x.HomeId)
 				.OnDelete(DeleteBehavior.Cascade);
 

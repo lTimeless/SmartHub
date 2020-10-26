@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -25,7 +26,7 @@ namespace SmartHub.Application.UseCases.Entity.Devices.Read
             var home = await _unitOfWork.HomeRepository.GetHome();
             if (home == null)
             {
-                return Response.Fail<IEnumerable<DeviceDto>>("Error: No home created yet.");
+                return Response.Fail<IEnumerable<DeviceDto>>("Error: No home created yet.", Array.Empty<DeviceDto>());
             }
             var devices = home.Groups.SelectMany(x => x.Devices);
             return Response.Ok(_mapper.Map<IEnumerable<DeviceDto>>(devices));

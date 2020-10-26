@@ -27,7 +27,7 @@ namespace SmartHub.Application.UseCases.Identity.Registration
 			var foundUser = await _unitOfWork.UserRepository.GetUserByName(request.Username);
 			if (foundUser != null)
 			{
-				return Response.Fail<AuthResponseDto>("Username already exists.");
+				return Response.Fail<AuthResponseDto>("Username already exists.", new AuthResponseDto(string.Empty));
 			}
 			var newUser = new User(request.Username, "", new PersonName("", "", ""));
 			var result = await _registrationService.RegisterAsync(request, newUser);
@@ -35,7 +35,7 @@ namespace SmartHub.Application.UseCases.Identity.Registration
 			return result
 				? Response.Ok("Successful",
 					_identityService.CreateAuthResponse(newUser, new List<string> {request.Role}))
-				: Response.Fail<AuthResponseDto>($"Error: Could not register user {request.Username}");
+				: Response.Fail<AuthResponseDto>($"Error: Could not register user {request.Username}", new AuthResponseDto(string.Empty));
 		}
 	}
 }

@@ -19,7 +19,14 @@ namespace SmartHub.Application.UseCases.PluginAdapter.Creator
 			foreach (var type in PluginHelper.GetValidPluginTypes(assembly))
 			{
 				var iPlugin = Activator.CreateInstance(type) as IPlugin;
-				iPluginsDictionary.Add(iPlugin.GetType().GetProperty("Name").GetValue(iPlugin) as string, iPlugin);
+				if (iPlugin != null)
+				{
+					object? name = iPlugin.GetType().GetProperty("Name")?.GetValue(iPlugin);
+					if (name != null || name is string)
+					{
+						iPluginsDictionary.Add((name as string)!, iPlugin);
+					}
+				}
 			}
 			return iPluginsDictionary;
 		}

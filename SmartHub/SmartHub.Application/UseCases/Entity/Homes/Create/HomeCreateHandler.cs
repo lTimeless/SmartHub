@@ -35,14 +35,14 @@ namespace SmartHub.Application.UseCases.Entity.Homes.Create
 			var home = await _unitOfWork.HomeRepository.GetHome();
 			if (home != null)
 			{
-				return Response.Fail<HomeDto>("Error: There is already a home.");
+				return Response.Fail<HomeDto>("Error: There is already a home.", new HomeDto());
 			}
 
 			var defaultSetting = new Setting($"{request.Name}_{DefaultNames.DefaultSetting}",
 				"This is a default setting",
 				true,
-				_optionsSnapshot.CurrentValue.DefaultPluginPath,
-				_optionsSnapshot.CurrentValue.DownloadServerUrl,
+				_optionsSnapshot.CurrentValue.DefaultPluginPath ?? string.Empty,
+				_optionsSnapshot.CurrentValue.DownloadServerUrl ?? string.Empty,
 				SettingTypes.Default);
 
 			var defaultGroup = new Group(DefaultNames.DefaultGroup, "Default_Description");
@@ -55,14 +55,18 @@ namespace SmartHub.Application.UseCases.Entity.Homes.Create
 				var locationDto = await _locationService.GetLocation();
 				if (locationDto != null)
 				{
-					homeEntity.AddAddress(locationDto.City, locationDto.Region, locationDto.Country, locationDto.ZipCode);
+					homeEntity.AddAddress(
+						locationDto.City ?? string.Empty,
+						locationDto.Region ?? string.Empty,
+						locationDto.Country ?? string.Empty,
+						locationDto.ZipCode ?? string.Empty);
 				}
 			}
 
 			var result = await _unitOfWork.HomeRepository.AddAsync(homeEntity);
 			if (!result)
 			{
-				return Response.Fail<HomeDto>("Error: Could not create Home.");
+				return Response.Fail<HomeDto>("Error: Could not create Home.", new HomeDto());
 			}
 			_logger.Information("SmartHub successfully created.");
 			return Response.Ok("SmartHub successfully created.", _mapper.Map<HomeDto>(homeEntity));

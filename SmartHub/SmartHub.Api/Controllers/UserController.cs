@@ -11,7 +11,7 @@ namespace SmartHub.Api.Controllers
         /// <param name="id">The user id</param>
         /// <returns>A userDto</returns>
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetByName(string id)
+        public IActionResult GetByName(string id)
         {
             return Ok();
         }

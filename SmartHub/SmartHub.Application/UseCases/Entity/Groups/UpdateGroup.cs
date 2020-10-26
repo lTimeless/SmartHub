@@ -35,20 +35,20 @@ namespace SmartHub.Application.UseCases.Entity.Groups
             var home = await _unitOfWork.HomeRepository.GetHome();
             if (home == null)
             {
-                return Response.Fail<GroupDto>("Error: No home created yet.");
+                return Response.Fail<GroupDto>("Error: No home created yet.", new GroupDto());
             }
 
             if (request.Name == DefaultNames.DefaultGroup)
             {
-                return Response.Fail<GroupDto>("Error: You can't rename the default group.");
+                return Response.Fail<GroupDto>("Error: You can't rename the default group.", new GroupDto());
             }
 
             var result = home.UpdateGroup(request.Id, request.Name, request.Description);
             if (result)
             {
-                Response.Fail<GroupDto>($"Error: Couldn't update group with id {request.Id}.");
+                Response.Fail<GroupDto>($"Error: Couldn't update group with id {request.Id}.", new GroupDto());
             }
-            return Response.Ok<GroupDto>($"Updated group with name {request.Name}", null);
+            return Response.Ok<GroupDto>($"Updated group with name {request.Name}", new GroupDto());
         }
     }
 }

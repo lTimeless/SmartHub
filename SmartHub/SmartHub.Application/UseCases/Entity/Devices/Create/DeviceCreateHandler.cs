@@ -1,6 +1,5 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
-using AutoMapper;
 using MediatR;
 using SmartHub.Application.Common.Interfaces.Database;
 using SmartHub.Application.Common.Models;
@@ -29,7 +28,7 @@ namespace SmartHub.Application.UseCases.Entity.Devices.Create
             {
                 request.GroupName = DefaultNames.DefaultGroup;
             }
-            home.AddDevice(newDevice, request.GroupName);
+            home?.AddDevice(newDevice, request.GroupName);
             return Response.Ok<string>($"Created new Device with name {newDevice.Name}");
         }
     }

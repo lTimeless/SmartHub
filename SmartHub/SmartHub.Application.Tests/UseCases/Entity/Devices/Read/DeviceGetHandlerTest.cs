@@ -57,7 +57,7 @@ namespace SmartHub.Application.Tests.UseCases.Entity.Devices.Read
         [Fact]
         internal async Task Handle_NoHome_ReturnFailResponse_Async()
         {
-            homeRepositorySubstitute.GetHome().ReturnsForAnyArgs(Task.FromResult<Home>(null!));
+            homeRepositorySubstitute.GetHome().ReturnsForAnyArgs(Task.FromResult<Home?>(null));
             Response<IEnumerable<DeviceDto>> response = await deviceGetHandler.Handle(new DeviceGetQuery(), CancellationToken.None);
 
             Assert.False(response.Success);

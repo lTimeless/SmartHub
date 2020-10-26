@@ -2,7 +2,6 @@
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using AutoMapper.Internal;
 using MediatR;
 using Serilog;
 using SmartHub.Application.Common.Interfaces;
@@ -12,7 +11,6 @@ using SmartHub.Application.UseCases.PluginAdapter.Helper;
 using SmartHub.Application.UseCases.PluginAdapter.Host;
 using SmartHub.BasePlugin.Interfaces.DeviceTypes;
 using SmartHub.Domain.Common.Enums;
-using SmartHub.Domain.Entities;
 
 namespace SmartHub.Application.UseCases.DeviceState.LightState
 {
@@ -39,14 +37,14 @@ namespace SmartHub.Application.UseCases.DeviceState.LightState
 			var home = await _unitOfWork.HomeRepository.GetHome();
 			if (home is null)
 			{
-				return Response.Fail<DeviceStateDto>("Error: There is no home created at the moment.");
+				return Response.Fail<DeviceStateDto>("Error: There is no home created at the moment.", new DeviceLightStateRequestDto());
 
 			}
 
 			var foundDevice = home.Groups.SelectMany(x => x.Devices).SingleOrDefault(d => d.Id == request.LightStateDto.DeviceId);
 			if (foundDevice is null)
 			{
-				return Response.Fail<DeviceStateDto>($"Error: No device found by the given deviceId {request.LightStateDto.DeviceId}");
+				return Response.Fail<DeviceStateDto>($"Error: No device found by the given deviceId {request.LightStateDto.DeviceId}", new DeviceLightStateRequestDto());
 			}
 			// var pluginObject = await _pluginHostService.Plugins.GetAndLoadByName(foundDevice.PluginName, home) as ILight;
 			var pluginObject = await _pluginHostService.GetPluginByNameAsync<ILight>(foundDevice.PluginName);
@@ -69,7 +67,7 @@ namespace SmartHub.Application.UseCases.DeviceState.LightState
 			// var response = await _httpService.SendAsync(foundDevice.Ip.Ipv4, _query);
 			return true ?
 				Response.Ok<DeviceStateDto>($"{foundDevice.Name} changed light status", request.LightStateDto) :
-				Response.Fail<DeviceStateDto>($"Error: Couldn't send new light status to {foundDevice.Name}");
+				Response.Fail<DeviceStateDto>($"Error: Couldn't send new light status to {foundDevice.Name}", new DeviceLightStateRequestDto());
 		}
 	}
 }

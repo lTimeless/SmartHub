@@ -14,7 +14,7 @@ namespace SmartHub.Infrastructure.Database.Repositories
             _entities = appDbContext.Homes;
         }
 
-        public async Task<Home> GetHome()
+        public async Task<Home?> GetHome()
         {
             return await _entities.FirstOrDefaultAsync();
         }

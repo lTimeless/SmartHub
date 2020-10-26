@@ -1,17 +1,10 @@
-﻿using SmartHub.Domain.Entities.ValueObjects;
-using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 
-namespace SmartHub.Domain.Entities.Devices
+namespace SmartHub.Domain.Entities.ValueObjects
 {
 	public class IpAddress : ValueObject
 	{
-		public string Ipv4 { get; set; }
-
-		protected IpAddress()
-		{
-		}
+		public string Ipv4 { get; }
 
 		public IpAddress(string value)
 		{
