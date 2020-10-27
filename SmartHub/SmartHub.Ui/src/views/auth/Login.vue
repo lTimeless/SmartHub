@@ -98,7 +98,6 @@ export default defineComponent({
     const isSignInBtnClicked = ref(false);
 
     const { data } = useCheckHome();
-    console.log(data);
     watch(data, (newData) => {
       if (!newData) {
         console.log(newData);
@@ -109,8 +108,7 @@ export default defineComponent({
           router.push('/registration');
         }
       }
-    })
-
+    });
 
     const onLoginClick = async () => {
       isSignInBtnClicked.value = true;
