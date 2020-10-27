@@ -56,7 +56,7 @@ namespace SmartHub.Application.Common.Behaviours
                     requestName, userName, request);
             }
 
-            await _sendOverSignalR.SendActivity(userName, $"{requestName}", $"{requestName}: {message}" ,_timer.ElapsedMilliseconds, successProp);
+            await _sendOverSignalR.SendActivity(userName, $"{requestName}", $"{requestName} executed: {message}" ,_timer.ElapsedMilliseconds, successProp);
             return response;
         }
     }

@@ -142,13 +142,13 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, defineAsyncComponent, reactive, ref, computed } from 'vue';
+import { defineComponent, defineAsyncComponent, reactive, ref, computed, watch } from 'vue';
 import { HomeCreateRequest } from '@/types/types';
 import { HomeActionTypes } from '@/store/home/actions';
 import { useStore } from 'vuex';
 import { useRouter } from 'vue-router';
 import AppCard from '@/components/widgets/AppCard.vue';
-import { useCheckHome } from '@/hooks/api/inits';
+import { useCheckHome, useCheckUsers } from '@/hooks/api/inits';
 
 const ConfirmationModalAsync = defineAsyncComponent(
   () => import(/* webpackChunkName: "ConfirmationModal" */ '../components/modals/ConfirmationModal.vue')
@@ -179,9 +179,12 @@ export default defineComponent({
     });
 
     const { data } = useCheckHome();
-    if (data.value) {
-      router.push('/login');
-    }
+    watch(data, (newData) => {
+      if (!newData) {
+        console.log(newData);
+        router.push('/login');
+      }
+    });
     const InitHome = () => {
       if (homeCreateRequest.name === '') {
         homeCreateRequest.name = 'SmartHub';
