@@ -2,11 +2,11 @@
 {
     public class Activity : BaseEntity
     {
-        public string DateTime { get; protected set; }
-        public string Username { get; protected set; }
-        public string Message { get; protected set; }
-        public long ExecutionTime { get; protected set; }
-        public bool SuccessfulRequest { get; protected set; }
+        public string? DateTime { get; protected set; }
+        public string? Username { get; protected set; }
+        public string? Message { get; protected set; }
+        public long? ExecutionTime { get; protected set; }
+        public bool? SuccessfulRequest { get; protected set; }
 
         protected Activity()
         {

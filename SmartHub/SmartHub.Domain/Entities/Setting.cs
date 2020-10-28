@@ -15,6 +15,10 @@ namespace SmartHub.Domain.Entities
 
 		public string DownloadServerUrl { get; private set; }
 
+		protected Setting()
+		{
+		}
+
 		public Setting(string name, string description, bool isActive, string pluginPath, string downloadServerUrl,
 			SettingTypes type) :
 			base(name, description)

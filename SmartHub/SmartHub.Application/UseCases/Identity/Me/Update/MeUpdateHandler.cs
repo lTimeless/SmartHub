@@ -27,7 +27,7 @@ namespace SmartHub.Application.UseCases.Identity.Me.Update
 		{
 			if (string.IsNullOrEmpty(request.UserName))
 			{
-				return Response.Fail<UserDto>("Error: New username can't be empty.", new UserDto());
+				return Response.Fail("Error: New username can't be empty.", new UserDto());
 			}
 
 			var userName = _currentUser.User?.UserName ?? string.Empty;
@@ -35,7 +35,7 @@ namespace SmartHub.Application.UseCases.Identity.Me.Update
 
 			if (userEntity == null)
 			{
-				return Response.Fail<UserDto>($"Error: Something went wrong updating user {userName}.", new UserDto());
+				return Response.Fail($"Error: Something went wrong updating user {userName}.", new UserDto());
 			}
 			userEntity.UserName = request.UserName;
 			userEntity.PersonInfo = request.PersonInfo;
@@ -48,11 +48,11 @@ namespace SmartHub.Application.UseCases.Identity.Me.Update
 			var updateUser = await _unitOfWork.UserRepository.UpdateUser(userEntity);
 			if (!updateUser)
 			{
-				return Response.Fail<UserDto>($"Error: Something went wrong updating user {userEntity.UserName}.", new UserDto());
+				return Response.Fail($"Error: Something went wrong updating user {userEntity.UserName}.", new UserDto());
 			}
 
 			var currentRoles = await _unitOfWork.UserRepository.GetUserRoles(userEntity);
-			// schaut ob die Liste nur einen Eintrag hat und dieser gleich meiner neuen Rolle ist
+			// checks if th elist has an entry and if that one is equal to the new role
 			if (!currentRoles.Except(new List<string> {request.NewRole}).Any())
 			{
 				return Response.Ok(_mapper.Map<UserDto>(userEntity));
@@ -61,7 +61,7 @@ namespace SmartHub.Application.UseCases.Identity.Me.Update
 			var changeRole = await _unitOfWork.UserRepository.UserChangeRole(userEntity, request.NewRole);
 			return changeRole
 				? Response.Ok(_mapper.Map<UserDto>(userEntity))
-				: Response.Fail<UserDto>($"Error: Something went wrong updating user and Role for {userEntity.UserName}.", new UserDto());
+				: Response.Fail($"Error: Something went wrong updating user and Role for {userEntity.UserName}.", new UserDto());
 		}
 	}
 }

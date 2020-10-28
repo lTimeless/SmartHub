@@ -5,6 +5,7 @@ using SmartHub.Application.Common.Interfaces.Database;
 using SmartHub.Application.UseCases.Entity.Homes;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Options;
+using SmartHub.Application.Common.Exceptions;
 using SmartHub.Application.UseCases.Entity.Activities;
 using SmartHub.Domain.Common.Extensions;
 using SmartHub.Domain.Common.Settings;
@@ -50,14 +51,18 @@ namespace SmartHub.Application.UseCases.SignalR.Services
 				SuccessfulRequest = success
 			};
 			await _activityHubContext.Clients.All.SendActivity(activityDto);
-			var home = await _unitOfWork.HomeRepository.GetHome();
+			var home = await _unitOfWork.HomeRepository.GetHome() ?? throw new SmartHubException("Home is null");
 			var activity = _mapper.Map<Activity>(activityDto);
 			activity.UpdateName(requestName);
 			home.AddActivity(activity);
 			if (home.Activities.Count > _optionsSnapshot.Value.SaveXLimit)
 			{
-				home.RemoveActivitiesOverLimit(_optionsSnapshot.Value.SaveXLimit,
-					_optionsSnapshot.Value.DeleteXAmountAfterLimit);
+				if (_optionsSnapshot.Value.SaveXLimit != null && _optionsSnapshot.Value.DeleteXAmountAfterLimit != null)
+				{
+					home.RemoveActivitiesOverLimit((int) _optionsSnapshot.Value.SaveXLimit,
+						(int) _optionsSnapshot.Value.DeleteXAmountAfterLimit);
+				}
+
 			}
 
 		}

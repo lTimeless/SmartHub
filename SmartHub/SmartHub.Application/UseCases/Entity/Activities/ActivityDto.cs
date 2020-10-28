@@ -8,10 +8,10 @@ namespace SmartHub.Application.UseCases.Entity.Activities
     /// </summary>
     public class ActivityDto : IMapFrom<Activity>
     {
-        public string DateTime { get; set; }
-        public string Username { get; set; }
-        public string Message { get; set; }
-        public long ExecutionTime { get; set; }
-        public bool SuccessfulRequest { get; set; }
+        public string? DateTime { get; set; }
+        public string? Username { get; set; }
+        public string? Message { get; set; }
+        public long? ExecutionTime { get; set; }
+        public bool? SuccessfulRequest { get; set; }
     }
 }

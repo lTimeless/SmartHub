@@ -14,6 +14,10 @@ namespace SmartHub.Domain.Entities
 		public string PluginName { get; } // Equals the Name Property in the IPlugin
 		public PluginTypes PluginTypes { get; }// Equals the PluginType Property in the IPlugin
 
+		protected Device()
+		{
+
+		}
 		public Device(
 			string name,
 			string? description,

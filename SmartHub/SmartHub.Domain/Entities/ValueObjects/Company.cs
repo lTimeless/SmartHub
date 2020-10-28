@@ -7,6 +7,10 @@ namespace SmartHub.Domain.Entities.ValueObjects
 		public string Name { get; }
 		public string ShortName { get; }
 
+		protected Company()
+		{
+
+		}
 		public Company(string name)
 		{
 			Name = name;

@@ -18,6 +18,10 @@ namespace SmartHub.Domain.Entities
 		public string? HomeId { get; private set; }
 		public virtual Home? Home { get; }
 
+		protected User()
+		{
+
+		}
 		public User(string userName, string personInfo, PersonName fullname) :
 			base(userName)
 		{

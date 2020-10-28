@@ -33,6 +33,10 @@ namespace SmartHub.Domain.Entities
 			LastModifiedBy = string.Empty;
 		}
 
+		protected BaseEntity()
+		{
+		}
+
 		public override bool Equals(object? obj)
 		{
 			if (!(obj is BaseEntity baseEntity))

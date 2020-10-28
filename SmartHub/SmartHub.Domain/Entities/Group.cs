@@ -4,8 +4,12 @@ namespace SmartHub.Domain.Entities
 {
 	public class Group : BaseEntity
 	{
-		public List<Device> Devices { get; }
+		public virtual List<Device> Devices { get; }
 
+		protected Group()
+		{
+
+		}
 		public Group(string name, string description) : base(name, description)
 		{
 			Devices = new List<Device>();
