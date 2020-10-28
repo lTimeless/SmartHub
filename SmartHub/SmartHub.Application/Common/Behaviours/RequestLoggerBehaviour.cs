@@ -34,8 +34,6 @@ namespace SmartHub.Application.Common.Behaviours
         {
             var requestName = typeof(TRequest).Name;
             var userName = _currentUser.RequesterName;
-            
-            // await _sendOverSignalR.SendActivity(userName, $"{requestName}_Started", $"{requestName} started." ,_timer.ElapsedMilliseconds, false);
 
             _timer.Start();
             var response = await next();

@@ -13,9 +13,5 @@ namespace SmartHub.Application.UseCases.Entity.Activities
         public string Message { get; set; }
         public long ExecutionTime { get; set; }
         public bool SuccessfulRequest { get; set; }
-
-        public ActivityDto()
-        {
-        }
     }
 }

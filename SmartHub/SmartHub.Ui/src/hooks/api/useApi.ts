@@ -8,13 +8,13 @@ interface ApiState<T> {
   error: null;
 }
 
+export type ApiRequest = () => Promise<void>;
+
 export type ApiResponse<T> = {
   data: Ref<UnwrapRef<ServerResponse<T>>>;
   error: Ref<null>;
   request: ApiRequest;
 };
-
-export type ApiRequest = () => Promise<void>;
 
 export function useApi<T>(requestConfig: AxiosRequestConfig): ApiResponse<T> {
   const state = reactive<ApiState<T>>({
@@ -29,7 +29,6 @@ export function useApi<T>(requestConfig: AxiosRequestConfig): ApiResponse<T> {
         state.data = data.data as UnwrapRef<ServerResponse<T>>;
       })
       .catch((err) => (state.error = err));
-  console.log('api', state.data);
   return {
     request,
     ...toRefs(state)
