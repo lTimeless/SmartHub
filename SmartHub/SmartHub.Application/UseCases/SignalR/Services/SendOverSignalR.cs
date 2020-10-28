@@ -54,10 +54,12 @@ namespace SmartHub.Application.UseCases.SignalR.Services
 			var activity = _mapper.Map<Activity>(activityDto);
 			activity.UpdateName(requestName);
 			home.AddActivity(activity);
-			home.RemoveActivitiesOverLimit(_optionsSnapshot.Value.SaveXLimit,
-				_optionsSnapshot.Value.DeleteXAmountAfterLimit);
+			if (home.Activities.Count > _optionsSnapshot.Value.SaveXLimit)
+			{
+				home.RemoveActivitiesOverLimit(_optionsSnapshot.Value.SaveXLimit,
+					_optionsSnapshot.Value.DeleteXAmountAfterLimit);
+			}
+
 		}
-		// das als HomeExtension schreiben
-		// dadurch wird ein Db call gespart
 	}
 }
