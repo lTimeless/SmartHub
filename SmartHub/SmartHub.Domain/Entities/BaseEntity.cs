@@ -21,8 +21,6 @@ namespace SmartHub.Domain.Entities
 		public DateTimeOffset LastModifiedAt { get; set; }
 		public string CreatedBy { get; set; }
 		public string LastModifiedBy { get; set; }
-		public string Name { get; protected set; }
-		public string? Description { get; protected set; }
 
 		protected BaseEntity()
 		{
@@ -37,10 +35,6 @@ namespace SmartHub.Domain.Entities
 			LastModifiedAt = DateTimeOffset.Now;
 			CreatedBy = string.Empty;
 			LastModifiedBy = string.Empty;
-		}
-
-		protected BaseEntity()
-		{
 		}
 
 		public override bool Equals(object? obj)
