@@ -1,7 +1,5 @@
 <template>
-  <div>
-    Manager
-  </div>
+  <div>Manager</div>
 </template>
 
 <script lang="ts">

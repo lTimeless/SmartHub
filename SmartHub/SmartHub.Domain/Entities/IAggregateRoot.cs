@@ -5,9 +5,9 @@ namespace SmartHub.Domain.Entities
 {
 	public interface IAggregateRoot
 	{
-		public List<DomainEvent> Events { get; set; }
+		public List<BaseDomainEvent> Events { get; set; }
 
-		public void AddDomainEvent(DomainEvent domainEvent);
+		public void AddDomainEvent(BaseDomainEvent domainEvent);
 
 		public void ClearDomainEvents();
 	}

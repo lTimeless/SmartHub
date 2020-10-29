@@ -10,9 +10,9 @@ namespace SmartHub.Application.UseCases.Entity.Settings
 		public bool IsActive { get; set; }
 		public bool IsDefault { get; set; }
 
-		public string WatchPathAbsolut { get; set; }
-		public string PluginPath { get; set; }
-		public string DownloadServerUrl { get; set; }
+		public string? WatchPathAbsolut { get; set; }
+		public string? PluginPath { get; set; }
+		public string? DownloadServerUrl { get; set; }
 		public string? Filepath { get; set; }
 	}
 }

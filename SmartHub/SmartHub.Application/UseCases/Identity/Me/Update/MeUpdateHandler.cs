@@ -27,9 +27,16 @@ namespace SmartHub.Application.UseCases.Identity.Me.Update
 		{
 			if (string.IsNullOrEmpty(request.UserName))
 			{
-				return Response.Fail<UserDto>("Error: New username can't be empty.");
+				return Response.Fail<UserDto>("Error: New username can't be empty.", new UserDto());
 			}
-			var userEntity = await _unitOfWork.UserRepository.GetUserByName(_currentUser.User.UserName);
+
+			var userName = _currentUser.User?.UserName ?? string.Empty;
+			var userEntity = await _unitOfWork.UserRepository.GetUserByName(userName);
+
+			if (userEntity == null)
+			{
+				return Response.Fail<UserDto>($"Error: Something went wrong updating user {userName}.", new UserDto());
+			}
 			userEntity.UserName = request.UserName;
 			userEntity.PersonInfo = request.PersonInfo;
 			userEntity.PersonName.FirstName = request.FirstName;
@@ -41,7 +48,7 @@ namespace SmartHub.Application.UseCases.Identity.Me.Update
 			var updateUser = await _unitOfWork.UserRepository.UpdateUser(userEntity);
 			if (!updateUser)
 			{
-				return Response.Fail<UserDto>($"Error: Something went wrong updating user {userEntity.UserName}.");
+				return Response.Fail<UserDto>($"Error: Something went wrong updating user {userEntity.UserName}.", new UserDto());
 			}
 
 			var currentRoles = await _unitOfWork.UserRepository.GetUserRoles(userEntity);
@@ -54,7 +61,7 @@ namespace SmartHub.Application.UseCases.Identity.Me.Update
 			var changeRole = await _unitOfWork.UserRepository.UserChangeRole(userEntity, request.NewRole);
 			return changeRole
 				? Response.Ok(_mapper.Map<UserDto>(userEntity))
-				: Response.Fail<UserDto>($"Error: Something went wrong updating user and Role for {userEntity.UserName}.");
+				: Response.Fail<UserDto>($"Error: Something went wrong updating user and Role for {userEntity.UserName}.", new UserDto());
 		}
 	}
 }

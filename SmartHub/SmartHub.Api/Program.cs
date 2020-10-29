@@ -17,12 +17,29 @@ namespace SmartHub.Api
 {
 	public static class Program
 	{
-		public static async Task Main(string[] args) =>
-			await CreateHostBuilder(args)
-				.Build()
-				.MigrateDatabase()
-				.RunAsync()
-				.ConfigureAwait(false);
+		public static async Task Main(string[] args)
+		{
+			Log.Logger = new LoggerConfiguration()
+				.WriteTo.Console()
+				.CreateBootstrapLogger();
+
+			try
+			{
+				await CreateHostBuilder(args)
+					.Build()
+					.MigrateDatabase()
+					.RunAsync()
+					.ConfigureAwait(false);
+			}
+			catch (Exception ex)
+			{
+				Log.Fatal(ex, "An unhandled exception occured during bootstrapping");
+			}
+			finally
+			{
+				Log.CloseAndFlush();
+			}
+		}
 
 		private static IHostBuilder CreateHostBuilder(string[] args) =>
 			Host.CreateDefaultBuilder(args)
@@ -71,10 +88,10 @@ namespace SmartHub.Api
 							LogEventLevel.Information,
 							service,
 							null,
-							new string[] {},
-							new string[] {},
-							new string[] {}
-							);
+                            Array.Empty<string>(),
+                            Array.Empty<string>(),
+                            Array.Empty<string>()
+                            );
 				})
 				.ConfigureLogging((_, config) => config.ClearProviders())
 				.ConfigureWebHostDefaults(webBuilder =>

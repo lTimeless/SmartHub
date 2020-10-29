@@ -10,8 +10,8 @@ namespace SmartHub.Api.Serilog
     public class LogFilePathEnricher: ILogEventEnricher
     {
         private readonly IOptionsMonitor<ApplicationSettings> _options;
-        private string _cachedLogFilePath;
-        private LogEventProperty _cachedLogFilePathProperty;
+        private string? _cachedLogFilePath;
+        private LogEventProperty? _cachedLogFilePathProperty;
 
         public const string LogFilePathPropertyName = "LogFilePath";
 
@@ -34,7 +34,7 @@ namespace SmartHub.Api.Serilog
             if (logFilePath.Equals(_cachedLogFilePath))
             {
                 // Path hasn't changed, so let's use the cached property
-                logFilePathProperty = _cachedLogFilePathProperty;
+                logFilePathProperty = _cachedLogFilePathProperty!;
             }
             else
             {

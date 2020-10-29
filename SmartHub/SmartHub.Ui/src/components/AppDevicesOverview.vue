@@ -1,5 +1,5 @@
 <template>
-  <DeviceCreateModal v-if="showAddModal" v-on:close-modal="toggleModal" />
+  <DeviceCreateModal v-if="showAddModal" @close-modal="toggleModal" />
   <DeviceDetailsModal v-if="showDetailModal" @close-modal="closeDetailsModal" :device="device" />
 
   <div class="w-full">
@@ -7,8 +7,7 @@
       <div class="flex justify-start w-full md:w-1/3 xl:w-1/6">
         <button
           @click="toggleModal(true)"
-          class="flex justify-center items-center font-bold border border-ui-border rounded-lg bg-gray-400
-        hover:text-white transition-colors hover:bg-green-400 h-10 w-full"
+          class="flex justify-center items-center font-bold border border-ui-border rounded-lg bg-gray-400 hover:text-white transition-colors hover:bg-green-400 h-10 w-full"
         >
           Add Device
         </button>
@@ -16,10 +15,13 @@
     </div>
   </div>
   <div v-if="devices">
-    <div class="grid grid-cols-1 gap-4">
+    <div class="grid xl:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 gap-4">
       <AppCard class="bg-white shadow-md w-full" v-for="device in devices" :key="device.id">
         <div v-if="device" class="p-3 w-full">
-          <h1 class="text-xl text-left text-gray-600 font-bold cursor-pointer" @click="openDetailModal(true, device.id)">
+          <h1
+            class="text-xl text-left text-gray-600 font-bold cursor-pointer"
+            @click="openDetailModal(true, device.id)"
+          >
             {{ device.name }}
           </h1>
 
@@ -54,7 +56,7 @@ export default defineComponent({
   setup() {
     const store = useStore();
     const home = computed(() => store.state.homeModule.home);
-    const devices = computed(() => (home.value === undefined ? undefined : home.value.groups?.flatMap((x) => x.devices)));
+    const devices = computed(() => home.value===undefined? undefined:home.value.groups?.flatMap((x) => x.devices));
     const state = reactive({
       showAddModal: false,
       showDetailModal: false,

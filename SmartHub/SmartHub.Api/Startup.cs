@@ -9,8 +9,7 @@ using SmartHub.Api.Extensions;
 using SmartHub.Application;
 using SmartHub.Application.UseCases.SignalR;
 using SmartHub.Infrastructure;
-using SmartHub.Infrastructure.Persistence;
-using SmartHub.Infrastructure.Shared;
+using SmartHub.Shared;
 
 namespace SmartHub.Api
 {
@@ -27,8 +26,10 @@ namespace SmartHub.Api
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services) =>
-            services.AddInfrastructurePersistence(Configuration)
-                .AddInfrastructureShared()
+            services
+                .AddDatabaseDeveloperPageExceptionFilter()
+                .AddInfrastructurePersistence(Configuration)
+                .AddShared()
                 .AddApplicationLayer()
                 .AddApiLayer(Configuration, AppEnvironment);
 
@@ -38,7 +39,6 @@ namespace SmartHub.Api
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-                app.UseDatabaseErrorPage();
             }
             else
             {
@@ -62,7 +62,10 @@ namespace SmartHub.Api
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
-            app.UseSpaStaticFiles();
+            if (!env.IsDevelopment())
+            {
+                app.UseSpaStaticFiles();
+            }
 
             // Swagger
             app.ConfigureSwagger();
@@ -87,8 +90,9 @@ namespace SmartHub.Api
 
                 endpoints.MapHangfireDashboard();
 
-                endpoints.MapHub<EventHub>("/api/hub/events");
+                endpoints.MapHub<ActivityHub>("/api/hub/activity");
                 endpoints.MapHub<LogHub>("/api/hub/logs");
+                endpoints.MapHub<HomeHub>("/api/hub/home");
             });
 
             app.UseSpa(spa =>
@@ -97,13 +101,15 @@ namespace SmartHub.Api
                 // see https://go.microsoft.com/fwlink/?linkid=864501
                 spa.Options.SourcePath = "wwwroot";
 
-                if (!Configuration.GetValue<bool>("Use_StaticFiles"))
+                if (Configuration.GetValue<bool>("Use_StaticFiles"))
                 {
-                    Log.ForContext(typeof(Startup)).Warning("Not serving frontend from staticfiles");
-                    // Start seperate FE server and Server listens to it
-                    spa.UseProxyToSpaDevelopmentServer("http://localhost:8080");
-                    // To start its own FE server
+                    return;
                 }
+
+                Log.ForContext(typeof(Startup)).Warning("Not serving frontend from staticfiles");
+                // Start seperate FE server and Server listens to it
+                spa.UseProxyToSpaDevelopmentServer("http://localhost:8080");
+                // To start its own FE server
             });
         }
     }

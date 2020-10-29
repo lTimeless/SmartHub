@@ -5,9 +5,7 @@
         <div class="flex flex-col items-start px-2 sm:px-4 sm:flex-row m-0">
           <router-link to="/" class="flex items-center text-ui-primary" title="Home">
             <Logo :width="40" class="text-ui-primary" />
-            <span class="hidden ml-2 text-xl font-black tracking-tighter uppercase sm:block">
-              SmartHub
-            </span>
+            <span class="hidden ml-2 text-xl font-black tracking-tighter uppercase sm:block"> SmartHub </span>
           </router-link>
         </div>
 

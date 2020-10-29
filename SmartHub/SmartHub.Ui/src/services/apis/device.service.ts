@@ -9,9 +9,9 @@ export const postDevice = (payload: DeviceCreateRequest): Promise<ServerResponse
     .then((res) => res.data);
 
 export const getByIdDevice = (payload: string): Promise<ServerResponse<Device>> =>
-    api()
-      .get<ServerResponse<Device>>(`${API_DEVICE_URL}/${payload}`)
-      .then((res) => res.data);
+  api()
+    .get<ServerResponse<Device>>(`${API_DEVICE_URL}/${payload}`)
+    .then((res) => res.data);
 
 export const putByIdDevice = (payload: DeviceUpdateRequest): Promise<ServerResponse<Device>> =>
   api()

@@ -1,4 +1,11 @@
-import { AuthResponse, LoginRequest, RegistrationRequest, ServerResponse, User, UserUpdateRequest } from '@/types/types';
+import {
+  AuthResponse,
+  LoginRequest,
+  RegistrationRequest,
+  ServerResponse,
+  User,
+  UserUpdateRequest
+} from '@/types/types';
 import { api } from '@/router/axios/axios';
 
 const API_URL_ME = 'api/Identity/me';

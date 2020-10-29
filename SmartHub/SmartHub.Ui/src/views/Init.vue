@@ -1,6 +1,11 @@
 <template>
   <div class="flex items-center min-h-screen p-6 bg-ui-loginBackground dark:bg-gray-900 login">
-    <ConfirmationModalAsync v-if="doneInit" title="SmartHub initialization success" button-title="Go to Registration" :callback="modalCallback">
+    <ConfirmationModalAsync
+      v-if="doneInit"
+      title="SmartHub initialization success"
+      button-title="Go to Registration"
+      :callback="modalCallback"
+    >
       <div class="text-gray-600 mb-8">
         Thank you for using SmartHub.
         <br />If you encounter any problems or have any suggestions, please visit
@@ -8,20 +13,29 @@
         and create an issue. 🔥👌🚀❤
       </div>
     </ConfirmationModalAsync>
-    <NotImplementedModalAsync v-if="showgoToFakeModal" title="SmartHub initialization success" button-title="Go to Testwebsite" :callback="goToFake">
+    <NotImplementedModalAsync
+      v-if="showgoToFakeModal"
+      title="SmartHub initialization success"
+      button-title="Go to Testwebsite"
+      :callback="goToFake"
+    >
       <div class="text-gray-600 mb-8">
-        <h2 class="text-orange-500">
-          This feature is not implemented at the moment
-        </h2>
+        <h2 class="text-orange-500">This feature is not implemented at the moment</h2>
         You want to test SmartHub with fake data?
-        <br />Than click the button and you will be redirected to the official testwebsite. <br />If you encounter any problems or have any suggestions, please visit
+        <br />Than click the button and you will be redirected to the official testwebsite. <br />If
+        you encounter any problems or have any suggestions, please visit
         <a class="text-ui-primary" href="https://github.com/SmartHub-Io/SmartHub">github</a>
         and create an issue. 🔥👌🚀❤
       </div>
     </NotImplementedModalAsync>
     <AppCard v-if="!doneInit && !showgoToFakeModal" class="bg-white shadow-md">
       <div class="h-32 md:h-auto md:w-1/2">
-        <img aria-hidden="true" class="object-cover w-full h-full dark:hidden" src="../assets/images/undraw_at_home_octe.svg" alt="Office" />
+        <img
+          aria-hidden="true"
+          class="object-cover w-full h-full dark:hidden"
+          src="../assets/images/undraw_at_home_octe.svg"
+          alt="Office"
+        />
       </div>
       <div class="flex items-center justify-center p-6 sm:p-12 md:w-1/2">
         <div class="w-full">
@@ -34,23 +48,19 @@
           <div class="md:flex md:items-center mb-6">
             <label class="text-gray-500 flex items-center">
               <input
-                class="form-checkbox text-ui-primary form-checkbox focus:border-purple-400 focus:outline-none
-                  focus:shadow-outlineIndigo dark:focus:shadow-outline-gray"
+                class="form-checkbox text-ui-primary form-checkbox focus:border-purple-400 focus:outline-none focus:shadow-outlineIndigo dark:focus:shadow-outline-gray"
                 type="checkbox"
                 v-model="useFakeDbDisabled"
                 @change="triggerFakeDb"
               />
-              <span class="ml-2 text-sm">
-                Use fake data, for testing purposes?
-              </span>
+              <span class="ml-2 text-sm"> Use fake data, for testing purposes? </span>
             </label>
           </div>
           <label class="flex flex-col text-sm">
             <span class="text-gray-600 dark:text-gray-400 justify-start text-left">Name</span>
             <input
               required
-              class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-ui-primary
-                    focus:outline-none focus:shadow-outlineIndigo dark:text-gray-300 dark:focus:shadow-outline form-input"
+              class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-ui-primary focus:outline-none focus:shadow-outlineIndigo dark:text-gray-300 dark:focus:shadow-outline form-input"
               :class="useFakeDbDisabled ? 'bg-gray-300' : ''"
               placeholder="SmartHub (default)"
               type="text"
@@ -59,11 +69,12 @@
             />
           </label>
           <label class="flex flex-col text-sm mt-4">
-            <span class="text-gray-600 dark:text-gray-400 justify-start text-left">Description</span>
+            <span class="text-gray-600 dark:text-gray-400 justify-start text-left"
+              >Description</span
+            >
             <input
               required
-              class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-ui-primary
-                    focus:outline-none focus:shadow-outlineIndigo dark:text-gray-300 dark:focus:shadow-outline form-input"
+              class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-ui-primary focus:outline-none focus:shadow-outlineIndigo dark:text-gray-300 dark:focus:shadow-outline form-input"
               placeholder="This is an awesome description (default)"
               :class="useFakeDbDisabled ? 'bg-gray-300' : ''"
               type="text"
@@ -75,16 +86,13 @@
             <div class="md:flex md:items-center mb-6">
               <label class="text-gray-500 flex items-center">
                 <input
-                  class="form-checkbox text-ui-primary form-checkbox focus:border-purple-400 focus:outline-none
-                  focus:shadow-outlineIndigo dark:focus:shadow-outline-gray"
+                  class="form-checkbox text-ui-primary form-checkbox focus:border-purple-400 focus:outline-none focus:shadow-outlineIndigo dark:focus:shadow-outline-gray"
                   :class="useFakeDbDisabled ? 'bg-gray-300' : ''"
                   type="checkbox"
                   v-model="homeCreateRequest.autoDetectAddress"
                   :disabled="useFakeDbDisabled"
                 />
-                <span class="ml-2 text-sm">
-                  Automatically detect your home address.
-                </span>
+                <span class="ml-2 text-sm"> Automatically detect your home address. </span>
               </label>
             </div>
             <div class="md:flex md:items-center mb-6">
@@ -96,19 +104,19 @@
                   v-model="acceptWip"
                   :disabled="useFakeDbDisabled"
                 />
-                <span class="ml-2 text-sm">
-                  This project is still under development.
-                </span>
+                <span class="ml-2 text-sm"> This project is still under development. </span>
               </label>
             </div>
           </div>
           <template v-if="!useFakeDbDisabled">
             <button
               @click="InitHome"
-              class="block w-full px-4 py-2 mt-4 text-sm font-medium leading-5 text-center text-white
-                  transition-colors duration-150 bg-ui-primary border border-transparent rounded-lg active:bg-ui-primary
-                  focus:outline-none focus:shadow-outlineIndigo"
-              :class="allDeactive ? 'opacity-50 focus:outline-none cursor-not-allowed' : 'hover:bg-ui-primaryHover'"
+              class="block w-full px-4 py-2 mt-4 text-sm font-medium leading-5 text-center text-white transition-colors duration-150 bg-ui-primary border border-transparent rounded-lg active:bg-ui-primary focus:outline-none focus:shadow-outlineIndigo"
+              :class="
+                allDeactive
+                  ? 'opacity-50 focus:outline-none cursor-not-allowed'
+                  : 'hover:bg-ui-primaryHover'
+              "
               :disabled="allDeactive"
             >
               Complete
@@ -117,9 +125,7 @@
           <template v-else>
             <button
               @click="showgoToFakeModal = !showgoToFakeModal"
-              class="block w-full px-4 py-2 mt-4 text-sm font-medium leading-5 text-center text-white
-                  transition-colors duration-150 bg-ui-primary border border-transparent rounded-lg active:bg-ui-primary
-                  focus:outline-none focus:shadow-outlineIndigo"
+              class="block w-full px-4 py-2 mt-4 text-sm font-medium leading-5 text-center text-white transition-colors duration-150 bg-ui-primary border border-transparent rounded-lg active:bg-ui-primary focus:outline-none focus:shadow-outlineIndigo"
             >
               Go to
             </button>
@@ -128,10 +134,10 @@
           <hr class="my-8" />
           <button
             disabled
-            class="flex items-center justify-center w-full px-4 py-2 text-sm font-medium leading-5 text-white
-                  text-gray-700 transition-colors duration-150 border border-gray-300 rounded-lg dark:text-gray-400
-                  active:bg-transparent focus:border-gray-500 active:text-gray-500 focus:outline-none focus:shadow-outline-gray"
-            :class="true ? 'opacity-50 focus:outline-none cursor-not-allowed' : 'hover:border-gray-500'"
+            class="flex items-center justify-center w-full px-4 py-2 text-sm font-medium leading-5 text-white text-gray-700 transition-colors duration-150 border border-gray-300 rounded-lg dark:text-gray-400 active:bg-transparent focus:border-gray-500 active:text-gray-500 focus:outline-none focus:shadow-outline-gray"
+            :class="
+              true ? 'opacity-50 focus:outline-none cursor-not-allowed' : 'hover:border-gray-500'
+            "
           >
             Additional options....
           </button>
@@ -148,9 +154,18 @@ import { HomeActionTypes } from '@/store/home/actions';
 import { useStore } from 'vuex';
 import { useRouter } from 'vue-router';
 import AppCard from '@/components/widgets/AppCard.vue';
+import { checkHome } from '@/services/apis/init.services.ts';
 
-const ConfirmationModalAsync = defineAsyncComponent(() => import(/* webpackChunkName: "ConfirmationModal" */ '../components/modals/ConfirmationModal.vue'));
-const NotImplementedModalAsync = defineAsyncComponent(() => import(/* webpackChunkName: "NotImplementedModal" */ '../components/modals/NotImplementedModal.vue'));
+const ConfirmationModalAsync = defineAsyncComponent(
+  () =>
+    import(/* webpackChunkName: "ConfirmationModal" */ '../components/modals/ConfirmationModal.vue')
+);
+const NotImplementedModalAsync = defineAsyncComponent(
+  () =>
+    import(
+      /* webpackChunkName: "NotImplementedModal" */ '../components/modals/NotImplementedModal.vue'
+    )
+);
 
 export default defineComponent({
   name: 'Init',
@@ -167,18 +182,23 @@ export default defineComponent({
     const acceptWip = ref(false);
     const doneInit = ref(false);
     const useFakeDbDisabled = ref(false);
-    const getHomeState = ref(store.state.homeModule);
     const homeCreateRequest: HomeCreateRequest = reactive({
       name: '',
       description: '',
       autoDetectAddress: false
     });
 
-    store.dispatch(HomeActionTypes.FETCH_HOME).then(() => {
-      if (getHomeState.value.home !== null) {
-        router.push('/login');
-      }
-    });
+    checkHome()
+      .then((response) => {
+        if (response.data) {
+          router.push('/login');
+        }
+        return Promise.resolve();
+      })
+      .catch((err) => {
+        console.log(err);
+        return Promise.reject(err);
+      });
 
     const InitHome = () => {
       if (homeCreateRequest.name === '') {

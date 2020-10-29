@@ -7,8 +7,7 @@
       <div class="flex justify-start w-full md:w-1/3 xl:w-1/6">
         <button
           @click="toggleModal(true)"
-          class="flex justify-center items-center font-bold border border-ui-border rounded-lg bg-gray-400
-        hover:text-white transition-colors hover:bg-orange-400 h-10 w-full"
+          class="flex justify-center items-center font-bold border border-ui-border rounded-lg bg-gray-400 hover:text-white transition-colors hover:bg-orange-400 h-10 w-full"
         >
           Add Group
         </button>
@@ -19,7 +18,10 @@
     <div class="grid xl:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 gap-4">
       <AppCard class="bg-white shadow-md w-full" v-for="group in home.groups" :key="group.id">
         <div class="p-3 w-full">
-          <h1 class="text-xl text-left text-gray-600 font-bold cursor-pointer" @click="openDetailModal(true, group.id)">
+          <h1
+            class="text-xl text-left text-gray-600 font-bold cursor-pointer"
+            @click="openDetailModal(true, group.id)"
+          >
             {{ group.name }}
           </h1>
 

@@ -1,12 +1,21 @@
 <template>
   <div class="font-sans antialiased text-ui-typo bg-ui-background">
     <div class="flex flex-col justify-start min-h-screen">
-      <header ref="headerRef" class="sticky top-0 z-10 w-full border-b bg-ui-background border-ui-border" @resize="setHeaderHeight">
+      <header
+        ref="headerRef"
+        class="sticky top-0 z-10 w-full border-b bg-ui-background border-ui-border"
+        @resize="setHeaderHeight"
+      >
         <AppHeader />
       </header>
 
       <main class="flex justify-start w-full bg-ui-background overflow-auto">
-        <aside v-if="hasSidebar" class="px-4 md:w-56 sidebar bg-ui-background" :class="{ open: sidebarOpen }" :style="sidebarStyle">
+        <aside
+          v-if="hasSidebar"
+          class="px-4 md:w-56 sidebar bg-ui-background"
+          :class="{ open: sidebarOpen }"
+          :style="sidebarStyle"
+        >
           <AppSidebar :show-sidebar="this.sidebarOpen" />
         </aside>
 
@@ -22,8 +31,7 @@
 
     <div v-if="hasSidebar" class="fixed bottom-0 right-0 z-50 p-6 md:hidden">
       <button
-        class="p-3 text-white rounded-full shadow-lg bg-ui-primary
-         hover:text-white"
+        class="p-3 text-white rounded-full shadow-lg bg-ui-primary hover:text-white"
         @click="sidebarOpen = !sidebarOpen"
       >
         X
@@ -35,9 +43,13 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, nextTick, onMounted, ref } from 'vue';
+import { computed, defineComponent, nextTick, onMounted, ref, watch } from 'vue';
 import AppHeader from '@/components/layouts/AppHeader.vue';
 import AppSidebar from '@/components/layouts/AppSidebar.vue';
+import { useSignalRHub } from '@/hooks/useSignalR.ts';
+import { useStore } from 'vuex';
+import { HomeMutationTypes } from '@/store/home/mutations';
+import { Home } from '@/types/types';
 
 export default defineComponent({
   name: 'Home',
@@ -46,10 +58,17 @@ export default defineComponent({
     AppSidebar
   },
   setup() {
+    const store = useStore();
     const headerHeight = ref(0);
     const headerRef = ref();
     const sidebarOpen = ref(true);
+    const { data } = useSignalRHub<Home>('home', 'SendHome');
 
+    watch(data, (newHomeData) => {
+      if (newHomeData) {
+        store.commit(HomeMutationTypes.UPDATE_HOME, newHomeData);
+      }
+    });
     const setHeaderHeight = () => {
       nextTick(() => {
         headerHeight.value = headerRef.value.offsetHeight;

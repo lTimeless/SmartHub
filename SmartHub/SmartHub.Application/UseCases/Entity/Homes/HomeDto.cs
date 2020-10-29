@@ -9,8 +9,8 @@ namespace SmartHub.Application.UseCases.Entity.Homes
 {
     public class HomeDto : BaseDto, IMapFrom<Home>
     {
-        public List<SettingDto> Settings { get; set; }
-        public List<UserDto> Users { get; set; }
-        public List<GroupDto> Groups { get; set; }
+        public List<SettingDto>? Settings { get; set; }
+        public List<UserDto>? Users { get; set; }
+        public List<GroupDto>? Groups { get; set; }
     }
 }

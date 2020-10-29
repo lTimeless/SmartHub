@@ -2,7 +2,7 @@
 
 namespace SmartHub.Domain.DomainEvents
 {
-    public sealed class DeviceUpdatedEvent : DomainEvent
+    public sealed class DeviceUpdatedEvent : BaseDomainEvent
     {
         public string DeviceId { get; set; }
         public string State { get; set; }

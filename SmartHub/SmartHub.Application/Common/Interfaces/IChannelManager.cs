@@ -14,14 +14,14 @@ namespace SmartHub.Application.Common.Interfaces
 		/// </summary>
 		/// <param name="channelName">The channel eventType.</param>
 		/// <returns></returns>
-		public IObservable<IEvent> GetChannel(ChannelNames channelName);
+		public IObservable<IBaseEvent> GetChannel(ChannelNames channelName);
 
 		/// <summary>
 		/// Publishes an object to the channel.
 		/// </summary>
 		/// <param name="channelName">The channel name</param>
 		/// <param name="message">Any event object.</param>
-		public Task PublishNextToChannel(ChannelNames channelName, IEvent message);
+		public Task PublishNextToChannel(ChannelNames channelName, IBaseEvent message);
 
 		/// <summary>
 		/// Publishes an error to the channel.

@@ -1,8 +1,8 @@
-import axios from 'axios';
+import axios, { AxiosInstance } from 'axios';
 import { getToken, logout } from '@/services/auth/authService';
 import { useRouter } from 'vue-router';
 
-export const api = () => {
+export const api = (): AxiosInstance => {
   const axiosInstance = axios.create({
     headers: {
       'Content-type': 'application/json'
@@ -22,10 +22,10 @@ export const api = () => {
 
   axiosInstance.interceptors.response.use(
     (response) => {
-      if (!response.data.success) {
-        // TODO: trigger toast notification
-        return Promise.reject(response.data.message);
-      }
+      // if (!response.data.success) {
+      // TODO: trigger toast notification
+      //   return Promise.reject(response.data.message);
+      // }
       const router = useRouter();
       if (response.status === 401) {
         logout();

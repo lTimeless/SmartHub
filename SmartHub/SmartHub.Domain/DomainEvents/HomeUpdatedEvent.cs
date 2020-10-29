@@ -1,10 +1,9 @@
 ﻿using SmartHub.Domain.Entities;
-using SmartHub.Domain.Entities.Devices;
 using SmartHub.Domain.Entities.ValueObjects;
 
 namespace SmartHub.Domain.DomainEvents
 {
-	public sealed class HomeUpdatedEvent : DomainEvent
+	public sealed class HomeUpdatedEvent : BaseDomainEvent
 	{
 		public string? Name { get; }
 		public string? Description { get; }

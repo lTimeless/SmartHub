@@ -2,7 +2,7 @@
   <div class="w-full" v-if="home">
     <h1 class="text-3xl text-gray-500 font-bold mb-4">Dashboard for {{ home.name }}</h1>
     <AppTabs>
-      <template v-slot:header>
+      <template #header>
         <div class="flex flex-wrap justify-between my-4 space-y-2">
           <AppButton
             title="Home"
@@ -33,26 +33,34 @@
           />
         </div>
       </template>
-      <template v-slot:content>
-        <div v-bind:class="{ hidden: openTab !== 1, block: openTab === 1 }">
+      <template #content>
+        <div :class="{ hidden: openTab !== 1, block: openTab === 1 }">
           <div class="grid grid-cols-2 gap-6">
             <div class="border-b border-ui-border col-span-2 mb-3">
-              <h2 class="flex justify-start pt-0 mt-0 mb-1 font-bold text-sm tracking-tight uppercase text-gray-500">Graphs</h2>
+              <h2
+                class="flex justify-start pt-0 mt-0 mb-1 font-bold text-sm tracking-tight uppercase text-gray-500"
+              >
+                Graphs
+              </h2>
             </div>
             <div class="border-b border-ui-border col-span-2">
-              <h2 class="flex justify-start pt-0 mt-0 mb-1 font-bold text-sm tracking-tight uppercase text-gray-500">Tables</h2>
+              <h2
+                class="flex justify-start pt-0 mt-0 mb-1 font-bold text-sm tracking-tight uppercase text-gray-500"
+              >
+                Tables
+              </h2>
             </div>
           </div>
         </div>
-        <div v-bind:class="{ hidden: openTab !== 2, block: openTab === 2 }">
+        <div :class="{ hidden: openTab !== 2, block: openTab === 2 }">
           <AppGroupsOverview v-if="home?.groups !== undefined" />
           <div v-else>No Groups available</div>
         </div>
-        <div v-bind:class="{ hidden: openTab !== 3, block: openTab === 3 }">
+        <div :class="{ hidden: openTab !== 3, block: openTab === 3 }">
           <AppDevicesOverview v-if="home?.groups !== undefined" />
           <div v-else>No Devices available</div>
         </div>
-        <div v-bind:class="{ hidden: openTab !== 4, block: openTab === 4 }">
+        <div :class="{ hidden: openTab !== 4, block: openTab === 4 }">
           <AppAutomation />
         </div>
       </template>
@@ -68,7 +76,6 @@ import AppAutomation from '@/components/AppAutomations.vue';
 import AppGroupsOverview from '@/components/AppGroupsOverview.vue';
 import AppDevicesOverview from '@/components/AppDevicesOverview.vue';
 import { useStore } from 'vuex';
-import { HomeActionTypes } from '@/store/home/actions';
 
 export default defineComponent({
   name: 'Dashboard',
@@ -83,7 +90,6 @@ export default defineComponent({
     const openTab = ref(1);
     const store = useStore();
     const home = computed(() => store.state.homeModule.home);
-    store.dispatch(HomeActionTypes.FETCH_HOME);
     const toggleTabs = (tabNumber: number) => {
       openTab.value = tabNumber;
     };

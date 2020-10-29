@@ -6,5 +6,6 @@ namespace SmartHub.Application.Common.Interfaces.Database
     public interface IHomeRepository : IBaseRepository<Home>
     {
         Task<Home?> GetHome();
+        Task<bool> Exist();
     }
 }

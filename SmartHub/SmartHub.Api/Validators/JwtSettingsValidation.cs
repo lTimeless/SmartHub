@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.Options;
 using SmartHub.Domain.Common.Settings;
-using SmartHub.Infrastructure.Persistence.Helpers;
+using SmartHub.Infrastructure.Helpers;
 
 namespace SmartHub.Api.Validators
 {
@@ -10,7 +10,7 @@ namespace SmartHub.Api.Validators
         {
             if (string.IsNullOrEmpty(options.Key) || options.Key.Contains("<"))
             {
-                options.Key = TokenUtils.ValidateAndGenerateToken(options.Key);
+                options.Key = TokenUtils.ValidateAndGenerateToken(options.Key ?? string.Empty);
             }
             return ValidateOptionsResult.Success;
         }

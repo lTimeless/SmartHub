@@ -1,14 +1,20 @@
 import { ActionContext, ActionTree } from 'vuex';
 import { RootState, HomeState, AuthState } from '@/store/index.types';
-import { DeviceCreateRequest, Group, GroupCreateRequest, GroupUpdateRequest, HomeCreateRequest, HomeUpdateRequest } from '@/types/types';
+import {
+  DeviceCreateRequest,
+  Group,
+  GroupCreateRequest,
+  GroupUpdateRequest,
+  HomeCreateRequest,
+  HomeUpdateRequest
+} from '@/types/types';
 import { HomeMutations } from '@/store/home/mutations';
-import { getHome, postHome, putHome } from '@/services/apis/home.service';
+import { postHome, putHome } from '@/services/apis/home.service';
 import { getByIdGroup, postGroup, putByIdGroup } from '@/services/apis/group.service';
 import { postDevice } from '@/services/apis/device.service';
 
 // Keys
 export enum HomeActionTypes {
-  FETCH_HOME = 'FETCH_HOME',
   CREATE_HOME = 'CREATE_HOME',
   UPDATE_HOME = 'UPDATE_HOME',
   // Group
@@ -22,37 +28,25 @@ export enum HomeActionTypes {
 
 // actions context type
 type ActionAugments = Omit<ActionContext<AuthState, RootState>, 'commit'> & {
-  commit<K extends keyof HomeMutations>(key: K, payload: Parameters<HomeMutations[K]>[1]): ReturnType<HomeMutations[K]>;
+  commit<K extends keyof HomeMutations>(
+    key: K,
+    payload: Parameters<HomeMutations[K]>[1]
+  ): ReturnType<HomeMutations[K]>;
 };
 
 // Action Interface
 export type HomeActions = {
-  [HomeActionTypes.FETCH_HOME]({ commit }: ActionAugments): Promise<void>;
   [HomeActionTypes.CREATE_HOME]({ commit }: ActionAugments, payload: HomeCreateRequest): Promise<void>;
   [HomeActionTypes.UPDATE_HOME]({ commit }: ActionAugments, payload: HomeUpdateRequest): Promise<void>;
   // Group
-  [HomeActionTypes.CREATE_GROUP]({}: ActionAugments, payload: GroupCreateRequest): Promise<void>;
-  [HomeActionTypes.FETCH_BY_GROUP_ID]({}: ActionAugments, payload: string): Promise<Group>;
-  [HomeActionTypes.UPDATE_GROUP]({}: ActionAugments, payload: GroupUpdateRequest): Promise<void>;
+  [HomeActionTypes.CREATE_GROUP]({ commit }: ActionAugments, payload: GroupCreateRequest): Promise<void>;
+  [HomeActionTypes.FETCH_BY_GROUP_ID]({ commit }: ActionAugments, payload: string): Promise<Group>;
+  [HomeActionTypes.UPDATE_GROUP]({ commit }: ActionAugments, payload: GroupUpdateRequest): Promise<void>;
   // DEvice
-  [HomeActionTypes.CREATE_DEVICE]({}: ActionAugments, payload: DeviceCreateRequest): Promise<void>;
+  [HomeActionTypes.CREATE_DEVICE]({ commit }: ActionAugments, payload: DeviceCreateRequest): Promise<void>;
 };
 
 export const actions: ActionTree<HomeState, RootState> = {
-  async [HomeActionTypes.FETCH_HOME]({ commit }): Promise<void> {
-    await getHome()
-      .then((response) => {
-        if (!response.success) {
-          return Promise.reject(response.message);
-        }
-        commit(HomeActionTypes.UPDATE_HOME, response.data);
-        return Promise.resolve();
-      })
-      .catch((err) => {
-        console.log(err);
-        return Promise.reject(err);
-      });
-  },
   async [HomeActionTypes.CREATE_HOME]({ commit }, payload): Promise<void> {
     await postHome(payload)
       .then((response) => {
@@ -80,12 +74,11 @@ export const actions: ActionTree<HomeState, RootState> = {
         if (!response.success) {
           return Promise.reject(response.message);
         }
-        dispatch(HomeActionTypes.FETCH_HOME);
         return Promise.resolve();
       })
       .catch((error) => Promise.reject(error));
   },
-  async [HomeActionTypes.FETCH_BY_GROUP_ID]({}, payload): Promise<Group> {
+  async [HomeActionTypes.FETCH_BY_GROUP_ID]({ dispatch }, payload): Promise<Group> {
     return await getByIdGroup(payload)
       .then((response) => {
         if (!response.success) {
@@ -101,7 +94,6 @@ export const actions: ActionTree<HomeState, RootState> = {
         if (!response.success) {
           return Promise.reject(response.message);
         }
-        dispatch(HomeActionTypes.FETCH_HOME);
         return Promise.resolve();
       })
       .catch((error) => Promise.reject(error));
@@ -113,7 +105,6 @@ export const actions: ActionTree<HomeState, RootState> = {
         if (!response.success) {
           return Promise.reject(response.message);
         }
-        dispatch(HomeActionTypes.FETCH_HOME);
         return Promise.resolve();
       })
       .catch((error) => Promise.reject(error));

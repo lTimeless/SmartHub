@@ -4,7 +4,7 @@ using SmartHub.Domain.Common.Enums;
 
 namespace SmartHub.Application.UseCases.Entity.Devices.Create
 {
-    public class DeviceCreateCommand : IRequest<Response<DeviceDto>>
+    public class DeviceCreateCommand : IRequest<Response<string>>
     {
         public string Name { get; }
         public string? Description { get; }

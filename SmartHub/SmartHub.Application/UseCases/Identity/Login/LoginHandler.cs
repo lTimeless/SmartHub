@@ -26,13 +26,13 @@ namespace SmartHub.Application.UseCases.Identity.Login
 			var foundUser = await _userManager.FindByNameAsync(request.UserName);
 			if (foundUser == null)
 			{
-				return Response.Fail<AuthResponseDto>("You are not authorized.");
+				return Response.Fail<AuthResponseDto>("You are not authorized.", new AuthResponseDto(string.Empty));
 			}
 			var result = await _loginService.LoginAsync(request, foundUser);
 
 			if (!result)
 			{
-				return Response.Fail<AuthResponseDto>($"Error: Couldn't sign in user with username {request.UserName}");
+				return Response.Fail<AuthResponseDto>($"Error: Couldn't sign in user with username {request.UserName}", new AuthResponseDto(string.Empty));
 			}
 			var rolesToUser = await _userManager.GetRolesAsync(foundUser);
 			return Response.Ok("Successful",

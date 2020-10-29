@@ -2,17 +2,30 @@
   <div class="w-full">
     <h1 class="text-3xl text-gray-500 font-bold mb-6">Logs</h1>
     <div class="flex justify-between items-center mb-4">
-      <Search :data="logsArray" :search-keys="searchKeys" @search-result="getSearchResult" @toggle-table="toggleTable" />
+      <Search
+        :data="logsArray"
+        :search-keys="searchKeys"
+        @search-result="getSearchResult"
+        @toggle-table="toggleTable"
+      />
       <div class="w-1/3 flex justify-end">
-        <span v-if="connectionEstablished" class="w-1/3 text-xs font-semibold inline-block py-2 px-2 rounded text-indigo-600 bg-indigo-200 uppercase ml-3">
+        <span
+          v-if="connectionEstablished"
+          class="w-1/3 text-xs font-semibold inline-block py-2 px-2 rounded text-indigo-600 bg-indigo-200 uppercase ml-3"
+        >
           Connected
         </span>
-        <span v-if="!connectionEstablished" class="w-1/3 text-xs font-semibold inline-block py-2 px-2 rounded text-red-600 bg-red-200 uppercase ml-3">
+        <span
+          v-if="!connectionEstablished"
+          class="w-1/3 text-xs font-semibold inline-block py-2 px-2 rounded text-red-600 bg-red-200 uppercase ml-3"
+        >
           Not connected
         </span>
       </div>
     </div>
-
+    <div>
+      <span class="text-red-600 flex items-center">{{ error }}</span>
+    </div>
     <template v-if="!showSearchTable">
       <Table :headers="headers">
         <tr v-for="log in logsArray" :key="log.id" class="hover:bg-indigo-200">
@@ -53,11 +66,11 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, onUnmounted, ref, reactive } from 'vue';
-import { HubConnectionBuilder, LogLevel, HubConnection } from '@microsoft/signalr';
+import { defineComponent, onUnmounted, ref, reactive, watch } from 'vue';
 import { ServerLog } from '@/types/types';
 import Search from '@/components/widgets/AppSearch.vue';
 import Table from '@/components/widgets/AppTable.vue';
+import { useSignalRHub } from '@/hooks/useSignalR';
 
 export default defineComponent({
   name: 'Logs',
@@ -66,14 +79,14 @@ export default defineComponent({
     Table
   },
   setup() {
-    const connection: HubConnection = new HubConnectionBuilder()
-      .withUrl('/api/hub/logs')
-      .configureLogging(LogLevel.Information)
-      .build();
+    const { connectionEstablished, data, error, connection } = useSignalRHub<ServerLog>(
+      'logs',
+      'SendLogAsObject'
+    );
+
     const showSearchTable = ref(false);
     const logsArray = reactive<ServerLog[]>([]);
     const searchResultArray = ref<any>([]);
-    const connectionEstablished = ref(false);
     const headers = [
       { text: 'Timestamp', value: 'timestamp' },
       { text: 'Level', value: 'level' },
@@ -82,22 +95,14 @@ export default defineComponent({
     ];
     const searchKeys = ['timestamp', 'level', 'message', 'exception'];
 
-    connection.onclose(() => {
-      connectionEstablished.value = false;
+    watch(data, (newData) => {
+      if (newData) {
+        logsArray.push(newData);
+      }
     });
 
-    connection
-      .start()
-      .then(() => {
-        connectionEstablished.value = true;
-        connection.on('SendLogAsObject', (data: ServerLog) => {
-          logsArray.push(data);
-        });
-      })
-      .catch((err) => console.error(err));
-
     onUnmounted(() => {
-      connection.stop();
+      connection.value.stop();
     });
 
     const getSearchResult = (result: ServerLog[]) => {
@@ -113,6 +118,7 @@ export default defineComponent({
 
     return {
       logsArray,
+      error,
       connectionEstablished,
       headers,
       searchKeys,

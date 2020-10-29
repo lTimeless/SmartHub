@@ -9,35 +9,33 @@ namespace SmartHub.Domain.Entities
 {
 	public class Home : BaseEntity, IAggregateRoot
 	{
-		public virtual List<User> Users { get; protected set; }
-		public virtual List<Group> Groups { get; protected set; }
+		public List<User> Users { get; }
 
-		public virtual List<Plugin> Plugins { get; protected set; } // make it so that all plugins will be saved for backup /restore etc.
+		public List<Group> Groups { get; }
 
-		public virtual List<Setting> Settings { get; protected set; }
+		public List<Plugin> Plugins { get; private set; } // make it so that all plugins will be saved for backup /restore etc.
 
-		public virtual Address Address { get; private set; }
-		public virtual List<DomainEvent> Events { get; set; }
+		public List<Setting> Settings { get; }
 
-		protected Home()
-		{
-		}
+		public virtual Address? Address { get; private set; }
+
+		public List<BaseDomainEvent> Events { get; set; }
 
 		public Home(string name, string description) : base(name, description)
 		{
 			Users = new List<User>();
 			Groups = new List<Group>();
 			Plugins = new List<Plugin>();
-			Events = new List<DomainEvent>();
+			Events = new List<BaseDomainEvent>();
 			Settings = new List<Setting>();
 		}
 
 		#region Methods
-		public void AddDomainEvent(DomainEvent domainEvent)
+		public void AddDomainEvent(BaseDomainEvent domainEvent)
 		{
 			if (Events.IsNullOrEmpty())
 			{
-				Events = new List<DomainEvent>();
+				Events = new List<BaseDomainEvent>();
 			}
 			Events.Add(domainEvent);
 		}

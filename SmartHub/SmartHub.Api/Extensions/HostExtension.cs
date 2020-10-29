@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Serilog;
-using SmartHub.Infrastructure.Persistence.Database;
+using SmartHub.Infrastructure.Database;
 
 namespace SmartHub.Api.Extensions
 {

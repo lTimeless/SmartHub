@@ -1,5 +1,5 @@
 ﻿using SmartHub.Domain.Common.Enums;
-using SmartHub.Domain.Entities.Devices;
+using SmartHub.Domain.Entities.ValueObjects;
 
 namespace SmartHub.Domain.Entities
 {
@@ -12,10 +12,6 @@ namespace SmartHub.Domain.Entities
 		public virtual Company Company { get; private set; }
 		public ConnectionTypes ConnectionTypes { get; private set; }
 		public bool IsDownloaded { get; private set; }
-
-		public Plugin()
-		{
-		}
 
 		public Plugin(string name, string description, PluginTypes pluginTypes, string systemPath, bool active, double version, string company, ConnectionTypes connectionTypes) :
 			 base(name, description)
