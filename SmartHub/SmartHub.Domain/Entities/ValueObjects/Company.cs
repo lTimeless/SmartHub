@@ -9,7 +9,6 @@ namespace SmartHub.Domain.Entities.ValueObjects
 
 		protected Company()
 		{
-
 		}
 		public Company(string name)
 		{

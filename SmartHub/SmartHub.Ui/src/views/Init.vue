@@ -148,7 +148,7 @@ import { HomeActionTypes } from '@/store/home/actions';
 import { useStore } from 'vuex';
 import { useRouter } from 'vue-router';
 import AppCard from '@/components/widgets/AppCard.vue';
-import { useCheckHome, useCheckUsers } from '@/hooks/api/inits';
+import { checkHome } from '@/services/apis/init';
 
 const ConfirmationModalAsync = defineAsyncComponent(
   () => import(/* webpackChunkName: "ConfirmationModal" */ '../components/modals/ConfirmationModal.vue')
@@ -178,13 +178,18 @@ export default defineComponent({
       autoDetectAddress: false
     });
 
-    const { data } = useCheckHome();
-    watch(data, (newData) => {
-      if (!newData) {
-        console.log(newData);
-        router.push('/login');
-      }
-    });
+    checkHome()
+      .then((response) => {
+        if (response.data) {
+          router.push('/login');
+        }
+        return Promise.resolve();
+      })
+      .catch((err) => {
+        console.log(err);
+        return Promise.reject(err);
+      });
+
     const InitHome = () => {
       if (homeCreateRequest.name === '') {
         homeCreateRequest.name = 'SmartHub';

@@ -10,8 +10,8 @@ using SmartHub.Infrastructure.Database;
 namespace SmartHub.Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20201022200400_AddActivityAutoId")]
-    partial class AddActivityAutoId
+    [Migration("20201029201338_ResetToStableVersion")]
+    partial class ResetToStableVersion
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -379,9 +379,6 @@ namespace SmartHub.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<string>("Description")
-                        .HasColumnType("text");
-
                     b.Property<DateTimeOffset>("LastModifiedAt")
                         .HasColumnType("timestamp with time zone");
 
@@ -428,9 +425,6 @@ namespace SmartHub.Infrastructure.Migrations
 
                     b.Property<string>("DownloadServerUrl")
                         .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("Filepath")
                         .HasColumnType("text");
 
                     b.Property<string>("HomeId")
@@ -628,7 +622,7 @@ namespace SmartHub.Infrastructure.Migrations
                         .WithMany("Devices")
                         .HasForeignKey("GroupId");
 
-                    b.OwnsOne("SmartHub.Domain.Entities.Devices.Company", "Company", b1 =>
+                    b.OwnsOne("SmartHub.Domain.Entities.ValueObjects.Company", "Company", b1 =>
                         {
                             b1.Property<string>("DeviceId")
                                 .ValueGeneratedOnAdd()
@@ -654,7 +648,7 @@ namespace SmartHub.Infrastructure.Migrations
                                 .HasForeignKey("DeviceId");
                         });
 
-                    b.OwnsOne("SmartHub.Domain.Entities.Devices.IpAddress", "Ip", b1 =>
+                    b.OwnsOne("SmartHub.Domain.Entities.ValueObjects.IpAddress", "Ip", b1 =>
                         {
                             b1.Property<string>("DeviceId")
                                 .ValueGeneratedOnAdd()
@@ -741,8 +735,7 @@ namespace SmartHub.Infrastructure.Migrations
                                 .HasForeignKey("HomeId");
                         });
 
-                    b.Navigation("Address")
-                        .IsRequired();
+                    b.Navigation("Address");
                 });
 
             modelBuilder.Entity("SmartHub.Domain.Entities.Plugin", b =>
@@ -752,7 +745,7 @@ namespace SmartHub.Infrastructure.Migrations
                         .HasForeignKey("HomeId")
                         .OnDelete(DeleteBehavior.Cascade);
 
-                    b.OwnsOne("SmartHub.Domain.Entities.Devices.Company", "Company", b1 =>
+                    b.OwnsOne("SmartHub.Domain.Entities.ValueObjects.Company", "Company", b1 =>
                         {
                             b1.Property<string>("PluginId")
                                 .ValueGeneratedOnAdd()
@@ -820,6 +813,7 @@ namespace SmartHub.Infrastructure.Migrations
                                 .HasDefaultValue("");
 
                             b1.Property<string>("MiddleName")
+                                .IsRequired()
                                 .ValueGeneratedOnAdd()
                                 .HasMaxLength(100)
                                 .HasColumnType("character varying(100)")

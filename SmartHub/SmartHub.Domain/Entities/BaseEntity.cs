@@ -12,27 +12,22 @@ namespace SmartHub.Domain.Entities
 
 	public abstract class BaseEntity : IEntity
 	{
-		public string Id { get; } = default!;
-		public string Name { get; private set; } = default!;
-		public string? Description { get; private set; }
+		public string Id { get; }
+		public string Name { get; protected set; }
+		public string? Description { get; protected set; }
 		public DateTimeOffset CreatedAt { get; set; }
 		public DateTimeOffset LastModifiedAt { get; set; }
-		public string CreatedBy { get; set; } = default!;
-		public string LastModifiedBy { get; set; } = default!;
+		public string CreatedBy { get; set; }
+		public string LastModifiedBy { get; set; }
 
 		protected BaseEntity()
 		{
 		}
 
-		internal BaseEntity(string name, string? description)
+		protected BaseEntity(string name, string? description)
 		{
-			Id = Guid.NewGuid().ToString();
 			Name = name;
 			Description = description;
-			CreatedAt = DateTimeOffset.Now;
-			LastModifiedAt = DateTimeOffset.Now;
-			CreatedBy = string.Empty;
-			LastModifiedBy = string.Empty;
 		}
 
 		#region Methods

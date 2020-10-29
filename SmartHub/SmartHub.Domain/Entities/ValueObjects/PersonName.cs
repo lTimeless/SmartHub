@@ -8,9 +8,8 @@ namespace SmartHub.Domain.Entities.ValueObjects
 		public string MiddleName { get; set; } = default!;
 		public string LastName { get; set; } = default!;
 
-		private PersonName()
+		protected PersonName()
 		{
-
 		}
 		public PersonName(string first, string? middle, string last)
 		{

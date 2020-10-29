@@ -42,6 +42,11 @@ namespace SmartHub.Application.UseCases.SignalR.Services
 		/// <inheritdoc cref="ISendOverSignalR.SendActivity"/>
 		public async Task SendActivity(string userName,string requestName, string message, long execTime,bool success)
 		{
+			var home = await _unitOfWork.HomeRepository.GetHome();
+			if (home is null)
+			{
+				return;
+			}
 			var activityDto = new ActivityDto
 			{
 				DateTime = DateTime.Now.ToString("HH:mm:ss"),
@@ -51,7 +56,6 @@ namespace SmartHub.Application.UseCases.SignalR.Services
 				SuccessfulRequest = success
 			};
 			await _activityHubContext.Clients.All.SendActivity(activityDto);
-			var home = await _unitOfWork.HomeRepository.GetHome() ?? throw new SmartHubException("Home is null");
 			var activity = _mapper.Map<Activity>(activityDto);
 			activity.SetName(requestName);
 			home.AddActivity(activity);

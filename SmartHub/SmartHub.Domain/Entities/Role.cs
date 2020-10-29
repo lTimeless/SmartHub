@@ -11,7 +11,7 @@ namespace SmartHub.Domain.Entities
 		public string LastModifiedBy { get; set; } = default!;
 		public string? Description { get; }
 
-		private Role()
+		protected Role()
 		{
 		}
 
@@ -19,10 +19,6 @@ namespace SmartHub.Domain.Entities
 		{
 			Id = Guid.NewGuid().ToString();
 			Description = description;
-			CreatedAt = DateTimeOffset.Now;
-			LastModifiedAt = DateTimeOffset.Now;
-			CreatedBy = string.Empty;
-			LastModifiedBy = string.Empty;
 		}
 
 	}

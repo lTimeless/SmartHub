@@ -1,12 +1,13 @@
 ﻿using System.Collections.Generic;
+using SmartHub.Domain.Common.Extensions;
 
 namespace SmartHub.Domain.Entities
 {
 	public class Group : BaseEntity
 	{
-		public virtual List<Device> Devices { get; } = default!;
+		public virtual List<Device> Devices { get; set; }
 
-		private Group()
+		protected Group()
 		{
 		}
 

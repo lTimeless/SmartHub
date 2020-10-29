@@ -5,16 +5,14 @@ namespace SmartHub.Domain.Entities
 {
 	public class Device : BaseEntity
 	{
-
-
-		public IpAddress Ip { get; private set; } = default!;
-		public Company Company { get; } = default!;
+		public IpAddress Ip { get; private set; }
+		public Company Company { get; private set; }
 		public ConnectionTypes PrimaryConnection { get; private set; }
 		public ConnectionTypes SecondaryConnection { get; private set; }
-		public string PluginName { get; } = default!; // Equals the Name Property in the IPlugin
+		public string PluginName { get; } // Equals the Name Property in the IPlugin
 		public PluginTypes PluginTypes { get; }// Equals the PluginType Property in the IPlugin
 
-		private Device()
+		protected Device()
 		{
 		}
 

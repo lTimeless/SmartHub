@@ -304,6 +304,16 @@ namespace SmartHub.Infrastructure.Migrations
                         .HasColumnType("text")
                         .HasDefaultValueSql("uuid_generate_v4()");
 
+                    b.Property<bool>("Active")
+                        .HasColumnType("boolean");
+
+                    b.Property<string>("AssemblyFilepath")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<double>("AssemblyVersion")
+                        .HasColumnType("double precision");
+
                     b.Property<string>("ConnectionTypes")
                         .IsRequired()
                         .HasColumnType("text");
@@ -320,6 +330,9 @@ namespace SmartHub.Infrastructure.Migrations
 
                     b.Property<string>("HomeId")
                         .HasColumnType("text");
+
+                    b.Property<bool>("IsDownloaded")
+                        .HasColumnType("boolean");
 
                     b.Property<DateTimeOffset>("LastModifiedAt")
                         .HasColumnType("timestamp with time zone");
@@ -408,8 +421,18 @@ namespace SmartHub.Infrastructure.Migrations
                     b.Property<string>("Description")
                         .HasColumnType("text");
 
+                    b.Property<string>("DownloadServerUrl")
+                        .IsRequired()
+                        .HasColumnType("text");
+
                     b.Property<string>("HomeId")
                         .HasColumnType("text");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("boolean");
+
+                    b.Property<bool>("IsDefault")
+                        .HasColumnType("boolean");
 
                     b.Property<DateTimeOffset>("LastModifiedAt")
                         .HasColumnType("timestamp with time zone");
@@ -419,6 +442,10 @@ namespace SmartHub.Infrastructure.Migrations
                         .HasColumnType("text");
 
                     b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("PluginPath")
                         .IsRequired()
                         .HasColumnType("text");
 

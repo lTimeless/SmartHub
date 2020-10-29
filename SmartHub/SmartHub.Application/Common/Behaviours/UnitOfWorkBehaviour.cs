@@ -22,10 +22,10 @@ namespace SmartHub.Application.Common.Behaviours
             await _unitOfWork.SaveAsync();
             // If the Request is a command than it probably updated the home Entity
             // so every client needs to be updated with the new State
-            if (request.GetType().Name.EndsWith("Command"))
-            {
+            // if (request.GetType().Name.EndsWith("Command"))
+            // {
                 await _sendOverSignalR.SendHome();
-            }
+            // }
         }
     }
 }

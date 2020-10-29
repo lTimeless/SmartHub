@@ -83,7 +83,6 @@ import { useStore } from 'vuex';
 import { AuthActionTypes } from '@/store/auth/actions';
 import AppCard from '@/components/widgets/AppCard.vue';
 import { checkHome, checkUsers } from '@/services/apis/init';
-import { useCheckHome, useCheckUsers } from '@/hooks/api/inits';
 
 export default defineComponent({
   components: {
@@ -97,18 +96,20 @@ export default defineComponent({
     const username = ref('');
     const isSignInBtnClicked = ref(false);
 
-    const { data } = useCheckHome();
-    watch(data, (newData) => {
-      if (!newData) {
-        console.log(newData);
-        router.push('/init');
-      } else {
-        const { data } = useCheckUsers();
-        if (!data) {
-          router.push('/registration');
+    checkHome()
+      .then((response) => {
+        if (!response.data) {
+          router.push('/init');
+          return Promise.resolve();
         }
-      }
-    });
+        checkUsers().then((response) => {
+          if (!response.data) {
+            router.push('/registration');
+          }
+        });
+        return Promise.resolve();
+      })
+      .catch((err) => Promise.reject(err));
 
     const onLoginClick = async () => {
       isSignInBtnClicked.value = true;
