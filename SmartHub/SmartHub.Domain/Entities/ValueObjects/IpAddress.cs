@@ -4,7 +4,7 @@ namespace SmartHub.Domain.Entities.ValueObjects
 {
 	public class IpAddress : ValueObject
 	{
-		public string Ipv4 { get; }
+		public string Ipv4 { get; } = default!;
 
 		protected IpAddress()
 		{

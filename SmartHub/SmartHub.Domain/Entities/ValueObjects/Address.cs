@@ -4,11 +4,11 @@ namespace SmartHub.Domain.Entities.ValueObjects
 {
 	public class Address : ValueObject
 	{
-		public string Street { get; }
-		public string City { get; }
-		public string State { get; }
-		public string Country { get; }
-		public string ZipCode { get; }
+		public string Street { get; } = default!;
+		public string City { get; } = default!;
+		public string State { get; } = default!;
+		public string Country { get; } = default!;
+		public string ZipCode { get; } = default!;
 
 		protected Address()
 		{

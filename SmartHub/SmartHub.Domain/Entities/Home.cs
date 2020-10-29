@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using SmartHub.Domain.Common.Enums;
-using SmartHub.Domain.Common.Extensions;
 using SmartHub.Domain.DomainEvents;
 using SmartHub.Domain.Entities.ValueObjects;
 
@@ -9,14 +8,17 @@ namespace SmartHub.Domain.Entities
 {
 	public class Home : BaseEntity, IAggregateRoot
 	{
-		public virtual List<User> Users { get; protected set; }
-		public virtual List<Group> Groups { get; protected set; }
-		public virtual List<Plugin> Plugins { get; protected set; } // make it so that all plugins will be saved for backup /restore etc.
-		public virtual List<Setting> Settings { get; protected set; }
-		public virtual List<Activity> Activities { get; protected set; }
-		public virtual Address? Address { get; private set; }
+		public virtual List<User> Users { get; } = default!;
+		public virtual List<Group> Groups { get;} = default!;
+		public virtual List<Plugin> Plugins { get; } = default!; // make it so that all plugins will be saved for backup /restore etc.
+		public virtual List<Setting> Settings { get; } = default!;
+		public virtual List<Activity> Activities { get; } = default!;
+		public Address? Address { get; private set; }
+		public List<BaseDomainEvent> Events { get; set; } = default!;
 
-		public List<BaseDomainEvent> Events { get; set; }
+		private Home()
+		{
+		}
 
 		public Home(string name, string description) : base(name, description)
 		{
@@ -31,10 +33,6 @@ namespace SmartHub.Domain.Entities
 		#region Methods
 		public void AddDomainEvent(BaseDomainEvent domainEvent)
 		{
-			if (Events.IsNullOrEmpty())
-			{
-				Events = new List<BaseDomainEvent>();
-			}
 			Events.Add(domainEvent);
 		}
 
@@ -73,26 +71,9 @@ namespace SmartHub.Domain.Entities
 			return this;
 		}
 
-		public Home RemoveSetting(Setting setting)
-		{
-			if (setting.Type == SettingTypes.Default)
-			{
-				return this;
-			}
-
-			Settings.Add(setting);
-			return this;
-		}
-
 		public Home AddPlugins(List<Plugin> plugins)
 		{
-			if (Plugins.IsNullOrEmpty())
-			{
-				Plugins = new List<Plugin>();
-			}
-
 			Plugins.AddRange(plugins);
-
 			foreach (var plugin in plugins)
 			{
 				AddDomainEvent(new HomeUpdatedEvent(plugin));

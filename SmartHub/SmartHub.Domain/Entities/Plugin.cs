@@ -5,18 +5,18 @@ namespace SmartHub.Domain.Entities
 {
 	public class Plugin : BaseEntity
 	{
-		public PluginTypes PluginTypes { get; private set; }
-		public string AssemblyFilepath { get; private set; }
-		public bool Active { get; private set; }
-		public double AssemblyVersion { get; private set; }
-		public virtual Company Company { get; private set; }
-		public ConnectionTypes ConnectionTypes { get; private set; }
-		public bool IsDownloaded { get; private set; }
+		public PluginTypes PluginTypes { get; }
+		public string AssemblyFilepath { get; } = default!;
+		public bool Active { get; }
+		public double AssemblyVersion { get; }
+		public Company Company { get; } = default!;
+		public ConnectionTypes ConnectionTypes { get; }
+		public bool IsDownloaded { get; }
 
-		protected Plugin()
+		private Plugin()
 		{
-
 		}
+
 		public Plugin(string name, string description, PluginTypes pluginTypes, string systemPath, bool active, double version, string company, ConnectionTypes connectionTypes) :
 			 base(name, description)
 		{

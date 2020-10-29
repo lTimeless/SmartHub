@@ -4,8 +4,8 @@ namespace SmartHub.Domain.Entities.ValueObjects
 {
 	public class Company : ValueObject
 	{
-		public string Name { get; }
-		public string ShortName { get; }
+		public string Name { get; } = default!;
+		public string ShortName { get; } = default!;
 
 		protected Company()
 		{

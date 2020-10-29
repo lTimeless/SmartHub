@@ -35,7 +35,7 @@ namespace SmartHub.Application.UseCases.Entity.Homes.Create
 			var home = await _unitOfWork.HomeRepository.GetHome();
 			if (home != null)
 			{
-				return Response.Fail<HomeDto>("Error: There is already a home.", new HomeDto());
+				return Response.Fail("Error: There is already a home.", new HomeDto());
 			}
 
 			var defaultSetting = new Setting($"{request.Name}_{DefaultNames.DefaultSetting}",
@@ -66,7 +66,7 @@ namespace SmartHub.Application.UseCases.Entity.Homes.Create
 			var result = await _unitOfWork.HomeRepository.AddAsync(homeEntity);
 			if (!result)
 			{
-				return Response.Fail<HomeDto>("Error: Could not create Home.", new HomeDto());
+				return Response.Fail("Error: Could not create Home.", new HomeDto());
 			}
 			_logger.Information("SmartHub successfully created.");
 			return Response.Ok("SmartHub successfully created.", _mapper.Map<HomeDto>(homeEntity));

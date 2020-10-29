@@ -5,17 +5,19 @@ namespace SmartHub.Domain.Entities
 {
 	public class Device : BaseEntity
 	{
-		public virtual IpAddress Ip { get; private set; }
-		public virtual Company Company { get; private set; }
+
+
+		public IpAddress Ip { get; private set; } = default!;
+		public Company Company { get; } = default!;
 		public ConnectionTypes PrimaryConnection { get; private set; }
 		public ConnectionTypes SecondaryConnection { get; private set; }
-		public string PluginName { get; } // Equals the Name Property in the IPlugin
+		public string PluginName { get; } = default!; // Equals the Name Property in the IPlugin
 		public PluginTypes PluginTypes { get; }// Equals the PluginType Property in the IPlugin
 
-		protected Device()
+		private Device()
 		{
-
 		}
+
 		public Device(
 			string name,
 			string? description,
@@ -36,17 +38,7 @@ namespace SmartHub.Domain.Entities
 		}
 
 		#region Methods
-		public Device SetName(string name)
-		{
-			Name = name;
-			return this;
-		}
 
-		public Device SetDescription(string description)
-		{
-			Description = description;
-			return this;
-		}
 		public Device SetIp(string ip)
 		{
 			Ip = new IpAddress(ip);

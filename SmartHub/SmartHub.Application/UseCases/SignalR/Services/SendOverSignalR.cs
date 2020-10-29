@@ -53,7 +53,7 @@ namespace SmartHub.Application.UseCases.SignalR.Services
 			await _activityHubContext.Clients.All.SendActivity(activityDto);
 			var home = await _unitOfWork.HomeRepository.GetHome() ?? throw new SmartHubException("Home is null");
 			var activity = _mapper.Map<Activity>(activityDto);
-			activity.UpdateName(requestName);
+			activity.SetName(requestName);
 			home.AddActivity(activity);
 			if (home.Activities.Count > _optionsSnapshot.Value.SaveXLimit)
 			{

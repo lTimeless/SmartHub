@@ -9,19 +9,17 @@ namespace SmartHub.Domain.Entities
 	{
 		public DateTimeOffset CreatedAt { get; set; }
 		public DateTimeOffset LastModifiedAt { get; set; }
-		public string CreatedBy { get; set; }
-		public string LastModifiedBy { get; set; }
-		public string PersonInfo { get; set; }
-
-		public virtual PersonName PersonName { get; }
-
-		public string? HomeId { get; private set; }
+		public string CreatedBy { get; set; } = default!;
+		public string LastModifiedBy { get; set; } = default!;
+		public string PersonInfo { get; set; } = default!;
+		public PersonName PersonName { get; } = default!;
+		public string? HomeId { get; } = default!;
 		public virtual Home? Home { get; }
 
-		protected User()
+		private User()
 		{
-
 		}
+
 		public User(string userName, string personInfo, PersonName fullname) :
 			base(userName)
 		{
