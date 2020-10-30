@@ -1,5 +1,4 @@
 ﻿using System.Threading.Tasks;
-using SmartHub.Application.Common.Models;
 
 namespace SmartHub.Application.UseCases.SignalR.Services
 {
@@ -18,8 +17,12 @@ namespace SmartHub.Application.UseCases.SignalR.Services
 		/// Sends an activity object -> it is the current request but with only
 		/// the needed info
 		/// </summary>
-		/// <param name="activity">The given activity object</param>
+		/// <param name="userName"></param>
+		/// <param name="requestName"></param>
+		/// <param name="message"></param>
+		/// <param name="execTime"></param>
+		/// <param name="success"></param>
 		/// <returns>Task state</returns>
-		Task SendActivity(Activity activity);
+		Task SendActivity(string userName,string requestName, string message ,long execTime, bool success);
 	}
 }

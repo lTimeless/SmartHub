@@ -1,12 +1,12 @@
 <template>
   <BaseModal
     title="Create new Device"
-    saveBtnTitle="Create"
-    closeBtnTitle="Cancel"
+    save-btn-title="Create"
+    close-btn-title="Cancel"
     :close="close"
     :save="save"
-    :saveBtnActive="saveBtnActive"
-    headerColor="bg-orange-400"
+    :save-btn-active="saveBtnActive"
+    header-color="bg-orange-400"
   >
     <div class="flex justify-between">
       <div class="w-full mr-2">
@@ -129,7 +129,7 @@ import { HomeActionTypes } from '@/store/home/actions';
 
 export default defineComponent({
   name: 'DeviceCreateModal',
-  emits: ['close-modal'],
+  emits: ['close'],
   components: {
     BaseModal
   },
@@ -149,14 +149,14 @@ export default defineComponent({
 
     const saveBtnActive = computed(() => deviceCreateRequest.name !== '' && deviceCreateRequest.ipv4 !== '');
     const close = () => {
-      context.emit('close-modal', false);
+      context.emit('close', false);
     };
     const save = async () => {
       const { pluginTypesValues } = useEnumTypes();
 
       deviceCreateRequest.pluginTypes = pluginTypesValues.value[deviceCreateRequest.pluginTypes];
       await store.dispatch(HomeActionTypes.CREATE_DEVICE, deviceCreateRequest);
-      context.emit('close-modal', false);
+      context.emit('close', false);
     };
     return {
       deviceCreateRequest,

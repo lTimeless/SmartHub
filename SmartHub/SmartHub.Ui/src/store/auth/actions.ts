@@ -3,7 +3,7 @@ import { LoginRequest, AuthResponse, RegistrationRequest, UserUpdateRequest, Use
 import { RootState, AuthState } from '@/store/index.types';
 import { storeAuthResponse } from '@/services/auth/authService';
 import { AuthMutations, AuthMutationTypes } from '@/store/auth/mutations';
-import { postLogin, postRegistration, getMe, putMe } from '@/services/apis/identity.service';
+import { postLogin, postRegistration, getMe, putMe } from '@/services/apis/identity';
 
 // Keys
 export enum AuthActionTypes {

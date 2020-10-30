@@ -76,13 +76,13 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, ref } from 'vue';
+import { computed, defineComponent, ref, watch } from 'vue';
 import { LoginRequest } from '@/types/types';
 import { useRouter } from 'vue-router';
 import { useStore } from 'vuex';
 import { AuthActionTypes } from '@/store/auth/actions';
 import AppCard from '@/components/widgets/AppCard.vue';
-import { checkHome, checkUsers } from '@/services/apis/init.services';
+import { checkHome, checkUsers } from '@/services/apis/init';
 
 export default defineComponent({
   components: {

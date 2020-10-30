@@ -12,25 +12,35 @@ namespace SmartHub.Domain.Entities
 
 	public abstract class BaseEntity : IEntity
 	{
-		public string Id { get; set; }
-
+		public string Id { get; }
 		public string Name { get; protected set; }
 		public string? Description { get; protected set; }
-
 		public DateTimeOffset CreatedAt { get; set; }
 		public DateTimeOffset LastModifiedAt { get; set; }
 		public string CreatedBy { get; set; }
 		public string LastModifiedBy { get; set; }
 
+		protected BaseEntity()
+		{
+		}
+
 		protected BaseEntity(string name, string? description)
 		{
-			Id = Guid.NewGuid().ToString();
 			Name = name;
 			Description = description;
-			CreatedAt = DateTimeOffset.Now;
-			LastModifiedAt = DateTimeOffset.Now;
-			CreatedBy = string.Empty;
-			LastModifiedBy = string.Empty;
+		}
+
+		#region Methods
+		public BaseEntity SetName(string name)
+		{
+			Name = name;
+			return this;
+		}
+
+		public BaseEntity SetDescription(string description)
+		{
+			Description = description;
+			return this;
 		}
 
 		public override bool Equals(object? obj)
@@ -88,5 +98,7 @@ namespace SmartHub.Domain.Entities
 		{
 			return HashCode.Combine(Id, CreatedAt, Name, GetRealType().ToString());
 		}
+
+		#endregion
 	}
 }
