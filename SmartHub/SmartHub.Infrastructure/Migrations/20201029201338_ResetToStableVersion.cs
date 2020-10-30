@@ -4,30 +4,33 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace SmartHub.Infrastructure.Migrations
 {
-    public partial class RemoveNodaTime : Migration
+    public partial class ResetToStableVersion : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.EnsureSchema(
                 name: "smarthub");
 
+            migrationBuilder.AlterDatabase()
+                .Annotation("Npgsql:PostgresExtension:uuid-ossp", ",,");
+
             migrationBuilder.CreateTable(
                 name: "Homes",
                 schema: "smarthub",
                 columns: table => new
                 {
-                    Id = table.Column<string>(type: "text", nullable: false),
-                    Address_Street = table.Column<string>(type: "character varying(200)", maxLength: 200, nullable: false, defaultValue: ""),
-                    Address_City = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false, defaultValue: ""),
-                    Address_State = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false, defaultValue: ""),
-                    Address_Country = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false, defaultValue: ""),
-                    Address_ZipCode = table.Column<string>(type: "character varying(20)", maxLength: 20, nullable: false, defaultValue: ""),
+                    Id = table.Column<string>(type: "text", nullable: false, defaultValueSql: "uuid_generate_v4()"),
+                    Address_Street = table.Column<string>(type: "character varying(200)", maxLength: 200, nullable: true, defaultValue: ""),
+                    Address_City = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: true, defaultValue: ""),
+                    Address_State = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: true, defaultValue: ""),
+                    Address_Country = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: true, defaultValue: ""),
+                    Address_ZipCode = table.Column<string>(type: "character varying(20)", maxLength: 20, nullable: true, defaultValue: ""),
+                    Name = table.Column<string>(type: "text", nullable: false),
+                    Description = table.Column<string>(type: "text", nullable: true),
                     CreatedAt = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
                     LastModifiedAt = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
                     CreatedBy = table.Column<string>(type: "text", nullable: false),
-                    LastModifiedBy = table.Column<string>(type: "text", nullable: false),
-                    Name = table.Column<string>(type: "text", nullable: false),
-                    Description = table.Column<string>(type: "text", nullable: true)
+                    LastModifiedBy = table.Column<string>(type: "text", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -39,12 +42,11 @@ namespace SmartHub.Infrastructure.Migrations
                 schema: "smarthub",
                 columns: table => new
                 {
-                    Id = table.Column<string>(type: "text", nullable: false),
+                    Id = table.Column<string>(type: "text", nullable: false, defaultValueSql: "uuid_generate_v4()"),
                     CreatedAt = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
                     LastModifiedAt = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
                     CreatedBy = table.Column<string>(type: "text", nullable: false),
                     LastModifiedBy = table.Column<string>(type: "text", nullable: false),
-                    Description = table.Column<string>(type: "text", nullable: true),
                     Name = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
                     NormalizedName = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
                     ConcurrencyStamp = table.Column<string>(type: "text", nullable: true)
@@ -55,18 +57,44 @@ namespace SmartHub.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Activities",
+                schema: "smarthub",
+                columns: table => new
+                {
+                    Id = table.Column<string>(type: "text", nullable: false, defaultValueSql: "uuid_generate_v4()"),
+                    HomeId = table.Column<string>(type: "text", nullable: true),
+                    Name = table.Column<string>(type: "text", nullable: false),
+                    Description = table.Column<string>(type: "text", nullable: true),
+                    CreatedAt = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
+                    LastModifiedAt = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
+                    CreatedBy = table.Column<string>(type: "text", nullable: false),
+                    LastModifiedBy = table.Column<string>(type: "text", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Activities", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Activities_Homes_HomeId",
+                        column: x => x.HomeId,
+                        principalSchema: "smarthub",
+                        principalTable: "Homes",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Groups",
                 schema: "smarthub",
                 columns: table => new
                 {
-                    Id = table.Column<string>(type: "text", nullable: false),
+                    Id = table.Column<string>(type: "text", nullable: false, defaultValueSql: "uuid_generate_v4()"),
                     HomeId = table.Column<string>(type: "text", nullable: true),
+                    Name = table.Column<string>(type: "text", nullable: false),
+                    Description = table.Column<string>(type: "text", nullable: true),
                     CreatedAt = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
                     LastModifiedAt = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
                     CreatedBy = table.Column<string>(type: "text", nullable: false),
-                    LastModifiedBy = table.Column<string>(type: "text", nullable: false),
-                    Name = table.Column<string>(type: "text", nullable: false),
-                    Description = table.Column<string>(type: "text", nullable: true)
+                    LastModifiedBy = table.Column<string>(type: "text", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -85,7 +113,7 @@ namespace SmartHub.Infrastructure.Migrations
                 schema: "smarthub",
                 columns: table => new
                 {
-                    Id = table.Column<string>(type: "text", nullable: false),
+                    Id = table.Column<string>(type: "text", nullable: false, defaultValueSql: "uuid_generate_v4()"),
                     PluginTypes = table.Column<string>(type: "text", nullable: false),
                     AssemblyFilepath = table.Column<string>(type: "text", nullable: false),
                     Active = table.Column<bool>(type: "boolean", nullable: false),
@@ -95,12 +123,12 @@ namespace SmartHub.Infrastructure.Migrations
                     ConnectionTypes = table.Column<string>(type: "text", nullable: false),
                     IsDownloaded = table.Column<bool>(type: "boolean", nullable: false),
                     HomeId = table.Column<string>(type: "text", nullable: true),
+                    Name = table.Column<string>(type: "text", nullable: false),
+                    Description = table.Column<string>(type: "text", nullable: true),
                     CreatedAt = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
                     LastModifiedAt = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
                     CreatedBy = table.Column<string>(type: "text", nullable: false),
-                    LastModifiedBy = table.Column<string>(type: "text", nullable: false),
-                    Name = table.Column<string>(type: "text", nullable: false),
-                    Description = table.Column<string>(type: "text", nullable: true)
+                    LastModifiedBy = table.Column<string>(type: "text", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -119,20 +147,19 @@ namespace SmartHub.Infrastructure.Migrations
                 schema: "smarthub",
                 columns: table => new
                 {
-                    Id = table.Column<string>(type: "text", nullable: false),
+                    Id = table.Column<string>(type: "text", nullable: false, defaultValueSql: "uuid_generate_v4()"),
                     Type = table.Column<string>(type: "text", nullable: false),
                     IsActive = table.Column<bool>(type: "boolean", nullable: false),
                     IsDefault = table.Column<bool>(type: "boolean", nullable: false),
                     PluginPath = table.Column<string>(type: "text", nullable: false),
                     DownloadServerUrl = table.Column<string>(type: "text", nullable: false),
-                    Filepath = table.Column<string>(type: "text", nullable: true),
                     HomeId = table.Column<string>(type: "text", nullable: true),
+                    Name = table.Column<string>(type: "text", nullable: false),
+                    Description = table.Column<string>(type: "text", nullable: true),
                     CreatedAt = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
                     LastModifiedAt = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
                     CreatedBy = table.Column<string>(type: "text", nullable: false),
-                    LastModifiedBy = table.Column<string>(type: "text", nullable: false),
-                    Name = table.Column<string>(type: "text", nullable: false),
-                    Description = table.Column<string>(type: "text", nullable: true)
+                    LastModifiedBy = table.Column<string>(type: "text", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -151,14 +178,14 @@ namespace SmartHub.Infrastructure.Migrations
                 schema: "smarthub",
                 columns: table => new
                 {
-                    Id = table.Column<string>(type: "text", nullable: false),
+                    Id = table.Column<string>(type: "text", nullable: false, defaultValueSql: "uuid_generate_v4()"),
                     CreatedAt = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
                     LastModifiedAt = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
                     CreatedBy = table.Column<string>(type: "text", nullable: false),
                     LastModifiedBy = table.Column<string>(type: "text", nullable: false),
                     PersonInfo = table.Column<string>(type: "text", nullable: false),
                     PersonName_FirstName = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false, defaultValue: ""),
-                    PersonName_MiddleName = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: true, defaultValue: ""),
+                    PersonName_MiddleName = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false, defaultValue: ""),
                     PersonName_LastName = table.Column<string>(type: "character varying(200)", maxLength: 200, nullable: false, defaultValue: ""),
                     HomeId = table.Column<string>(type: "text", nullable: true),
                     UserName = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
@@ -216,7 +243,7 @@ namespace SmartHub.Infrastructure.Migrations
                 schema: "smarthub",
                 columns: table => new
                 {
-                    Id = table.Column<string>(type: "text", nullable: false),
+                    Id = table.Column<string>(type: "text", nullable: false, defaultValueSql: "uuid_generate_v4()"),
                     Ip_Ipv4 = table.Column<string>(type: "character varying(15)", maxLength: 15, nullable: false, defaultValue: "0.0.0.0"),
                     Company_Name = table.Column<string>(type: "character varying(200)", maxLength: 200, nullable: false, defaultValue: ""),
                     Company_ShortName = table.Column<string>(type: "character varying(4)", maxLength: 4, nullable: false, defaultValue: ""),
@@ -225,12 +252,12 @@ namespace SmartHub.Infrastructure.Migrations
                     PluginName = table.Column<string>(type: "text", nullable: false),
                     PluginTypes = table.Column<string>(type: "text", nullable: false),
                     GroupId = table.Column<string>(type: "text", nullable: true),
+                    Name = table.Column<string>(type: "text", nullable: false),
+                    Description = table.Column<string>(type: "text", nullable: true),
                     CreatedAt = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
                     LastModifiedAt = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
                     CreatedBy = table.Column<string>(type: "text", nullable: false),
-                    LastModifiedBy = table.Column<string>(type: "text", nullable: false),
-                    Name = table.Column<string>(type: "text", nullable: false),
-                    Description = table.Column<string>(type: "text", nullable: true)
+                    LastModifiedBy = table.Column<string>(type: "text", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -337,6 +364,12 @@ namespace SmartHub.Infrastructure.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Activities_HomeId",
+                schema: "smarthub",
+                table: "Activities",
+                column: "HomeId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Devices_GroupId",
@@ -464,6 +497,10 @@ namespace SmartHub.Infrastructure.Migrations
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropTable(
+                name: "Activities",
+                schema: "smarthub");
+
             migrationBuilder.DropTable(
                 name: "Devices",
                 schema: "smarthub");

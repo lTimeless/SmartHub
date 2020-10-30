@@ -9,9 +9,9 @@ import {
   HomeUpdateRequest
 } from '@/types/types';
 import { HomeMutations } from '@/store/home/mutations';
-import { postHome, putHome } from '@/services/apis/home.service';
-import { getByIdGroup, postGroup, putByIdGroup } from '@/services/apis/group.service';
-import { postDevice } from '@/services/apis/device.service';
+import { postHome, putHome } from '@/services/apis/home';
+import { getByIdGroup, postGroup, putByIdGroup } from '@/services/apis/group';
+import { postDevice } from '@/services/apis/device';
 
 // Keys
 export enum HomeActionTypes {

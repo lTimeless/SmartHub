@@ -1,9 +1,15 @@
-﻿using AutoMapper;
+﻿using System;
+using AutoMapper;
 using Microsoft.AspNetCore.SignalR;
 using SmartHub.Application.Common.Interfaces.Database;
 using SmartHub.Application.UseCases.Entity.Homes;
 using System.Threading.Tasks;
-using SmartHub.Application.Common.Models;
+using Microsoft.Extensions.Options;
+using SmartHub.Application.Common.Exceptions;
+using SmartHub.Application.UseCases.Entity.Activities;
+using SmartHub.Domain.Common.Extensions;
+using SmartHub.Domain.Common.Settings;
+using SmartHub.Domain.Entities;
 
 namespace SmartHub.Application.UseCases.SignalR.Services
 {
@@ -14,13 +20,16 @@ namespace SmartHub.Application.UseCases.SignalR.Services
 		private readonly IMapper _mapper;
 		private readonly IHubContext<HomeHub, IServerHub> _homeHubContext;
 		private readonly IHubContext<ActivityHub, IServerHub> _activityHubContext;
+		private readonly IOptionsSnapshot<ApplicationSettings> _optionsSnapshot;
 
-		public SendOverSignalR(IUnitOfWork unitOfWork, IMapper mapper, IHubContext<HomeHub, IServerHub> homeHubContext, IHubContext<ActivityHub, IServerHub> activityHubContext)
+		public SendOverSignalR(IUnitOfWork unitOfWork, IMapper mapper, IHubContext<HomeHub, IServerHub> homeHubContext,
+			IHubContext<ActivityHub, IServerHub> activityHubContext, IOptionsSnapshot<ApplicationSettings> optionsSnapshot)
 		{
 			_unitOfWork = unitOfWork;
 			_mapper = mapper;
 			_homeHubContext = homeHubContext;
 			_activityHubContext = activityHubContext;
+			_optionsSnapshot = optionsSnapshot;
 		}
 
 		/// <inheritdoc cref="ISendOverSignalR.SendHome"/>
@@ -31,11 +40,35 @@ namespace SmartHub.Application.UseCases.SignalR.Services
 		}
 
 		/// <inheritdoc cref="ISendOverSignalR.SendActivity"/>
-		public async Task SendActivity(Activity activity)
+		public async Task SendActivity(string userName,string requestName, string message, long execTime,bool success)
 		{
-			await _activityHubContext.Clients.All.SendActivity(activity);
-			// Here also send it to the database
-			// unit of Work will trigger after this(if this is executed from the ""RequestLoggerBehavior)
+			var home = await _unitOfWork.HomeRepository.GetHome();
+			if (home is null)
+			{
+				return;
+			}
+			var activityDto = new ActivityDto
+			{
+				DateTime = DateTime.Now.ToString("HH:mm:ss"),
+				Username = userName,
+				Message = message,
+				ExecutionTime = execTime,
+				SuccessfulRequest = success
+			};
+			await _activityHubContext.Clients.All.SendActivity(activityDto);
+			var activity = _mapper.Map<Activity>(activityDto);
+			activity.SetName(requestName);
+			home.AddActivity(activity);
+			if (home.Activities.Count > _optionsSnapshot.Value.SaveXLimit)
+			{
+				if (_optionsSnapshot.Value.SaveXLimit != null && _optionsSnapshot.Value.DeleteXAmountAfterLimit != null)
+				{
+					home.RemoveActivitiesOverLimit((int) _optionsSnapshot.Value.SaveXLimit,
+						(int) _optionsSnapshot.Value.DeleteXAmountAfterLimit);
+				}
+
+			}
+
 		}
 	}
 }

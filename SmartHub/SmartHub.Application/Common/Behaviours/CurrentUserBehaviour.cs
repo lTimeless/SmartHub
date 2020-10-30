@@ -1,6 +1,5 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
-using MediatR;
 using MediatR.Pipeline;
 using SmartHub.Application.Common.Interfaces;
 using SmartHub.Application.Common.Interfaces.Database;
@@ -9,13 +8,13 @@ using SmartHub.Domain.Common.Enums;
 
 namespace SmartHub.Application.Common.Behaviours
 {
-	public class CurrentUserBehavior<TRequest> : IRequestPreProcessor<TRequest> where TRequest : notnull
+	public class CurrentUserBehaviour<TRequest> : IRequestPreProcessor<TRequest> where TRequest : notnull
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IUserAccessor _userAccessor;
         private readonly CurrentUser _currentUser;
 
-        public CurrentUserBehavior(IUserAccessor currentUserService, CurrentUser currentUser, IUnitOfWork unitOfWork)
+        public CurrentUserBehaviour(IUserAccessor currentUserService, CurrentUser currentUser, IUnitOfWork unitOfWork)
         {
             _userAccessor = currentUserService;
             _currentUser = currentUser;

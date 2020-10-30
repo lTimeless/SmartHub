@@ -53,9 +53,9 @@ namespace SmartHub.Application
 
         private static void AddMediatr(this IServiceCollection services)
         {
-            // The Pre/Postprocessors are loaded automatically  into DI-container
+            // The Pre/Postprocessors are loaded automatically into DI-container
             services.AddMediatR(Assembly.Load("SmartHub.Application"));
-            services.AddTransient(typeof(IPipelineBehavior<,>), typeof(RequestLoggerBehavior<,>));
+            services.AddTransient(typeof(IPipelineBehavior<,>), typeof(RequestLoggerBehaviour<,>));
         }
     }
 }

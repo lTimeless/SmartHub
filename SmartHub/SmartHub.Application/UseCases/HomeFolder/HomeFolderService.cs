@@ -15,12 +15,12 @@ namespace SmartHub.Application.UseCases.HomeFolder
     {
         private readonly IDirectoryService _directoryService;
         private readonly IOptionsMonitor<ApplicationSettings> _applicationSettings;
-        private readonly IHostingEnvironment _hostingEnvironment;
+        private readonly IHostEnvironment _hostingEnvironment;
 
         // The overlaying service for creating the SmartHub config folder
         // with functions to create, delete and update it
         public HomeFolderService(IDirectoryService directoryService,
-            IOptionsMonitor<ApplicationSettings> applicationSettings, IHostingEnvironment hostingEnvironment)
+            IOptionsMonitor<ApplicationSettings> applicationSettings, IHostEnvironment hostingEnvironment)
         {
             _directoryService = directoryService;
             _applicationSettings = applicationSettings;

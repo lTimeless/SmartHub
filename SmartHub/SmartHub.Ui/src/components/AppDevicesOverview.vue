@@ -1,5 +1,5 @@
 <template>
-  <DeviceCreateModal v-if="showAddModal" @close-modal="toggleModal" />
+  <DeviceCreateModal v-if="showAddModal" @close="toggleModal" />
   <DeviceDetailsModal v-if="showDetailModal" @close-modal="closeDetailsModal" :device="device" />
 
   <div class="w-full">
@@ -44,7 +44,7 @@ import { useStore } from 'vuex';
 import DeviceCreateModal from '@/components/modals/DeviceCreateModal.vue';
 import DeviceDetailsModal from '@/components/modals/DeviceDetailsModal.vue';
 import { Device } from '@/types/types';
-import { getByIdDevice } from '@/services/apis/device.service';
+import { getByIdDevice } from '@/services/apis/device';
 
 export default defineComponent({
   name: 'AppDevicesOverview',

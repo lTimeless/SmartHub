@@ -48,12 +48,13 @@ namespace SmartHub.Infrastructure.Database
 				.ApplyConfiguration(new RoleConfiguration())
 				.ApplyConfiguration(new UserConfiguration())
 				.ApplyConfiguration(new PluginConfiguration())
-				.ApplyConfiguration(new SettingConfiguration());
+				.ApplyConfiguration(new SettingConfiguration())
+				.ApplyConfiguration(new ActivityConfiguration());
 		}
 
 		public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = new CancellationToken())
 		{
-			// TODO: vlt wird das für User und Role nicht funktionieren
+			// TODO: maybe this doesn't work for User and Role
 			foreach (var entry in ChangeTracker.Entries<IEntity>())
 			{
 				var dateTime = DateTimeOffset.Now;
