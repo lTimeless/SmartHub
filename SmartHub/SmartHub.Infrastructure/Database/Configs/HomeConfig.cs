@@ -2,9 +2,9 @@
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using SmartHub.Domain.Entities;
 
-namespace SmartHub.Infrastructure.Database.Configurations
+namespace SmartHub.Infrastructure.Database.Configs
 {
-	public class HomeConfiguration : IEntityTypeConfiguration<Home>
+	public class HomeConfig : IEntityTypeConfiguration<Home>
 	{
 		public void Configure(EntityTypeBuilder<Home> builder)
 		{

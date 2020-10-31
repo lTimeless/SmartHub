@@ -38,12 +38,12 @@ namespace SmartHub.Application.UseCases.Entity.Homes.Create
 				return Response.Fail("Error: There is already a home.", new HomeDto());
 			}
 
-			var defaultSetting = new Setting($"{request.Name}_{DefaultNames.DefaultSetting}",
+			var defaultSetting = new Configuration($"{request.Name}_{DefaultNames.DefaultSetting}",
 				"This is a default setting",
 				true,
 				_optionsSnapshot.CurrentValue.DefaultPluginPath ?? string.Empty,
 				_optionsSnapshot.CurrentValue.DownloadServerUrl ?? string.Empty,
-				SettingTypes.Default);
+				ConfigurationTypes.Default);
 
 			var defaultGroup = new Group(DefaultNames.DefaultGroup, "Default_Description");
 			var homeEntity = new Home(request.Name, request.Description)

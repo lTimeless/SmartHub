@@ -2,28 +2,28 @@
 
 namespace SmartHub.Domain.Entities
 {
-	public class Setting : BaseEntity
+	public class Configuration : BaseEntity
 	{
 		/// <summary>
 		/// Tells what kind of setting this is
 		/// </summary>
-		public SettingTypes Type { get; private set; }
+		public ConfigurationTypes Type { get; private set; }
 		public bool IsActive { get; private set; }
 		public bool IsDefault { get; private set; }
 		public string PluginPath { get; private set; }
 		public string DownloadServerUrl { get; private set; }
 
-		protected Setting()
+		protected Configuration()
 		{
 		}
 
-		public Setting(string name, string description, bool isActive, string pluginPath, string downloadServerUrl,
-			SettingTypes type) :
+		public Configuration(string name, string description, bool isActive, string pluginPath, string downloadServerUrl,
+			ConfigurationTypes type) :
 			base(name, description)
 		{
 			IsActive = isActive;
 			PluginPath = pluginPath;
-			IsDefault = type == SettingTypes.Default;
+			IsDefault = type == ConfigurationTypes.Default;
 			DownloadServerUrl = downloadServerUrl;
 			Type = type;
 		}

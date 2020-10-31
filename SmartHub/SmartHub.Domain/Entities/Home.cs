@@ -12,7 +12,7 @@ namespace SmartHub.Domain.Entities
 		public virtual List<User> Users { get; protected set; }
 		public virtual List<Group> Groups { get; protected set; }
 		public virtual List<Plugin> Plugins { get; protected set; } // make it so that all plugins will be saved for backup /restore etc.
-		public virtual List<Setting> Settings { get; protected set; }
+		public virtual List<Configuration> Settings { get; protected set; }
 		public virtual List<Activity> Activities { get; protected set; }
 		public virtual Address? Address { get; protected set; }
 		public virtual List<BaseDomainEvent> Events { get; set; }
@@ -27,7 +27,7 @@ namespace SmartHub.Domain.Entities
 			Groups = new List<Group>();
 			Plugins = new List<Plugin>();
 			Events = new List<BaseDomainEvent>();
-			Settings = new List<Setting>();
+			Settings = new List<Configuration>();
 			Activities = new List<Activity>();
 		}
 
@@ -70,9 +70,9 @@ namespace SmartHub.Domain.Entities
 			AddDomainEvent(new HomeUpdatedEvent(newDevice));
 			return this;
 		}
-		public Home AddSetting(Setting setting)
+		public Home AddSetting(Configuration configuration)
 		{
-			Settings.Add(setting);
+			Settings.Add(configuration);
 			return this;
 		}
 

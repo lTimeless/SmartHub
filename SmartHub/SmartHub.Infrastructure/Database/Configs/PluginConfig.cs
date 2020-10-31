@@ -4,9 +4,9 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SmartHub.Domain.Common.Enums;
 using SmartHub.Domain.Entities;
 
-namespace SmartHub.Infrastructure.Database.Configurations
+namespace SmartHub.Infrastructure.Database.Configs
 {
-	public class PluginConfiguration : IEntityTypeConfiguration<Plugin>
+	public class PluginConfig : IEntityTypeConfiguration<Plugin>
 	{
 		public void Configure(EntityTypeBuilder<Plugin> builder)
 		{

@@ -11,7 +11,7 @@ namespace SmartHub.Domain.DomainEvents
 		public Group? NewGroup { get; }
 		public Plugin? NewPlugin { get; }
 		public Device? NewDevice { get; }
-		public Setting? NewSetting { get; }
+		public Configuration? NewConfiguration { get; }
 		public Address? NewAddress { get;  }
 
 		public HomeUpdatedEvent(string name, string? description)
@@ -45,9 +45,9 @@ namespace SmartHub.Domain.DomainEvents
 			NewDevice = newDevice;
 		}
 
-		public HomeUpdatedEvent(Setting newSetting)
+		public HomeUpdatedEvent(Configuration newConfiguration)
 		{
-			NewSetting = newSetting;
+			NewConfiguration = newConfiguration;
 		}
 
 	}

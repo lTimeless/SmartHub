@@ -2,9 +2,9 @@
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using SmartHub.Domain.Entities;
 
-namespace SmartHub.Infrastructure.Database.Configurations
+namespace SmartHub.Infrastructure.Database.Configs
 {
-    public class ActivityConfiguration: IEntityTypeConfiguration<Activity>
+    public class ActivityConfig: IEntityTypeConfiguration<Activity>
     {
         public void Configure(EntityTypeBuilder<Activity> builder)
         {

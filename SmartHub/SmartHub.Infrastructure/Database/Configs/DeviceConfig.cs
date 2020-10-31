@@ -4,14 +4,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SmartHub.Domain.Common.Enums;
 using SmartHub.Domain.Entities;
 
-namespace SmartHub.Infrastructure.Database.Configurations
+namespace SmartHub.Infrastructure.Database.Configs
 {
-	public class DeviceConfiguration : IEntityTypeConfiguration<Device>
+	public class DeviceConfig : IEntityTypeConfiguration<Device>
 	{
-		public DeviceConfiguration()
-		{
-		}
-
 		public void Configure(EntityTypeBuilder<Device> builder)
 		{
 			builder.ToTable("Devices");

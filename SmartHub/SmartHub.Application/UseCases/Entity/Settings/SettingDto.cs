@@ -4,9 +4,9 @@ using SmartHub.Domain.Entities;
 
 namespace SmartHub.Application.UseCases.Entity.Settings
 {
-	public class SettingDto : BaseDto, IMapFrom<Setting>
+	public class SettingDto : BaseDto, IMapFrom<Configuration>
 	{
-		public SettingTypes Type { get; set; }
+		public ConfigurationTypes Type { get; set; }
 		public bool IsActive { get; set; }
 		public bool IsDefault { get; set; }
 

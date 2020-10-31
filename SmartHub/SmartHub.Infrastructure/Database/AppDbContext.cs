@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using SmartHub.Application.Common.Interfaces;
 using SmartHub.Domain.Entities;
-using SmartHub.Infrastructure.Database.Configurations;
+using SmartHub.Infrastructure.Database.Configs;
 
 namespace SmartHub.Infrastructure.Database
 {
@@ -42,14 +42,14 @@ namespace SmartHub.Infrastructure.Database
 			builder.Entity<IdentityRoleClaim<string>>().ToTable("RoleClaims");
 
 			// Apply entity configurations
-			builder.ApplyConfiguration(new HomeConfiguration())
-				.ApplyConfiguration(new GroupConfiguration())
-				.ApplyConfiguration(new DeviceConfiguration())
-				.ApplyConfiguration(new RoleConfiguration())
-				.ApplyConfiguration(new UserConfiguration())
-				.ApplyConfiguration(new PluginConfiguration())
-				.ApplyConfiguration(new SettingConfiguration())
-				.ApplyConfiguration(new ActivityConfiguration());
+			builder.ApplyConfiguration(new HomeConfig())
+				.ApplyConfiguration(new GroupConfig())
+				.ApplyConfiguration(new DeviceConfig())
+				.ApplyConfiguration(new RoleConfig())
+				.ApplyConfiguration(new UserConfig())
+				.ApplyConfiguration(new PluginConfig())
+				.ApplyConfiguration(new ConfigurationConfig())
+				.ApplyConfiguration(new ActivityConfig());
 		}
 
 		public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = new CancellationToken())

@@ -4,7 +4,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace SmartHub.Infrastructure.Migrations
 {
-    public partial class ResetToStableVersion : Migration
+    public partial class RenameSettingToConfiguration : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -83,6 +83,37 @@ namespace SmartHub.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Configurations",
+                schema: "smarthub",
+                columns: table => new
+                {
+                    Id = table.Column<string>(type: "text", nullable: false, defaultValueSql: "uuid_generate_v4()"),
+                    Type = table.Column<string>(type: "text", nullable: false),
+                    IsActive = table.Column<bool>(type: "boolean", nullable: false),
+                    IsDefault = table.Column<bool>(type: "boolean", nullable: false),
+                    PluginPath = table.Column<string>(type: "text", nullable: false),
+                    DownloadServerUrl = table.Column<string>(type: "text", nullable: false),
+                    HomeId = table.Column<string>(type: "text", nullable: true),
+                    Name = table.Column<string>(type: "text", nullable: false),
+                    Description = table.Column<string>(type: "text", nullable: true),
+                    CreatedAt = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
+                    LastModifiedAt = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
+                    CreatedBy = table.Column<string>(type: "text", nullable: false),
+                    LastModifiedBy = table.Column<string>(type: "text", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Configurations", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Configurations_Homes_HomeId",
+                        column: x => x.HomeId,
+                        principalSchema: "smarthub",
+                        principalTable: "Homes",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Groups",
                 schema: "smarthub",
                 columns: table => new
@@ -135,37 +166,6 @@ namespace SmartHub.Infrastructure.Migrations
                     table.PrimaryKey("PK_Plugins", x => x.Id);
                     table.ForeignKey(
                         name: "FK_Plugins_Homes_HomeId",
-                        column: x => x.HomeId,
-                        principalSchema: "smarthub",
-                        principalTable: "Homes",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Settings",
-                schema: "smarthub",
-                columns: table => new
-                {
-                    Id = table.Column<string>(type: "text", nullable: false, defaultValueSql: "uuid_generate_v4()"),
-                    Type = table.Column<string>(type: "text", nullable: false),
-                    IsActive = table.Column<bool>(type: "boolean", nullable: false),
-                    IsDefault = table.Column<bool>(type: "boolean", nullable: false),
-                    PluginPath = table.Column<string>(type: "text", nullable: false),
-                    DownloadServerUrl = table.Column<string>(type: "text", nullable: false),
-                    HomeId = table.Column<string>(type: "text", nullable: true),
-                    Name = table.Column<string>(type: "text", nullable: false),
-                    Description = table.Column<string>(type: "text", nullable: true),
-                    CreatedAt = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
-                    LastModifiedAt = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
-                    CreatedBy = table.Column<string>(type: "text", nullable: false),
-                    LastModifiedBy = table.Column<string>(type: "text", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Settings", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Settings_Homes_HomeId",
                         column: x => x.HomeId,
                         principalSchema: "smarthub",
                         principalTable: "Homes",
@@ -372,6 +372,19 @@ namespace SmartHub.Infrastructure.Migrations
                 column: "HomeId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Configurations_HomeId",
+                schema: "smarthub",
+                table: "Configurations",
+                column: "HomeId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Configurations_Name",
+                schema: "smarthub",
+                table: "Configurations",
+                column: "Name",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Devices_GroupId",
                 schema: "smarthub",
                 table: "Devices",
@@ -438,19 +451,6 @@ namespace SmartHub.Infrastructure.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_Settings_HomeId",
-                schema: "smarthub",
-                table: "Settings",
-                column: "HomeId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Settings_Name",
-                schema: "smarthub",
-                table: "Settings",
-                column: "Name",
-                unique: true);
-
-            migrationBuilder.CreateIndex(
                 name: "IX_UserClaims_UserId",
                 schema: "smarthub",
                 table: "UserClaims",
@@ -502,6 +502,10 @@ namespace SmartHub.Infrastructure.Migrations
                 schema: "smarthub");
 
             migrationBuilder.DropTable(
+                name: "Configurations",
+                schema: "smarthub");
+
+            migrationBuilder.DropTable(
                 name: "Devices",
                 schema: "smarthub");
 
@@ -511,10 +515,6 @@ namespace SmartHub.Infrastructure.Migrations
 
             migrationBuilder.DropTable(
                 name: "RoleClaims",
-                schema: "smarthub");
-
-            migrationBuilder.DropTable(
-                name: "Settings",
                 schema: "smarthub");
 
             migrationBuilder.DropTable(
