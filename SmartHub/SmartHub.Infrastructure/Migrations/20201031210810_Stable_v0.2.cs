@@ -4,7 +4,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace SmartHub.Infrastructure.Migrations
 {
-    public partial class RenameSettingToConfiguration : Migration
+    public partial class Stable_v02 : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

@@ -74,7 +74,7 @@ export default defineComponent({
       group: {} as Group | null | undefined,
       showLoader: false
     });
-
+    console.log(home);
     const toggleModal = (value: boolean) => {
       state.showAddModal = value;
     };

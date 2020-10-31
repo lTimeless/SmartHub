@@ -785,7 +785,7 @@ namespace SmartHub.Infrastructure.Migrations
 
             modelBuilder.Entity("SmartHub.Domain.Entities.User", b =>
                 {
-                    b.HasOne("SmartHub.Domain.Entities.Home", "Home")
+                    b.HasOne("SmartHub.Domain.Entities.Home", null)
                         .WithMany("Users")
                         .HasForeignKey("HomeId")
                         .OnDelete(DeleteBehavior.Cascade);
@@ -824,8 +824,6 @@ namespace SmartHub.Infrastructure.Migrations
                             b1.WithOwner()
                                 .HasForeignKey("UserId");
                         });
-
-                    b.Navigation("Home");
 
                     b.Navigation("PersonName")
                         .IsRequired();

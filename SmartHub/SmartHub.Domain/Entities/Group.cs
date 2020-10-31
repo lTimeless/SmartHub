@@ -5,7 +5,7 @@ namespace SmartHub.Domain.Entities
 {
 	public class Group : BaseEntity
 	{
-		public virtual List<Device> Devices { get; set; }
+		public virtual List<Device> Devices { get; set; } = new List<Device>();
 
 		protected Group()
 		{
@@ -13,7 +13,6 @@ namespace SmartHub.Domain.Entities
 
 		public Group(string name, string description) : base(name, description)
 		{
-			Devices = new List<Device>();
 		}
 
 		#region Methods

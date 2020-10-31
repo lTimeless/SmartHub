@@ -13,20 +13,19 @@ namespace SmartHub.Domain.Entities
 		public string LastModifiedBy { get; set; } = default!;
 		public string PersonInfo { get; set; } = default!;
 		public PersonName PersonName { get; } = default!;
-		public string? HomeId { get; } = default!;
 		public virtual Home? Home { get; }
 
 		protected User()
 		{
 		}
 
-		public User(string userName, string personInfo, PersonName fullname) :
+		public User(string userName, string personInfo, PersonName? fullname = default) :
 			base(userName)
 		{
 			Id = Guid.NewGuid().ToString();
 			EmailConfirmed = true;
 			PersonInfo = personInfo;
-			PersonName = fullname;
+			PersonName = fullname ?? new PersonName("","", "");
 			Home = null;
 		}
 	}

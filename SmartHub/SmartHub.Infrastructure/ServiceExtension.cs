@@ -42,7 +42,6 @@ namespace SmartHub.Infrastructure
             // Services
             services.AddServices();
             services.AddBackgroundServices();
-            services.AddApplicationServices();
             return services;
         }
 
@@ -147,19 +146,17 @@ namespace SmartHub.Infrastructure
             services.AddHostedService<BackgroundServiceStarter<IInitializationService>>();
         }
 
-        public static void AddApplicationServices(this IServiceCollection services)
-        {
-            services.AddTransient<IHomeFolderService, HomeFolderService>();
-            services.AddTransient<IDirectoryService, DirectoryService>();
-            services.AddScoped<IPingService, PingService>();
-            services.AddScoped<IHttpService, HttpService>();
-        }
-
-
         private static void AddServices(this IServiceCollection services)
         {
+            // User & Auth
             services.AddScoped<ITokenGenerator, TokenGenerator>();
             services.AddScoped<IUserAccessor, UserAccessor>();
+            // Directory
+            services.AddTransient<IHomeFolderService, HomeFolderService>();
+            services.AddTransient<IDirectoryService, DirectoryService>();
+            // Http
+            services.AddScoped<IPingService, PingService>();
+            services.AddScoped<IHttpService, HttpService>();
         }
 
         #region Helper

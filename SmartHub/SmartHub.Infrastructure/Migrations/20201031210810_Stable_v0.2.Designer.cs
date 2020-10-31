@@ -10,8 +10,8 @@ using SmartHub.Infrastructure.Database;
 namespace SmartHub.Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20201031194546_RenameSettingToConfiguration")]
-    partial class RenameSettingToConfiguration
+    [Migration("20201031210810_Stable_v0.2")]
+    partial class Stable_v02
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -787,7 +787,7 @@ namespace SmartHub.Infrastructure.Migrations
 
             modelBuilder.Entity("SmartHub.Domain.Entities.User", b =>
                 {
-                    b.HasOne("SmartHub.Domain.Entities.Home", "Home")
+                    b.HasOne("SmartHub.Domain.Entities.Home", null)
                         .WithMany("Users")
                         .HasForeignKey("HomeId")
                         .OnDelete(DeleteBehavior.Cascade);
@@ -826,8 +826,6 @@ namespace SmartHub.Infrastructure.Migrations
                             b1.WithOwner()
                                 .HasForeignKey("UserId");
                         });
-
-                    b.Navigation("Home");
 
                     b.Navigation("PersonName")
                         .IsRequired();

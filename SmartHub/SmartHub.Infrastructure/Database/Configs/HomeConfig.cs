@@ -32,13 +32,11 @@ namespace SmartHub.Infrastructure.Database.Configs
 			builder.Ignore(x => x.Events);
 
 			builder.HasMany(x => x.Users)
-				.WithOne(x => x.Home!)
-				.HasForeignKey(x => x.HomeId)
+				.WithOne()
 				.OnDelete(DeleteBehavior.Cascade);
 
 			builder.HasMany(x => x.Groups)
 				.WithOne()
-				// .HasForeignKey(x => x.HomeId)
 				.OnDelete(DeleteBehavior.Cascade);
 
 			builder.HasMany(x => x.Plugins)

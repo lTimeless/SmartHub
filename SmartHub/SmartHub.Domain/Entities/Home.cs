@@ -9,13 +9,13 @@ namespace SmartHub.Domain.Entities
 {
 	public class Home : BaseEntity, IAggregateRoot
 	{
-		public virtual List<User> Users { get; protected set; }
-		public virtual List<Group> Groups { get; protected set; }
-		public virtual List<Plugin> Plugins { get; protected set; } // make it so that all plugins will be saved for backup /restore etc.
-		public virtual List<Configuration> Settings { get; protected set; }
-		public virtual List<Activity> Activities { get; protected set; }
-		public virtual Address? Address { get; protected set; }
-		public virtual List<BaseDomainEvent> Events { get; set; }
+		public virtual List<User> Users { get; protected set; } = new List<User>();
+		public virtual  List<Group> Groups { get; protected set; } = new List<Group>();
+		public virtual  List<Plugin> Plugins { get; protected set; } = new List<Plugin>(); // make it so that all plugins will be saved for backup /restore etc.
+		public virtual  List<Configuration> Settings { get; protected set; } = new List<Configuration>();
+		public virtual  List<Activity> Activities { get; protected set; } = new List<Activity>();
+		public Address? Address { get; protected set; }
+		public virtual  List<BaseDomainEvent> Events { get; set; } = new List<BaseDomainEvent>();
 
 		protected Home()
 		{
@@ -23,12 +23,6 @@ namespace SmartHub.Domain.Entities
 
 		public Home(string name, string description) : base(name, description)
 		{
-			Users = new List<User>();
-			Groups = new List<Group>();
-			Plugins = new List<Plugin>();
-			Events = new List<BaseDomainEvent>();
-			Settings = new List<Configuration>();
-			Activities = new List<Activity>();
 		}
 
 		#region Methods
@@ -83,6 +77,12 @@ namespace SmartHub.Domain.Entities
 			{
 				AddDomainEvent(new HomeUpdatedEvent(plugin));
 			}
+			return this;
+		}
+
+		public Home AddActivity(Activity newActivity)
+		{
+			Activities.Add(newActivity);
 			return this;
 		}
 
@@ -148,11 +148,6 @@ namespace SmartHub.Domain.Entities
 			return true;
 		}
 
-		public Home AddActivity(Activity newActivity)
-		{
-			Activities.Add(newActivity);
-			return this;
-		}
 		#endregion
 	}
 }
