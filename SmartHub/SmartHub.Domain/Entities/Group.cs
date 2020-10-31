@@ -7,12 +7,16 @@ namespace SmartHub.Domain.Entities
 	{
 		public virtual List<Device> Devices { get; set; } = new List<Device>();
 
+		public bool IsSubGroup { get; }
+		public virtual List<Group> SubGroups { get; set; } = new List<Group>();
+
 		protected Group()
 		{
 		}
 
-		public Group(string name, string description) : base(name, description)
+		public Group(string name, string description, bool isSubGroup = default) : base(name, description)
 		{
+			IsSubGroup = isSubGroup;
 		}
 
 		#region Methods

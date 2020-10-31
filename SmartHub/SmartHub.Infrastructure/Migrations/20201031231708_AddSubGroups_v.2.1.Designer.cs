@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using SmartHub.Infrastructure.Database;
@@ -9,9 +10,10 @@ using SmartHub.Infrastructure.Database;
 namespace SmartHub.Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20201031231708_AddSubGroups_v.2.1")]
+    partial class AddSubGroups_v21
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -296,6 +298,9 @@ namespace SmartHub.Infrastructure.Migrations
                     b.Property<string>("Description")
                         .HasColumnType("text");
 
+                    b.Property<string>("GroupId")
+                        .HasColumnType("text");
+
                     b.Property<string>("HomeId")
                         .HasColumnType("text");
 
@@ -310,17 +315,14 @@ namespace SmartHub.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<string>("ParentGroupId")
-                        .HasColumnType("text");
-
                     b.HasKey("Id");
+
+                    b.HasIndex("GroupId");
 
                     b.HasIndex("HomeId");
 
                     b.HasIndex("Name")
                         .IsUnique();
-
-                    b.HasIndex("ParentGroupId");
 
                     b.ToTable("Groups");
                 });
@@ -689,14 +691,14 @@ namespace SmartHub.Infrastructure.Migrations
 
             modelBuilder.Entity("SmartHub.Domain.Entities.Group", b =>
                 {
+                    b.HasOne("SmartHub.Domain.Entities.Group", null)
+                        .WithMany("SubGroups")
+                        .HasForeignKey("GroupId");
+
                     b.HasOne("SmartHub.Domain.Entities.Home", null)
                         .WithMany("Groups")
                         .HasForeignKey("HomeId")
                         .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("SmartHub.Domain.Entities.Group", null)
-                        .WithMany("SubGroups")
-                        .HasForeignKey("ParentGroupId");
                 });
 
             modelBuilder.Entity("SmartHub.Domain.Entities.Home", b =>

@@ -124,17 +124,21 @@ export interface DeviceUpdateRequest {
 // Group
 export interface Group extends BaseEntity {
   devices?: Device[];
+  isSubGroup: boolean;
+  subGroups?: Group[];
 }
 
 export interface GroupCreateRequest {
   name: string;
   description: string;
+  isSubGroup?: boolean;
 }
 
 export interface GroupUpdateRequest {
   id: string;
   name?: string;
   description?: string;
+  isSubGroup?: boolean;
   devices?: Device[];
 }
 
