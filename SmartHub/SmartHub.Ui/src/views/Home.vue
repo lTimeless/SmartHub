@@ -4,13 +4,19 @@
       <header
         ref="headerRef"
         class="sticky top-0 z-10 w-full border-b bg-ui-background border-ui-border"
-        @resize="setHeaderHeight"
-      >
+        @resize="setHeaderHeight">
         <AppHeader />
       </header>
 
+      <div class="vueTourStartingMessage">
+        <div class="call-button-container">
+          <span id="v-step-0"></span>
+        </div>
+      </div>
+
       <main class="flex justify-start w-full bg-ui-background overflow-auto">
         <aside
+          id="v-step-5"
           v-if="hasSidebar"
           class="px-4 md:w-56 sidebar bg-ui-background"
           :class="{ open: sidebarOpen }"
@@ -43,13 +49,14 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, nextTick, onMounted, ref, watch } from 'vue';
+import { computed, defineComponent, nextTick, onMounted, ref, watch, onUnmounted} from 'vue';
 import AppHeader from '@/components/layouts/AppHeader.vue';
 import AppSidebar from '@/components/layouts/AppSidebar.vue';
 import { useSignalRHub } from '@/hooks/useSignalR.ts';
 import { useStore } from 'vuex';
 import { HomeMutationTypes } from '@/store/home/mutations';
 import { Home } from '@/types/types';
+import { useVueTour } from 'vue-tour/useApi';
 
 export default defineComponent({
   name: 'Home',
@@ -58,6 +65,7 @@ export default defineComponent({
     AppSidebar
   },
   setup() {
+    let vueTour;
     const store = useStore();
     const headerHeight = ref(0);
     const headerRef = ref();
@@ -83,6 +91,14 @@ export default defineComponent({
 
     onMounted(() => {
       setHeaderHeight();
+        vueTour = useVueTour();
+        vueTour['myTour'].start();
+    });
+
+    onUnmounted( () => {
+      if (vueTour != undefined) {
+        vueTour['myTour'].stop();
+      }
     });
 
     return {
@@ -96,3 +112,12 @@ export default defineComponent({
   }
 });
 </script>
+
+<style>
+  .vueTourStartingMessage {
+    position: fixed;
+    bottom: 0;
+    left: 50%;
+    margin-bottom: 0.5em;
+  }
+</style>

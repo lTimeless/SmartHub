@@ -16,6 +16,7 @@
     "jwt-decode": "^3.0.0",
     "vue": "^3.0.1",
     "vue-router": "^4.0.0-0",
+    "vue-tour": "git+https://github.com/davidsvk/vue-tour.git",
     "vuex": "^4.0.0-0"
   },
   "devDependencies": {
