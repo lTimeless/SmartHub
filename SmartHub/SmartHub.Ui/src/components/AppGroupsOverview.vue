@@ -1,12 +1,18 @@
 <template>
-  <GroupCreateModal v-if="showAddModal" @close="toggleModal" />
+  <GroupCreateModal
+    v-if="showAddModal"
+    @close="toggleModal"
+    :parent-group-id="parentGroupId"
+    :parent-group-name="parentGroupName"
+  />
   <GroupDetailsModal v-if="showDetailModal" @close="closeDetailsModal" :group="group" />
 
+  <!-- Add Group button -->
   <div class="w-full">
     <div class="flex justify-between items-center mb-4">
       <div class="flex justify-start w-full md:w-1/3 xl:w-1/6">
         <button
-          @click="toggleModal(true)"
+          @click="toggleModal(true, null, null)"
           class="flex justify-center items-center font-bold border border-ui-border rounded-lg bg-gray-400 hover:text-white transition-colors hover:bg-orange-400 h-10 w-full"
         >
           Add Group
@@ -14,16 +20,29 @@
       </div>
     </div>
   </div>
+  <!-- All Groups -->
   <div v-if="home && home.groups">
     <div class="grid xl:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 gap-4">
-      <AppCard class="bg-white shadow-md w-full" v-for="group in home.groups" :key="group.id">
+      <AppCard class="bg-white shadow-md w-full" v-for="group in groups" :key="group.id">
         <div class="p-3 w-full">
-          <h1
-            class="text-xl text-left text-gray-600 font-bold cursor-pointer"
-            @click="openDetailModal(true, group.id)"
-          >
-            {{ group.name }}
-          </h1>
+          <div class="flex items-start justify-between">
+            <h1
+              class="text-xl text-left text-gray-600 font-bold cursor-pointer"
+              @click="openDetailModal(true, group.id)"
+            >
+              {{ group.name }}
+            </h1>
+            <button
+              class="flex justify-center p-1 ml-auto rounded-full bg-transparent border-0 text-black opacity-5 float-right text-3xl leading-none font-semibold outline-none focus:outline-none hover:bg-gray-300"
+              @click="toggleModal(true, group.id, group.name)"
+            >
+              <span
+                class="text-center bg-transparent text-black opacity-5 h-6 w-6 text-2xl block outline-none focus:outline-none transform rotate-90"
+              >
+                ...
+              </span>
+            </button>
+          </div>
 
           <div class="text-gray-500 text-sm font-normal text-left">
             Creator: <span class="font-bold">{{ group.createdBy }}</span>
@@ -67,15 +86,19 @@ export default defineComponent({
   setup() {
     const store = useStore();
     const home = computed(() => store.state.homeModule.home);
+    const groups = computed(() => home.value?.groups?.filter((x: Group) => !x.isSubGroup));
     const state = reactive({
       showAddModal: false,
       showDetailModal: false,
       selectedGroupId: '',
       group: {} as Group | null | undefined,
-      showLoader: false
+      showLoader: false,
+      parentGroupName: '',
+      parentGroupId: ''
     });
-    console.log(home);
-    const toggleModal = (value: boolean) => {
+    const toggleModal = (value: boolean, parentGroupId: string | null, parentGroupName: string | null) => {
+      state.parentGroupId = parentGroupId ?? '';
+      state.parentGroupName = parentGroupName ?? '';
       state.showAddModal = value;
     };
     const closeDetailsModal = (value: boolean) => {
@@ -97,6 +120,7 @@ export default defineComponent({
     return {
       ...toRefs(state),
       home,
+      groups,
       toggleModal,
       openDetailModal,
       closeDetailsModal

@@ -131,6 +131,7 @@ export interface Group extends BaseEntity {
 export interface GroupCreateRequest {
   name: string;
   description: string;
+  parentGroupId?: string;
   isSubGroup?: boolean;
 }
 

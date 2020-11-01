@@ -1,6 +1,6 @@
 <template>
   <BaseModal
-    title="Create new Group"
+    :title="title"
     save-btn-title="Create"
     close-btn-title="Cancel"
     :close="close"
@@ -28,7 +28,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, reactive, computed } from 'vue';
+import { defineComponent, reactive, computed, toRefs } from 'vue';
 import BaseModal from '@/components/modals/BaseModal.vue';
 import { GroupCreateRequest } from '@/types/types';
 import { useStore } from 'vuex';
@@ -37,15 +37,41 @@ import { HomeActionTypes } from '@/store/home/actions';
 export default defineComponent({
   name: 'GroupCreateModal',
   emits: ['close'],
+  props: {
+    parentGroupId: {
+      type: String,
+      required: false,
+      default: ''
+    },
+    parentGroupName: {
+      type: String,
+      required: false,
+      default: ''
+    }
+  },
   components: {
     BaseModal
   },
   setup(props, context) {
     const store = useStore();
+    const state = reactive({
+      title: '',
+      groupTitle: 'Create new Group',
+      subGroupTitle: 'Create new SubGroup to '
+    });
     const groupCreateRequest: GroupCreateRequest = reactive({
       name: '',
-      description: ''
+      description: '',
+      parentGroupId: '',
+      isSubGroup: false
     });
+
+    if (props.parentGroupId !== '') {
+      state.title = state.subGroupTitle + props.parentGroupName;
+    } else {
+      state.title = state.groupTitle;
+    }
+
     const saveBtnActive = computed(
       () => groupCreateRequest.name !== '' && groupCreateRequest.description !== ''
     );
@@ -53,11 +79,16 @@ export default defineComponent({
       context.emit('close', false);
     };
     const save = async () => {
+      if (props.parentGroupId !== '') {
+        groupCreateRequest.parentGroupId = props.parentGroupId;
+        groupCreateRequest.isSubGroup = true;
+      }
       await store.dispatch(HomeActionTypes.CREATE_GROUP, groupCreateRequest).then(() => {
         context.emit('close', false);
       });
     };
     return {
+      ...toRefs(state),
       groupCreateRequest,
       saveBtnActive,
       close,
