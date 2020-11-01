@@ -26,6 +26,12 @@ namespace SmartHub.Domain.Entities
 			Devices.Add(newDevice);
 			return this;
 		}
+
+		public Group AddSubGroup(Group newSubGroup)
+		{
+			SubGroups.Add(newSubGroup);
+			return this;
+		}
 		#endregion
 
 	}
