@@ -49,14 +49,51 @@
           </div>
           <div class="border-ui-border border-t my-2"></div>
 
-          <!-- Show available devices -->
-          <template v-if="group.devices !== undefined && group.devices.length > 0">
-            <div v-for="device in group.devices" :key="device.id">
-              {{ device.name }}
+          <!-- Show available subGroups -->
+          <template v-if="group.subGroups !== undefined && group.subGroups.length > 0">
+            <div class="text-left">
+              <div>
+                <span class="text-gray-500 text-sm text-left mt-2">SubGroups</span>
+              </div>
+              <div v-for="subgroup in group.subGroups" :key="subgroup.id" class="pl-3">
+                {{ subgroup.name }}
+                <!-- Show available subGroup devices-->
+                <template v-if="subgroup.devices !== undefined && subgroup.devices.length > 0">
+                  <div class="text-left pl-3">
+                    <div>
+                      <span class="text-gray-500 text-sm text-left mt-2">Devices</span>
+                    </div>
+                    <div v-for="device in subgroup.devices" :key="device.id" class="pl-3">
+                      {{ device.name }}
+                    </div>
+                  </div>
+                </template>
+                <template v-else>
+                  <div class="text-left pl-3">
+                    <span class="text-gray-500 text-sm text-left mt-2">No devices available</span>
+                  </div>
+                </template>
+              </div>
             </div>
           </template>
           <template v-else>
-            <div>
+            <div class="text-left">
+              <span class="text-gray-500 text-sm text-left mt-2">No subGroups available</span>
+            </div>
+          </template>
+          <!-- Show available devices -->
+          <template v-if="group.devices !== undefined && group.devices.length > 0">
+            <div class="text-left">
+              <div>
+                <span class="text-gray-500 text-sm text-left mt-2">Devices</span>
+              </div>
+              <div v-for="device in group.devices" :key="device.id" class="pl-3">
+                {{ device.name }}
+              </div>
+            </div>
+          </template>
+          <template v-else>
+            <div class="text-left">
               <span class="text-gray-500 text-sm text-left mt-2">No devices available</span>
             </div>
           </template>

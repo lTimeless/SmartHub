@@ -7,7 +7,7 @@ namespace SmartHub.Domain.Entities
 	{
 		public virtual List<Device> Devices { get; set; } = new List<Device>();
 
-		public bool IsSubGroup { get; }
+		public bool IsSubGroup { get; set; }
 		public virtual List<Group> SubGroups { get; set; } = new List<Group>();
 
 		protected Group()

@@ -59,7 +59,10 @@ namespace SmartHub.Domain.Entities
 		}
 		public Home AddDevice(Device newDevice, string groupName)
 		{
-			var group = Groups.Find(x => x.Name == groupName);
+			var group = Groups.Find(x => x.Name == groupName)
+			            ?? Groups.SelectMany(x => x.SubGroups)
+				            .ToList()
+				            .Find(c => c.Name == groupName);
 			group?.AddDevice(newDevice);
 			AddDomainEvent(new HomeUpdatedEvent(newDevice));
 			return this;
