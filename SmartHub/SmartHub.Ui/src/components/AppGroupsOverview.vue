@@ -33,14 +33,10 @@
               {{ group.name }}
             </h1>
             <button
-              class="flex justify-center p-1 ml-auto rounded-full bg-transparent border-0 text-black opacity-5 float-right text-3xl leading-none font-semibold outline-none focus:outline-none hover:bg-gray-300"
+              class="flex justify-center items-start rounded-full bg-transparent leading-none border-0 w-6 h-6 font-bold content-center outline-none focus:outline-none hover:bg-gray-300"
               @click="toggleModal(true, group.id, group.name)"
             >
-              <span
-                class="text-center bg-transparent text-black opacity-5 h-6 w-6 text-2xl block outline-none focus:outline-none transform rotate-90"
-              >
-                ...
-              </span>
+              ...
             </button>
           </div>
 

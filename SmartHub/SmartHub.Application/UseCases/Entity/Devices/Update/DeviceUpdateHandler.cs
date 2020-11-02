@@ -20,13 +20,13 @@ namespace SmartHub.Application.UseCases.Entity.Devices.Update
             var home = await _unitOfWork.HomeRepository.GetHome();
             if (home == null)
             {
-                return Response.Fail<string>("Error: No home created yet.", string.Empty);
+                return Response.Fail("Error: No home created yet.", string.Empty);
             }
 
             var result = home.UpdateDevice(request.Id, request.Name, request.Description, request.Ipv4 ,request.PrimaryConnection, request.SecondaryConnection);
             if (result)
             {
-                Response.Fail<string>($"Error: Couldn't update device with id {request.Id}.", string.Empty);
+                Response.Fail($"Error: Couldn't update device with id {request.Id}.", string.Empty);
             }
             return Response.Ok<string>($"Updated device with name {request.Name}");
         }

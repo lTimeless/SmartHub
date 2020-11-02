@@ -5,6 +5,7 @@ using AutoMapper;
 using MediatR;
 using SmartHub.Application.Common.Interfaces.Database;
 using SmartHub.Application.Common.Models;
+using SmartHub.Domain.Common.Extensions;
 
 namespace SmartHub.Application.UseCases.Entity.Devices.Read.ById
 {
@@ -24,12 +25,12 @@ namespace SmartHub.Application.UseCases.Entity.Devices.Read.ById
             var home = await _unitOfWork.HomeRepository.GetHome();
             if (home == null)
             {
-                return Response.Fail<DeviceDto>("Error: No home created yet.", new DeviceDto());
+                return Response.Fail("Error: No home created yet.", new DeviceDto());
             }
 
-            var device = home.Groups.SelectMany(d => d.Devices).SingleOrDefault(x => x.Id == request.Id);
+            var device = home.FindDevice(request.Id);
             return device == null
-                ? Response.Fail<DeviceDto>("Error: No device found.", new DeviceDto())
+                ? Response.Fail("Error: No device found.", new DeviceDto())
                 : Response.Ok(_mapper.Map<DeviceDto>(device));
         }
     }

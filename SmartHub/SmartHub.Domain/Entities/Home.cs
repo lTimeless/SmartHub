@@ -129,7 +129,7 @@ namespace SmartHub.Domain.Entities
 
 		public bool UpdateDevice(string id, string? name, string? description, string? ipv4, ConnectionTypes primary, ConnectionTypes secondary)
 		{
-			var foundDevice = Groups.SelectMany(x => x.Devices).ToList().Find(d => d.Id == id);
+			var foundDevice = this.FindDevice(id);
 			if (foundDevice is null)
 			{
 				return false;

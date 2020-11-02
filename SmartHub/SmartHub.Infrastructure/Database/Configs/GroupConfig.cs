@@ -20,7 +20,8 @@ namespace SmartHub.Infrastructure.Database.Configs
 				.HasForeignKey("ParentGroupId")
 				.IsRequired(false);
 			builder.HasMany(x => x.Devices)
-				.WithOne();
+				.WithMany(x => x.Groups)
+				.UsingEntity(j => j.ToTable("GroupsDevices"));
 		}
 	}
 }
