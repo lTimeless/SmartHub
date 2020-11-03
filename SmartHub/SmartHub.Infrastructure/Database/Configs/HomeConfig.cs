@@ -2,9 +2,9 @@
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using SmartHub.Domain.Entities;
 
-namespace SmartHub.Infrastructure.Database.Configurations
+namespace SmartHub.Infrastructure.Database.Configs
 {
-	public class HomeConfiguration : IEntityTypeConfiguration<Home>
+	public class HomeConfig : IEntityTypeConfiguration<Home>
 	{
 		public void Configure(EntityTypeBuilder<Home> builder)
 		{
@@ -32,13 +32,11 @@ namespace SmartHub.Infrastructure.Database.Configurations
 			builder.Ignore(x => x.Events);
 
 			builder.HasMany(x => x.Users)
-				.WithOne(x => x.Home!)
-				.HasForeignKey(x => x.HomeId)
+				.WithOne()
 				.OnDelete(DeleteBehavior.Cascade);
 
 			builder.HasMany(x => x.Groups)
 				.WithOne()
-				// .HasForeignKey(x => x.HomeId)
 				.OnDelete(DeleteBehavior.Cascade);
 
 			builder.HasMany(x => x.Plugins)

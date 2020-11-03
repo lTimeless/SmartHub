@@ -1,6 +1,6 @@
 <template>
   <BaseModal
-    title="Group details"
+    title="Device details"
     save-btn-title="Save"
     close-btn-title="Cancel"
     :close="close"
@@ -131,7 +131,7 @@ import { putByIdDevice } from '@/services/apis/device';
 
 export default defineComponent({
   name: 'DeviceDetailsModal',
-  emits: ['close-modal'],
+  emits: ['close'],
   components: {
     BaseModal
   },
@@ -154,7 +154,7 @@ export default defineComponent({
     );
 
     const close = () => {
-      context.emit('close-modal', false);
+      context.emit('close', false);
     };
 
     const save = async () => {
@@ -175,7 +175,7 @@ export default defineComponent({
           return Promise.resolve();
         })
         .catch((error) => Promise.reject(error));
-      context.emit('close-modal', false);
+      context.emit('close', false);
     };
 
     return {

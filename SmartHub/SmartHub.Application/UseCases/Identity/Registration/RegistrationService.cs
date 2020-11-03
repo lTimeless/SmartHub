@@ -28,6 +28,7 @@ namespace SmartHub.Application.UseCases.Identity.Registration
 			{
 				return false;
 			}
+
 			var created = await _unitOfWork.UserRepository.CreateUser(user, userInput.Password, userInput.Role);
 			if (created)
 			{

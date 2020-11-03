@@ -1,12 +1,18 @@
 <template>
-  <GroupCreateModal v-if="showAddModal" @close="toggleModal" />
+  <GroupCreateModal
+    v-if="showAddModal"
+    @close="toggleModal"
+    :parent-group-id="parentGroupId"
+    :parent-group-name="parentGroupName"
+  />
   <GroupDetailsModal v-if="showDetailModal" @close="closeDetailsModal" :group="group" />
 
+  <!-- Add Group button -->
   <div class="w-full">
     <div class="flex justify-between items-center mb-4">
       <div class="flex justify-start w-full md:w-1/3 xl:w-1/6">
         <button
-          @click="toggleModal(true)"
+          @click="toggleModal(true, null, null)"
           class="flex justify-center items-center font-bold border border-ui-border rounded-lg bg-gray-400 hover:text-white transition-colors hover:bg-orange-400 h-10 w-full"
         >
           Add Group
@@ -14,30 +20,76 @@
       </div>
     </div>
   </div>
+  <!-- All Groups -->
   <div v-if="home && home.groups">
     <div class="grid xl:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 gap-4">
-      <AppCard class="bg-white shadow-md w-full" v-for="group in home.groups" :key="group.id">
+      <AppCard class="bg-white shadow-md w-full" v-for="group in groups" :key="group.id">
         <div class="p-3 w-full">
-          <h1
-            class="text-xl text-left text-gray-600 font-bold cursor-pointer"
-            @click="openDetailModal(true, group.id)"
-          >
-            {{ group.name }}
-          </h1>
+          <div class="flex items-start justify-between">
+            <h1
+              class="text-xl text-left text-gray-600 font-bold cursor-pointer"
+              @click="openDetailModal(true, group.id)"
+            >
+              {{ group.name }}
+            </h1>
+            <button
+              class="flex justify-center items-start rounded-full bg-transparent leading-none border-0 w-6 h-6 font-bold content-center outline-none focus:outline-none hover:bg-gray-300"
+              @click="toggleModal(true, group.id, group.name)"
+            >
+              ...
+            </button>
+          </div>
 
           <div class="text-gray-500 text-sm font-normal text-left">
             Creator: <span class="font-bold">{{ group.createdBy }}</span>
           </div>
           <div class="border-ui-border border-t my-2"></div>
 
-          <!-- Show available devices -->
-          <template v-if="group.devices !== undefined && group.devices.length > 0">
-            <div v-for="device in group.devices" :key="device.id">
-              {{ device.name }}
+          <!-- Show available subGroups -->
+          <template v-if="group.subGroups !== undefined && group.subGroups.length > 0">
+            <div class="text-left">
+              <div>
+                <span class="text-gray-500 text-sm text-left mt-2">SubGroups</span>
+              </div>
+              <div v-for="subgroup in group.subGroups" :key="subgroup.id" class="pl-3">
+                {{ subgroup.name }}
+                <!-- Show available subGroup devices-->
+                <template v-if="subgroup.devices !== undefined && subgroup.devices.length > 0">
+                  <div class="text-left pl-3">
+                    <div>
+                      <span class="text-gray-500 text-sm text-left mt-2">Devices</span>
+                    </div>
+                    <div v-for="device in subgroup.devices" :key="device.id" class="pl-3">
+                      {{ device.name }}
+                    </div>
+                  </div>
+                </template>
+                <template v-else>
+                  <div class="text-left pl-3">
+                    <span class="text-gray-500 text-sm text-left mt-2">No devices available</span>
+                  </div>
+                </template>
+              </div>
             </div>
           </template>
           <template v-else>
-            <div>
+            <div class="text-left">
+              <span class="text-gray-500 text-sm text-left mt-2">No subGroups available</span>
+            </div>
+          </template>
+          <!-- Show available devices -->
+          <template v-if="group.devices !== undefined && group.devices.length > 0">
+            <div class="text-left">
+              <div>
+                <span class="text-gray-500 text-sm text-left mt-2">Devices</span>
+              </div>
+              <div v-for="device in group.devices" :key="device.id" class="pl-3">
+                {{ device.name }}
+              </div>
+            </div>
+          </template>
+          <template v-else>
+            <div class="text-left">
               <span class="text-gray-500 text-sm text-left mt-2">No devices available</span>
             </div>
           </template>
@@ -67,15 +119,19 @@ export default defineComponent({
   setup() {
     const store = useStore();
     const home = computed(() => store.state.homeModule.home);
+    const groups = computed(() => home.value?.groups?.filter((x: Group) => !x.isSubGroup));
     const state = reactive({
       showAddModal: false,
       showDetailModal: false,
       selectedGroupId: '',
       group: {} as Group | null | undefined,
-      showLoader: false
+      showLoader: false,
+      parentGroupName: '',
+      parentGroupId: ''
     });
-
-    const toggleModal = (value: boolean) => {
+    const toggleModal = (value: boolean, parentGroupId: string | null, parentGroupName: string | null) => {
+      state.parentGroupId = parentGroupId ?? '';
+      state.parentGroupName = parentGroupName ?? '';
       state.showAddModal = value;
     };
     const closeDetailsModal = (value: boolean) => {
@@ -97,6 +153,7 @@ export default defineComponent({
     return {
       ...toRefs(state),
       home,
+      groups,
       toggleModal,
       openDetailModal,
       closeDetailsModal

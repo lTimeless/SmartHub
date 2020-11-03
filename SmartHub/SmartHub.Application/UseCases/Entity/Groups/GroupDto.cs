@@ -8,5 +8,6 @@ namespace SmartHub.Application.UseCases.Entity.Groups
     public class GroupDto : BaseDto, IMapFrom<Group>
     {
         public List<DeviceDto>? Devices { get; set; }
+        public List<GroupDto>? SubGroups { get; set; }
     }
 }

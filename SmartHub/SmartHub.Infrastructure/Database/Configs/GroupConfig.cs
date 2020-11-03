@@ -2,9 +2,9 @@
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using SmartHub.Domain.Entities;
 
-namespace SmartHub.Infrastructure.Database.Configurations
+namespace SmartHub.Infrastructure.Database.Configs
 {
-	public class GroupConfiguration : IEntityTypeConfiguration<Group>
+	public class GroupConfig : IEntityTypeConfiguration<Group>
 	{
 		public void Configure(EntityTypeBuilder<Group> builder)
 		{
@@ -15,10 +15,13 @@ namespace SmartHub.Infrastructure.Database.Configurations
 
 			builder.HasIndex(x => x.Name).IsUnique();
 
-			builder.HasMany(x => x.Devices)
+			builder.HasMany(x => x.SubGroups)
 				.WithOne()
-				// .HasForeignKey(x => x.Id)
-				;
+				.HasForeignKey("ParentGroupId")
+				.IsRequired(false);
+			builder.HasMany(x => x.Devices)
+				.WithMany(x => x.Groups)
+				.UsingEntity(j => j.ToTable("GroupsDevices"));
 		}
 	}
 }

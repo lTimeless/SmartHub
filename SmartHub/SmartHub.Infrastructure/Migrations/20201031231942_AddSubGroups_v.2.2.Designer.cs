@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using SmartHub.Infrastructure.Database;
@@ -9,9 +10,10 @@ using SmartHub.Infrastructure.Database;
 namespace SmartHub.Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20201031231942_AddSubGroups_v.2.2")]
+    partial class AddSubGroups_v22
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -20,21 +22,6 @@ namespace SmartHub.Infrastructure.Migrations
                 .UseIdentityByDefaultColumns()
                 .HasAnnotation("Relational:MaxIdentifierLength", 63)
                 .HasAnnotation("ProductVersion", "5.0.0-rc.2.20475.6");
-
-            modelBuilder.Entity("DeviceGroup", b =>
-                {
-                    b.Property<string>("DevicesId")
-                        .HasColumnType("text");
-
-                    b.Property<string>("GroupsId")
-                        .HasColumnType("text");
-
-                    b.HasKey("DevicesId", "GroupsId");
-
-                    b.HasIndex("GroupsId");
-
-                    b.ToTable("GroupsDevices");
-                });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
@@ -254,6 +241,9 @@ namespace SmartHub.Infrastructure.Migrations
                     b.Property<string>("Description")
                         .HasColumnType("text");
 
+                    b.Property<string>("GroupId")
+                        .HasColumnType("text");
+
                     b.Property<DateTimeOffset>("LastModifiedAt")
                         .HasColumnType("timestamp with time zone");
 
@@ -283,6 +273,8 @@ namespace SmartHub.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("GroupId");
+
                     b.HasIndex("Name")
                         .IsUnique();
 
@@ -308,9 +300,6 @@ namespace SmartHub.Infrastructure.Migrations
 
                     b.Property<string>("HomeId")
                         .HasColumnType("text");
-
-                    b.Property<bool>("IsSubGroup")
-                        .HasColumnType("boolean");
 
                     b.Property<DateTimeOffset>("LastModifiedAt")
                         .HasColumnType("timestamp with time zone");
@@ -573,21 +562,6 @@ namespace SmartHub.Infrastructure.Migrations
                     b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("DeviceGroup", b =>
-                {
-                    b.HasOne("SmartHub.Domain.Entities.Device", null)
-                        .WithMany()
-                        .HasForeignKey("DevicesId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("SmartHub.Domain.Entities.Group", null)
-                        .WithMany()
-                        .HasForeignKey("GroupsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("SmartHub.Domain.Entities.Role", null)
@@ -657,6 +631,10 @@ namespace SmartHub.Infrastructure.Migrations
 
             modelBuilder.Entity("SmartHub.Domain.Entities.Device", b =>
                 {
+                    b.HasOne("SmartHub.Domain.Entities.Group", null)
+                        .WithMany("Devices")
+                        .HasForeignKey("GroupId");
+
                     b.OwnsOne("SmartHub.Domain.Entities.ValueObjects.Company", "Company", b1 =>
                         {
                             b1.Property<string>("DeviceId")
@@ -864,6 +842,8 @@ namespace SmartHub.Infrastructure.Migrations
 
             modelBuilder.Entity("SmartHub.Domain.Entities.Group", b =>
                 {
+                    b.Navigation("Devices");
+
                     b.Navigation("SubGroups");
                 });
 

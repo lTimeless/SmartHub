@@ -2,14 +2,10 @@
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using SmartHub.Domain.Entities;
 
-namespace SmartHub.Infrastructure.Database.Configurations
+namespace SmartHub.Infrastructure.Database.Configs
 {
-	public class UserConfiguration : IEntityTypeConfiguration<User>
+	public class UserConfig : IEntityTypeConfiguration<User>
 	{
-		public UserConfiguration()
-		{
-		}
-
 		public void Configure(EntityTypeBuilder<User> builder)
 		{
 			builder.ToTable("Users");

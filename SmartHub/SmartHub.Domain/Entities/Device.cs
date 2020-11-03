@@ -1,4 +1,5 @@
-﻿using SmartHub.Domain.Common.Enums;
+﻿using System.Collections.Generic;
+using SmartHub.Domain.Common.Enums;
 using SmartHub.Domain.Entities.ValueObjects;
 
 namespace SmartHub.Domain.Entities
@@ -11,6 +12,8 @@ namespace SmartHub.Domain.Entities
 		public ConnectionTypes SecondaryConnection { get; private set; }
 		public string PluginName { get; } // Equals the Name Property in the IPlugin
 		public PluginTypes PluginTypes { get; }// Equals the PluginType Property in the IPlugin
+
+		public virtual List<Group> Groups { get; set; } = new List<Group>();
 
 		protected Device()
 		{

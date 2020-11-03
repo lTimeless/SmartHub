@@ -1,6 +1,6 @@
 <template>
   <DeviceCreateModal v-if="showAddModal" @close="toggleModal" />
-  <DeviceDetailsModal v-if="showDetailModal" @close-modal="closeDetailsModal" :device="device" />
+  <DeviceDetailsModal v-if="showDetailModal" @close="closeDetailsModal" :device="device" />
 
   <div class="w-full">
     <div class="flex justify-between items-center mb-4">
@@ -29,6 +29,7 @@
             Creator: <span class="font-bold">{{ device.createdBy }}</span>
           </div>
           <div class="border-ui-border border-t my-2"></div>
+          <!-- TODO: Here add the actual controlls or infos for the device -->
         </div>
         <div v-else>Error loading device ...</div>
       </AppCard>
@@ -56,7 +57,14 @@ export default defineComponent({
   setup() {
     const store = useStore();
     const home = computed(() => store.state.homeModule.home);
-    const devices = computed(() => home.value===undefined? undefined:home.value.groups?.flatMap((x) => x.devices));
+    const devices = computed(() => {
+      if (home.value !== undefined) {
+        const subDev = home.value.groups?.flatMap((x) => x.subGroups !== undefined ? x.subGroups.flatMap(c => c.devices) : []) as Device[];
+        const dev = home.value.groups?.flatMap((x) => x.devices) as Device[];
+        return subDev.concat(dev);
+      }
+      return [] as Device[];
+    });
     const state = reactive({
       showAddModal: false,
       showDetailModal: false,
