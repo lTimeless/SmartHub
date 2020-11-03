@@ -6,10 +6,6 @@ namespace SmartHub.Infrastructure.Database.Configs
 {
 	public class UserConfig : IEntityTypeConfiguration<User>
 	{
-		public UserConfig()
-		{
-		}
-
 		public void Configure(EntityTypeBuilder<User> builder)
 		{
 			builder.ToTable("Users");
