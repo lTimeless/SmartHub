@@ -13,7 +13,7 @@ namespace SmartHub.Domain.Entities
 		public ConnectionTypes ConnectionTypes { get; private set; }
 		public bool IsDownloaded { get; private set; }
 
-		protected Plugin()
+		public Plugin()
 		{
 		}
 

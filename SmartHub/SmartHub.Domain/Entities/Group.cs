@@ -10,7 +10,7 @@ namespace SmartHub.Domain.Entities
 		public bool IsSubGroup { get; set; }
 		public virtual List<Group> SubGroups { get; set; } = new List<Group>();
 
-		protected Group()
+		public Group()
 		{
 		}
 

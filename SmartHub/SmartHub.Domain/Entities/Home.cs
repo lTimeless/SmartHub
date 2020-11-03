@@ -17,7 +17,8 @@ namespace SmartHub.Domain.Entities
 		public Address? Address { get; protected set; }
 		public virtual  List<BaseDomainEvent> Events { get; set; } = new List<BaseDomainEvent>();
 
-		protected Home()
+		// Needed for Bogus(fake data) and ef core
+		public Home()
 		{
 		}
 

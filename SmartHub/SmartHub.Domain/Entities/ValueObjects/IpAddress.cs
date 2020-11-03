@@ -6,7 +6,7 @@ namespace SmartHub.Domain.Entities.ValueObjects
 	{
 		public string Ipv4 { get; } = default!;
 
-		protected IpAddress()
+		public IpAddress()
 		{
 
 		}

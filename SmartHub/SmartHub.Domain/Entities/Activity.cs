@@ -9,7 +9,7 @@
         public long ExecutionTime { get; }
         public bool SuccessfulRequest { get; }
 
-        protected Activity()
+        public Activity()
         {
         }
     }

@@ -35,6 +35,8 @@ namespace SmartHub.Infrastructure.Services.Initialization
 
         public async Task StartAsync(CancellationToken cancellationToken)
         {
+            _logger.Information("Start initialization...");
+
             await _homeFolderService.Create().ConfigureAwait(false);
             WelcomeWithAsciiLogo();
             SeedDatabase();
@@ -42,9 +44,9 @@ namespace SmartHub.Infrastructure.Services.Initialization
             _logger.Information("SmartHub folder is at {@homePath}\\{@folderName}",
                 homePath,
                 folderName);
-            _logger.Information("Start initialization...");
             await _channelManagerStarter.StartAsync(cancellationToken);
             await _eventDispatcherStarter.StartAsync(cancellationToken);
+
             _logger.Information("Stop initialization.");
         }
 
@@ -55,13 +57,12 @@ namespace SmartHub.Infrastructure.Services.Initialization
             _logger.Information("Stopped all BackgroundServices.");
         }
 
-
         private void WelcomeWithAsciiLogo()
         {
             _logger.Information($"{Environment.NewLine}" +
                                 FiggleFonts.Standard.Render("SmartHub"));
             _logger.Information($"{Environment.NewLine}" +
-                                "Welcome to SmartHub, this is a smarthome written in asp.net core and vue3." + $"{Environment.NewLine}" +
+                                "Welcome to SmartHub, this is a smarthome written in asp.net5 and vue3." + $"{Environment.NewLine}" +
                                 "This is a private project of mine and I use this to learn new things and create my own smarthome that " + $"{Environment.NewLine}" +
                                 "I am going to use myself." + $"{Environment.NewLine}" +
                                 "For more information and if you encounter any issues or have any feedback, please visit: https://github.com/SmartHub-Io/SmartHub." + $"{Environment.NewLine}" +

@@ -15,7 +15,7 @@ namespace SmartHub.Domain.Entities
 
 		public virtual List<Group> Groups { get; set; } = new List<Group>();
 
-		protected Device()
+		public Device()
 		{
 		}
 

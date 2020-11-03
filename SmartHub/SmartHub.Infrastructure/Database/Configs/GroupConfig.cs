@@ -18,6 +18,7 @@ namespace SmartHub.Infrastructure.Database.Configs
 			builder.HasMany(x => x.SubGroups)
 				.WithOne()
 				.HasForeignKey("ParentGroupId")
+				.OnDelete(DeleteBehavior.Cascade)
 				.IsRequired(false);
 			builder.HasMany(x => x.Devices)
 				.WithMany(x => x.Groups)

@@ -13,7 +13,7 @@ namespace SmartHub.Domain.Entities
 		public string PluginPath { get; private set; }
 		public string DownloadServerUrl { get; private set; }
 
-		protected Configuration()
+		public Configuration()
 		{
 		}
 
