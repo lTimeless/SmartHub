@@ -6,16 +6,17 @@ namespace SmartHub.Domain.Entities
 {
 	public class Device : BaseEntity
 	{
-		public IpAddress Ip { get; private set; }
-		public Company Company { get; private set; }
+		public IpAddress Ip { get; private set; } = default!;
+		public Company Company { get; } = default!;
 		public ConnectionTypes PrimaryConnection { get; private set; }
 		public ConnectionTypes SecondaryConnection { get; private set; }
-		public string PluginName { get; } // Equals the Name Property in the IPlugin
-		public PluginTypes PluginTypes { get; }// Equals the PluginType Property in the IPlugin
+		public string PluginName { get; } = default!; // Equals the Name Property in the IPlugin
+		public PluginTypes PluginTypes { get; } // Equals the PluginType Property in the IPlugin
 
-		public virtual List<Group> Groups { get; set; } = new List<Group>();
+		public virtual List<Group> Groups { get; } = new List<Group>();
 
-		public Device()
+		// Needed for ef core
+		protected Device()
 		{
 		}
 
@@ -40,21 +41,16 @@ namespace SmartHub.Domain.Entities
 
 		#region Methods
 
-		public Device SetIp(string ip)
+		public void SetIp(string ip)
 		{
 			Ip = new IpAddress(ip);
-			return this;
 		}
 
-		public Device SetConnectionTypes(ConnectionTypes primary, ConnectionTypes secondary)
+		public void SetConnectionTypes(ConnectionTypes primary, ConnectionTypes secondary)
 		{
 			PrimaryConnection = primary;
 			SecondaryConnection = secondary;
-			return this;
 		}
-
-
-
 		#endregion
 	}
 }

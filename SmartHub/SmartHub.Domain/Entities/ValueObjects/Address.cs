@@ -10,7 +10,7 @@ namespace SmartHub.Domain.Entities.ValueObjects
 		public string Country { get; } = default!;
 		public string ZipCode { get; } = default!;
 
-		public Address()
+		protected Address()
 		{
 		}
 		public Address(string street, string city, string state, string country, string zipcode)

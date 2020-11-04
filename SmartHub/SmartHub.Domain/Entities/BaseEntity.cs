@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace SmartHub.Domain.Entities
 {
@@ -12,14 +13,15 @@ namespace SmartHub.Domain.Entities
 
 	public abstract class BaseEntity : IEntity
 	{
-		public string Id { get; }
-		public string Name { get; protected set; }
-		public string? Description { get; protected set; }
+		public string Id { get; } = null!;
+		public string Name { get; private set; } = null!;
+		public string? Description { get; private set; }
 		public DateTimeOffset CreatedAt { get; set; }
 		public DateTimeOffset LastModifiedAt { get; set; }
-		public string CreatedBy { get; set; }
-		public string LastModifiedBy { get; set; }
+		public string CreatedBy { get; set; } = null!;
+		public string LastModifiedBy { get; set; } = null!;
 
+		// Needed for ef core
 		protected BaseEntity()
 		{
 		}
@@ -30,7 +32,7 @@ namespace SmartHub.Domain.Entities
 			Description = description;
 		}
 
-		#region Methods
+
 		public BaseEntity SetName(string name)
 		{
 			Name = name;
@@ -43,6 +45,7 @@ namespace SmartHub.Domain.Entities
 			return this;
 		}
 
+		#region Methods
 		public override bool Equals(object? obj)
 		{
 			if (!(obj is BaseEntity baseEntity))

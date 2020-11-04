@@ -2,9 +2,9 @@
 using SmartHub.Domain.Common.Enums;
 using SmartHub.Domain.Entities;
 
-namespace SmartHub.Application.UseCases.Entity.Settings
+namespace SmartHub.Application.UseCases.Entity.Configurations
 {
-	public class SettingDto : BaseDto, IMapFrom<Configuration>
+	public class ConfigurationDto : BaseDto, IMapFrom<Configuration>
 	{
 		public ConfigurationTypes Type { get; set; }
 		public bool IsActive { get; set; }

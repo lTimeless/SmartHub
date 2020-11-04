@@ -4,11 +4,11 @@ namespace SmartHub.Domain.Entities.ValueObjects
 {
 	public class PersonName : ValueObject
 	{
-		public string FirstName { get; set; } = default!;
-		public string MiddleName { get; set; } = default!;
-		public string LastName { get; set; } = default!;
+		public string FirstName { get; } = default!;
+		public string MiddleName { get; } = default!;
+		public string LastName { get; } = default!;
 
-		public PersonName()
+		protected PersonName()
 		{
 		}
 		public PersonName(string first, string? middle, string last)

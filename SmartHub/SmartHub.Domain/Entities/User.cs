@@ -12,9 +12,10 @@ namespace SmartHub.Domain.Entities
 		public string CreatedBy { get; set; } = default!;
 		public string LastModifiedBy { get; set; } = default!;
 		public string PersonInfo { get; set; } = default!;
-		public PersonName PersonName { get; } = default!;
+		public PersonName PersonName { get; private set; } = default!;
 		public virtual Home? Home { get; }
 
+		// Needed for ef core
 		protected User()
 		{
 		}
@@ -28,5 +29,11 @@ namespace SmartHub.Domain.Entities
 			PersonName = fullname ?? new PersonName("","", "");
 			Home = null;
 		}
+
+		public void UpdateUsername(string fName,string mName, string lname)
+		{
+			PersonName = new PersonName(fName, mName, lname);
+		}
+
 	}
 }

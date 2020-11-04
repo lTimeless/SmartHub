@@ -5,12 +5,13 @@ namespace SmartHub.Domain.Entities
 {
 	public class Group : BaseEntity
 	{
-		public virtual List<Device> Devices { get; set; } = new List<Device>();
+		public virtual List<Device> Devices { get; } = new List<Device>();
 
-		public bool IsSubGroup { get; set; }
-		public virtual List<Group> SubGroups { get; set; } = new List<Group>();
+		public bool IsSubGroup { get; }
+		public virtual List<Group> SubGroups { get; } = new List<Group>();
 
-		public Group()
+		// Needed for ef core
+		protected Group()
 		{
 		}
 
@@ -33,6 +34,5 @@ namespace SmartHub.Domain.Entities
 			return this;
 		}
 		#endregion
-
 	}
 }

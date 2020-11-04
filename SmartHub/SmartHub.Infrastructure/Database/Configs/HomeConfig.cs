@@ -43,7 +43,7 @@ namespace SmartHub.Infrastructure.Database.Configs
 				.WithOne()
 				.OnDelete(DeleteBehavior.Cascade);
 
-			builder.HasMany(x => x.Settings)
+			builder.HasMany(x => x.Configurations)
 				.WithOne()
 				.OnDelete(DeleteBehavior.Cascade);
 

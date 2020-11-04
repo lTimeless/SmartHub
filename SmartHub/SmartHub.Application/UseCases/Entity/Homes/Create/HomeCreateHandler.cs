@@ -38,7 +38,7 @@ namespace SmartHub.Application.UseCases.Entity.Homes.Create
 				return Response.Fail("Error: There is already a home.", new HomeDto());
 			}
 
-			var defaultSetting = new Configuration($"{request.Name}_{DefaultNames.DefaultSetting}",
+			var defaultConfiguration = new Configuration($"{request.Name}_{DefaultNames.DefaultSetting}",
 				"This is a default setting",
 				true,
 				_optionsSnapshot.CurrentValue.DefaultPluginPath ?? string.Empty,
@@ -47,7 +47,7 @@ namespace SmartHub.Application.UseCases.Entity.Homes.Create
 
 			var defaultGroup = new Group(DefaultNames.DefaultGroup, "Default_Description");
 			var homeEntity = new Home(request.Name, request.Description)
-				.AddSetting(defaultSetting)
+				.AddSetting(defaultConfiguration)
 				.AddGroup(defaultGroup);
 
 			if (request.AutoDetectAddress)

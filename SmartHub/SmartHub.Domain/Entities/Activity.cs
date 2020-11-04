@@ -3,13 +3,14 @@
     public class Activity : BaseEntity
     {
         // TODO: make this class to a dotnet5 record
-        public string DateTime { get; } = null!;
-        public string Username { get; } = null!;
-        public string Message { get; } = null!;
-        public long ExecutionTime { get; }
-        public bool SuccessfulRequest { get; }
+        public string DateTime { get; set; } = null!;
+        public string Username { get; set; } = null!;
+        public string Message { get; set; } = null!;
+        public long ExecutionTime { get; set; }
+        public bool SuccessfulRequest { get; set; }
 
-        public Activity()
+        // Needed for ef core
+        protected Activity()
         {
         }
     }

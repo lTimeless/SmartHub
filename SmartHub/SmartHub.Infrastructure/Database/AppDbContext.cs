@@ -78,7 +78,7 @@ namespace SmartHub.Infrastructure.Database
 					case EntityState.Deleted:
 						break;
 					default:
-						throw new ArgumentOutOfRangeException();
+						throw new ArgumentOutOfRangeException(entry.State.ToString(), $"Error: entity state was not correct {entry.State} ");
 				}
 			}
 			return base.SaveChangesAsync(cancellationToken);

@@ -11,6 +11,7 @@ namespace SmartHub.Domain.Entities
 		public string LastModifiedBy { get; set; } = default!;
 		public string? Description { get; }
 
+		// Needed for ef core
 		protected Role()
 		{
 		}

@@ -7,13 +7,14 @@ namespace SmartHub.Domain.Entities
 		/// <summary>
 		/// Tells what kind of setting this is
 		/// </summary>
-		public ConfigurationTypes Type { get; private set; }
-		public bool IsActive { get; private set; }
-		public bool IsDefault { get; private set; }
-		public string PluginPath { get; private set; }
-		public string DownloadServerUrl { get; private set; }
+		public ConfigurationTypes Type { get; }
+		public bool IsActive { get; }
+		public bool IsDefault { get; }
+		public string PluginPath { get; } = null!;
+		public string DownloadServerUrl { get; } = null!;
 
-		public Configuration()
+		// Needed for ef core
+		protected Configuration()
 		{
 		}
 

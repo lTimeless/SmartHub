@@ -35,10 +35,10 @@ namespace SmartHub.Infrastructure.Services.Initialization
 
         public async Task StartAsync(CancellationToken cancellationToken)
         {
-            _logger.Information("Start initialization...");
-
             await _homeFolderService.Create().ConfigureAwait(false);
             WelcomeWithAsciiLogo();
+
+            _logger.Information("Start initialization...");
             SeedDatabase();
             var (homePath, folderName) = _homeFolderService.GetHomeFolderPath();
             _logger.Information("SmartHub folder is at {@homePath}\\{@folderName}",
@@ -47,7 +47,7 @@ namespace SmartHub.Infrastructure.Services.Initialization
             await _channelManagerStarter.StartAsync(cancellationToken);
             await _eventDispatcherStarter.StartAsync(cancellationToken);
 
-            _logger.Information("Stop initialization.");
+            _logger.Information("Finished initialization.");
         }
 
         public async Task StopAsync(CancellationToken cancellationToken)

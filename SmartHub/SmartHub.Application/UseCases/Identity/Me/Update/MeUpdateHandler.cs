@@ -39,11 +39,9 @@ namespace SmartHub.Application.UseCases.Identity.Me.Update
 			}
 			userEntity.UserName = request.UserName;
 			userEntity.PersonInfo = request.PersonInfo;
-			userEntity.PersonName.FirstName = request.FirstName;
-			userEntity.PersonName.MiddleName = request.MiddleName;
-			userEntity.PersonName.LastName = request.LastName;
 			userEntity.Email = request.Email;
 			userEntity.PhoneNumber = request.PhoneNumber;
+			userEntity.UpdateUsername(request.FirstName, request.MiddleName, request.LastName);
 
 			var updateUser = await _unitOfWork.UserRepository.UpdateUser(userEntity);
 			if (!updateUser)

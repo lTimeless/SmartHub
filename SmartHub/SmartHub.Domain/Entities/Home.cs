@@ -9,16 +9,16 @@ namespace SmartHub.Domain.Entities
 {
 	public class Home : BaseEntity, IAggregateRoot
 	{
-		public virtual List<User> Users { get; protected set; } = new List<User>();
-		public virtual  List<Group> Groups { get; protected set; } = new List<Group>();
-		public virtual  List<Plugin> Plugins { get; protected set; } = new List<Plugin>(); // make it so that all plugins will be saved for backup /restore etc.
-		public virtual  List<Configuration> Settings { get; protected set; } = new List<Configuration>();
-		public virtual  List<Activity> Activities { get; protected set; } = new List<Activity>();
-		public Address? Address { get; protected set; }
-		public virtual  List<BaseDomainEvent> Events { get; set; } = new List<BaseDomainEvent>();
+		public virtual List<User> Users { get; } = new List<User>();
+		public virtual  List<Group> Groups { get; } = new List<Group>();
+		public virtual  List<Plugin> Plugins { get; } = new List<Plugin>(); // make it so that all plugins will be saved for backup /restore etc.
+		public virtual  List<Configuration> Configurations { get; } = new List<Configuration>();
+		public virtual  List<Activity> Activities { get; } = new List<Activity>();
+		public Address? Address { get; private set; }
+		public virtual  List<BaseDomainEvent> Events { get; private set; } = new List<BaseDomainEvent>();
 
-		// Needed for Bogus(fake data) and ef core
-		public Home()
+		// Needed for ef core
+		protected Home()
 		{
 		}
 
@@ -52,7 +52,6 @@ namespace SmartHub.Domain.Entities
 			AddDomainEvent(new HomeUpdatedEvent( user ));
 			return this;
 		}
-
 		public Home AddGroup(Group newGroup)
 		{
 			Groups.Add(newGroup);
@@ -70,10 +69,9 @@ namespace SmartHub.Domain.Entities
 		}
 		public Home AddSetting(Configuration configuration)
 		{
-			Settings.Add(configuration);
+			Configurations.Add(configuration);
 			return this;
 		}
-
 		public Home AddPlugins(List<Plugin> plugins)
 		{
 			Plugins.AddRange(plugins);
@@ -83,7 +81,6 @@ namespace SmartHub.Domain.Entities
 			}
 			return this;
 		}
-
 		public Home AddActivity(Activity newActivity)
 		{
 			Activities.Add(newActivity);

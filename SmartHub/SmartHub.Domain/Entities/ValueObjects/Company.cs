@@ -7,7 +7,7 @@ namespace SmartHub.Domain.Entities.ValueObjects
 		public string Name { get; } = default!;
 		public string ShortName { get; } = default!;
 
-		public Company()
+		protected Company()
 		{
 		}
 		public Company(string name)
