@@ -4,7 +4,8 @@
       <header
         ref="headerRef"
         class="sticky top-0 z-10 w-full border-b bg-ui-background border-ui-border"
-        @resize="setHeaderHeight">
+        @resize="setHeaderHeight"
+      >
         <AppHeader />
       </header>
 
@@ -49,7 +50,7 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, nextTick, onMounted, ref, watch, onUnmounted} from 'vue';
+import { computed, defineComponent, nextTick, onMounted, ref, watch, onUnmounted } from 'vue';
 import AppHeader from '@/components/layouts/AppHeader.vue';
 import AppSidebar from '@/components/layouts/AppSidebar.vue';
 import { useSignalRHub } from '@/hooks/useSignalR.ts';
@@ -91,12 +92,12 @@ export default defineComponent({
 
     onMounted(() => {
       setHeaderHeight();
-        vueTour = useVueTour();
-        vueTour['myTour'].start();
+      vueTour = useVueTour();
+      vueTour['myTour'].start();
     });
 
-    onUnmounted( () => {
-      if (vueTour != undefined) {
+    onUnmounted(() => {
+      if (vueTour) {
         vueTour['myTour'].stop();
       }
     });
@@ -114,10 +115,10 @@ export default defineComponent({
 </script>
 
 <style>
-  .vueTourStartingMessage {
-    position: fixed;
-    bottom: 0;
-    left: 50%;
-    margin-bottom: 0.5em;
-  }
+.vueTourStartingMessage {
+  position: fixed;
+  bottom: 0;
+  left: 50%;
+  margin-bottom: 0.5em;
+}
 </style>

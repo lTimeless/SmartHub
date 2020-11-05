@@ -5,69 +5,69 @@
         <component :is="Component" />
       </transition>
     </router-view>
-    <v-tour name="myTour" :steps="steps" :callbacks="callbacks" :options='{ highlight: true, startTimeout: 500}'></v-tour>
+    <v-tour name="myTour" :steps="steps" :options="{ highlight: true, startTimeout: 500 }"></v-tour>
   </div>
 </template>
 
 <script lang="ts">
-  import { defineComponent } from 'vue';
+import { defineComponent } from 'vue';
 
 export default defineComponent({
   name: 'App',
-  data () {
-    return {
-      steps: [
-        {
-          target: '#v-step-0',
-          header: {
-            title: 'Welcome to Smarthub!'
-          },
-          content:  `An amazing open source project that will make your smart home management much easier and more entertaining.
-                        <br><br>
-                        <b>Docs:</b> <a href="https://smarthub-io.github.io/SmartHub-Docs/">smarthub-io.github.io/SmartHub-Docs/</a>`,
-          params: {
-            highlight: false,
-            placement: 'bottom'
-          }
+  setup() {
+    let steps = [
+      {
+        target: '#v-step-0',
+        header: {
+          title: 'Welcome to Smarthub!'
         },
-        {
-          target: '#v-step-1',
-          content: 'Data from devices are displayed in interactive graphs and tables in real time.',
-          params: {
-            placement: 'bottom'
-          }
-        },
-        {
-          target: '#v-step-2',
-          content: 'You can manage and sort your digital devices by creating and using custom groups.',
-          params: {
-            placement: 'top'
-          }
-        },
-        {
-          target: '#v-step-3',
-          content: 'You can easily and quickly edit or add new devices using a simple form.',
-          params: {
-            placement: 'top'
-          }
-        },
-        {
-          target: '#v-step-4',
-          content: 'Wide variety of smart home automation is also possible.',
-          params: {
-            placement: 'top'
-          }
-        },
-        {
-          target: '#v-step-5',
-          content: 'You can even create your own plugins to extend the functionality of SmartHub.',
-          params: {
-            placement: 'left',
-            highlight: false
-          }
+        content: `An amazing open source project that will make your smart home management much easier and more entertaining.
+                  <br><br><b>Docs:</b> <a href="https://smarthub-io.github.io/SmartHub-Docs/">smarthub-io.github.io/SmartHub-Docs/</a>`,
+        params: {
+          highlight: false,
+          placement: 'bottom'
         }
-      ]
-    }
+      },
+      {
+        target: '#v-step-1',
+        content: 'Data from devices are displayed in interactive graphs and tables in real time.',
+        params: {
+          placement: 'bottom'
+        }
+      },
+      {
+        target: '#v-step-2',
+        content: 'You can manage and sort your digital devices by creating and using custom groups.',
+        params: {
+          placement: 'top'
+        }
+      },
+      {
+        target: '#v-step-3',
+        content: 'You can easily and quickly edit or add new devices using a simple form.',
+        params: {
+          placement: 'top'
+        }
+      },
+      {
+        target: '#v-step-4',
+        content: 'Wide variety of smart home automation is also possible.',
+        params: {
+          placement: 'top'
+        }
+      },
+      {
+        target: '#v-step-5',
+        content: 'You can even create your own plugins to extend the functionality of SmartHub.',
+        params: {
+          placement: 'left',
+          highlight: false
+        }
+      }
+    ];
+    return {
+      steps
+    };
   }
 });
 </script>
