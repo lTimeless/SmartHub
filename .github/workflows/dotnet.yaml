@@ -1,21 +1,31 @@
 name: .Net5 CI
 on:
   push:
-    branches: 
-      - master
-      - develop 
+    branches: [ master, develop]
     paths:
-      - 'SmartHub/**'
-    paths-ignore:
-      - 'SmartHub/SmartHub.Ui/**'
+      - 'SmartHub/Api/**'
+      - 'SmartHub/Api.Tests/**'
+      - 'SmartHub/Application.Tests/**'
+      - 'SmartHub/Application/**'
+      - 'SmartHub/BasePlugin/**'
+      - 'SmartHub/Domain.Tests/**'
+      - 'SmartHub/Domain/**'
+      - 'SmartHub/Infrastructure.Tests/**'
+      - 'SmartHub/Infrastructure/**'
+      - 'SmartHub/Shared/**'
   pull_request:
-    branches: 
-      - master
-      - develop
+    branches: [ master, develop]
     paths:
-      - 'SmartHub/**'
-    paths-ignore:
-      - 'SmartHub/SmartHub.Ui/**'
+      - 'SmartHub/Api/**'
+      - 'SmartHub/Api.Tests/**'
+      - 'SmartHub/Application.Tests/**'
+      - 'SmartHub/Application/**'
+      - 'SmartHub/BasePlugin/**'
+      - 'SmartHub/Domain.Tests/**'
+      - 'SmartHub/Domain/**'
+      - 'SmartHub/Infrastructure.Tests/**'
+      - 'SmartHub/Infrastructure/**'
+      - 'SmartHub/Shared/**'
 
 env:
   folderName: 'SmartHub/'
