@@ -12,10 +12,10 @@ on:
     branches: 
       - master
       - develop
-      paths:
-        - 'SmartHub/**'
-      paths-ignore:
-        - 'SmartHub/SmartHub.Ui/**'
+    paths:
+      - 'SmartHub/**'
+    paths-ignore:
+      - 'SmartHub/SmartHub.Ui/**'
 
 env:
   folderName: 'SmartHub/'
