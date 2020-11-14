@@ -13,6 +13,7 @@ using SmartHub.Api.Extensions;
 using SmartHub.Api.Serilog;
 using SmartHub.Application.UseCases.SignalR;
 
+
 namespace SmartHub.Api
 {
 	public static class Program
