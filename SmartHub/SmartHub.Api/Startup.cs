@@ -16,22 +16,20 @@ namespace SmartHub.Api
     public class Startup
     {
         private IConfiguration Configuration { get; }
-        private IHostEnvironment AppEnvironment { get; }
 
-        public Startup(IHostEnvironment env, IConfiguration configuration)
+        public Startup(IConfiguration configuration)
         {
-            AppEnvironment = env;
             Configuration = configuration;
         }
 
         // This method gets called by the runtime. Use this method to add services to the container.
-        public void ConfigureServices(IServiceCollection services) =>
+        public void ConfigureServices(IServiceCollection services, IHostEnvironment hostEnvironment) =>
             services
                 .AddDatabaseDeveloperPageExceptionFilter()
                 .AddInfrastructurePersistence(Configuration)
                 .AddShared()
                 .AddApplicationLayer()
-                .AddApiLayer(Configuration, AppEnvironment);
+                .AddApiLayer(Configuration, hostEnvironment);
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -39,6 +37,9 @@ namespace SmartHub.Api
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+                app.UseMigrationsEndPoint();
+                // Swagger
+                app.ConfigureSwagger();
             }
             else
             {
@@ -62,13 +63,7 @@ namespace SmartHub.Api
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
-            if (!env.IsDevelopment())
-            {
-                app.UseSpaStaticFiles();
-            }
-
-            // Swagger
-            app.ConfigureSwagger();
+            app.UseSpaStaticFiles();
 
             // Hangfire
             app.ConfigureHangfire();
@@ -106,7 +101,7 @@ namespace SmartHub.Api
                     return;
                 }
 
-                Log.ForContext(typeof(Startup)).Warning("Not serving frontend from staticfiles");
+                Log.ForContext(typeof(Startup)).Warning("Serving frontend from http://localhost:8080");
                 // Start seperate FE server and Server listens to it
                 spa.UseProxyToSpaDevelopmentServer("http://localhost:8080");
                 // To start its own FE server
