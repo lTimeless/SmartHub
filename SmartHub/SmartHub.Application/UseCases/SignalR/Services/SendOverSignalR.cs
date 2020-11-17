@@ -8,7 +8,7 @@ using Microsoft.Extensions.Options;
 using SmartHub.Application.Common.Exceptions;
 using SmartHub.Application.UseCases.Entity.Activities;
 using SmartHub.Domain.Common.Extensions;
-using SmartHub.Domain.Common.Settings;
+using SmartHub.Domain.Common;
 using SmartHub.Domain.Entities;
 
 namespace SmartHub.Application.UseCases.SignalR.Services
@@ -20,16 +20,16 @@ namespace SmartHub.Application.UseCases.SignalR.Services
 		private readonly IMapper _mapper;
 		private readonly IHubContext<HomeHub, IServerHub> _homeHubContext;
 		private readonly IHubContext<ActivityHub, IServerHub> _activityHubContext;
-		private readonly IOptionsSnapshot<ApplicationSettings> _optionsSnapshot;
+		private readonly IOptionsSnapshot<HomeConfiguration> _homeConfig;
 
 		public SendOverSignalR(IUnitOfWork unitOfWork, IMapper mapper, IHubContext<HomeHub, IServerHub> homeHubContext,
-			IHubContext<ActivityHub, IServerHub> activityHubContext, IOptionsSnapshot<ApplicationSettings> optionsSnapshot)
+			IHubContext<ActivityHub, IServerHub> activityHubContext, IOptionsSnapshot<HomeConfiguration> homeConfig)
 		{
 			_unitOfWork = unitOfWork;
 			_mapper = mapper;
 			_homeHubContext = homeHubContext;
 			_activityHubContext = activityHubContext;
-			_optionsSnapshot = optionsSnapshot;
+			_homeConfig = homeConfig;
 		}
 
 		/// <inheritdoc cref="ISendOverSignalR.SendHome"/>
@@ -59,12 +59,12 @@ namespace SmartHub.Application.UseCases.SignalR.Services
 			var activity = _mapper.Map<Activity>(activityDto);
 			activity.SetName(requestName);
 			home.AddActivity(activity);
-			if (home.Activities.Count > _optionsSnapshot.Value.SaveXLimit)
+			if (home.Activities.Count > _homeConfig.Value.SaveXLimit)
 			{
-				if (_optionsSnapshot.Value.SaveXLimit != null && _optionsSnapshot.Value.DeleteXAmountAfterLimit != null)
+				if (_homeConfig.Value.SaveXLimit != null && _homeConfig.Value.DeleteXAmountAfterLimit != null)
 				{
-					home.RemoveActivitiesOverLimit((int) _optionsSnapshot.Value.SaveXLimit,
-						(int) _optionsSnapshot.Value.DeleteXAmountAfterLimit);
+					home.RemoveActivitiesOverLimit((int) _homeConfig.Value.SaveXLimit,
+						(int) _homeConfig.Value.DeleteXAmountAfterLimit);
 				}
 
 			}

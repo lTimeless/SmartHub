@@ -28,6 +28,8 @@
     <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.8.0" />
     <PackageReference Include="System.Reactive" Version="5.0.0" />
     <PackageReference Include="System.Text.Json" Version="5.0.0" />
+    <PackageReference Include="YamlDotNet" Version="8.1.2" />
+    <PackageReference Include="YamlDotNet.NetCore" Version="1.0.0" />
   </ItemGroup>
 
   <ItemGroup>

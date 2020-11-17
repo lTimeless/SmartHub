@@ -16,20 +16,22 @@ namespace SmartHub.Api
     public class Startup
     {
         private IConfiguration Configuration { get; }
+		public IHostEnvironment HostEnvironment { get; }
 
-        public Startup(IConfiguration configuration)
+		public Startup(IConfiguration configuration, IHostEnvironment hostEnvironment)
         {
             Configuration = configuration;
-        }
+			HostEnvironment = hostEnvironment;
+		}
 
         // This method gets called by the runtime. Use this method to add services to the container.
-        public void ConfigureServices(IServiceCollection services, IHostEnvironment hostEnvironment) =>
+        public void ConfigureServices(IServiceCollection services) =>
             services
                 .AddDatabaseDeveloperPageExceptionFilter()
                 .AddInfrastructurePersistence(Configuration)
                 .AddShared()
                 .AddApplicationLayer()
-                .AddApiLayer(Configuration, hostEnvironment);
+                .AddApiLayer(Configuration, HostEnvironment);
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

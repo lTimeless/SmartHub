@@ -1,13 +1,13 @@
 ﻿using Microsoft.Extensions.Options;
-using SmartHub.Domain.Common.Settings;
+using SmartHub.Domain.Common;
 
 namespace SmartHub.Api.Validators
 {
-    public class ApplicationSettingsValidation : IValidateOptions<ApplicationSettings>
+    public class HomeConfigurationValidation : IValidateOptions<HomeConfiguration>
     {
-        public ValidateOptionsResult Validate(string name, ApplicationSettings options)
+        public ValidateOptionsResult Validate(string name, HomeConfiguration options)
         {
-            if (string.IsNullOrEmpty(options.FolderName))
+            if (string.IsNullOrEmpty(options.BaseFolderName))
             {
                 return ValidateOptionsResult.Fail("SmartHub:FolderName must be defined in the appsettings.json file");
             }

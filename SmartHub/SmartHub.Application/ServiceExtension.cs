@@ -6,6 +6,8 @@ using Microsoft.Extensions.DependencyInjection;
 using SmartHub.Application.Common.Behaviours;
 using SmartHub.Application.Common.Models;
 using SmartHub.Application.UseCases.GeoLocation;
+using SmartHub.Application.UseCases.HomeFolder;
+using SmartHub.Application.UseCases.HomeFolder.HomeConfigParser;
 using SmartHub.Application.UseCases.Identity;
 using SmartHub.Application.UseCases.Identity.Login;
 using SmartHub.Application.UseCases.Identity.Registration;
@@ -34,6 +36,9 @@ namespace SmartHub.Application
 
         private static void AddServices(this IServiceCollection services)
         {
+            // HomeFolder
+            services.AddTransient<IConfigService, ConfigService>();
+            services.AddTransient<IHomeFolderService, HomeFolderService>();
             // Identity
             services.AddScoped<CurrentUser>();
             services.AddScoped<ILoginService, LoginService>();

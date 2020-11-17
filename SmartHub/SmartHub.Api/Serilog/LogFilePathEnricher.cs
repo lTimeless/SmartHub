@@ -3,13 +3,13 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using Serilog.Core;
 using Serilog.Events;
-using SmartHub.Domain.Common.Settings;
+using SmartHub.Domain.Common;
 
 namespace SmartHub.Api.Serilog
 {
     public class LogFilePathEnricher: ILogEventEnricher
     {
-        private readonly IOptionsMonitor<ApplicationSettings> _options;
+        private readonly IOptionsMonitor<HomeConfiguration> _options;
         private string? _cachedLogFilePath;
         private LogEventProperty? _cachedLogFilePathProperty;
 
@@ -17,7 +17,7 @@ namespace SmartHub.Api.Serilog
 
         public LogFilePathEnricher(IServiceProvider serviceProvider)
         {
-            _options = serviceProvider.GetRequiredService<IOptionsMonitor<ApplicationSettings>>();
+            _options = serviceProvider.GetRequiredService<IOptionsMonitor<HomeConfiguration>>();
         }
         /// <summary>
         /// Adds a property to each log statement and the logFilepath
@@ -26,7 +26,7 @@ namespace SmartHub.Api.Serilog
         /// <param name="propertyFactory">The current propertyFactory for each log statement</param>
         public void Enrich(LogEvent logEvent, ILogEventPropertyFactory propertyFactory)
         {
-             var logFilePath = _options.CurrentValue.LogFilePath + $"\\log-{DateTime.Now:yyyyMMdd}.txt";// Read path from your appsettings.json
+             var logFilePath = _options.CurrentValue.LogFolderPath + $"\\log-{DateTime.Now:yyyyMMdd}.txt";// Read path from your appsettings.json
                 // Check for null, etc...
 
             LogEventProperty logFilePathProperty;

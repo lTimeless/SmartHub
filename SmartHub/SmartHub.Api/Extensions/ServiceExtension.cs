@@ -19,6 +19,7 @@ using Newtonsoft.Json.Serialization;
 using Polly;
 using SmartHub.Api.Validators;
 using SmartHub.Domain.Common.Settings;
+using SmartHub.Domain.Common;
 
 namespace SmartHub.Api.Extensions
 {
@@ -51,8 +52,8 @@ namespace SmartHub.Api.Extensions
 			services.Configure<HostOptions>(configuration.GetSection("HostOptions"));
 
 			// -------------- SmartHubSettings ---------------
-			services.Configure<ApplicationSettings>(configuration.GetSection("SmartHub"));
-			services.TryAddSingleton<IValidateOptions<ApplicationSettings>, ApplicationSettingsValidation>();
+			services.Configure<HomeConfiguration>(configuration.GetSection("SmartHub"));
+			services.TryAddSingleton<IValidateOptions<HomeConfiguration>, HomeConfigurationValidation>();
 			services.TryAddSingleton<IValidateOptions<JwtSettings>, JwtSettingsValidation>();
 		}
 

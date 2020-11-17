@@ -152,7 +152,7 @@ namespace SmartHub.Infrastructure
             services.AddScoped<ITokenGenerator, TokenGenerator>();
             services.AddScoped<IUserAccessor, UserAccessor>();
             // Directory
-            services.AddTransient<IHomeFolderService, HomeFolderService>();
+            services.AddTransient<IFileService, FileService>();
             services.AddTransient<IDirectoryService, DirectoryService>();
             // Http
             services.AddScoped<IPingService, PingService>();

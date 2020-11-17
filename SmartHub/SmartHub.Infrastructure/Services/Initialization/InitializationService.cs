@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
 using Figgle;
@@ -9,6 +10,7 @@ using SmartHub.Application.Common.Interfaces;
 using SmartHub.Application.Common.Interfaces.Database;
 using SmartHub.Application.Common.Interfaces.Events;
 using SmartHub.Application.UseCases.HomeFolder;
+using SmartHub.Application.UseCases.HomeFolder.HomeConfigParser;
 using SmartHub.Infrastructure.Services.Background;
 
 namespace SmartHub.Infrastructure.Services.Initialization
@@ -17,32 +19,34 @@ namespace SmartHub.Infrastructure.Services.Initialization
     {
         private readonly IDbSeeder _dbSeeder;
         private readonly IHomeFolderService _homeFolderService;
+        private readonly IConfigService _configService;
         private readonly ILogger _logger = Log.ForContext(typeof(InitializationService));
         private readonly BackgroundServiceStarter<IChannelManager> _channelManagerStarter;
         private readonly BackgroundServiceStarter<IEventDispatcher> _eventDispatcherStarter;
         private readonly IConfiguration _configuration;
 
-        public InitializationService(IHomeFolderService homeFolderService, BackgroundServiceStarter<IChannelManager> channelManagerStarter,
-            BackgroundServiceStarter<IEventDispatcher> eventDispatcherStarter, IServiceProvider provider, IConfiguration configuration)
-        {
-            _homeFolderService = homeFolderService;
-            _channelManagerStarter = channelManagerStarter;
-            _eventDispatcherStarter = eventDispatcherStarter;
-            using var scope = provider.CreateScope();
-            _dbSeeder = scope.ServiceProvider.GetRequiredService<IDbSeeder>();
-            _configuration = configuration;
-        }
+		public InitializationService(IHomeFolderService homeFolderService, BackgroundServiceStarter<IChannelManager> channelManagerStarter,
+			BackgroundServiceStarter<IEventDispatcher> eventDispatcherStarter, IServiceProvider provider, IConfiguration configuration, IConfigService configService)
+		{
+			_homeFolderService = homeFolderService;
+			_channelManagerStarter = channelManagerStarter;
+			_eventDispatcherStarter = eventDispatcherStarter;
+			using var scope = provider.CreateScope();
+			_dbSeeder = scope.ServiceProvider.GetRequiredService<IDbSeeder>();
+			_configuration = configuration;
+			_configService = configService;
+		}
 
-        public async Task StartAsync(CancellationToken cancellationToken)
+		public async Task StartAsync(CancellationToken cancellationToken)
         {
-            await _homeFolderService.Create().ConfigureAwait(false);
             WelcomeWithAsciiLogo();
-            SeedDatabase();
-            var (homePath, folderName) = _homeFolderService.GetHomeFolderPath();
-            _logger.Information("SmartHub folder is at {@homePath}\\{@folderName}",
-                homePath,
-                folderName);
+            await _homeFolderService.Create().ConfigureAwait(false);
             _logger.Information("Start initialization...");
+            var (homePath, folderName) = _homeFolderService.GetHomeFolderPath();
+            _logger.Information("SmartHub folder is at {@homePath}{Seperator}{@folderName}",
+                homePath, Path.DirectorySeparatorChar.ToString(), folderName);
+            _configService.CreateYamlConfigFile();
+            SeedDatabase();
             await _channelManagerStarter.StartAsync(cancellationToken);
             await _eventDispatcherStarter.StartAsync(cancellationToken);
             _logger.Information("Stop initialization.");

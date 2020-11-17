@@ -8,9 +8,8 @@ using SmartHub.Application.Common.Interfaces.Database;
 using SmartHub.Application.Common.Models;
 using SmartHub.Application.UseCases.GeoLocation;
 using SmartHub.Domain.Common.Enums;
-using SmartHub.Domain.Common.Settings;
-using SmartHub.Domain.Entities;
 using SmartHub.Domain.Common;
+using SmartHub.Domain.Entities;
 
 namespace SmartHub.Application.UseCases.Entity.Homes.Create
 {
@@ -19,13 +18,13 @@ namespace SmartHub.Application.UseCases.Entity.Homes.Create
 		private readonly IMapper _mapper;
 		private readonly IUnitOfWork _unitOfWork;
 		private readonly ILocationService _locationService;
-		private readonly IOptionsMonitor<ApplicationSettings> _optionsSnapshot;
+		private readonly IOptionsMonitor<HomeConfiguration> _homeConfig;
 		private readonly ILogger _logger = Log.ForContext(typeof(HomeCreateHandler));
 
-		public HomeCreateHandler(IUnitOfWork unitOfWork, IOptionsMonitor<ApplicationSettings> optionsSnapshot, ILocationService locationService, IMapper mapper)
+		public HomeCreateHandler(IUnitOfWork unitOfWork, IOptionsMonitor<HomeConfiguration> homeConfig, ILocationService locationService, IMapper mapper)
 		{
 			_unitOfWork = unitOfWork;
-			_optionsSnapshot = optionsSnapshot;
+			_homeConfig = homeConfig;
 			_locationService = locationService;
 			_mapper = mapper;
 		}
@@ -41,8 +40,8 @@ namespace SmartHub.Application.UseCases.Entity.Homes.Create
 			var defaultSetting = new Configuration($"{request.Name}_{DefaultNames.DefaultSetting}",
 				"This is a default setting",
 				true,
-				_optionsSnapshot.CurrentValue.DefaultPluginPath ?? string.Empty,
-				_optionsSnapshot.CurrentValue.DownloadServerUrl ?? string.Empty,
+				_homeConfig.CurrentValue.PluginFolderPath ?? string.Empty,
+				_homeConfig.CurrentValue.DownloadServerUrl ?? string.Empty,
 				ConfigurationTypes.Default);
 
 			var defaultGroup = new Group(DefaultNames.DefaultGroup, "Default_Description");
