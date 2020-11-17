@@ -35,6 +35,7 @@ namespace SmartHub.Application.UseCases.HomeFolder.HomeConfigParser
 		{
 			var filePath = _homeConfig.CurrentValue.GetConfigFilePath();
 			var readfileString = _fileService.ReadFileAsString(filePath);
+			// hier dann den string deserialisieren und dann die _homeConfig überschreiben
 		}
 	}
 }
