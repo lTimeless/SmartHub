@@ -9,7 +9,7 @@ namespace SmartHub.Api.Serilog
 {
     public class LogFilePathEnricher: ILogEventEnricher
     {
-        private readonly IOptionsMonitor<HomeConfiguration> _options;
+        private readonly IOptionsMonitor<ApplicationConfig> _options;
         private string? _cachedLogFilePath;
         private LogEventProperty? _cachedLogFilePathProperty;
 
@@ -17,7 +17,7 @@ namespace SmartHub.Api.Serilog
 
         public LogFilePathEnricher(IServiceProvider serviceProvider)
         {
-            _options = serviceProvider.GetRequiredService<IOptionsMonitor<HomeConfiguration>>();
+            _options = serviceProvider.GetRequiredService<IOptionsMonitor<ApplicationConfig>>();
         }
         /// <summary>
         /// Adds a property to each log statement and the logFilepath

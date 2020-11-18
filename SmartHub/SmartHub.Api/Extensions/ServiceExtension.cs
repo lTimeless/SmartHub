@@ -52,8 +52,8 @@ namespace SmartHub.Api.Extensions
 			services.Configure<HostOptions>(configuration.GetSection("HostOptions"));
 
 			// -------------- SmartHubSettings ---------------
-			services.Configure<HomeConfiguration>(configuration.GetSection("SmartHub"));
-			services.TryAddSingleton<IValidateOptions<HomeConfiguration>, HomeConfigurationValidation>();
+			services.Configure<ApplicationConfig>(configuration.GetSection("SmartHub"));
+			services.TryAddSingleton<IValidateOptions<ApplicationConfig>, ApplicationConfigValidation>();
 			services.TryAddSingleton<IValidateOptions<JwtSettings>, JwtSettingsValidation>();
 		}
 

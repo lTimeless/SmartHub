@@ -18,13 +18,13 @@ namespace SmartHub.Application.UseCases.Entity.Homes.Create
 		private readonly IMapper _mapper;
 		private readonly IUnitOfWork _unitOfWork;
 		private readonly ILocationService _locationService;
-		private readonly IOptionsMonitor<HomeConfiguration> _homeConfig;
+		private readonly IOptionsMonitor<ApplicationConfig> _appConfig;
 		private readonly ILogger _logger = Log.ForContext(typeof(HomeCreateHandler));
 
-		public HomeCreateHandler(IUnitOfWork unitOfWork, IOptionsMonitor<HomeConfiguration> homeConfig, ILocationService locationService, IMapper mapper)
+		public HomeCreateHandler(IUnitOfWork unitOfWork, IOptionsMonitor<ApplicationConfig> appConfig, ILocationService locationService, IMapper mapper)
 		{
 			_unitOfWork = unitOfWork;
-			_homeConfig = homeConfig;
+			_appConfig = appConfig;
 			_locationService = locationService;
 			_mapper = mapper;
 		}
@@ -40,8 +40,8 @@ namespace SmartHub.Application.UseCases.Entity.Homes.Create
 			var defaultSetting = new Configuration($"{request.Name}_{DefaultNames.DefaultSetting}",
 				"This is a default setting",
 				true,
-				_homeConfig.CurrentValue.PluginFolderPath ?? string.Empty,
-				_homeConfig.CurrentValue.DownloadServerUrl ?? string.Empty,
+				_appConfig.CurrentValue.PluginFolderPath ?? string.Empty,
+				_appConfig.CurrentValue.DownloadServerUrl ?? string.Empty,
 				ConfigurationTypes.Default);
 
 			var defaultGroup = new Group(DefaultNames.DefaultGroup, "Default_Description");

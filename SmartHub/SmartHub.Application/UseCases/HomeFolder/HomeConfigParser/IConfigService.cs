@@ -3,13 +3,18 @@
 	public interface IConfigService
 	{
 		/// <summary>
-		/// Creates the yaml-config file for the smarthome
+		/// Creates a new Config file or reads an existing one and saves it to HomeConfiguration
 		/// </summary>
-		void CreateYamlConfigFile();
+		void CreateOrReadConfigFile();
 
 		/// <summary>
-		/// Reads the yaml-config file for the smarthome
+		/// Reads the yaml-config file for the smarthome.
 		/// </summary>
-		void ReadYamlConfigFile();
+		/// <returns>Return the current config file as string.</returns>
+		string ReadConfigFileAsString();
+
+		void ValidateConfigFile();
+		void UpdateConfigFileFromSystem();
+		void UpdateConfigFileFromString();
 	}
 }

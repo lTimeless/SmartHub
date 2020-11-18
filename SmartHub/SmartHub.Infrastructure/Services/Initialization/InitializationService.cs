@@ -45,7 +45,7 @@ namespace SmartHub.Infrastructure.Services.Initialization
             var (homePath, folderName) = _homeFolderService.GetHomeFolderPath();
             _logger.Information("SmartHub folder is at {@homePath}{Seperator}{@folderName}",
                 homePath, Path.DirectorySeparatorChar.ToString(), folderName);
-            _configService.CreateYamlConfigFile();
+            _configService.CreateOrReadConfigFile();
             SeedDatabase();
             await _channelManagerStarter.StartAsync(cancellationToken);
             await _eventDispatcherStarter.StartAsync(cancellationToken);

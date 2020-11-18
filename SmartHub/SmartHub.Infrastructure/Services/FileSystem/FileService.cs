@@ -6,9 +6,14 @@ namespace SmartHub.Infrastructure.Services.FileSystem
 	public class FileService : IFileService
 	{
 		/// <inheritdoc cref="IFileService.CreateFile(string, string)"/>
-		public void CreateFile(string path, string content)
+		public bool CreateFile(string path, string content)
 		{
+			if (File.Exists(path))
+			{
+				return false;
+			}
 			File.WriteAllText(path, content);
+			return true;
 		}
 
 		/// <inheritdoc cref="IFileService.ReadFileAsString(string)"/>

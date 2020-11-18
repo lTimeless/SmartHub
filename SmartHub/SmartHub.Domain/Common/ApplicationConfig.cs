@@ -3,7 +3,7 @@ using System.IO;
 
 namespace SmartHub.Domain.Common
 {
-	public class HomeConfiguration
+	public class ApplicationConfig
 	{
         public string? ApplicationName { get; set; }
         public string? ConfigName { get; set; }

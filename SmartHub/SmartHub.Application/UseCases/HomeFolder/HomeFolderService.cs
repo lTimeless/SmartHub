@@ -14,13 +14,12 @@ namespace SmartHub.Application.UseCases.HomeFolder
 	public class HomeFolderService : IHomeFolderService
 	{
 		private readonly IDirectoryService _directoryService;
-		private readonly IOptionsMonitor<HomeConfiguration> _homeConfig;
+		private readonly IOptions<ApplicationConfig> _homeConfig;
 		private readonly IHostEnvironment _hostingEnvironment;
 
 		// The overlaying service for creating the SmartHub config folder
 		// with functions to create, delete and update it
-		public HomeFolderService(IDirectoryService directoryService,
-			IOptionsMonitor<HomeConfiguration> homeConfig, IHostEnvironment hostingEnvironment)
+		public HomeFolderService(IDirectoryService directoryService, IOptions<ApplicationConfig> homeConfig, IHostEnvironment hostingEnvironment)
 		{
 			_directoryService = directoryService;
 			_homeConfig = homeConfig;
@@ -40,7 +39,7 @@ namespace SmartHub.Application.UseCases.HomeFolder
 				return Task.CompletedTask;
 			}
 			var pluginPath = Path.Combine(homePath, baseFolderName);
-			_homeConfig.CurrentValue.PluginFolderPath = pluginPath;
+			_homeConfig.Value.PluginFolderPath = pluginPath;
 			_directoryService.CreateDirectory(homePath, baseFolderName);
 			CreateConfigFolder();
 			CreatePluginFolder();
@@ -61,27 +60,27 @@ namespace SmartHub.Application.UseCases.HomeFolder
 		{
 			var (path, folderName) = GetHomeFolderPath();
 			var homePath = Path.Combine(path, folderName);
-			var pluginPath = Path.Combine(homePath, _homeConfig.CurrentValue.PluginFolderName ?? string.Empty);
+			var pluginPath = Path.Combine(homePath, _homeConfig.Value.PluginFolderName ?? string.Empty);
 			_directoryService.CreateDirectory(pluginPath);
-			_homeConfig.CurrentValue.PluginFolderPath = pluginPath;
+			_homeConfig.Value.PluginFolderPath = pluginPath;
 		}
 
 		private void CreateLogsFolder()
 		{
 			var (path, folderName) = GetHomeFolderPath();
 			var homePath = Path.Combine(path, folderName);
-			var logPath = Path.Combine(homePath, _homeConfig.CurrentValue.LogFolderName ?? string.Empty);
+			var logPath = Path.Combine(homePath, _homeConfig.Value.LogFolderName ?? string.Empty);
 			_directoryService.CreateDirectory(logPath);
-			_homeConfig.CurrentValue.LogFolderPath = logPath;
+			_homeConfig.Value.LogFolderPath = logPath;
 		}
 
 		private void CreateConfigFolder()
 		{
 			var (path, folderName) = GetHomeFolderPath();
 			var homePath = Path.Combine(path, folderName);
-			var configPath = Path.Combine(homePath, _homeConfig.CurrentValue.ConfigFolderName ?? string.Empty);
+			var configPath = Path.Combine(homePath, _homeConfig.Value.ConfigFolderName ?? string.Empty);
 			_directoryService.CreateDirectory(configPath);
-			_homeConfig.CurrentValue.ConfigFolderPath = configPath;
+			_homeConfig.Value.ConfigFolderPath = configPath;
 		}
 
 		private Tuple<string, string> GetSystemHomeFolderLocation()
@@ -96,7 +95,7 @@ namespace SmartHub.Application.UseCases.HomeFolder
 					: Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData,
 						Environment.SpecialFolderOption.DoNotVerify))
 				?? throw new SmartHubException("Could not find system path"),
-				_homeConfig.CurrentValue.BaseFolderName ?? string.Empty);
+				_homeConfig.Value.BaseFolderName ?? string.Empty);
 		}
 
 		private Tuple<string, string> GetDevEnvironmentFolderLocation()
@@ -105,7 +104,7 @@ namespace SmartHub.Application.UseCases.HomeFolder
 					Path.GetDirectoryName(
 						Path.GetDirectoryName(Path.Combine(Directory.GetCurrentDirectory()))) ??
 					throw new SmartHubException("Could not find development system path")),
-				_homeConfig.CurrentValue.BaseFolderName + ".configFolder-dev");
+				_homeConfig.Value.BaseFolderName + ".configFolder-dev");
 		}
 	}
 }

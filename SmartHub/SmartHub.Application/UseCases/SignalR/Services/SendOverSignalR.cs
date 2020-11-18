@@ -20,10 +20,10 @@ namespace SmartHub.Application.UseCases.SignalR.Services
 		private readonly IMapper _mapper;
 		private readonly IHubContext<HomeHub, IServerHub> _homeHubContext;
 		private readonly IHubContext<ActivityHub, IServerHub> _activityHubContext;
-		private readonly IOptionsSnapshot<HomeConfiguration> _homeConfig;
+		private readonly IOptionsSnapshot<ApplicationConfig> _homeConfig;
 
 		public SendOverSignalR(IUnitOfWork unitOfWork, IMapper mapper, IHubContext<HomeHub, IServerHub> homeHubContext,
-			IHubContext<ActivityHub, IServerHub> activityHubContext, IOptionsSnapshot<HomeConfiguration> homeConfig)
+			IHubContext<ActivityHub, IServerHub> activityHubContext, IOptionsSnapshot<ApplicationConfig> homeConfig)
 		{
 			_unitOfWork = unitOfWork;
 			_mapper = mapper;

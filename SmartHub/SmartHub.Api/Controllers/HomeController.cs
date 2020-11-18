@@ -3,14 +3,24 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.Extensions.Options;
 using SmartHub.Application.UseCases.Entity.Homes.Create;
 using SmartHub.Application.UseCases.Entity.Homes.PartialUpdate;
 using SmartHub.Application.UseCases.Entity.Homes.Read;
+using SmartHub.Domain.Common;
 
 namespace SmartHub.Api.Controllers
 {
 	public class HomeController : BaseController
 	{
+		private readonly IOptions<ApplicationConfig> _applicationConfig;
+
+		public HomeController(IOptions<ApplicationConfig> applicationConfig)
+		{
+			_applicationConfig = applicationConfig;
+		}
+
+
 		/// <summary>
 		/// Gets the home
 		/// </summary>
@@ -31,6 +41,13 @@ namespace SmartHub.Api.Controllers
 		public async Task<IActionResult> Post([FromBody] HomeCreateCommand value)
 		{
 			return Ok(await Mediator.Send(value).ConfigureAwait(false));
+		}
+
+		[HttpGet("test")]
+		[AllowAnonymous]
+		public IActionResult GetAppConfig()
+		{
+			return Ok(_applicationConfig);
 		}
 
 		/// <summary>
