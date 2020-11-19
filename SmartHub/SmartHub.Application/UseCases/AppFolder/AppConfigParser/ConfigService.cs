@@ -11,7 +11,7 @@ namespace SmartHub.Application.UseCases.AppFolder.AppConfigParser
 	public class ConfigService : IConfigService
 	{
 		private readonly IFileService _fileService;
-		private IOptions<AppConfig> _homeConfig;
+		private readonly IOptions<AppConfig> _homeConfig;
 		private readonly ILogger _logger = Log.ForContext(typeof(ConfigService));
 
 		public ConfigService(IFileService fileService, IOptions<AppConfig> homeConfig)

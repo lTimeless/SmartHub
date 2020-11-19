@@ -4,13 +4,11 @@ using AutoMapper;
 using MediatR;
 using Microsoft.Extensions.Options;
 using Serilog;
-using SmartHub.Application.Common.Interfaces.Database;
 using SmartHub.Application.Common.Models;
 using SmartHub.Application.UseCases.AppFolder.AppConfigParser;
 using SmartHub.Application.UseCases.GeoLocation;
 using SmartHub.Domain;
 using SmartHub.Domain.Common.Extensions;
-using SmartHub.Domain.Entities;
 
 namespace SmartHub.Application.UseCases.Entity.Homes.Create
 {
@@ -19,7 +17,7 @@ namespace SmartHub.Application.UseCases.Entity.Homes.Create
 		private readonly IConfigService _configService;
 		private readonly IMapper _mapper;
 		private readonly ILocationService _locationService;
-		private readonly IOptionsMonitor<Domain.AppConfig> _appConfig;
+		private readonly IOptionsMonitor<AppConfig> _appConfig;
 		private readonly ILogger _logger = Log.ForContext(typeof(HomeCreateHandler));
 
 		public HomeCreateHandler(IOptionsMonitor<Domain.AppConfig> appConfig, ILocationService locationService, IMapper mapper, IConfigService configService)
