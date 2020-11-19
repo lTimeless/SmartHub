@@ -1,26 +1,20 @@
 ﻿using Microsoft.Extensions.Options;
 using SmartHub.Application.Common.Interfaces;
-using SmartHub.Domain.Common;
 using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Text.Json;
-using Newtonsoft.Json.Linq;
 using Serilog;
-using SmartHub.Domain.Entities;
-using YamlDotNet.Core;
-using YamlDotNet.RepresentationModel;
 using YamlDotNet.Serialization;
+using SmartHub.Application.UseCases.HomeFolder;
+using SmartHub.Domain;
 
-namespace SmartHub.Application.UseCases.HomeFolder.HomeConfigParser
+namespace SmartHub.Application.UseCases.AppFolder.AppConfigParser
 {
 	public class ConfigService : IConfigService
 	{
 		private readonly IFileService _fileService;
-		private IOptions<ApplicationConfig> _homeConfig;
+		private IOptions<AppConfig> _homeConfig;
 		private readonly ILogger _logger = Log.ForContext(typeof(ConfigService));
 
-		public ConfigService(IFileService fileService, IOptions<ApplicationConfig> homeConfig)
+		public ConfigService(IFileService fileService, IOptions<AppConfig> homeConfig)
 		{
 			_fileService = fileService;
 			_homeConfig = homeConfig;
@@ -32,6 +26,7 @@ namespace SmartHub.Application.UseCases.HomeFolder.HomeConfigParser
 			var fileCreated = CreateConfigFile();
 			if (fileCreated)
 			{
+				_logger.Information("Created yaml-config-file.");
 				return;
 			}
 			var configAsString = ReadConfigFileAsString();
@@ -39,10 +34,11 @@ namespace SmartHub.Application.UseCases.HomeFolder.HomeConfigParser
 			var yamlConfig = deSerializer.Deserialize<YamlConfigStructure>(configAsString);
 			if (yamlConfig.ApplicationConfig is not null)
 			{
-				UpdateAppConfigFromFile(yamlConfig.ApplicationConfig);
+				UpdateAppConfig(yamlConfig.ApplicationConfig);
+				_logger.Information("Read yaml-config-file and updated appConfig.");
 				return;
 			}
-			_logger.Warning($"YamlConfig is null: {yamlConfig}");
+			_logger.Warning($"YamlConfig is null: {yamlConfig} .");
 		}
 
 		/// <inheritdoc cref="IConfigService.ReadConfigFileAsString()"/>
@@ -52,24 +48,22 @@ namespace SmartHub.Application.UseCases.HomeFolder.HomeConfigParser
 			return _fileService.ReadFileAsString(filePath);
 		}
 
-		public void UpdateConfigFileFromString()
-		{
-			throw new NotImplementedException();
-		}
-
-		public void UpdateConfigFileFromSystem()
-		{
-			var yamlString = ReadConfigFileAsString();
-			// hier dann den string deserialisieren und dann die _homeConfig überschreiben
-
-		}
-
 		public void ValidateConfigFile()
 		{
 			throw new NotImplementedException();
 		}
 
-
+		/// <inheritdoc cref="IConfigService.UpdateFileFromClass"/>
+		public bool UpdateFileFromClass()
+		{
+			var fileCreated = CreateConfigFile();
+			if (fileCreated)
+			{
+				_logger.Information("Updated yaml-config-file.");
+				return true;
+			}
+			return false;
+		}
 
 		private bool CreateConfigFile()
 		{
@@ -81,7 +75,7 @@ namespace SmartHub.Application.UseCases.HomeFolder.HomeConfigParser
 			return _fileService.CreateFile(filePath, yaml);
 		}
 
-		private void UpdateAppConfigFromFile(ApplicationConfig newConfig)
+		private void UpdateAppConfig(Domain.AppConfig newConfig)
 		{
 			_homeConfig.Value.Address = newConfig.Address;
 			_homeConfig.Value.Description = newConfig.Description;
@@ -103,6 +97,5 @@ namespace SmartHub.Application.UseCases.HomeFolder.HomeConfigParser
 			_homeConfig.Value.SaveXLimit = newConfig.SaveXLimit;
 			_homeConfig.Value.DeleteXAmountAfterLimit = newConfig.DeleteXAmountAfterLimit;
 		}
-
 	}
 }

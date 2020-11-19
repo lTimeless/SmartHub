@@ -6,34 +6,34 @@ using Microsoft.Extensions.Options;
 using SmartHub.Application.Common.Exceptions;
 using SmartHub.Application.Common.Interfaces;
 using SmartHub.Domain.Common.Extensions;
-using SmartHub.Domain.Common;
+using SmartHub.Domain;
 
-namespace SmartHub.Application.UseCases.HomeFolder
+namespace SmartHub.Application.UseCases.AppFolder
 {
-	/// <inheritdoc cref="IHomeFolderService"/>
-	public class HomeFolderService : IHomeFolderService
+	/// <inheritdoc cref="IAppFolderService"/>
+	public class AppFolderService : IAppFolderService
 	{
 		private readonly IDirectoryService _directoryService;
-		private readonly IOptions<ApplicationConfig> _homeConfig;
+		private readonly IOptions<Domain.AppConfig> _homeConfig;
 		private readonly IHostEnvironment _hostingEnvironment;
 
 		// The overlaying service for creating the SmartHub config folder
 		// with functions to create, delete and update it
-		public HomeFolderService(IDirectoryService directoryService, IOptions<ApplicationConfig> homeConfig, IHostEnvironment hostingEnvironment)
+		public AppFolderService(IDirectoryService directoryService, IOptions<Domain.AppConfig> homeConfig, IHostEnvironment hostingEnvironment)
 		{
 			_directoryService = directoryService;
 			_homeConfig = homeConfig;
 			_hostingEnvironment = hostingEnvironment;
 		}
 
-		/// <inheritdoc cref="IHomeFolderService.Create"/>
+		/// <inheritdoc cref="IAppFolderService.Create"/>
 		public Task Create()
 		{
 			// If environment dev => path == parentfolder
 			// unix == "/"
 			// windows "appdata/local" = > dev ../Smarthub.ConfigFolder-dev
 			// Use DoNotVerify in case Folder doesn’t exist.
-			var ( homePath, baseFolderName ) = GetHomeFolderPath();
+			var (homePath, baseFolderName) = GetHomeFolderPath();
 			if (string.IsNullOrEmpty(homePath))
 			{
 				return Task.CompletedTask;
@@ -48,7 +48,7 @@ namespace SmartHub.Application.UseCases.HomeFolder
 
 		}
 
-		/// <inheritdoc cref="IHomeFolderService.GetHomeFolderPath"/>
+		/// <inheritdoc cref="IAppFolderService.GetHomeFolderPath"/>
 		public Tuple<string, string> GetHomeFolderPath()
 		{
 			return _hostingEnvironment.EnvironmentName != "Development"

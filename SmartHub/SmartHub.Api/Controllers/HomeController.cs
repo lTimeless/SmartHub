@@ -7,15 +7,15 @@ using Microsoft.Extensions.Options;
 using SmartHub.Application.UseCases.Entity.Homes.Create;
 using SmartHub.Application.UseCases.Entity.Homes.PartialUpdate;
 using SmartHub.Application.UseCases.Entity.Homes.Read;
-using SmartHub.Domain.Common;
+using SmartHub.Domain;
 
 namespace SmartHub.Api.Controllers
 {
 	public class HomeController : BaseController
 	{
-		private readonly IOptions<ApplicationConfig> _applicationConfig;
+		private readonly IOptions<Domain.AppConfig> _applicationConfig;
 
-		public HomeController(IOptions<ApplicationConfig> applicationConfig)
+		public HomeController(IOptions<Domain.AppConfig> applicationConfig)
 		{
 			_applicationConfig = applicationConfig;
 		}

@@ -1,11 +1,11 @@
 ﻿using Microsoft.Extensions.Options;
-using SmartHub.Domain.Common;
+using SmartHub.Domain;
 
 namespace SmartHub.Api.Validators
 {
-    public class ApplicationConfigValidation : IValidateOptions<ApplicationConfig>
+	public class ApplicationConfigValidation : IValidateOptions<Domain.AppConfig>
     {
-        public ValidateOptionsResult Validate(string name, ApplicationConfig options)
+        public ValidateOptionsResult Validate(string name, Domain.AppConfig options)
         {
             if (string.IsNullOrEmpty(options.BaseFolderName))
             {

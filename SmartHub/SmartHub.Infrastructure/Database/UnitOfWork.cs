@@ -25,7 +25,6 @@ namespace SmartHub.Infrastructure.Database
 		{
 			AppDbContext = appDbContext;
 			_channelManager = channelManager;
-			HomeRepository = new HomeRepositoryAsync(AppDbContext);
 			UserRepository = new UserRepository(userManager, roleManager);
 		}
 
@@ -35,23 +34,24 @@ namespace SmartHub.Infrastructure.Database
 
 		public async Task SaveAsync()
 		{
-			var aggregateRoots = AppDbContext.ChangeTracker.Entries().Where(x => x.Entity is IAggregateRoot)
-				.Select(x => x.Entity as IAggregateRoot).ToList();
+			// TODO: rewrite, damit dennoch alle domainevents ausgeführt werden
+			//var aggregateRoots = AppDbContext.ChangeTracker.Entries().Where(x => x.Entity is IAggregateRoot)
+			//	.Select(x => x.Entity as IAggregateRoot).ToList();
 
 			await AppDbContext.SaveChangesAsync().ConfigureAwait(false);
 
-			foreach (var item in aggregateRoots.Where(item => item?.Events != null))
-			{
-				if (item == null)
-				{
-					continue;
-				}
-				foreach (var itemEvent in item.Events)
-				{
-					await _channelManager.PublishNextToChannel(ChannelNames.System, itemEvent).ConfigureAwait(false);
-				}
-				item.ClearDomainEvents();
-			}
+			//foreach (var item in aggregateRoots.Where(item => item?.Events != null))
+			//{
+			//	if (item == null)
+			//	{
+			//		continue;
+			//	}
+			//	foreach (var itemEvent in item.Events)
+			//	{
+			//		await _channelManager.PublishNextToChannel(ChannelNames.System, itemEvent).ConfigureAwait(false);
+			//	}
+			//	item.ClearDomainEvents();
+			//}
 		}
 
 		public void Dispose()

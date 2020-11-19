@@ -5,9 +5,9 @@ using MediatR.Pipeline;
 using Microsoft.Extensions.DependencyInjection;
 using SmartHub.Application.Common.Behaviours;
 using SmartHub.Application.Common.Models;
+using SmartHub.Application.UseCases.AppFolder;
+using SmartHub.Application.UseCases.AppFolder.AppConfigParser;
 using SmartHub.Application.UseCases.GeoLocation;
-using SmartHub.Application.UseCases.HomeFolder;
-using SmartHub.Application.UseCases.HomeFolder.HomeConfigParser;
 using SmartHub.Application.UseCases.Identity;
 using SmartHub.Application.UseCases.Identity.Login;
 using SmartHub.Application.UseCases.Identity.Registration;
@@ -19,7 +19,7 @@ using SmartHub.Application.UseCases.SignalR.Services;
 
 namespace SmartHub.Application
 {
-    public static class ServiceExtension
+	public static class ServiceExtension
     {
         public static IServiceCollection AddApplicationLayer(this IServiceCollection services)
         {
@@ -38,7 +38,7 @@ namespace SmartHub.Application
         {
             // HomeFolder
             services.AddTransient<IConfigService, ConfigService>();
-            services.AddTransient<IHomeFolderService, HomeFolderService>();
+            services.AddTransient<IAppFolderService, AppFolderService>();
             // Identity
             services.AddScoped<CurrentUser>();
             services.AddScoped<ILoginService, LoginService>();

@@ -1,10 +1,10 @@
-﻿using SmartHub.Domain.Common;
+﻿using SmartHub.Domain;
 using YamlDotNet.Serialization;
 
 namespace SmartHub.Application.UseCases.HomeFolder
 {
 	public class YamlConfigStructure
 	{
-		public ApplicationConfig? ApplicationConfig { get; set; }
+		public Domain.AppConfig? ApplicationConfig { get; set; }
 	}
 }

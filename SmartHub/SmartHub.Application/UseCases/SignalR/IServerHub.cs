@@ -21,7 +21,7 @@ namespace SmartHub.Application.UseCases.SignalR
         /// </summary>
         /// <param name="homeDto">The home object to send</param>
         /// <returns>Task</returns>
-        Task SendHome(HomeDto homeDto);
+        Task SendHome(AppDto homeDto);
 
     }
 }

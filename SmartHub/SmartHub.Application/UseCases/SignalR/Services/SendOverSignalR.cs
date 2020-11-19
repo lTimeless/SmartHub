@@ -8,8 +8,8 @@ using Microsoft.Extensions.Options;
 using SmartHub.Application.Common.Exceptions;
 using SmartHub.Application.UseCases.Entity.Activities;
 using SmartHub.Domain.Common.Extensions;
-using SmartHub.Domain.Common;
 using SmartHub.Domain.Entities;
+using SmartHub.Domain;
 
 namespace SmartHub.Application.UseCases.SignalR.Services
 {
@@ -20,10 +20,10 @@ namespace SmartHub.Application.UseCases.SignalR.Services
 		private readonly IMapper _mapper;
 		private readonly IHubContext<HomeHub, IServerHub> _homeHubContext;
 		private readonly IHubContext<ActivityHub, IServerHub> _activityHubContext;
-		private readonly IOptionsSnapshot<ApplicationConfig> _homeConfig;
+		private readonly IOptionsSnapshot<Domain.AppConfig> _homeConfig;
 
 		public SendOverSignalR(IUnitOfWork unitOfWork, IMapper mapper, IHubContext<HomeHub, IServerHub> homeHubContext,
-			IHubContext<ActivityHub, IServerHub> activityHubContext, IOptionsSnapshot<ApplicationConfig> homeConfig)
+			IHubContext<ActivityHub, IServerHub> activityHubContext, IOptionsSnapshot<Domain.AppConfig> homeConfig)
 		{
 			_unitOfWork = unitOfWork;
 			_mapper = mapper;
@@ -36,7 +36,7 @@ namespace SmartHub.Application.UseCases.SignalR.Services
 		public async Task SendHome()
 		{
 			var home = await _unitOfWork.HomeRepository.GetHome();
-			await _homeHubContext.Clients.All.SendHome(_mapper.Map<HomeDto>(home));
+			await _homeHubContext.Clients.All.SendHome(_mapper.Map<AppDto>(home));
 		}
 
 		/// <inheritdoc cref="ISendOverSignalR.SendActivity"/>

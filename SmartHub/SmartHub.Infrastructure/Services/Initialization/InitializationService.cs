@@ -9,23 +9,23 @@ using Serilog;
 using SmartHub.Application.Common.Interfaces;
 using SmartHub.Application.Common.Interfaces.Database;
 using SmartHub.Application.Common.Interfaces.Events;
-using SmartHub.Application.UseCases.HomeFolder;
-using SmartHub.Application.UseCases.HomeFolder.HomeConfigParser;
+using SmartHub.Application.UseCases.AppFolder;
+using SmartHub.Application.UseCases.AppFolder.AppConfigParser;
 using SmartHub.Infrastructure.Services.Background;
 
 namespace SmartHub.Infrastructure.Services.Initialization
 {
-    public class InitializationService : IInitializationService
+	public class InitializationService : IInitializationService
     {
         private readonly IDbSeeder _dbSeeder;
-        private readonly IHomeFolderService _homeFolderService;
+        private readonly IAppFolderService _homeFolderService;
         private readonly IConfigService _configService;
         private readonly ILogger _logger = Log.ForContext(typeof(InitializationService));
         private readonly BackgroundServiceStarter<IChannelManager> _channelManagerStarter;
         private readonly BackgroundServiceStarter<IEventDispatcher> _eventDispatcherStarter;
         private readonly IConfiguration _configuration;
 
-		public InitializationService(IHomeFolderService homeFolderService, BackgroundServiceStarter<IChannelManager> channelManagerStarter,
+		public InitializationService(IAppFolderService homeFolderService, BackgroundServiceStarter<IChannelManager> channelManagerStarter,
 			BackgroundServiceStarter<IEventDispatcher> eventDispatcherStarter, IServiceProvider provider, IConfiguration configuration, IConfigService configService)
 		{
 			_homeFolderService = homeFolderService;

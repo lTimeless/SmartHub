@@ -6,6 +6,18 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="UseCases\AppFolder\AppConfigParser\Create\**" />
+    <Compile Remove="UseCases\AppFolder\AppConfigParser\Read\**" />
+    <Compile Remove="UseCases\AppFolder\AppConfigParser\Update\**" />
+    <EmbeddedResource Remove="UseCases\AppFolder\AppConfigParser\Create\**" />
+    <EmbeddedResource Remove="UseCases\AppFolder\AppConfigParser\Read\**" />
+    <EmbeddedResource Remove="UseCases\AppFolder\AppConfigParser\Update\**" />
+    <None Remove="UseCases\AppFolder\AppConfigParser\Create\**" />
+    <None Remove="UseCases\AppFolder\AppConfigParser\Read\**" />
+    <None Remove="UseCases\AppFolder\AppConfigParser\Update\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="AutoMapper" Version="10.1.1" />
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="8.1.0" />
     <PackageReference Include="Hangfire" Version="1.7.17" />
@@ -25,9 +37,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="UseCases\HomeFolder\HomeConfigParser\Create\" />
-    <Folder Include="UseCases\HomeFolder\HomeConfigParser\Update\" />
-    <Folder Include="UseCases\HomeFolder\HomeConfigParser\Read\" />
     <Folder Include="UseCases\Identity\Me" />
   </ItemGroup>
 
