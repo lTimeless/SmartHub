@@ -7,14 +7,14 @@ namespace SmartHub.Domain.Tests.Entities
 {
     public class GroupTest
     {
-        private const string Name = "GroupName";
-        private const string Description = "GroupDescription";
+        private const string _name = "GroupName";
+        private const string _description = "GroupDescription";
 
-        private readonly Group group;
+        private readonly Group _group;
 
         public GroupTest()
         {
-            group = new Group(Name, Description);
+            _group = new Group(_name, _description);
         }
 
         [Fact]
@@ -22,7 +22,7 @@ namespace SmartHub.Domain.Tests.Entities
         {
             const string newName = "another name";
 
-            string actual = group.SetName(newName).Name;
+            string actual = _group.SetName(newName).Name;
 
             Assert.Equal(newName, actual);
         }
@@ -32,7 +32,7 @@ namespace SmartHub.Domain.Tests.Entities
         {
             const string newDescription = "test";
 
-            string? actual = group.SetDescription(newDescription).Description;
+            string? actual = _group.SetDescription(newDescription).Description;
 
             Assert.Equal(newDescription, actual);
         }
@@ -40,7 +40,7 @@ namespace SmartHub.Domain.Tests.Entities
         [Fact]
         internal void Devices_ByDefault_EmptyList()
         {
-            Assert.Empty(group.Devices);
+            Assert.Empty(_group.Devices);
         }
 
         [Fact]
@@ -48,7 +48,7 @@ namespace SmartHub.Domain.Tests.Entities
         {
             Device device = new Device("name", default, "ip", "company", ConnectionTypes.None, default, "pluginName", default);
 
-            Device? addedDevice = group.AddDevice(device).Devices.FirstOrDefault();
+            Device? addedDevice = _group.AddDevice(device).Devices.FirstOrDefault();
 
             Assert.Same(device, addedDevice);
         }

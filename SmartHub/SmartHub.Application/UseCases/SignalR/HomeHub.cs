@@ -20,7 +20,8 @@ namespace SmartHub.Application.UseCases.SignalR
 		/// <returns>Task</returns>
 		public override async Task OnConnectedAsync()
 		{
-			await _sendOverSignalR.SendHome();
+			//TODO dennoch was schicken?!
+			//await _sendOverSignalR.SendHome();
 			await base.OnConnectedAsync();
 		}
 	}

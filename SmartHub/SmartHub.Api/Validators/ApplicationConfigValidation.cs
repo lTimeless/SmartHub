@@ -3,9 +3,9 @@ using SmartHub.Domain;
 
 namespace SmartHub.Api.Validators
 {
-	public class ApplicationConfigValidation : IValidateOptions<Domain.AppConfig>
+	public class ApplicationConfigValidation : IValidateOptions<AppConfig>
     {
-        public ValidateOptionsResult Validate(string name, Domain.AppConfig options)
+        public ValidateOptionsResult Validate(string name, AppConfig options)
         {
             if (string.IsNullOrEmpty(options.BaseFolderName))
             {

@@ -5,31 +5,33 @@ using Serilog;
 using YamlDotNet.Serialization;
 using SmartHub.Application.UseCases.HomeFolder;
 using SmartHub.Domain;
+using System.Threading.Tasks;
 
 namespace SmartHub.Application.UseCases.AppFolder.AppConfigParser
 {
-	public class ConfigService : IConfigService
+	/// <inheritdoc cref="IAppConfigService"/>
+	public class AppConfigService : IAppConfigService
 	{
 		private readonly IFileService _fileService;
 		private readonly IOptions<AppConfig> _homeConfig;
-		private readonly ILogger _logger = Log.ForContext(typeof(ConfigService));
+		private readonly ILogger _logger = Log.ForContext(typeof(AppConfigService));
 
-		public ConfigService(IFileService fileService, IOptions<AppConfig> homeConfig)
+		public AppConfigService(IFileService fileService, IOptions<AppConfig> homeConfig)
 		{
 			_fileService = fileService;
 			_homeConfig = homeConfig;
 		}
 
-		/// <inheritdoc cref="IConfigService.CreateOrReadConfigFile()"/>
-		public void CreateOrReadConfigFile()
+		/// <inheritdoc cref="IAppConfigService.CreateOrReadConfigFile()"/>
+		public async Task CreateOrReadConfigFile()
 		{
-			var fileCreated = CreateConfigFile();
+			var fileCreated = await CreateConfigFile();
 			if (fileCreated)
 			{
 				_logger.Information("Created yaml-config-file.");
 				return;
 			}
-			var configAsString = ReadConfigFileAsString();
+			var configAsString = await ReadConfigFileAsString();
 			var deSerializer = new DeserializerBuilder().Build();
 			var yamlConfig = deSerializer.Deserialize<YamlConfigStructure>(configAsString);
 			if (yamlConfig.ApplicationConfig is not null)
@@ -39,25 +41,26 @@ namespace SmartHub.Application.UseCases.AppFolder.AppConfigParser
 				return;
 			}
 			_logger.Warning($"YamlConfig is null: {yamlConfig} .");
+			return;
 		}
 
-		/// <inheritdoc cref="IConfigService.ReadConfigFileAsString()"/>
-		public string ReadConfigFileAsString()
+		/// <inheritdoc cref="IAppConfigService.ReadConfigFileAsString()"/>
+		public Task<string> ReadConfigFileAsString()
 		{
 			var filePath = _homeConfig.Value.GetConfigFilePath();
-			return _fileService.ReadFileAsString(filePath);
+			return Task.FromResult(_fileService.ReadFileAsString(filePath));
 		}
 
-		public void ValidateConfigFile()
+		public Task ValidateConfigFile()
 		{
 			throw new NotImplementedException();
 		}
 
-		/// <inheritdoc cref="IConfigService.UpdateFileFromClass"/>
-		public bool UpdateFileFromClass()
+		/// <inheritdoc cref="IAppConfigService.UpdateFileFromClass"/>
+		public async Task<bool> UpdateFileFromClass()
 		{
-			var fileCreated = CreateConfigFile();
-			if (fileCreated)
+			var fileOverride = await OverrideConfigFile();
+			if (fileOverride)
 			{
 				_logger.Information("Updated yaml-config-file.");
 				return true;
@@ -65,17 +68,27 @@ namespace SmartHub.Application.UseCases.AppFolder.AppConfigParser
 			return false;
 		}
 
-		private bool CreateConfigFile()
+		private Task<bool> CreateConfigFile()
 		{
 			var serializer = new SerializerBuilder().Build();
 			_homeConfig.Value.TimeZone = TimeZoneInfo.Local.DisplayName;
 			var homeConfig = new YamlConfigStructure { ApplicationConfig = _homeConfig.Value };
 			var yaml = serializer.Serialize(homeConfig);
 			var filePath = _homeConfig.Value.GetConfigFilePath();
-			return _fileService.CreateFile(filePath, yaml);
+			return Task.FromResult(_fileService.CreateFile(filePath, yaml));
 		}
 
-		private void UpdateAppConfig(Domain.AppConfig newConfig)
+		private Task<bool> OverrideConfigFile()
+		{
+			var serializer = new SerializerBuilder().Build();
+			_homeConfig.Value.TimeZone = TimeZoneInfo.Local.DisplayName;
+			var homeConfig = new YamlConfigStructure { ApplicationConfig = _homeConfig.Value };
+			var yaml = serializer.Serialize(homeConfig);
+			var filePath = _homeConfig.Value.GetConfigFilePath();
+			return Task.FromResult(_fileService.OverrideFile(filePath, yaml));
+		}
+
+		private void UpdateAppConfig(AppConfig newConfig)
 		{
 			_homeConfig.Value.Address = newConfig.Address;
 			_homeConfig.Value.Description = newConfig.Description;

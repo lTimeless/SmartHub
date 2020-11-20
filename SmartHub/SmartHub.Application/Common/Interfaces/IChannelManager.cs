@@ -6,6 +6,9 @@ using SmartHub.Domain.DomainEvents;
 
 namespace SmartHub.Application.Common.Interfaces
 {
+	/// <summary>
+	/// Interface for managing Rx.Net channels 
+	/// </summary>
 	public interface IChannelManager : IHostedService
 	{
 		/// <summary>

@@ -4,7 +4,7 @@ using SmartHub.Domain.Entities.ValueObjects;
 
 namespace SmartHub.Domain.Entities
 {
-	/// <inheritdoc cref="Microsoft.AspNetCore.Identity.IdentityUser" />
+	/// <inheritdoc cref="IdentityUser" />
 	public class User : IdentityUser<string>, IEntity
 	{
 		public DateTimeOffset CreatedAt { get; set; }
@@ -13,7 +13,6 @@ namespace SmartHub.Domain.Entities
 		public string LastModifiedBy { get; set; } = default!;
 		public string PersonInfo { get; set; } = default!;
 		public PersonName PersonName { get; } = default!;
-		public virtual Home? Home { get; }
 
 		protected User()
 		{
@@ -26,7 +25,6 @@ namespace SmartHub.Domain.Entities
 			EmailConfirmed = true;
 			PersonInfo = personInfo;
 			PersonName = fullname ?? new PersonName("","", "");
-			Home = null;
 		}
 	}
 }

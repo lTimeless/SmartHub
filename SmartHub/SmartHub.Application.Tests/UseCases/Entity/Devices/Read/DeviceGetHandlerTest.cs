@@ -16,86 +16,61 @@ namespace SmartHub.Application.Tests.UseCases.Entity.Devices.Read
 {
     public class DeviceGetHandlerTest
     {
-        private readonly IMapper mapperSubstitute;
-        private readonly IHomeRepository homeRepositorySubstitute;
+        private readonly IMapper _mapperSubstitute;
+        private readonly IBaseRepositoryAsync<Device> _deviceRepositorySubstitute;
 
-        private readonly Home home;
-        private readonly IReadOnlyCollection<DeviceDto> deviceDtos;
+		private readonly Device _device;
+        private readonly IReadOnlyCollection<DeviceDto> _deviceDtos;
 
-        private readonly DeviceGetHandler deviceGetHandler;
+        private readonly DeviceGetHandler _deviceGetHandler;
 
         public DeviceGetHandlerTest()
         {
-            home = CreateHome();
-            deviceDtos = home.Groups.SelectMany(x => x.Devices).Select(device => new DeviceDto()).ToArray();
+            _device = CreateDevice();
+            _deviceDtos = new List<DeviceDto>() { new DeviceDto() };
 
-            mapperSubstitute = CreateMapperSubstitute(deviceDtos);
-            homeRepositorySubstitute = CreateHomeRepository(home);
-            IUnitOfWork unitOfWorkSubstitute = CreateUnitOfWorkSubstitute(homeRepositorySubstitute);
+			_mapperSubstitute = CreateMapperSubstitute(_deviceDtos);
+			_deviceRepositorySubstitute = CreateDeviceRepository(_device);
 
-            deviceGetHandler = new DeviceGetHandler(mapperSubstitute, unitOfWorkSubstitute);
+            _deviceGetHandler = new DeviceGetHandler(_mapperSubstitute, _deviceRepositorySubstitute);
         }
 
         [Fact]
         internal async Task Handle_HomeRepository_Called_Async()
         {
-            await deviceGetHandler.Handle(new DeviceGetQuery(), CancellationToken.None);
+            await _deviceGetHandler.Handle(new DeviceGetQuery(), CancellationToken.None);
 
-            await homeRepositorySubstitute.Received().GetHome();
+            await _deviceRepositorySubstitute.Received().GetAllAsync();
         }
 
         [Fact]
         internal async Task Handle_Mapper_Called_Async()
         {
-            await deviceGetHandler.Handle(new DeviceGetQuery(), CancellationToken.None);
+            await _deviceGetHandler.Handle(new DeviceGetQuery(), CancellationToken.None);
 
-            IEnumerable<Device> expectedDevices = home.Groups.SelectMany(x => x.Devices);
+            List<Device> expectedDevices = new() { _device };
 
-            mapperSubstitute.Received().Map<IEnumerable<DeviceDto>>(Arg.Is<IEnumerable<Device>>(devices => devices.SequenceEqual(expectedDevices)));
+            _mapperSubstitute.Received().Map<IEnumerable<DeviceDto>>(Arg.Is<IEnumerable<Device>>(devices => devices.SequenceEqual(expectedDevices)));
         }
 
-        [Fact]
-        internal async Task Handle_NoHome_ReturnFailResponse_Async()
-        {
-            homeRepositorySubstitute.GetHome().ReturnsForAnyArgs(Task.FromResult<Home?>(null));
-            Response<IEnumerable<DeviceDto>> response = await deviceGetHandler.Handle(new DeviceGetQuery(), CancellationToken.None);
-
-            Assert.False(response.Success);
-        }
 
         [Fact]
         internal async Task Handle_Success_ReturnDeviceDtosFromMapper_Async()
         {
-            Response<IEnumerable<DeviceDto>> response = await deviceGetHandler.Handle(new DeviceGetQuery(), CancellationToken.None);
+            Response<IEnumerable<DeviceDto>> response = await _deviceGetHandler.Handle(new DeviceGetQuery(), CancellationToken.None);
 
-            Assert.Same(deviceDtos, response.Data);
+            Assert.Same(_deviceDtos, response.Data);
         }
 
-        private static Home CreateHome()
+        private static Device CreateDevice()
         {
-            Home returnedHome = new Home("name", "description");
-            Group group = new Group("groupName", "description");
+			return new Device("name", "description", "192", "Mock", ConnectionTypes.Http, ConnectionTypes.Mqtt, "MockLight", PluginTypes.Light);
+		}
 
-            group
-                .AddDevice(new Device("name1", default, "ip", "company", ConnectionTypes.None, default, "pluginName", default))
-                .AddDevice(new Device("name2", default, "ip", "company", ConnectionTypes.None, default, "pluginName", default));
-
-            returnedHome.AddGroup(group);
-
-            return returnedHome;
-        }
-
-        private static IUnitOfWork CreateUnitOfWorkSubstitute(IHomeRepository homeRepository)
+        private static IBaseRepositoryAsync<Device> CreateDeviceRepository(Device device)
         {
-            IUnitOfWork substitute = Substitute.For<IUnitOfWork>();
-            substitute.HomeRepository.Returns(homeRepository);
-            return substitute;
-        }
-
-        private static IHomeRepository CreateHomeRepository(Home returnedHome)
-        {
-            IHomeRepository substitute = Substitute.For<IHomeRepository>();
-            substitute.GetHome().ReturnsForAnyArgs(returnedHome);
+			IBaseRepositoryAsync<Device> substitute = Substitute.For<IBaseRepositoryAsync<Device>>();
+            substitute.GetAllAsync().ReturnsForAnyArgs(new List<Device>() { device });
             return substitute;
         }
 

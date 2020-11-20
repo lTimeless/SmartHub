@@ -14,12 +14,12 @@ namespace SmartHub.Application.UseCases.AppFolder
 	public class AppFolderService : IAppFolderService
 	{
 		private readonly IDirectoryService _directoryService;
-		private readonly IOptions<Domain.AppConfig> _homeConfig;
+		private readonly IOptions<AppConfig> _homeConfig;
 		private readonly IHostEnvironment _hostingEnvironment;
 
 		// The overlaying service for creating the SmartHub config folder
 		// with functions to create, delete and update it
-		public AppFolderService(IDirectoryService directoryService, IOptions<Domain.AppConfig> homeConfig, IHostEnvironment hostingEnvironment)
+		public AppFolderService(IDirectoryService directoryService, IOptions<AppConfig> homeConfig, IHostEnvironment hostingEnvironment)
 		{
 			_directoryService = directoryService;
 			_homeConfig = homeConfig;

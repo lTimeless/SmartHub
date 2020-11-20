@@ -1,72 +1,67 @@
-﻿using System;
-using AutoMapper;
+﻿using AutoMapper;
 using Microsoft.AspNetCore.SignalR;
-using SmartHub.Application.Common.Interfaces.Database;
-using SmartHub.Application.UseCases.Entity.Homes;
-using System.Threading.Tasks;
 using Microsoft.Extensions.Options;
 using SmartHub.Application.Common.Exceptions;
+using SmartHub.Application.Common.Interfaces.Database;
 using SmartHub.Application.UseCases.Entity.Activities;
-using SmartHub.Domain.Common.Extensions;
-using SmartHub.Domain.Entities;
 using SmartHub.Domain;
+using SmartHub.Domain.Entities;
+using System;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace SmartHub.Application.UseCases.SignalR.Services
 {
 	/// <inheritdoc cref="ISendOverSignalR"/>
 	public class SendOverSignalR : ISendOverSignalR
 	{
-		private readonly IUnitOfWork _unitOfWork;
+		private readonly IBaseRepositoryAsync<Activity> _activityRepository;
 		private readonly IMapper _mapper;
-		private readonly IHubContext<HomeHub, IServerHub> _homeHubContext;
 		private readonly IHubContext<ActivityHub, IServerHub> _activityHubContext;
-		private readonly IOptionsSnapshot<Domain.AppConfig> _homeConfig;
+		private readonly IOptionsSnapshot<AppConfig> _appConfig;
 
-		public SendOverSignalR(IUnitOfWork unitOfWork, IMapper mapper, IHubContext<HomeHub, IServerHub> homeHubContext,
-			IHubContext<ActivityHub, IServerHub> activityHubContext, IOptionsSnapshot<Domain.AppConfig> homeConfig)
+		public SendOverSignalR(IMapper mapper,IHubContext<ActivityHub, IServerHub> activityHubContext, 
+			IOptionsSnapshot<AppConfig> homeConfig, IBaseRepositoryAsync<Activity> activityRepository)
 		{
-			_unitOfWork = unitOfWork;
 			_mapper = mapper;
-			_homeHubContext = homeHubContext;
 			_activityHubContext = activityHubContext;
-			_homeConfig = homeConfig;
-		}
-
-		/// <inheritdoc cref="ISendOverSignalR.SendHome"/>
-		public async Task SendHome()
-		{
-			var home = await _unitOfWork.HomeRepository.GetHome();
-			await _homeHubContext.Clients.All.SendHome(_mapper.Map<AppDto>(home));
+			_appConfig = homeConfig;
+			_activityRepository = activityRepository;
 		}
 
 		/// <inheritdoc cref="ISendOverSignalR.SendActivity"/>
-		public async Task SendActivity(string userName,string requestName, string message, long execTime,bool success)
+		public async Task SendActivity(string userName, string requestName, string message, long execTime, bool success)
 		{
-			var home = await _unitOfWork.HomeRepository.GetHome();
-			if (home is null)
+
+			if (_appConfig.Value.IsActive is false)
 			{
 				return;
 			}
-			var activityDto = new ActivityDto
-			{
-				DateTime = DateTime.Now.ToString("HH:mm:ss"),
-				Username = userName,
-				Message = message,
-				ExecutionTime = execTime,
-				SuccessfulRequest = success
-			};
-			await _activityHubContext.Clients.All.SendActivity(activityDto);
-			var activity = _mapper.Map<Activity>(activityDto);
-			activity.SetName(requestName);
-			home.AddActivity(activity);
-			if (home.Activities.Count > _homeConfig.Value.SaveXLimit)
-			{
-				if (_homeConfig.Value.SaveXLimit != null && _homeConfig.Value.DeleteXAmountAfterLimit != null)
-				{
-					home.RemoveActivitiesOverLimit((int) _homeConfig.Value.SaveXLimit,
-						(int) _homeConfig.Value.DeleteXAmountAfterLimit);
-				}
 
+			var activityDto = new ActivityDto(DateTime.Now.ToString("HH:mm:ss"), userName, message, execTime, success, requestName);
+			await _activityHubContext.Clients.All.SendActivity(activityDto);
+
+			var activity = _mapper.Map<Activity>(activityDto);
+
+			var addedSuccessful = await _activityRepository.AddAsync(activity);
+			if (!addedSuccessful)
+			{
+				throw new SmartHubException("Error adding new activity to database");
+			}
+			var activities = await _activityRepository.GetAllAsync();
+
+			if (activities.Count > _appConfig.Value.SaveXLimit)
+			{
+				if (_appConfig.Value.SaveXLimit != null && _appConfig.Value.DeleteXAmountAfterLimit != null)
+				{
+					var amount = activities.Count;
+					var deleteXAmount = amount - (int)_appConfig.Value.SaveXLimit;
+					activities.RemoveAll(a => activities
+						.OrderByDescending(x => x.CreatedAt)
+						.TakeLast(deleteXAmount)
+						.ToList()
+						.Exists(la => la.Id == a.Id));
+				}
 			}
 
 		}

@@ -4,12 +4,12 @@ using System.IO;
 namespace SmartHub.Domain
 {
 	/// <summary>
-	/// This contains all settings for the smarthome
+	/// This contains all settings for the smarthome.
 	/// </summary>
 	public class AppConfig
 	{
 		/// <summary>
-		/// The app name
+		/// The app name.
 		/// </summary>
 		public string? ApplicationName { get; set; }
 		public string? ConfigName { get; set; }
@@ -17,7 +17,7 @@ namespace SmartHub.Domain
 		public Address? Address { get; set; }
 
 		/// <summary>
-		/// Defines if the Home is created or not
+		/// Defines if the Home is created or not.
 		/// true = created
 		/// </summary>
 		public bool IsActive { get; set; }

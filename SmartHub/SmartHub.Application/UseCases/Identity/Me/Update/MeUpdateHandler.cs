@@ -12,15 +12,15 @@ namespace SmartHub.Application.UseCases.Identity.Me.Update
 {
 	public class MeUpdateHandler : IRequestHandler<MeUpdateCommand, Response<UserDto>>
 	{
-		private readonly IUnitOfWork _unitOfWork;
 		private readonly IMapper _mapper;
 		private readonly CurrentUser _currentUser;
+		private readonly IUserRepository _userRepository;
 
-		public MeUpdateHandler(IUnitOfWork unitOfWork, IMapper mapper, CurrentUser currentUser)
+		public MeUpdateHandler(IMapper mapper, CurrentUser currentUser, IUserRepository userRepository)
 		{
-			_unitOfWork = unitOfWork;
 			_mapper = mapper;
 			_currentUser = currentUser;
+			_userRepository = userRepository;
 		}
 
 		public async Task<Response<UserDto>> Handle(MeUpdateCommand request, CancellationToken cancellationToken)
@@ -31,7 +31,7 @@ namespace SmartHub.Application.UseCases.Identity.Me.Update
 			}
 
 			var userName = _currentUser.User?.UserName ?? string.Empty;
-			var userEntity = await _unitOfWork.UserRepository.GetUserByName(userName);
+			var userEntity = await _userRepository.GetUserByName(userName);
 
 			if (userEntity == null)
 			{
@@ -45,20 +45,20 @@ namespace SmartHub.Application.UseCases.Identity.Me.Update
 			userEntity.Email = request.Email;
 			userEntity.PhoneNumber = request.PhoneNumber;
 
-			var updateUser = await _unitOfWork.UserRepository.UpdateUser(userEntity);
+			var updateUser = await _userRepository.UpdateUser(userEntity);
 			if (!updateUser)
 			{
 				return Response.Fail($"Error: Something went wrong updating user {userEntity.UserName}.", new UserDto());
 			}
 
-			var currentRoles = await _unitOfWork.UserRepository.GetUserRoles(userEntity);
+			var currentRoles = await _userRepository.GetUserRoles(userEntity);
 			// checks if th elist has an entry and if that one is equal to the new role
 			if (!currentRoles.Except(new List<string> {request.NewRole}).Any())
 			{
 				return Response.Ok(_mapper.Map<UserDto>(userEntity));
 			}
 
-			var changeRole = await _unitOfWork.UserRepository.UserChangeRole(userEntity, request.NewRole);
+			var changeRole = await _userRepository.UserChangeRole(userEntity, request.NewRole);
 			return changeRole
 				? Response.Ok(_mapper.Map<UserDto>(userEntity))
 				: Response.Fail($"Error: Something went wrong updating user and Role for {userEntity.UserName}.", new UserDto());

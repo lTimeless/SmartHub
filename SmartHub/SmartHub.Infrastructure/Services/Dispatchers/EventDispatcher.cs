@@ -2,16 +2,16 @@
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Hosting;
 using Serilog;
 using SmartHub.Application.Common.Interfaces;
-using SmartHub.Application.Common.Interfaces.Events;
 using SmartHub.Domain.Common.Enums;
 using SmartHub.Domain.DomainEvents;
 
 namespace SmartHub.Infrastructure.Services.Dispatchers
 {
 	/// <inheritdoc cref="IEventDispatcher"/>
-	public class EventDispatcher : IEventDispatcher
+	public class EventDispatcher : IHostedService
 	{
 		private readonly IChannelManager _channelManager;
 		private IDisposable? _disposable;

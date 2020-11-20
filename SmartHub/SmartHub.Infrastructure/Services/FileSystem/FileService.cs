@@ -1,4 +1,5 @@
-﻿using SmartHub.Application.Common.Interfaces;
+﻿using SmartHub.Application.Common.Exceptions;
+using SmartHub.Application.Common.Interfaces;
 using System.IO;
 
 namespace SmartHub.Infrastructure.Services.FileSystem
@@ -12,7 +13,28 @@ namespace SmartHub.Infrastructure.Services.FileSystem
 			{
 				return false;
 			}
-			File.WriteAllText(path, content);
+
+			try
+			{
+				File.WriteAllText(path, content);
+			}
+			catch (System.Exception ex)
+			{
+				throw new SmartHubException($"Error while writing to file {path}. Exception: {ex}");
+			}
+			return true;
+		}
+
+		public bool OverrideFile(string path, string content)
+		{
+			try
+			{
+				File.WriteAllText(path, content);
+			}
+			catch (System.Exception ex)
+			{
+				throw new SmartHubException($"Error while writing to file {path}. Exception: {ex}");
+			}
 			return true;
 		}
 

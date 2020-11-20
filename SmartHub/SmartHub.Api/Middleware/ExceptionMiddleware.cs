@@ -36,7 +36,7 @@ namespace SmartHub.Api.Middleware
 		{
 			object? errors;
 			await unitOfWork.RollbackAsync();
-			_log.Warning("Rollback all changes from this request {}.", httpContext.TraceIdentifier);
+			_log.Warning("Rollback all changes from this request {}.", httpContext.Request);
 			switch (ex)
 			{
 				case RestException restException:

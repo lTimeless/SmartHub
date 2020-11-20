@@ -1,34 +1,50 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
 using MediatR;
+using Microsoft.Extensions.Options;
 using SmartHub.Application.Common.Interfaces.Database;
 using SmartHub.Application.Common.Models;
+using SmartHub.Domain;
+using SmartHub.Domain.Entities;
 
 namespace SmartHub.Application.UseCases.Entity.Devices.Update
 {
     public class DeviceUpdateHandler : IRequestHandler<DeviceUpdateCommand, Response<string>>
     {
-        private readonly IUnitOfWork _unitOfWork;
+		private readonly IOptionsSnapshot<AppConfig> _appConfig;
+		private readonly IBaseRepositoryAsync<Device> _deviceRepository;
+		public DeviceUpdateHandler(IOptionsSnapshot<AppConfig> appConfig, IBaseRepositoryAsync<Device> deviceRepository)
+		{
+			_appConfig = appConfig;
+			_deviceRepository = deviceRepository;
+		}
 
-        public DeviceUpdateHandler(IUnitOfWork unitOfWork)
+		public async Task<Response<string>> Handle(DeviceUpdateCommand request, CancellationToken cancellationToken)
         {
-            _unitOfWork = unitOfWork;
-        }
-
-        public async Task<Response<string>> Handle(DeviceUpdateCommand request, CancellationToken cancellationToken)
-        {
-            var home = await _unitOfWork.HomeRepository.GetHome();
-            if (home == null)
+            if (_appConfig.Value.IsActive is false)
             {
                 return Response.Fail("Error: No home created yet.", string.Empty);
             }
+			var foundDevice = await _deviceRepository.FindbyAsync(x => x.Id == request.Id);
+			if (foundDevice is null)
+			{
+				return Response.Fail($"Error: Couldn't find device with id {request.Id}.", string.Empty);
+			}
 
-            var result = home.UpdateDevice(request.Id, request.Name, request.Description, request.Ipv4 ,request.PrimaryConnection, request.SecondaryConnection);
-            if (result)
-            {
-                Response.Fail($"Error: Couldn't update device with id {request.Id}.", string.Empty);
-            }
-            return Response.Ok<string>($"Updated device with name {request.Name}");
+			if (!string.IsNullOrEmpty(request.Name))
+			{
+				foundDevice.SetName(request.Name);
+			}
+			if (!string.IsNullOrEmpty(request.Description))
+			{
+				foundDevice.SetDescription(request.Description);
+			}
+			if (!string.IsNullOrEmpty(request.Ipv4))
+			{
+				foundDevice.SetIp(request.Ipv4);
+			}
+			foundDevice.SetConnectionTypes(request.PrimaryConnection, request.SecondaryConnection);
+			return Response.Ok($"Updated device with name {request.Name}");
         }
     }
 }

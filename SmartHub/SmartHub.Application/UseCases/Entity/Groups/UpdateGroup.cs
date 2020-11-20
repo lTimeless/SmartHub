@@ -1,9 +1,12 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
 using MediatR;
+using Microsoft.Extensions.Options;
 using SmartHub.Application.Common.Interfaces.Database;
 using SmartHub.Application.Common.Models;
+using SmartHub.Domain;
 using SmartHub.Domain.Common;
+using SmartHub.Domain.Entities;
 
 namespace SmartHub.Application.UseCases.Entity.Groups
 {
@@ -23,32 +26,43 @@ namespace SmartHub.Application.UseCases.Entity.Groups
 
     public class GroupUpdateHandler : IRequestHandler<GroupUpdateCommand, Response<GroupDto>>
     {
-        private readonly IUnitOfWork _unitOfWork;
+		private readonly IOptionsSnapshot<AppConfig> _appConfig;
+		private readonly IBaseRepositoryAsync<Group> _groupRepository;
+		public GroupUpdateHandler(IOptionsSnapshot<AppConfig> appConfig, IBaseRepositoryAsync<Group> groupRepository)
+		{
+			_appConfig = appConfig;
+			_groupRepository = groupRepository;
+		}
 
-        public GroupUpdateHandler(IUnitOfWork unitOfWork)
+		public async Task<Response<GroupDto>> Handle(GroupUpdateCommand request, CancellationToken cancellationToken)
         {
-            _unitOfWork = unitOfWork;
-        }
-
-        public async Task<Response<GroupDto>> Handle(GroupUpdateCommand request, CancellationToken cancellationToken)
-        {
-            var home = await _unitOfWork.HomeRepository.GetHome();
-            if (home == null)
+            if (_appConfig.Value.IsActive is false)
             {
-                return Response.Fail<GroupDto>("Error: No home created yet.", new GroupDto());
+                return Response.Fail("Error: No home created yet.", new GroupDto());
             }
 
             if (request.Name == DefaultNames.DefaultGroup)
             {
-                return Response.Fail<GroupDto>("Error: You can't rename the default group.", new GroupDto());
+                return Response.Fail("Error: You can't rename the default group.", new GroupDto());
             }
 
-            var result = home.UpdateGroup(request.Id, request.Name, request.Description);
-            if (result)
-            {
-                Response.Fail<GroupDto>($"Error: Couldn't update group with id {request.Id}.", new GroupDto());
-            }
-            return Response.Ok<GroupDto>($"Updated group with name {request.Name}", new GroupDto());
+			var foundGroup = await _groupRepository.FindbyAsync(x => x.Id == request.Id);
+			if (foundGroup is null)
+			{
+				return Response.Fail($"Error: Couldn't find group with id {request.Id}.", new GroupDto());
+			}
+
+			if (!string.IsNullOrEmpty(request.Name))
+			{
+				foundGroup.SetName(request.Name);
+			}
+			if (!string.IsNullOrEmpty(request.Description))
+			{
+				foundGroup.SetDescription(request.Description);
+			}
+
+ 
+            return Response.Ok($"Updated group with name {request.Name}", new GroupDto());
         }
     }
 }

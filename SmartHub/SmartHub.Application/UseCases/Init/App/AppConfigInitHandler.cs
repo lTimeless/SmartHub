@@ -10,17 +10,17 @@ using SmartHub.Application.UseCases.GeoLocation;
 using SmartHub.Domain;
 using SmartHub.Domain.Common.Extensions;
 
-namespace SmartHub.Application.UseCases.Entity.Homes.Create
+namespace SmartHub.Application.UseCases.Init.App
 {
-	public class HomeCreateHandler : IRequestHandler<HomeCreateCommand, Response<AppDto>>
+	public class AppConfigInitHandler : IRequestHandler<AppConfigInitCommand, Response<AppConfig>>
 	{
-		private readonly IConfigService _configService;
+		private readonly IAppConfigService _configService;
 		private readonly IMapper _mapper;
 		private readonly ILocationService _locationService;
 		private readonly IOptionsMonitor<AppConfig> _appConfig;
-		private readonly ILogger _logger = Log.ForContext(typeof(HomeCreateHandler));
+		private readonly ILogger _logger = Log.ForContext(typeof(AppConfigInitHandler));
 
-		public HomeCreateHandler(IOptionsMonitor<Domain.AppConfig> appConfig, ILocationService locationService, IMapper mapper, IConfigService configService)
+		public AppConfigInitHandler(IOptionsMonitor<AppConfig> appConfig, ILocationService locationService, IMapper mapper, IAppConfigService configService)
 		{
 			_appConfig = appConfig;
 			_locationService = locationService;
@@ -28,11 +28,11 @@ namespace SmartHub.Application.UseCases.Entity.Homes.Create
 			_configService = configService;
 		}
 
-		public async Task<Response<AppDto>> Handle(HomeCreateCommand request, CancellationToken cancellationToken)
+		public async Task<Response<AppConfig>> Handle(AppConfigInitCommand request, CancellationToken cancellationToken)
 		{
 			if (_appConfig.CurrentValue.IsActive)
 			{
-				return Response.Fail("Error: There is already a home.", new AppDto());
+				return Response.Fail("Error: There is already a home.", new AppConfig());
 			}
 
 			if (request.AutoDetectAddress)
@@ -50,13 +50,13 @@ namespace SmartHub.Application.UseCases.Entity.Homes.Create
 
 			_appConfig.CurrentValue.IsActive = true;
 
-			var result = _configService.UpdateFileFromClass(); ;
+			var result = await _configService.UpdateFileFromClass(); ;
 			if (!result)
 			{
-				return Response.Fail("Error: Could not create Home.", new AppDto());
+				return Response.Fail("Error: Could not create Home.", new AppConfig());
 			}
 			_logger.Information("SmartHub successfully created.");
-			return Response.Ok("SmartHub successfully created.", _mapper.Map<AppDto>(_appConfig.CurrentValue));
+			return Response.Ok("SmartHub successfully created.", _mapper.Map<AppConfig>(_appConfig.CurrentValue));
 		}
 	}
 }

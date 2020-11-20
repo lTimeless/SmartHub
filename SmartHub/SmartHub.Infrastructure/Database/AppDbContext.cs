@@ -21,7 +21,6 @@ namespace SmartHub.Infrastructure.Database
 			_userAccessor = userAccessor;
 		}
 
-		//public DbSet<Home> Homes { get; set; }
 		public DbSet<Group> Groups { get; set; }
 		public DbSet<Device> Devices { get; set; }
 		public DbSet<Plugin> Plugins { get; set; }

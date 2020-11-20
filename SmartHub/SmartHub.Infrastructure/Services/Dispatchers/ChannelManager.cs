@@ -1,12 +1,12 @@
-﻿using System;
+﻿using Serilog;
+using SmartHub.Application.Common.Interfaces;
+using SmartHub.Domain.Common.Enums;
+using SmartHub.Domain.DomainEvents;
+using System;
 using System.Collections.Generic;
 using System.Reactive.Subjects;
 using System.Threading;
 using System.Threading.Tasks;
-using Serilog;
-using SmartHub.Application.Common.Interfaces;
-using SmartHub.Domain.Common.Enums;
-using SmartHub.Domain.DomainEvents;
 
 namespace SmartHub.Infrastructure.Services.Dispatchers
 {
@@ -18,12 +18,13 @@ namespace SmartHub.Infrastructure.Services.Dispatchers
 
 		public Task StartAsync(CancellationToken cancellationToken)
 		{
+			_log.Information("Start ChannelManager in background.");
+
 			// Creates channels for all ChannelNames
 			foreach (var type in (ChannelNames[])Enum.GetValues(typeof(ChannelNames)))
 			{
 				AddChannel(type);
 			}
-			_log.Information("Start ChannelManager in background.");
 			return Task.CompletedTask;
 		}
 
@@ -54,8 +55,7 @@ namespace SmartHub.Infrastructure.Services.Dispatchers
 
 		public IObservable<IBaseEvent> GetChannel(ChannelNames channelName)
 		{
-			_log.Information($"Get channel with name {channelName}");
-			return ChannelMessageDictionary[channelName] ?? new Subject<IBaseEvent>();
+			return ChannelMessageDictionary[channelName];
 		}
 
 		public Task PublishNextToChannel(ChannelNames channelName, IBaseEvent? message)

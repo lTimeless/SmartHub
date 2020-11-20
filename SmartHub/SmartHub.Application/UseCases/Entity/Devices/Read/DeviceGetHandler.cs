@@ -1,34 +1,28 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
 using MediatR;
 using SmartHub.Application.Common.Interfaces.Database;
 using SmartHub.Application.Common.Models;
+using SmartHub.Domain.Entities;
 
 namespace SmartHub.Application.UseCases.Entity.Devices.Read
 {
-    public class DeviceGetHandler  : IRequestHandler<DeviceGetQuery, Response<IEnumerable<DeviceDto>>>
+	public class DeviceGetHandler  : IRequestHandler<DeviceGetQuery, Response<IEnumerable<DeviceDto>>>
     {
+		private readonly IBaseRepositoryAsync<Device> _deviceRepositry;
         private readonly IMapper _mapper;
-        private readonly IUnitOfWork _unitOfWork;
 
-        public DeviceGetHandler(IMapper mapper, IUnitOfWork unitOfWork)
-        {
-            _mapper = mapper;
-            _unitOfWork = unitOfWork;
-        }
+		public DeviceGetHandler(IMapper mapper, IBaseRepositoryAsync<Device> deviceRepositry)
+		{
+			_mapper = mapper;
+			_deviceRepositry = deviceRepositry;
+		}
 
-        public async Task<Response<IEnumerable<DeviceDto>>> Handle(DeviceGetQuery request, CancellationToken cancellationToken)
+		public async Task<Response<IEnumerable<DeviceDto>>> Handle(DeviceGetQuery request, CancellationToken cancellationToken)
         {
-            var home = await _unitOfWork.HomeRepository.GetHome();
-            if (home == null)
-            {
-                return Response.Fail<IEnumerable<DeviceDto>>("Error: No home created yet.", Array.Empty<DeviceDto>());
-            }
-            var devices = home.Groups.SelectMany(x => x.Devices);
+            var devices = await _deviceRepositry.GetAllAsync();
             return Response.Ok(_mapper.Map<IEnumerable<DeviceDto>>(devices));
         }
     }

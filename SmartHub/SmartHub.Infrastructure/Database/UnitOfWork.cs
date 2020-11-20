@@ -1,13 +1,9 @@
 ﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using SmartHub.Application.Common.Interfaces;
 using SmartHub.Application.Common.Interfaces.Database;
-using SmartHub.Domain.Common.Enums;
-using SmartHub.Domain.Entities;
-using SmartHub.Infrastructure.Database.Repositories;
 
 namespace SmartHub.Infrastructure.Database
 {
@@ -17,20 +13,11 @@ namespace SmartHub.Infrastructure.Database
 
 		public AppDbContext AppDbContext { get; }
 
-		public UnitOfWork(
-			AppDbContext appDbContext,
-			IChannelManager channelManager,
-			UserManager<User> userManager,
-			RoleManager<Role> roleManager)
+		public UnitOfWork(AppDbContext appDbContext, IChannelManager channelManager)
 		{
 			AppDbContext = appDbContext;
 			_channelManager = channelManager;
-			UserRepository = new UserRepository(userManager, roleManager);
 		}
-
-		public IHomeRepository HomeRepository { get; }
-
-		public IUserRepository UserRepository { get; }
 
 		public async Task SaveAsync()
 		{
