@@ -8,6 +8,8 @@ namespace SmartHub.Domain
 	/// </summary>
 	public class AppConfig
 	{
+		// TODO save all downloaded pluginNames -> will be implemented with the "Download plugin from cloud UseCase"
+
 		/// <summary>
 		/// The app name.
 		/// </summary>
@@ -31,7 +33,6 @@ namespace SmartHub.Domain
 		public string? ConfigFolderName { get; set; }
 		public string? ConfigFolderPath { get; set; }
 		public string? ConfigFileName { get; set; }
-		public string? ConfigFilePath { get; set; }
 
 		public string? PluginFolderName { get; set; }
 		public string? PluginFolderPath { get; set; }

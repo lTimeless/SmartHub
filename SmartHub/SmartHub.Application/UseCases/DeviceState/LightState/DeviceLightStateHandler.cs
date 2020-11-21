@@ -1,17 +1,15 @@
 ﻿using System;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using MediatR;
-using Microsoft.Extensions.Options;
 using Serilog;
 using SmartHub.Application.Common.Interfaces;
 using SmartHub.Application.Common.Interfaces.Database;
 using SmartHub.Application.Common.Models;
+using SmartHub.Application.UseCases.AppFolder.AppConfigParser;
 using SmartHub.Application.UseCases.PluginAdapter.Helper;
 using SmartHub.Application.UseCases.PluginAdapter.Host;
 using SmartHub.BasePlugin.Interfaces.DeviceTypes;
-using SmartHub.Domain;
 using SmartHub.Domain.Common.Enums;
 using SmartHub.Domain.Entities;
 
@@ -21,16 +19,16 @@ namespace SmartHub.Application.UseCases.DeviceState.LightState
 	{
 		private readonly IPluginHostService _pluginHostService;
 		private readonly IHttpService _httpService;
-		private readonly IOptions<AppConfig> _appConfig;
+		private readonly IAppConfigService _appConfigService;
 		private readonly IBaseRepositoryAsync<Device> _deviceRepository;
 
 		private string _query = "";
 		private readonly ILogger _log = Log.ForContext(typeof(DeviceLightStateHandler));
-		public DeviceLightStateHandler(IPluginHostService pluginHostService, IHttpService httpService, IOptions<AppConfig> appConfig, IBaseRepositoryAsync<Device> deviceRepository)
+		public DeviceLightStateHandler(IPluginHostService pluginHostService, IHttpService httpService, IAppConfigService appConfigService, IBaseRepositoryAsync<Device> deviceRepository)
 		{
 			_pluginHostService = pluginHostService;
 			_httpService = httpService;
-			_appConfig = appConfig;
+			_appConfigService = appConfigService;
 			_deviceRepository = deviceRepository;
 		}
 
@@ -40,7 +38,8 @@ namespace SmartHub.Application.UseCases.DeviceState.LightState
 			{
 				throw new ArgumentNullException(nameof(request));
 			}
-			if (_appConfig.Value.IsActive is false)
+			var appConfig = _appConfigService.GetConfig();
+			if (appConfig.IsActive is false)
 			{
 				return Response.Fail<DeviceStateDto>("Error: There is no home created at the moment.", new DeviceLightStateRequestDto());
 

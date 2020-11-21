@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using SmartHub.Domain.Common.Extensions;
 
 namespace SmartHub.Domain.Entities
 {

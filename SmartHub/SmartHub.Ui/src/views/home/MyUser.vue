@@ -19,7 +19,9 @@
           <label class="text-left block text-sm">
             <span class="text-gray-600 dark:text-gray-400"
               >Roles
-              <span class="text-gray-500 text-sm text-left mt-10">(After changing, you need to login again)</span>
+              <span class="text-gray-500 text-sm text-left mt-10"
+                >(After changing, you need to login again)</span
+              >
             </span>
             <select
               v-model="selectedRole"
@@ -131,9 +133,12 @@ export default defineComponent({
       }
       updateUserRequest.userName = user.value.userName;
       updateUserRequest.personInfo = user.value.personInfo === null ? '' : user.value.personInfo;
-      updateUserRequest.firstName = user.value.personName.firstName === null ? '' : user.value.personName.firstName;
-      updateUserRequest.middleName = user.value.personName.middleName === null ? '' : user.value.personName.middleName;
-      updateUserRequest.lastName = user.value.personName.lastName === null ? '' : user.value.personName.lastName;
+      updateUserRequest.firstName =
+        user.value.personName.firstName === null ? '' : user.value.personName.firstName;
+      updateUserRequest.middleName =
+        user.value.personName.middleName === null ? '' : user.value.personName.middleName;
+      updateUserRequest.lastName =
+        user.value.personName.lastName === null ? '' : user.value.personName.lastName;
       updateUserRequest.email = user.value.email === null ? '' : user.value.email;
       updateUserRequest.phoneNumber = user.value.phoneNumber === null ? '' : user.value.phoneNumber;
       updateUserRequest.newRole = selectedRole.value;

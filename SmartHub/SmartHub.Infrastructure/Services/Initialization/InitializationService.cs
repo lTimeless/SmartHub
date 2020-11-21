@@ -6,7 +6,6 @@ using Serilog;
 using SmartHub.Application.Common.Interfaces;
 using SmartHub.Application.Common.Interfaces.Database;
 using SmartHub.Application.UseCases.AppFolder;
-using SmartHub.Application.UseCases.AppFolder.AppConfigParser;
 using SmartHub.Infrastructure.Services.Dispatchers;
 using System;
 using System.IO;
@@ -18,33 +17,30 @@ namespace SmartHub.Infrastructure.Services.Initialization
 	public class InitializationService : IHostedService 
 	{
 		private readonly IDbSeeder _dbSeeder;
-		private readonly IAppFolderService _homeFolderService;
-		private readonly IAppConfigService _configService;
+		private readonly IAppFolderService _appFolderService;
 		private readonly ILogger _logger = Log.ForContext(typeof(InitializationService));
 		private readonly IChannelManager _channelManagerStarter;
 		private readonly EventDispatcher _eventDispatcherStarter;
 		private readonly IConfiguration _configuration;
 
 		public InitializationService(IAppFolderService homeFolderService, IChannelManager channelManagerStarter,
-			EventDispatcher eventDispatcherStarter, IServiceProvider provider, IConfiguration configuration, IAppConfigService configService)
+			EventDispatcher eventDispatcherStarter, IServiceProvider provider, IConfiguration configuration)
 		{
-			_homeFolderService = homeFolderService;
+			_appFolderService = homeFolderService;
 			_channelManagerStarter = channelManagerStarter;
 			_eventDispatcherStarter = eventDispatcherStarter;
 			using var scope = provider.CreateScope();
 			_dbSeeder = scope.ServiceProvider.GetRequiredService<IDbSeeder>();
 			_configuration = configuration;
-			_configService = configService;
 		}
 
 		public async Task StartAsync(CancellationToken cancellationToken)
 		{
 			WelcomeWithAsciiLogo();
-			await _homeFolderService.Create().ConfigureAwait(false);
 			_logger.Information("Start initialization...");
-			var (homePath, folderName) = _homeFolderService.GetHomeFolderPath();
+			await _appFolderService.Create();
+			var (homePath, folderName) = _appFolderService.GetHomeFolderPath();
 			_logger.Information("SmartHub folder is at {@homePath}{Seperator}{@folderName}", homePath, Path.DirectorySeparatorChar.ToString(), folderName);
-			await _configService.CreateOrReadConfigFile();
 
 			_ = SeedDatabase().ConfigureAwait(true);
 			await _channelManagerStarter.StartAsync(cancellationToken);
@@ -54,7 +50,7 @@ namespace SmartHub.Infrastructure.Services.Initialization
 
 		public async Task StopAsync(CancellationToken cancellationToken)
 		{
-			await _configService.UpdateFileFromClass();
+			await _appFolderService.Save();
 			await _channelManagerStarter.StopAsync(cancellationToken);
 			await _eventDispatcherStarter.StopAsync(cancellationToken);
 			_logger.Information("Stopped all BackgroundServices.");

@@ -24,7 +24,10 @@ module.exports = {
     // 'max-len': ['error', { code: 170, tabWidth: 2, ignoreComments: true, ignoreTrailingComments: true }],
     'lines-between-class-members': ['error', 'always', { exceptAfterSingleLine: true }],
     'comma-dangle': ['error', 'never'],
-    'object-curly-newline': ['error', { ImportDeclaration: { multiline: true, minProperties: 10 }, ExportDeclaration: 'never' }],
+    'object-curly-newline': [
+      'error',
+      { ImportDeclaration: { multiline: true, minProperties: 10 }, ExportDeclaration: 'never' }
+    ],
     'no-bitwise': ['error', { allow: ['~', '<<', '|'] }],
     'import/no-cycle': 0,
     'no-param-reassign': [2, { props: false }],

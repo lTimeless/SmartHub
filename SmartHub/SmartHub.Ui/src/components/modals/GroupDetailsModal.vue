@@ -80,8 +80,7 @@
 import { defineComponent, PropType, ref } from 'vue';
 import BaseModal from '@/components/modals/BaseModal.vue';
 import { Group, GroupUpdateRequest } from '@/types/types';
-import { HomeActionTypes } from '@/store/home/actions';
-import { useStore } from 'vuex';
+import { putByIdGroup } from '@/services/apis/group';
 
 export default defineComponent({
   name: 'GroupDetailsModal',
@@ -96,7 +95,6 @@ export default defineComponent({
     }
   },
   setup(props, context) {
-    const store = useStore();
     const groupDetail = ref(props.group);
     const close = () => {
       context.emit('close', false);
@@ -109,7 +107,14 @@ export default defineComponent({
         description: groupDetail.value.description,
         devices: groupDetail.value.devices
       };
-      await store.dispatch(HomeActionTypes.UPDATE_GROUP, updatedGroup);
+      await putByIdGroup(updatedGroup)
+        .then((response) => {
+          if (!response.success) {
+            return Promise.reject(response.message);
+          }
+          return Promise.resolve();
+        })
+        .catch((error) => Promise.reject(error));
       context.emit('close', false);
     };
 

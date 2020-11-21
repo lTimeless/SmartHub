@@ -21,7 +21,7 @@
     </div>
   </div>
   <!-- All Groups -->
-  <div v-if="home && home.groups">
+  <div v-if="groups && groups.length > 0">
     <div class="grid xl:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 gap-4">
       <AppCard class="bg-white shadow-md w-full" v-for="group in groups" :key="group.id">
         <div class="p-3 w-full">
@@ -106,8 +106,8 @@ import AppCard from '@/components/widgets/AppCard.vue';
 import { useStore } from 'vuex';
 import GroupCreateModal from '@/components/modals/GroupCreateModal.vue';
 import GroupDetailsModal from '@/components/modals/GroupDetailsModal.vue';
-import { HomeActionTypes } from '@/store/home/actions';
 import { Group } from '@/types/types';
+import { getByIdGroup } from '@/services/apis/group';
 
 export default defineComponent({
   name: 'AppGroupsOverview',
@@ -118,8 +118,8 @@ export default defineComponent({
   },
   setup() {
     const store = useStore();
-    const home = computed(() => store.state.homeModule.home);
-    const groups = computed(() => home.value?.groups?.filter((x: Group) => !x.isSubGroup));
+    const noSubGroups = computed(() => store.state.appModule.groups);
+    const groups = computed(() => noSubGroups.value?.filter((x: Group) => !x.isSubGroup));
     const state = reactive({
       showAddModal: false,
       showDetailModal: false,
@@ -141,9 +141,14 @@ export default defineComponent({
     const openDetailModal = async (value: boolean, groupId: string) => {
       state.showLoader = true;
       if (value) {
-        await store.dispatch(HomeActionTypes.FETCH_BY_GROUP_ID, groupId).then((response: Group | null) => {
-          state.group = response;
-        });
+        state.group = await getByIdGroup(groupId)
+          .then((response) => {
+            if (!response.success) {
+              return Promise.reject(response.message);
+            }
+            return Promise.resolve(response.data as Group);
+          })
+          .catch((error) => Promise.reject(error));
       }
       state.showLoader = false;
       state.selectedGroupId = groupId;
@@ -152,7 +157,6 @@ export default defineComponent({
 
     return {
       ...toRefs(state),
-      home,
       groups,
       toggleModal,
       openDetailModal,

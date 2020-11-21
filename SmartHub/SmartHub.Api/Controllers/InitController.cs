@@ -2,22 +2,21 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Options;
+using SmartHub.Application.UseCases.AppFolder.AppConfigParser;
 using SmartHub.Application.UseCases.Init.App;
 using SmartHub.Application.UseCases.Init.CheckHome;
 using SmartHub.Application.UseCases.Init.CheckUsers;
-using SmartHub.Domain;
 
 namespace SmartHub.Api.Controllers
 {
 	public class InitController : BaseController
     {
 
-		private readonly IOptions<AppConfig> _appConfig;
+		private readonly IAppConfigService _appConfigService;
 
-		public InitController(IOptions<AppConfig> appConfig)
+		public InitController(IAppConfigService appConfigService)
 		{
-			_appConfig = appConfig;
+			_appConfigService = appConfigService;
 		}
 
 		/// <summary>
@@ -30,7 +29,7 @@ namespace SmartHub.Api.Controllers
 		[AllowAnonymous]
 		public IActionResult Get()
 		{
-			var response = Application.Common.Models.Response.Ok(_appConfig.Value);
+			var response = Application.Common.Models.Response.Ok(_appConfigService.GetConfig());
 			return Ok(response);
 		}
 

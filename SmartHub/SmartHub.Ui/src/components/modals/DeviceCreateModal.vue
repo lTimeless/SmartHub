@@ -122,10 +122,9 @@
 import { defineComponent, reactive, computed } from 'vue';
 import BaseModal from '@/components/modals/BaseModal.vue';
 import { DeviceCreateRequest } from '@/types/types';
-import { useStore } from 'vuex';
 import { ConnectionTypes, PluginTypes } from '@/types/enums';
 import { useEnumTypes } from '@/hooks/useEnums.ts';
-import { HomeActionTypes } from '@/store/home/actions';
+import { postDevice } from '@/services/apis/device';
 
 export default defineComponent({
   name: 'DeviceCreateModal',
@@ -134,7 +133,6 @@ export default defineComponent({
     BaseModal
   },
   setup(props, context) {
-    const store = useStore();
     const deviceCreateRequest = reactive<DeviceCreateRequest>({
       name: '',
       description: '',
@@ -155,7 +153,14 @@ export default defineComponent({
       const { pluginTypesValues } = useEnumTypes();
 
       deviceCreateRequest.pluginTypes = pluginTypesValues.value[deviceCreateRequest.pluginTypes];
-      await store.dispatch(HomeActionTypes.CREATE_DEVICE, deviceCreateRequest);
+      await postDevice(deviceCreateRequest)
+        .then((response) => {
+          if (!response.success) {
+            return Promise.reject(response.message);
+          }
+          return Promise.resolve();
+        })
+        .catch((error) => Promise.reject(error));
       context.emit('close', false);
     };
     return {

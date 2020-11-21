@@ -31,8 +31,7 @@
 import { defineComponent, reactive, computed, toRefs } from 'vue';
 import BaseModal from '@/components/modals/BaseModal.vue';
 import { GroupCreateRequest } from '@/types/types';
-import { useStore } from 'vuex';
-import { HomeActionTypes } from '@/store/home/actions';
+import { postGroup } from '@/services/apis/group';
 
 export default defineComponent({
   name: 'GroupCreateModal',
@@ -53,7 +52,6 @@ export default defineComponent({
     BaseModal
   },
   setup(props, context) {
-    const store = useStore();
     const state = reactive({
       title: '',
       groupTitle: 'Create new Group',
@@ -83,9 +81,14 @@ export default defineComponent({
         groupCreateRequest.parentGroupId = props.parentGroupId;
         groupCreateRequest.isSubGroup = true;
       }
-      await store.dispatch(HomeActionTypes.CREATE_GROUP, groupCreateRequest).then(() => {
-        context.emit('close', false);
-      });
+      await postGroup(groupCreateRequest)
+        .then((response) => {
+          if (!response.success) {
+            return Promise.reject(response.message);
+          }
+          return Promise.resolve();
+        })
+        .catch((error) => Promise.reject(error));
     };
     return {
       ...toRefs(state),

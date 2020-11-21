@@ -14,7 +14,3 @@ export const getByIdGroup = (payload: string): Promise<ServerResponse<Group>> =>
 
 export const putByIdGroup = (payload: GroupUpdateRequest): Promise<ServerResponse<Group>> =>
   api.put<ServerResponse<Group>>(API_GROUP_URL, payload).then((res) => res.data);
-// export const postHome = (payload: HomeCreateRequest): Promise<ServerResponse<Home>> =>
-//     Api()
-//         .post<ServerResponse<Home>>(API_HOME_URL, payload)
-//         .then((res) => res.data);

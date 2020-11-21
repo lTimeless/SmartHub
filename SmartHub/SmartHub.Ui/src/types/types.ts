@@ -143,29 +143,39 @@ export interface GroupUpdateRequest {
   devices?: Device[];
 }
 
-// Setting
-export interface Setting extends BaseEntity {
+// Application Config
+export interface AppConfig {
+  applicationName?: string;
+  configName?: string;
+  description?: string;
+  address?: Address;
   isActive: boolean;
-  isDefault: boolean;
-  pluginpath: string;
-  filepath: string;
+  unitSystem?: string;
+  timeZone?: string;
+  downloadServerUrl?: string;
+  baseFolderName?: string;
+  configFolderName?: string;
+  configFolderPath?: string;
+  configFileName?: string;
+  configFilePath?: string;
+  pluginFolderName?: string;
+  pluginFolderPath?: string;
+  logFolderName?: string;
+  logFolderPath?: string;
+  deleteXAmountAfterLimit?: string;
+  saveXLimit?: string;
 }
 
-// Home
-export interface Home extends BaseEntity {
-  settings?: Setting[];
-  groups?: Group[];
+interface Address {
+  street: string;
+  city: string;
+  state: string;
+  country: string;
+  zipCode: string;
 }
 
-export interface HomeCreateRequest {
+export interface AppConfigInitRequest {
   name: string;
   description: string | null;
   autoDetectAddress: boolean;
-}
-
-export interface HomeUpdateRequest {
-  name: string | null;
-  description: string | null;
-  userName: string | null;
-  settingName: string | null;
 }

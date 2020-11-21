@@ -48,8 +48,8 @@ import AppHeader from '@/components/layouts/AppHeader.vue';
 import AppSidebar from '@/components/layouts/AppSidebar.vue';
 import { useSignalRHub } from '@/hooks/useSignalR.ts';
 import { useStore } from 'vuex';
-import { HomeMutationTypes } from '@/store/home/mutations';
-import { Home } from '@/types/types';
+import { AppMutationTypes } from '@/store/app/mutations';
+import { Group, Device, AppConfig } from '@/types/types';
 
 export default defineComponent({
   name: 'Home',
@@ -62,11 +62,25 @@ export default defineComponent({
     const headerHeight = ref(0);
     const headerRef = ref();
     const sidebarOpen = ref(true);
-    const { data } = useSignalRHub<Home>('home', 'SendHome');
+    const { appConfigData } = useSignalRHub<AppConfig>('home', 'SendAppConfig');
+    const { groupsData } = useSignalRHub<Group[]>('home', 'SendGroups');
+    const { devicesData } = useSignalRHub<Device[]>('home', 'SendDevices');
 
-    watch(data, (newHomeData) => {
-      if (newHomeData) {
-        store.commit(HomeMutationTypes.UPDATE_HOME, newHomeData);
+    console.log(appConfigData, groupsData, devicesData);
+    
+    watch(appConfigData, (newAppConfigData) => {
+      if (newAppConfigData) {
+        store.commit(AppMutationTypes.UPDATE_APP, newAppConfigData);
+      }
+    });
+    watch(groupsData, (newGroupsData) => {
+      if (newGroupsData) {
+        store.commit(AppMutationTypes.UPDATE_GROUPS, newGroupsData);
+      }
+    });
+    watch(devicesData, (newDevicesData) => {
+      if (newDevicesData) {
+        store.commit(AppMutationTypes.UPDATE_Devices, newDevicesData);
       }
     });
     const setHeaderHeight = () => {

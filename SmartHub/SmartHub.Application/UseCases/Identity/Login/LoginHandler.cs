@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using SmartHub.Application.Common.Models;
 using SmartHub.Domain.Entities;
+using SmartHub.Application.UseCases.AppFolder.AppConfigParser;
 
 namespace SmartHub.Application.UseCases.Identity.Login
 {
@@ -13,16 +14,23 @@ namespace SmartHub.Application.UseCases.Identity.Login
 		private readonly UserManager<User> _userManager;
 		private readonly ILoginService _loginService;
 		private readonly IdentityService _identityService;
+		private readonly IAppConfigService _configService;
 
-		public LoginHandler(ILoginService loginService, UserManager<User> userManager, IdentityService identityService)
+		public LoginHandler(ILoginService loginService, UserManager<User> userManager, IdentityService identityService, IAppConfigService configService)
 		{
 			_loginService = loginService;
 			_userManager = userManager;
 			_identityService = identityService;
+			_configService = configService;
 		}
 
 		public async Task<Response<AuthResponseDto>> Handle(LoginQuery request, CancellationToken cancellationToken)
 		{
+			if (_configService.GetConfig().IsActive is false)
+			{
+				return Response.Fail<AuthResponseDto>("There is no home created yet.", new AuthResponseDto(string.Empty));
+			}
+
 			var foundUser = await _userManager.FindByNameAsync(request.UserName);
 			if (foundUser == null)
 			{

@@ -76,7 +76,7 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, ref, watch } from 'vue';
+import { computed, defineComponent, ref } from 'vue';
 import { LoginRequest } from '@/types/types';
 import { useRouter } from 'vue-router';
 import { useStore } from 'vuex';

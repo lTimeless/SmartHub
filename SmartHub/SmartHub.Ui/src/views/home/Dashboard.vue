@@ -1,6 +1,6 @@
 <template>
-  <div class="w-full" v-if="home">
-    <h1 class="text-3xl text-gray-500 font-bold mb-4">Dashboard for {{ home.name }}</h1>
+  <div class="w-full" v-if="appConfig">
+    <h1 class="text-3xl text-gray-500 font-bold mb-4">Dashboard for {{ appConfig.applicationName }}</h1>
     <AppTabs>
       <template #header>
         <div class="flex flex-wrap justify-between my-4 space-y-2">
@@ -53,11 +53,11 @@
           </div>
         </div>
         <div :class="{ hidden: openTab !== 2, block: openTab === 2 }">
-          <AppGroupsOverview v-if="home?.groups !== undefined" />
+          <AppGroupsOverview v-if="groups !== undefined" />
           <div v-else>No Groups available</div>
         </div>
         <div :class="{ hidden: openTab !== 3, block: openTab === 3 }">
-          <AppDevicesOverview v-if="home?.groups !== undefined" />
+          <AppDevicesOverview v-if="devices !== undefined" />
           <div v-else>No Devices available</div>
         </div>
         <div :class="{ hidden: openTab !== 4, block: openTab === 4 }">
@@ -89,7 +89,10 @@ export default defineComponent({
   setup() {
     const openTab = ref(1);
     const store = useStore();
-    const home = computed(() => store.state.homeModule.home);
+    const appConfig = computed(() => store.state.appModule.appConfig);
+    console.log(appConfig);
+    const groups = computed(() => store.state.appModule.groups);
+    const devices = computed(() => store.state.appModule.devices);
     const toggleTabs = (tabNumber: number) => {
       openTab.value = tabNumber;
     };
@@ -100,7 +103,9 @@ export default defineComponent({
       openTab,
       toggleTabs,
       onClick,
-      home
+      appConfig,
+      groups,
+      devices
     };
   }
 });

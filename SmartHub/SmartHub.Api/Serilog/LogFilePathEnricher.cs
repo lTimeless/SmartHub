@@ -3,30 +3,31 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using Serilog.Core;
 using Serilog.Events;
+using SmartHub.Application.UseCases.AppFolder.AppConfigParser;
 using SmartHub.Domain;
 
 namespace SmartHub.Api.Serilog
 {
 	public class LogFilePathEnricher: ILogEventEnricher
     {
-        private readonly IOptionsMonitor<AppConfig> _options;
+		private readonly IAppConfigService _appConfigService;
         private string? _cachedLogFilePath;
         private LogEventProperty? _cachedLogFilePathProperty;
 
         public const string LogFilePathPropertyName = "LogFilePath";
 
-        public LogFilePathEnricher(IServiceProvider serviceProvider)
+		public LogFilePathEnricher(IServiceProvider serviceProvider)
+		{
+			_appConfigService = serviceProvider.GetRequiredService<IAppConfigService>();
+		}
+		/// <summary>
+		/// Adds a property to each log statement and the logFilepath
+		/// </summary>
+		/// <param name="logEvent">The current LogEvent</param>
+		/// <param name="propertyFactory">The current propertyFactory for each log statement</param>
+		public void Enrich(LogEvent logEvent, ILogEventPropertyFactory propertyFactory)
         {
-			_options = serviceProvider.GetRequiredService<IOptionsMonitor<AppConfig>>();
-        }
-        /// <summary>
-        /// Adds a property to each log statement and the logFilepath
-        /// </summary>
-        /// <param name="logEvent">The current LogEvent</param>
-        /// <param name="propertyFactory">The current propertyFactory for each log statement</param>
-        public void Enrich(LogEvent logEvent, ILogEventPropertyFactory propertyFactory)
-        {
-             var logFilePath = _options.CurrentValue.LogFolderPath + $"\\log-{DateTime.Now:yyyyMMdd}.txt";// Read path from your appsettings.json
+             var logFilePath = _appConfigService.GetConfig().LogFolderPath + $"\\log-{DateTime.Now:yyyyMMdd}.txt";// Read path from your appsettings.json
                 // Check for null, etc...
 
             LogEventProperty logFilePathProperty;

@@ -37,7 +37,7 @@ namespace SmartHub.Application
         private static void AddServices(this IServiceCollection services)
         {
             // HomeFolder
-            services.AddTransient<IAppConfigService, AppConfigService>();
+            services.AddSingleton<IAppConfigService, AppConfigService>();
             services.AddTransient<IAppFolderService, AppFolderService>();
             // Identity
             services.AddScoped<CurrentUser>();

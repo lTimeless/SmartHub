@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using MediatR;
 using SmartHub.Application.Common.Interfaces.Database;
 using SmartHub.Application.Common.Models;
+using SmartHub.Application.UseCases.SignalR.Services;
 using SmartHub.Domain.Common;
 using SmartHub.Domain.Entities;
 
@@ -11,9 +12,11 @@ namespace SmartHub.Application.UseCases.Entity.Devices.Create
     public class DeviceCreateHandler : IRequestHandler<DeviceCreateCommand, Response<string>>
     {
 		private readonly IBaseRepositoryAsync<Device> _deviceRepositry;
-		public DeviceCreateHandler(IBaseRepositoryAsync<Device> deviceRepositry)
+		private readonly ISendOverSignalR _sendOverSignalR;
+		public DeviceCreateHandler(IBaseRepositoryAsync<Device> deviceRepositry, ISendOverSignalR sendOverSignalR)
 		{
 			_deviceRepositry = deviceRepositry;
+			_sendOverSignalR = sendOverSignalR;
 		}
 
 		public async Task<Response<string>> Handle(DeviceCreateCommand request, CancellationToken cancellationToken)
@@ -35,6 +38,7 @@ namespace SmartHub.Application.UseCases.Entity.Devices.Create
             }
 
 			var created = await _deviceRepositry.AddAsync(newDevice);
+			await _sendOverSignalR.SendDevices();
 			return created
 				? Response.Ok($"Created new Device with name {newDevice.Name}")
 				: Response.Fail($" Couldn't create new Device with name {newDevice.Name}", "");

@@ -33,15 +33,13 @@
             <span class="text-gray-700 flex items-center" v-text="activity.dateTime"></span>
           </td>
           <td>
-            <span class="text-gray-700 flex items-center" v-text="activity.username"></span>
+            <span class="text-gray-700 flex items-center" v-text="activity.userName"></span>
           </td>
           <td>
             <span class="text-gray-700 flex items-center" v-text="activity.message"></span>
           </td>
           <td>
-            <span class="text-gray-700 flex items-center">
-              {{ activity.successfulRequest ?? '-' }}</span
-            >
+            <span class="text-gray-700 flex items-center"> {{ activity.successfulRequest ?? '-' }}</span>
           </td>
           <td>
             <span class="text-gray-700 flex items-center"
@@ -64,16 +62,10 @@
             <span class="text-gray-700 flex items-center" v-text="activity.item.message"></span>
           </td>
           <td>
-            <span
-              class="text-gray-700 flex items-center"
-              v-text="activity.item.successfulRequest"
-            ></span>
+            <span class="text-gray-700 flex items-center" v-text="activity.item.successfulRequest"></span>
           </td>
           <td>
-            <span
-              class="text-gray-700 flex items-center"
-              v-text="activity.item.executionTime"
-            ></span>
+            <span class="text-gray-700 flex items-center" v-text="activity.item.executionTime"></span>
           </td>
         </tr>
       </Table>
@@ -146,9 +138,4 @@ export default defineComponent({
 });
 </script>
 
-<style scoped>
-.tableContainer {
-  height: 600px;
-  @apply overflow-x-auto bg-white rounded-lg shadow overflow-y-auto relative;
-}
-</style>
+<style scoped></style>

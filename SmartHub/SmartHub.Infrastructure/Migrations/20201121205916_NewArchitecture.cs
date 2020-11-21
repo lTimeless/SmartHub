@@ -4,7 +4,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace SmartHub.Infrastructure.Migrations
 {
-    public partial class Stable_v02 : Migration
+    public partial class NewArchitecture : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -15,16 +15,11 @@ namespace SmartHub.Infrastructure.Migrations
                 .Annotation("Npgsql:PostgresExtension:uuid-ossp", ",,");
 
             migrationBuilder.CreateTable(
-                name: "Homes",
+                name: "Activities",
                 schema: "smarthub",
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "text", nullable: false, defaultValueSql: "uuid_generate_v4()"),
-                    Address_Street = table.Column<string>(type: "character varying(200)", maxLength: 200, nullable: true, defaultValue: ""),
-                    Address_City = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: true, defaultValue: ""),
-                    Address_State = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: true, defaultValue: ""),
-                    Address_Country = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: true, defaultValue: ""),
-                    Address_ZipCode = table.Column<string>(type: "character varying(20)", maxLength: 20, nullable: true, defaultValue: ""),
                     Name = table.Column<string>(type: "text", nullable: false),
                     Description = table.Column<string>(type: "text", nullable: true),
                     CreatedAt = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
@@ -34,7 +29,85 @@ namespace SmartHub.Infrastructure.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Homes", x => x.Id);
+                    table.PrimaryKey("PK_Activities", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Devices",
+                schema: "smarthub",
+                columns: table => new
+                {
+                    Id = table.Column<string>(type: "text", nullable: false, defaultValueSql: "uuid_generate_v4()"),
+                    Ip_Ipv4 = table.Column<string>(type: "character varying(15)", maxLength: 15, nullable: false, defaultValue: "0.0.0.0"),
+                    Company_Name = table.Column<string>(type: "character varying(200)", maxLength: 200, nullable: false, defaultValue: ""),
+                    Company_ShortName = table.Column<string>(type: "character varying(4)", maxLength: 4, nullable: false, defaultValue: ""),
+                    PrimaryConnection = table.Column<string>(type: "text", nullable: false),
+                    SecondaryConnection = table.Column<string>(type: "text", nullable: false),
+                    PluginName = table.Column<string>(type: "text", nullable: false),
+                    PluginTypes = table.Column<string>(type: "text", nullable: false),
+                    Name = table.Column<string>(type: "text", nullable: false),
+                    Description = table.Column<string>(type: "text", nullable: true),
+                    CreatedAt = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
+                    LastModifiedAt = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
+                    CreatedBy = table.Column<string>(type: "text", nullable: false),
+                    LastModifiedBy = table.Column<string>(type: "text", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Devices", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Groups",
+                schema: "smarthub",
+                columns: table => new
+                {
+                    Id = table.Column<string>(type: "text", nullable: false, defaultValueSql: "uuid_generate_v4()"),
+                    IsSubGroup = table.Column<bool>(type: "boolean", nullable: false),
+                    ParentGroupId = table.Column<string>(type: "text", nullable: true),
+                    Name = table.Column<string>(type: "text", nullable: false),
+                    Description = table.Column<string>(type: "text", nullable: true),
+                    CreatedAt = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
+                    LastModifiedAt = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
+                    CreatedBy = table.Column<string>(type: "text", nullable: false),
+                    LastModifiedBy = table.Column<string>(type: "text", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Groups", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Groups_Groups_ParentGroupId",
+                        column: x => x.ParentGroupId,
+                        principalSchema: "smarthub",
+                        principalTable: "Groups",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Plugins",
+                schema: "smarthub",
+                columns: table => new
+                {
+                    Id = table.Column<string>(type: "text", nullable: false, defaultValueSql: "uuid_generate_v4()"),
+                    PluginTypes = table.Column<string>(type: "text", nullable: false),
+                    AssemblyFilepath = table.Column<string>(type: "text", nullable: false),
+                    Active = table.Column<bool>(type: "boolean", nullable: false),
+                    AssemblyVersion = table.Column<double>(type: "double precision", nullable: false),
+                    Company_Name = table.Column<string>(type: "character varying(200)", maxLength: 200, nullable: false, defaultValue: ""),
+                    Company_ShortName = table.Column<string>(type: "character varying(4)", maxLength: 4, nullable: false, defaultValue: ""),
+                    ConnectionTypes = table.Column<string>(type: "text", nullable: false),
+                    IsDownloaded = table.Column<bool>(type: "boolean", nullable: false),
+                    Name = table.Column<string>(type: "text", nullable: false),
+                    Description = table.Column<string>(type: "text", nullable: true),
+                    CreatedAt = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
+                    LastModifiedAt = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
+                    CreatedBy = table.Column<string>(type: "text", nullable: false),
+                    LastModifiedBy = table.Column<string>(type: "text", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Plugins", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -57,123 +130,6 @@ namespace SmartHub.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Activities",
-                schema: "smarthub",
-                columns: table => new
-                {
-                    Id = table.Column<string>(type: "text", nullable: false, defaultValueSql: "uuid_generate_v4()"),
-                    HomeId = table.Column<string>(type: "text", nullable: true),
-                    Name = table.Column<string>(type: "text", nullable: false),
-                    Description = table.Column<string>(type: "text", nullable: true),
-                    CreatedAt = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
-                    LastModifiedAt = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
-                    CreatedBy = table.Column<string>(type: "text", nullable: false),
-                    LastModifiedBy = table.Column<string>(type: "text", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Activities", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Activities_Homes_HomeId",
-                        column: x => x.HomeId,
-                        principalSchema: "smarthub",
-                        principalTable: "Homes",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Configurations",
-                schema: "smarthub",
-                columns: table => new
-                {
-                    Id = table.Column<string>(type: "text", nullable: false, defaultValueSql: "uuid_generate_v4()"),
-                    Type = table.Column<string>(type: "text", nullable: false),
-                    IsActive = table.Column<bool>(type: "boolean", nullable: false),
-                    IsDefault = table.Column<bool>(type: "boolean", nullable: false),
-                    PluginPath = table.Column<string>(type: "text", nullable: false),
-                    DownloadServerUrl = table.Column<string>(type: "text", nullable: false),
-                    HomeId = table.Column<string>(type: "text", nullable: true),
-                    Name = table.Column<string>(type: "text", nullable: false),
-                    Description = table.Column<string>(type: "text", nullable: true),
-                    CreatedAt = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
-                    LastModifiedAt = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
-                    CreatedBy = table.Column<string>(type: "text", nullable: false),
-                    LastModifiedBy = table.Column<string>(type: "text", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Configurations", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Configurations_Homes_HomeId",
-                        column: x => x.HomeId,
-                        principalSchema: "smarthub",
-                        principalTable: "Homes",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Groups",
-                schema: "smarthub",
-                columns: table => new
-                {
-                    Id = table.Column<string>(type: "text", nullable: false, defaultValueSql: "uuid_generate_v4()"),
-                    HomeId = table.Column<string>(type: "text", nullable: true),
-                    Name = table.Column<string>(type: "text", nullable: false),
-                    Description = table.Column<string>(type: "text", nullable: true),
-                    CreatedAt = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
-                    LastModifiedAt = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
-                    CreatedBy = table.Column<string>(type: "text", nullable: false),
-                    LastModifiedBy = table.Column<string>(type: "text", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Groups", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Groups_Homes_HomeId",
-                        column: x => x.HomeId,
-                        principalSchema: "smarthub",
-                        principalTable: "Homes",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Plugins",
-                schema: "smarthub",
-                columns: table => new
-                {
-                    Id = table.Column<string>(type: "text", nullable: false, defaultValueSql: "uuid_generate_v4()"),
-                    PluginTypes = table.Column<string>(type: "text", nullable: false),
-                    AssemblyFilepath = table.Column<string>(type: "text", nullable: false),
-                    Active = table.Column<bool>(type: "boolean", nullable: false),
-                    AssemblyVersion = table.Column<double>(type: "double precision", nullable: false),
-                    Company_Name = table.Column<string>(type: "character varying(200)", maxLength: 200, nullable: false, defaultValue: ""),
-                    Company_ShortName = table.Column<string>(type: "character varying(4)", maxLength: 4, nullable: false, defaultValue: ""),
-                    ConnectionTypes = table.Column<string>(type: "text", nullable: false),
-                    IsDownloaded = table.Column<bool>(type: "boolean", nullable: false),
-                    HomeId = table.Column<string>(type: "text", nullable: true),
-                    Name = table.Column<string>(type: "text", nullable: false),
-                    Description = table.Column<string>(type: "text", nullable: true),
-                    CreatedAt = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
-                    LastModifiedAt = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
-                    CreatedBy = table.Column<string>(type: "text", nullable: false),
-                    LastModifiedBy = table.Column<string>(type: "text", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Plugins", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Plugins_Homes_HomeId",
-                        column: x => x.HomeId,
-                        principalSchema: "smarthub",
-                        principalTable: "Homes",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Users",
                 schema: "smarthub",
                 columns: table => new
@@ -187,7 +143,6 @@ namespace SmartHub.Infrastructure.Migrations
                     PersonName_FirstName = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false, defaultValue: ""),
                     PersonName_MiddleName = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false, defaultValue: ""),
                     PersonName_LastName = table.Column<string>(type: "character varying(200)", maxLength: 200, nullable: false, defaultValue: ""),
-                    HomeId = table.Column<string>(type: "text", nullable: true),
                     UserName = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
                     NormalizedUserName = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
                     Email = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
@@ -206,11 +161,31 @@ namespace SmartHub.Infrastructure.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Users", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "GroupsDevices",
+                schema: "smarthub",
+                columns: table => new
+                {
+                    DevicesId = table.Column<string>(type: "text", nullable: false),
+                    GroupsId = table.Column<string>(type: "text", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_GroupsDevices", x => new { x.DevicesId, x.GroupsId });
                     table.ForeignKey(
-                        name: "FK_Users_Homes_HomeId",
-                        column: x => x.HomeId,
+                        name: "FK_GroupsDevices_Devices_DevicesId",
+                        column: x => x.DevicesId,
                         principalSchema: "smarthub",
-                        principalTable: "Homes",
+                        principalTable: "Devices",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_GroupsDevices_Groups_GroupsId",
+                        column: x => x.GroupsId,
+                        principalSchema: "smarthub",
+                        principalTable: "Groups",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -236,39 +211,6 @@ namespace SmartHub.Infrastructure.Migrations
                         principalTable: "Roles",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Devices",
-                schema: "smarthub",
-                columns: table => new
-                {
-                    Id = table.Column<string>(type: "text", nullable: false, defaultValueSql: "uuid_generate_v4()"),
-                    Ip_Ipv4 = table.Column<string>(type: "character varying(15)", maxLength: 15, nullable: false, defaultValue: "0.0.0.0"),
-                    Company_Name = table.Column<string>(type: "character varying(200)", maxLength: 200, nullable: false, defaultValue: ""),
-                    Company_ShortName = table.Column<string>(type: "character varying(4)", maxLength: 4, nullable: false, defaultValue: ""),
-                    PrimaryConnection = table.Column<string>(type: "text", nullable: false),
-                    SecondaryConnection = table.Column<string>(type: "text", nullable: false),
-                    PluginName = table.Column<string>(type: "text", nullable: false),
-                    PluginTypes = table.Column<string>(type: "text", nullable: false),
-                    GroupId = table.Column<string>(type: "text", nullable: true),
-                    Name = table.Column<string>(type: "text", nullable: false),
-                    Description = table.Column<string>(type: "text", nullable: true),
-                    CreatedAt = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
-                    LastModifiedAt = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
-                    CreatedBy = table.Column<string>(type: "text", nullable: false),
-                    LastModifiedBy = table.Column<string>(type: "text", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Devices", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Devices_Groups_GroupId",
-                        column: x => x.GroupId,
-                        principalSchema: "smarthub",
-                        principalTable: "Groups",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -366,42 +308,11 @@ namespace SmartHub.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Activities_HomeId",
-                schema: "smarthub",
-                table: "Activities",
-                column: "HomeId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Configurations_HomeId",
-                schema: "smarthub",
-                table: "Configurations",
-                column: "HomeId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Configurations_Name",
-                schema: "smarthub",
-                table: "Configurations",
-                column: "Name",
-                unique: true);
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Devices_GroupId",
-                schema: "smarthub",
-                table: "Devices",
-                column: "GroupId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Devices_Name",
                 schema: "smarthub",
                 table: "Devices",
                 column: "Name",
                 unique: true);
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Groups_HomeId",
-                schema: "smarthub",
-                table: "Groups",
-                column: "HomeId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Groups_Name",
@@ -411,17 +322,16 @@ namespace SmartHub.Infrastructure.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_Homes_Name",
+                name: "IX_Groups_ParentGroupId",
                 schema: "smarthub",
-                table: "Homes",
-                column: "Name",
-                unique: true);
+                table: "Groups",
+                column: "ParentGroupId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Plugins_HomeId",
+                name: "IX_GroupsDevices_GroupsId",
                 schema: "smarthub",
-                table: "Plugins",
-                column: "HomeId");
+                table: "GroupsDevices",
+                column: "GroupsId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Plugins_Name",
@@ -475,12 +385,6 @@ namespace SmartHub.Infrastructure.Migrations
                 column: "NormalizedEmail");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Users_HomeId",
-                schema: "smarthub",
-                table: "Users",
-                column: "HomeId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Users_UserName",
                 schema: "smarthub",
                 table: "Users",
@@ -502,11 +406,7 @@ namespace SmartHub.Infrastructure.Migrations
                 schema: "smarthub");
 
             migrationBuilder.DropTable(
-                name: "Configurations",
-                schema: "smarthub");
-
-            migrationBuilder.DropTable(
-                name: "Devices",
+                name: "GroupsDevices",
                 schema: "smarthub");
 
             migrationBuilder.DropTable(
@@ -534,6 +434,10 @@ namespace SmartHub.Infrastructure.Migrations
                 schema: "smarthub");
 
             migrationBuilder.DropTable(
+                name: "Devices",
+                schema: "smarthub");
+
+            migrationBuilder.DropTable(
                 name: "Groups",
                 schema: "smarthub");
 
@@ -543,10 +447,6 @@ namespace SmartHub.Infrastructure.Migrations
 
             migrationBuilder.DropTable(
                 name: "Users",
-                schema: "smarthub");
-
-            migrationBuilder.DropTable(
-                name: "Homes",
                 schema: "smarthub");
         }
     }

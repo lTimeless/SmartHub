@@ -4,6 +4,7 @@ using MediatR;
 using Microsoft.Extensions.Options;
 using SmartHub.Application.Common.Interfaces.Database;
 using SmartHub.Application.Common.Models;
+using SmartHub.Application.UseCases.SignalR.Services;
 using SmartHub.Domain;
 using SmartHub.Domain.Common;
 using SmartHub.Domain.Entities;
@@ -28,10 +29,12 @@ namespace SmartHub.Application.UseCases.Entity.Groups
     {
 		private readonly IOptionsSnapshot<AppConfig> _appConfig;
 		private readonly IBaseRepositoryAsync<Group> _groupRepository;
-		public GroupUpdateHandler(IOptionsSnapshot<AppConfig> appConfig, IBaseRepositoryAsync<Group> groupRepository)
+		private readonly ISendOverSignalR _sendOverSignalR;
+		public GroupUpdateHandler(IOptionsSnapshot<AppConfig> appConfig, IBaseRepositoryAsync<Group> groupRepository, ISendOverSignalR sendOverSignalR)
 		{
 			_appConfig = appConfig;
 			_groupRepository = groupRepository;
+			_sendOverSignalR = sendOverSignalR;
 		}
 
 		public async Task<Response<GroupDto>> Handle(GroupUpdateCommand request, CancellationToken cancellationToken)
@@ -61,8 +64,8 @@ namespace SmartHub.Application.UseCases.Entity.Groups
 				foundGroup.SetDescription(request.Description);
 			}
 
- 
-            return Response.Ok($"Updated group with name {request.Name}", new GroupDto());
+			await _sendOverSignalR.SendGroups();
+			return Response.Ok($"Updated group with name {request.Name}", new GroupDto());
         }
     }
 }

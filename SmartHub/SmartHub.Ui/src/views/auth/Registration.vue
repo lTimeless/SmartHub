@@ -7,8 +7,8 @@
       :callback="registrationComplete"
     >
       <div class="text-gray-600 mb-8">
-        Thank you. We have sent you an email to ... . Please click the link in the message to
-        activate your account.
+        Thank you. We have sent you an email to ... . Please click the link in the message to activate your
+        account.
         <br /><a class="text-orange-500">This feature is not yet implemented.</a>
       </div>
       <!--  TODO: Email activation -->
@@ -110,8 +110,7 @@
               <div
                 :class="{
                   'bg-orange-400':
-                    passwordStrengthText === 'Could be stronger' ||
-                    passwordStrengthText === 'Strong password'
+                    passwordStrengthText === 'Could be stronger' || passwordStrengthText === 'Strong password'
                 }"
                 class="h-2 rounded-full mr-1 w-1/3 bg-gray-300"
               ></div>
@@ -155,9 +154,7 @@
           <button
             disabled
             class="flex items-center justify-center w-full px-4 py-2 text-sm font-medium leading-5 text-white transition-colors duration-150 border border-gray-300 rounded-lg dark:text-gray-400 active:bg-transparent focus:border-gray-500 active:text-gray-500 focus:outline-none focus:shadow-outline-gray"
-            :class="
-              true ? 'opacity-50 focus:outline-none cursor-not-allowed' : 'hover:border-gray-500'
-            "
+            :class="true ? 'opacity-50 focus:outline-none cursor-not-allowed' : 'hover:border-gray-500'"
           >
             Additional options....
           </button>
@@ -187,9 +184,7 @@ import Loader from '@/components/Loader.vue';
 
 const ConfirmationModalAsync = defineAsyncComponent({
   loader: () =>
-    import(
-      /* webpackChunkName: "ConfirmationModal" */ '../../components/modals/ConfirmationModal.vue'
-    ),
+    import(/* webpackChunkName: "ConfirmationModal" */ '../../components/modals/ConfirmationModal.vue'),
   loadingComponent: Loader,
   delay: 200
 });
@@ -251,7 +246,7 @@ export default defineComponent({
         .then(() => {
           doneRegistration.value = true;
         })
-        .catch((err) => {
+        .catch((err: unknown) => {
           console.log(err);
           doneRegistration.value = false;
         });

@@ -1,6 +1,10 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using Serilog.Sinks.AspNetCore.SignalR.Interfaces;
 using SmartHub.Application.UseCases.Entity.Activities;
+using SmartHub.Application.UseCases.Entity.Devices;
+using SmartHub.Application.UseCases.Entity.Groups;
+using SmartHub.Domain;
 
 namespace SmartHub.Application.UseCases.SignalR
 {
@@ -13,5 +17,11 @@ namespace SmartHub.Application.UseCases.SignalR
         /// <param name="activityDto">The Activity to send</param>
         /// <returns>Task</returns>
         Task SendActivity(ActivityDto activityDto);
-    }
+
+		Task SendGroups(IEnumerable<GroupDto> homeDto);
+
+		Task SendDevices(IEnumerable<DeviceDto> homeDto);
+
+		Task SendAppConfig(AppConfig appConfig);
+	}
 }

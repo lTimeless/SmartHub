@@ -4,6 +4,7 @@ using MediatR;
 using Microsoft.Extensions.Options;
 using SmartHub.Application.Common.Interfaces.Database;
 using SmartHub.Application.Common.Models;
+using SmartHub.Application.UseCases.SignalR.Services;
 using SmartHub.Domain;
 using SmartHub.Domain.Entities;
 
@@ -13,10 +14,12 @@ namespace SmartHub.Application.UseCases.Entity.Devices.Update
     {
 		private readonly IOptionsSnapshot<AppConfig> _appConfig;
 		private readonly IBaseRepositoryAsync<Device> _deviceRepository;
-		public DeviceUpdateHandler(IOptionsSnapshot<AppConfig> appConfig, IBaseRepositoryAsync<Device> deviceRepository)
+		private readonly ISendOverSignalR _sendOverSignalR;
+		public DeviceUpdateHandler(IOptionsSnapshot<AppConfig> appConfig, IBaseRepositoryAsync<Device> deviceRepository, ISendOverSignalR sendOverSignalR)
 		{
 			_appConfig = appConfig;
 			_deviceRepository = deviceRepository;
+			_sendOverSignalR = sendOverSignalR;
 		}
 
 		public async Task<Response<string>> Handle(DeviceUpdateCommand request, CancellationToken cancellationToken)
@@ -44,6 +47,7 @@ namespace SmartHub.Application.UseCases.Entity.Devices.Update
 				foundDevice.SetIp(request.Ipv4);
 			}
 			foundDevice.SetConnectionTypes(request.PrimaryConnection, request.SecondaryConnection);
+			await _sendOverSignalR.SendDevices();
 			return Response.Ok($"Updated device with name {request.Name}");
         }
     }

@@ -64,7 +64,7 @@
               :class="useFakeDbDisabled ? 'bg-gray-300' : ''"
               placeholder="SmartHub (default)"
               type="text"
-              v-model="homeCreateRequest.name"
+              v-model="appConfigCreateRequest.name"
               :disabled="useFakeDbDisabled"
             />
           </label>
@@ -76,7 +76,7 @@
               placeholder="This is an awesome description (default)"
               :class="useFakeDbDisabled ? 'bg-gray-300' : ''"
               type="text"
-              v-model="homeCreateRequest.description"
+              v-model="appConfigCreateRequest.description"
               :disabled="useFakeDbDisabled"
             />
           </label>
@@ -87,7 +87,7 @@
                   class="form-checkbox text-ui-primary form-checkbox focus:border-purple-400 focus:outline-none focus:shadow-outlineIndigo dark:focus:shadow-outline-gray"
                   :class="useFakeDbDisabled ? 'bg-gray-300' : ''"
                   type="checkbox"
-                  v-model="homeCreateRequest.autoDetectAddress"
+                  v-model="appConfigCreateRequest.autoDetectAddress"
                   :disabled="useFakeDbDisabled"
                 />
                 <span class="ml-2 text-sm"> Automatically detect your home address. </span>
@@ -142,9 +142,9 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, defineAsyncComponent, reactive, ref, computed, watch } from 'vue';
-import { HomeCreateRequest } from '@/types/types';
-import { HomeActionTypes } from '@/store/home/actions';
+import { defineComponent, defineAsyncComponent, reactive, ref, computed } from 'vue';
+import { AppConfigInitRequest } from '@/types/types';
+import { AppActionTypes } from '@/store/app/actions';
 import { useStore } from 'vuex';
 import { useRouter } from 'vue-router';
 import AppCard from '@/components/widgets/AppCard.vue';
@@ -172,7 +172,7 @@ export default defineComponent({
     const acceptWip = ref(false);
     const doneInit = ref(false);
     const useFakeDbDisabled = ref(false);
-    const homeCreateRequest: HomeCreateRequest = reactive({
+    const appConfigCreateRequest: AppConfigInitRequest = reactive({
       name: '',
       description: '',
       autoDetectAddress: false
@@ -191,18 +191,18 @@ export default defineComponent({
       });
 
     const InitHome = () => {
-      if (homeCreateRequest.name === '') {
-        homeCreateRequest.name = 'SmartHub';
+      if (appConfigCreateRequest.name === '') {
+        appConfigCreateRequest.name = 'SmartHub';
       }
-      if (homeCreateRequest.description === '') {
-        homeCreateRequest.description = 'This is an awesome description';
+      if (appConfigCreateRequest.description === '') {
+        appConfigCreateRequest.description = 'This is an awesome description';
       }
       store
-        .dispatch(HomeActionTypes.CREATE_HOME, homeCreateRequest)
+        .dispatch(AppActionTypes.CREATE_APP, appConfigCreateRequest)
         .then(() => {
           doneInit.value = true;
         })
-        .catch((err) => {
+        .catch((err: unknown) => {
           console.log(err);
         });
     };
@@ -218,13 +218,13 @@ export default defineComponent({
       console.log('This feature is not implemented at the moment.');
       router.push('/login');
     };
-    const allDeactive = computed(() => !homeCreateRequest.autoDetectAddress || !acceptWip.value);
+    const allDeactive = computed(() => !appConfigCreateRequest.autoDetectAddress || !acceptWip.value);
     return {
       title,
       acceptWip,
       showgoToFakeModal,
       doneInit,
-      homeCreateRequest,
+      appConfigCreateRequest,
       useFakeDbDisabled,
       InitHome,
       allDeactive,

@@ -10,8 +10,8 @@ using SmartHub.Infrastructure.Database;
 namespace SmartHub.Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20201031231708_AddSubGroups_v.2.1")]
-    partial class AddSubGroups_v21
+    [Migration("20201121205916_NewArchitecture")]
+    partial class NewArchitecture
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -21,7 +21,22 @@ namespace SmartHub.Infrastructure.Migrations
                 .HasPostgresExtension("uuid-ossp")
                 .UseIdentityByDefaultColumns()
                 .HasAnnotation("Relational:MaxIdentifierLength", 63)
-                .HasAnnotation("ProductVersion", "5.0.0-rc.2.20475.6");
+                .HasAnnotation("ProductVersion", "5.0.0");
+
+            modelBuilder.Entity("DeviceGroup", b =>
+                {
+                    b.Property<string>("DevicesId")
+                        .HasColumnType("text");
+
+                    b.Property<string>("GroupsId")
+                        .HasColumnType("text");
+
+                    b.HasKey("DevicesId", "GroupsId");
+
+                    b.HasIndex("GroupsId");
+
+                    b.ToTable("GroupsDevices");
+                });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
@@ -144,9 +159,6 @@ namespace SmartHub.Infrastructure.Migrations
                     b.Property<string>("Description")
                         .HasColumnType("text");
 
-                    b.Property<string>("HomeId")
-                        .HasColumnType("text");
-
                     b.Property<DateTimeOffset>("LastModifiedAt")
                         .HasColumnType("timestamp with time zone");
 
@@ -159,69 +171,8 @@ namespace SmartHub.Infrastructure.Migrations
                         .HasColumnType("text");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("HomeId");
 
                     b.ToTable("Activities");
-                });
-
-            modelBuilder.Entity("SmartHub.Domain.Entities.Configuration", b =>
-                {
-                    b.Property<string>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("text")
-                        .HasDefaultValueSql("uuid_generate_v4()");
-
-                    b.Property<DateTimeOffset>("CreatedAt")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<string>("CreatedBy")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("Description")
-                        .HasColumnType("text");
-
-                    b.Property<string>("DownloadServerUrl")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("HomeId")
-                        .HasColumnType("text");
-
-                    b.Property<bool>("IsActive")
-                        .HasColumnType("boolean");
-
-                    b.Property<bool>("IsDefault")
-                        .HasColumnType("boolean");
-
-                    b.Property<DateTimeOffset>("LastModifiedAt")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<string>("LastModifiedBy")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("PluginPath")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("Type")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("HomeId");
-
-                    b.HasIndex("Name")
-                        .IsUnique();
-
-                    b.ToTable("Configurations");
                 });
 
             modelBuilder.Entity("SmartHub.Domain.Entities.Device", b =>
@@ -239,9 +190,6 @@ namespace SmartHub.Infrastructure.Migrations
                         .HasColumnType("text");
 
                     b.Property<string>("Description")
-                        .HasColumnType("text");
-
-                    b.Property<string>("GroupId")
                         .HasColumnType("text");
 
                     b.Property<DateTimeOffset>("LastModifiedAt")
@@ -273,8 +221,6 @@ namespace SmartHub.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("GroupId");
-
                     b.HasIndex("Name")
                         .IsUnique();
 
@@ -298,11 +244,8 @@ namespace SmartHub.Infrastructure.Migrations
                     b.Property<string>("Description")
                         .HasColumnType("text");
 
-                    b.Property<string>("GroupId")
-                        .HasColumnType("text");
-
-                    b.Property<string>("HomeId")
-                        .HasColumnType("text");
+                    b.Property<bool>("IsSubGroup")
+                        .HasColumnType("boolean");
 
                     b.Property<DateTimeOffset>("LastModifiedAt")
                         .HasColumnType("timestamp with time zone");
@@ -315,52 +258,17 @@ namespace SmartHub.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<string>("ParentGroupId")
+                        .HasColumnType("text");
+
                     b.HasKey("Id");
-
-                    b.HasIndex("GroupId");
-
-                    b.HasIndex("HomeId");
 
                     b.HasIndex("Name")
                         .IsUnique();
+
+                    b.HasIndex("ParentGroupId");
 
                     b.ToTable("Groups");
-                });
-
-            modelBuilder.Entity("SmartHub.Domain.Entities.Home", b =>
-                {
-                    b.Property<string>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("text")
-                        .HasDefaultValueSql("uuid_generate_v4()");
-
-                    b.Property<DateTimeOffset>("CreatedAt")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<string>("CreatedBy")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("Description")
-                        .HasColumnType("text");
-
-                    b.Property<DateTimeOffset>("LastModifiedAt")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<string>("LastModifiedBy")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("Name")
-                        .IsUnique();
-
-                    b.ToTable("Homes");
                 });
 
             modelBuilder.Entity("SmartHub.Domain.Entities.Plugin", b =>
@@ -394,9 +302,6 @@ namespace SmartHub.Infrastructure.Migrations
                     b.Property<string>("Description")
                         .HasColumnType("text");
 
-                    b.Property<string>("HomeId")
-                        .HasColumnType("text");
-
                     b.Property<bool>("IsDownloaded")
                         .HasColumnType("boolean");
 
@@ -416,8 +321,6 @@ namespace SmartHub.Infrastructure.Migrations
                         .HasColumnType("text");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("HomeId");
 
                     b.HasIndex("Name")
                         .IsUnique();
@@ -498,9 +401,6 @@ namespace SmartHub.Infrastructure.Migrations
                     b.Property<bool>("EmailConfirmed")
                         .HasColumnType("boolean");
 
-                    b.Property<string>("HomeId")
-                        .HasColumnType("text");
-
                     b.Property<DateTimeOffset>("LastModifiedAt")
                         .HasColumnType("timestamp with time zone");
 
@@ -547,8 +447,6 @@ namespace SmartHub.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("HomeId");
-
                     b.HasIndex("NormalizedEmail")
                         .HasDatabaseName("EmailIndex");
 
@@ -560,6 +458,21 @@ namespace SmartHub.Infrastructure.Migrations
                         .IsUnique();
 
                     b.ToTable("Users");
+                });
+
+            modelBuilder.Entity("DeviceGroup", b =>
+                {
+                    b.HasOne("SmartHub.Domain.Entities.Device", null)
+                        .WithMany()
+                        .HasForeignKey("DevicesId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("SmartHub.Domain.Entities.Group", null)
+                        .WithMany()
+                        .HasForeignKey("GroupsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -613,28 +526,8 @@ namespace SmartHub.Infrastructure.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("SmartHub.Domain.Entities.Activity", b =>
-                {
-                    b.HasOne("SmartHub.Domain.Entities.Home", null)
-                        .WithMany("Activities")
-                        .HasForeignKey("HomeId")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("SmartHub.Domain.Entities.Configuration", b =>
-                {
-                    b.HasOne("SmartHub.Domain.Entities.Home", null)
-                        .WithMany("Settings")
-                        .HasForeignKey("HomeId")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
             modelBuilder.Entity("SmartHub.Domain.Entities.Device", b =>
                 {
-                    b.HasOne("SmartHub.Domain.Entities.Group", null)
-                        .WithMany("Devices")
-                        .HasForeignKey("GroupId");
-
                     b.OwnsOne("SmartHub.Domain.Entities.ValueObjects.Company", "Company", b1 =>
                         {
                             b1.Property<string>("DeviceId")
@@ -693,75 +586,11 @@ namespace SmartHub.Infrastructure.Migrations
                 {
                     b.HasOne("SmartHub.Domain.Entities.Group", null)
                         .WithMany("SubGroups")
-                        .HasForeignKey("GroupId");
-
-                    b.HasOne("SmartHub.Domain.Entities.Home", null)
-                        .WithMany("Groups")
-                        .HasForeignKey("HomeId")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("SmartHub.Domain.Entities.Home", b =>
-                {
-                    b.OwnsOne("SmartHub.Domain.Entities.ValueObjects.Address", "Address", b1 =>
-                        {
-                            b1.Property<string>("HomeId")
-                                .ValueGeneratedOnAdd()
-                                .HasColumnType("text");
-
-                            b1.Property<string>("City")
-                                .IsRequired()
-                                .ValueGeneratedOnAdd()
-                                .HasMaxLength(100)
-                                .HasColumnType("character varying(100)")
-                                .HasDefaultValue("");
-
-                            b1.Property<string>("Country")
-                                .IsRequired()
-                                .ValueGeneratedOnAdd()
-                                .HasMaxLength(100)
-                                .HasColumnType("character varying(100)")
-                                .HasDefaultValue("");
-
-                            b1.Property<string>("State")
-                                .IsRequired()
-                                .ValueGeneratedOnAdd()
-                                .HasMaxLength(100)
-                                .HasColumnType("character varying(100)")
-                                .HasDefaultValue("");
-
-                            b1.Property<string>("Street")
-                                .IsRequired()
-                                .ValueGeneratedOnAdd()
-                                .HasMaxLength(200)
-                                .HasColumnType("character varying(200)")
-                                .HasDefaultValue("");
-
-                            b1.Property<string>("ZipCode")
-                                .IsRequired()
-                                .ValueGeneratedOnAdd()
-                                .HasMaxLength(20)
-                                .HasColumnType("character varying(20)")
-                                .HasDefaultValue("");
-
-                            b1.HasKey("HomeId");
-
-                            b1.ToTable("Homes");
-
-                            b1.WithOwner()
-                                .HasForeignKey("HomeId");
-                        });
-
-                    b.Navigation("Address");
+                        .HasForeignKey("ParentGroupId");
                 });
 
             modelBuilder.Entity("SmartHub.Domain.Entities.Plugin", b =>
                 {
-                    b.HasOne("SmartHub.Domain.Entities.Home", null)
-                        .WithMany("Plugins")
-                        .HasForeignKey("HomeId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
                     b.OwnsOne("SmartHub.Domain.Entities.ValueObjects.Company", "Company", b1 =>
                         {
                             b1.Property<string>("PluginId")
@@ -796,11 +625,6 @@ namespace SmartHub.Infrastructure.Migrations
 
             modelBuilder.Entity("SmartHub.Domain.Entities.User", b =>
                 {
-                    b.HasOne("SmartHub.Domain.Entities.Home", null)
-                        .WithMany("Users")
-                        .HasForeignKey("HomeId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
                     b.OwnsOne("SmartHub.Domain.Entities.ValueObjects.PersonName", "PersonName", b1 =>
                         {
                             b1.Property<string>("UserId")
@@ -842,22 +666,7 @@ namespace SmartHub.Infrastructure.Migrations
 
             modelBuilder.Entity("SmartHub.Domain.Entities.Group", b =>
                 {
-                    b.Navigation("Devices");
-
                     b.Navigation("SubGroups");
-                });
-
-            modelBuilder.Entity("SmartHub.Domain.Entities.Home", b =>
-                {
-                    b.Navigation("Activities");
-
-                    b.Navigation("Groups");
-
-                    b.Navigation("Plugins");
-
-                    b.Navigation("Settings");
-
-                    b.Navigation("Users");
                 });
 #pragma warning restore 612, 618
         }

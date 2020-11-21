@@ -1,8 +1,8 @@
-import { AuthResponse, Home, User } from '@/types/types';
+import { AppConfig, AuthResponse, Device, Group, User } from '@/types/types';
 
 export interface RootState {
   authModule: AuthState;
-  homeModule: HomeState;
+  appModule: AppState;
   userModule: UserState;
 }
 
@@ -16,8 +16,10 @@ export interface UserState {
 /*
   State for the home data
 */
-export interface HomeState {
-  home?: Home;
+export interface AppState {
+  groups?: Group[];
+  devices?: Device[];
+  appConfig?: AppConfig;
 }
 
 /*

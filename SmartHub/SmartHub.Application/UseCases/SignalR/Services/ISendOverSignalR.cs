@@ -18,5 +18,9 @@ namespace SmartHub.Application.UseCases.SignalR.Services
 		/// <param name="success"></param>
 		/// <returns>Task state</returns>
 		Task SendActivity(string userName,string requestName, string message ,long execTime, bool success);
+
+		Task SendGroups();
+		Task SendDevices();
+		Task SendAppConfig();
 	}
 }
