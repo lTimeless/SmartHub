@@ -1,4 +1,4 @@
-import { GetterTree } from 'vuex';
+import { GetterTree } from 'Vuex';
 import { AppState, RootState } from '@/store/index.types';
 
 // Getter Types

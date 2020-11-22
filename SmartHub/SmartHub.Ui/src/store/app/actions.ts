@@ -1,4 +1,4 @@
-import { ActionContext, ActionTree } from 'vuex';
+import { ActionContext, ActionTree } from 'Vuex';
 import { RootState, AppState, AuthState } from '@/store/index.types';
 import { AppConfigInitRequest } from '@/types/types';
 import { AppMutations, AppMutationTypes } from '@/store/app/mutations';
