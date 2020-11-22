@@ -62,12 +62,10 @@ export default defineComponent({
     const headerHeight = ref(0);
     const headerRef = ref();
     const sidebarOpen = ref(true);
-    const { appConfigData } = useSignalRHub<AppConfig>('home', 'SendAppConfig');
-    const { groupsData } = useSignalRHub<Group[]>('home', 'SendGroups');
-    const { devicesData } = useSignalRHub<Device[]>('home', 'SendDevices');
+    const { data: appConfigData } = useSignalRHub<AppConfig>('home', 'SendAppConfig');
+    const { data: groupsData } = useSignalRHub<Group[]>('home', 'SendGroups');
+    const { data: devicesData } = useSignalRHub<Device[]>('home', 'SendDevices');
 
-    console.log(appConfigData, groupsData, devicesData);
-    
     watch(appConfigData, (newAppConfigData) => {
       if (newAppConfigData) {
         store.commit(AppMutationTypes.UPDATE_APP, newAppConfigData);

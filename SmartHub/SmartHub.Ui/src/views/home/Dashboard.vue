@@ -1,6 +1,6 @@
 <template>
-  <div class="w-full" v-if="appConfig">
-    <h1 class="text-3xl text-gray-500 font-bold mb-4">Dashboard for {{ appConfig.applicationName }}</h1>
+  <div v-if="appConfig">
+    <h1 class="text-3xl text-gray-500 font-bold mb-4">Dashboard for {{ appConfig?.applicationName }}</h1>
     <AppTabs>
       <template #header>
         <div class="flex flex-wrap justify-between my-4 space-y-2">
@@ -53,12 +53,10 @@
           </div>
         </div>
         <div :class="{ hidden: openTab !== 2, block: openTab === 2 }">
-          <AppGroupsOverview v-if="groups !== undefined" />
-          <div v-else>No Groups available</div>
+          <AppGroupsOverview />
         </div>
         <div :class="{ hidden: openTab !== 3, block: openTab === 3 }">
-          <AppDevicesOverview v-if="devices !== undefined" />
-          <div v-else>No Devices available</div>
+          <AppDevicesOverview />
         </div>
         <div :class="{ hidden: openTab !== 4, block: openTab === 4 }">
           <AppAutomation />
@@ -66,6 +64,7 @@
       </template>
     </AppTabs>
   </div>
+  <div v-else>Loading...</div>
 </template>
 
 <script lang="ts">
@@ -90,19 +89,15 @@ export default defineComponent({
     const openTab = ref(1);
     const store = useStore();
     const appConfig = computed(() => store.state.appModule.appConfig);
-    console.log(appConfig);
     const groups = computed(() => store.state.appModule.groups);
     const devices = computed(() => store.state.appModule.devices);
     const toggleTabs = (tabNumber: number) => {
       openTab.value = tabNumber;
     };
-    const onClick = (tabNumber: number) => {
-      console.log('Click button', tabNumber);
-    };
+
     return {
       openTab,
       toggleTabs,
-      onClick,
       appConfig,
       groups,
       devices

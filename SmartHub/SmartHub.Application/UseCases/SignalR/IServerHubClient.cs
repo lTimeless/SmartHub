@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.SignalR;
 using Serilog.Sinks.AspNetCore.SignalR.Interfaces;
 using SmartHub.Application.UseCases.Entity.Activities;
 using SmartHub.Application.UseCases.Entity.Devices;
@@ -9,7 +10,7 @@ using SmartHub.Domain;
 namespace SmartHub.Application.UseCases.SignalR
 {
 	// Diese Funktionen werden vom Server aufgerufen um Daten an den Client zu schicken
-	public interface IServerHub : IHub
+	public interface IServerHubClient : IHub
     {
         /// <summary>
         /// Sends an activity object to the clients

@@ -4,7 +4,7 @@ import { AppState } from '@/store/index.types';
 
 // Keys
 export enum AppMutationTypes {
-  UPDATE_APP = 'UPDATE_HOME',
+  UPDATE_APP = 'UPDATE_App',
   UPDATE_GROUPS = 'UPDATE_GROUPS',
   UPDATE_Devices = 'UPDATE_Devices'
 }

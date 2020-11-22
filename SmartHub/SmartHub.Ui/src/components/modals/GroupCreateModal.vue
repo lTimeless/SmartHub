@@ -86,6 +86,7 @@ export default defineComponent({
           if (!response.success) {
             return Promise.reject(response.message);
           }
+          context.emit('close', false);
           return Promise.resolve();
         })
         .catch((error) => Promise.reject(error));

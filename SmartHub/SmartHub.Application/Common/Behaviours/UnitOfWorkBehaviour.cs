@@ -20,6 +20,10 @@ namespace SmartHub.Application.Common.Behaviours
         public async Task Process(TRequest request, TResponse response, CancellationToken cancellationToken)
         {
             await _unitOfWork.SaveAsync();
-        }
-    }
+			await _sendOverSignalR.SendGroups();
+			await _sendOverSignalR.SendDevices();
+			await _sendOverSignalR.SendAppConfig();
+
+		}
+	}
 }

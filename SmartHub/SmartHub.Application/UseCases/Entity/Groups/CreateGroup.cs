@@ -27,31 +27,29 @@ namespace SmartHub.Application.UseCases.Entity.Groups
 	public class GroupCreateHandler : IRequestHandler<GroupCreateCommand, Response<string>>
 	{
 		private readonly IBaseRepositoryAsync<Group> _groupRepository;
-		private readonly ISendOverSignalR _sendOverSignalR;
 
-		public GroupCreateHandler(IBaseRepositoryAsync<Group> groupRepository, ISendOverSignalR sendOverSignalR)
+		public GroupCreateHandler(IBaseRepositoryAsync<Group> groupRepository)
 		{
 			_groupRepository = groupRepository;
-			_sendOverSignalR = sendOverSignalR;
 		}
 
 		public async Task<Response<string>> Handle(GroupCreateCommand request, CancellationToken cancellationToken)
 		{
-			var groups = await _groupRepository.GetAllAsync();
-
 			if (request.IsSubGroup && !string.IsNullOrEmpty(request.ParentGroupId))
 			{
-				var foundGroup = groups.Find(x => x.Id == request.ParentGroupId);
+				var foundGroup = await _groupRepository.FindbyAsync(x => x.Id == request.ParentGroupId);
 				if (foundGroup is not null && foundGroup.IsSubGroup)
 				{
-					return Response.Ok("You can not create a subgroup of a subgroup.");
+					return Response.Fail("You can not create a subgroup of a subgroup.", "");
 				}
 				foundGroup?.AddSubGroup(new Group(request.Name, request.Description, request.IsSubGroup));
 				return Response.Ok($"Created new SubGroup with name {request.Name} for group {foundGroup?.Name}.");
 			}
-			groups.Add(new Group(request.Name, request.Description));
-			await _sendOverSignalR.SendGroups();
-			return Response.Ok($"Created new Group with name {request.Name}.");
+
+			var created = await _groupRepository.AddAsync(new Group(request.Name, request.Description));
+			return created
+				? Response.Ok($"Created new Group with name {request.Name}.")
+				: Response.Fail($" Couldn't create new Group with name {request.Name}", "");
 		}
 	}
 }

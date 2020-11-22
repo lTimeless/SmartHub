@@ -24,12 +24,12 @@ namespace SmartHub.Application.UseCases.SignalR.Services
 		private readonly IBaseRepositoryAsync<Device> _deviceRepository;
 
 		private readonly IMapper _mapper;
-		private readonly IHubContext<ActivityHub, IServerHub> _activityHubContext;
-		private readonly IHubContext<HomeHub, IServerHub> _homeHubContext;
+		private readonly IHubContext<ActivityHub, IServerHubClient> _activityHubContext;
+		private readonly IHubContext<HomeHub, IServerHubClient> _homeHubContext;
 		private readonly IAppConfigService _appConfigService;
 
-		public SendOverSignalR(IMapper mapper, IHubContext<ActivityHub, IServerHub> activityHubContext, 
-			IBaseRepositoryAsync<Activity> activityRepository, IHubContext<HomeHub, IServerHub> homeHubContext, 
+		public SendOverSignalR(IMapper mapper, IHubContext<ActivityHub, IServerHubClient> activityHubContext, 
+			IBaseRepositoryAsync<Activity> activityRepository, IHubContext<HomeHub, IServerHubClient> homeHubContext, 
 			IBaseRepositoryAsync<Group> groupRepository, IBaseRepositoryAsync<Device> deviceRepository, IAppConfigService appConfigService)
 		{
 			_mapper = mapper;

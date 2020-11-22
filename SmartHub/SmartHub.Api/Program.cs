@@ -85,7 +85,7 @@ namespace SmartHub.Api
 							NumberOfReplicas = 1,
 							IndexFormat = $"{context.Configuration["SmartHub:ApplicationName"]}-logs-{context.HostingEnvironment.EnvironmentName?.ToLower().Replace(".","-")}-{DateTime.UtcNow:yyyy-MM}"
 						})
-						.WriteTo.SignalRSink<LogHub, IServerHub>(
+						.WriteTo.SignalRSink<LogHub, IServerHubClient>(
 							LogEventLevel.Information,
 							service,
 							null,
