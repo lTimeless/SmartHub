@@ -81,7 +81,7 @@ import Table from '@/components/widgets/AppTable.vue';
 import { useSignalRHub } from '@/hooks/useSignalR';
 
 export default defineComponent({
-  name: 'Events',
+  name: 'Activity',
   components: {
     Search,
     Table

@@ -85,9 +85,11 @@ import AppCard from '@/components/widgets/AppCard.vue';
 import { checkHome, checkUsers } from '@/services/apis/init';
 
 export default defineComponent({
+  name: 'Login',
   components: {
     AppCard
   },
+  props: {},
   setup() {
     const store = useStore();
     const router = useRouter();

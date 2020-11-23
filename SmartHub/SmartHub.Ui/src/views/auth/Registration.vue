@@ -195,6 +195,7 @@ export default defineComponent({
     AppCard,
     ConfirmationModalAsync
   },
+  props: {},
   setup() {
     const store = useStore();
     const router = useRouter();

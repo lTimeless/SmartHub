@@ -1,6 +1,5 @@
 <template>
-  <div class="flex-1 w-full justify-end">
-    <h1 class="text-3xl text-gray-500 font-bold mb-6">{{ title }}</h1>
+  <div class="relative flex-1 w-full justify-end">
     <!-- Form -->
     <div v-if="user">
       <!-- Username -->
@@ -111,7 +110,6 @@ export default defineComponent({
   },
   setup() {
     const store = useStore();
-    const title = ref('MyUser');
     const user = computed(() => store.state.authModule.Me);
     const userRoles = computed(() => getUserRoles());
     const selectedRole = ref(userRoles.value);
@@ -148,7 +146,6 @@ export default defineComponent({
       }
     };
     return {
-      title,
       user,
       updateUserRequest,
       onSaveClick,
