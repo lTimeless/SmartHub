@@ -8,14 +8,9 @@ using SmartHub.Domain.Entities;
 
 namespace SmartHub.Application.UseCases.Entity.Groups
 {
-    public class GroupGetByIdQuery : IRequest<Response<GroupDto>>
+    public record GroupGetByIdQuery : IRequest<Response<GroupDto>>
     {
-        public string Id { get; set; }
-
-        public GroupGetByIdQuery(string id)
-        {
-            Id = id;
-        }
+        public string Id { get; init; }
     }
 
     public class GroupGetByIdHandler : IRequestHandler<GroupGetByIdQuery, Response<GroupDto>>

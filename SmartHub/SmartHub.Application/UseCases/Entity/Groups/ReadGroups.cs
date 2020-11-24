@@ -9,7 +9,7 @@ using SmartHub.Domain.Entities;
 
 namespace SmartHub.Application.UseCases.Entity.Groups
 {
-	public class GroupGetQuery : IRequest<Response<IEnumerable<GroupDto>>>
+	public record GroupGetQuery : IRequest<Response<IEnumerable<GroupDto>>>
     {
     }
 

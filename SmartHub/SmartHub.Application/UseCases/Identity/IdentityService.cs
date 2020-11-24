@@ -29,7 +29,7 @@ namespace SmartHub.Application.UseCases.Identity
         internal AuthResponseDto CreateAuthResponse(User user, List<string> roles)
         {
             var claims = _userManager.GetClaimsAsync(user).GetAwaiter().GetResult() as List<Claim>;
-            return new AuthResponseDto(_tokenGenerator.CreateJwtToken(user, roles, claims ?? new List<Claim>()));
+            return new AuthResponseDto { Token = _tokenGenerator.CreateJwtToken(user, roles, claims ?? new List<Claim>()) };
         }
     }
 }

@@ -3,8 +3,7 @@ using SmartHub.Application.Common.Models;
 
 namespace SmartHub.Application.UseCases.Init.CheckUsers
 {
-	public class CheckUsersQuery : IRequest<Response<bool>>
+	public record CheckUsersQuery : IRequest<Response<bool>>
 	{
-
 	}
 }

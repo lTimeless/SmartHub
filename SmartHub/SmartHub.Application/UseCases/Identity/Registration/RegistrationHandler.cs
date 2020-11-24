@@ -28,13 +28,13 @@ namespace SmartHub.Application.UseCases.Identity.Registration
 		{
 			if (_configService.GetConfig().IsActive is false)
 			{
-				return Response.Fail<AuthResponseDto>("There is no home created yet.", new AuthResponseDto(string.Empty));
+				return Response.Fail("There is no home created yet.", new AuthResponseDto { Token = string.Empty });
 			}
 
 			var foundUser = await _userRepository.GetUserByName(request.Username);
 			if (foundUser != null)
 			{
-				return Response.Fail("Username already exists.", new AuthResponseDto(string.Empty));
+				return Response.Fail("Username already exists.", new AuthResponseDto { Token = string.Empty });
 			}
 			var newUser = new User(request.Username, "");
 			var result = await _registrationService.RegisterAsync(request, newUser);
@@ -42,7 +42,7 @@ namespace SmartHub.Application.UseCases.Identity.Registration
 			return result
 				? Response.Ok("Successful",
 					_identityService.CreateAuthResponse(newUser, new List<string> {request.Role}))
-				: Response.Fail($"Error: Could not register user {request.Username}", new AuthResponseDto(string.Empty));
+				: Response.Fail($"Error: Could not register user {request.Username}", new AuthResponseDto { Token = string.Empty });
 		}
 	}
 }

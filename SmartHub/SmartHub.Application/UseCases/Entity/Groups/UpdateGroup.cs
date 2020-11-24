@@ -11,18 +11,11 @@ using SmartHub.Domain.Entities;
 
 namespace SmartHub.Application.UseCases.Entity.Groups
 {
-    public class GroupUpdateCommand : IRequest<Response<GroupDto>>
+    public record GroupUpdateCommand : IRequest<Response<GroupDto>>
     {
-        public string Id { get; }
-        public string? Name { get; }
-        public string? Description { get; }
-
-        public GroupUpdateCommand(string? description, string? name, string id)
-        {
-            Description = description;
-            Name = name;
-            Id = id;
-        }
+        public string Id { get; init; }
+        public string? Name { get; init; }
+        public string? Description { get; init; }
     }
 
     public class GroupUpdateHandler : IRequestHandler<GroupUpdateCommand, Response<GroupDto>>

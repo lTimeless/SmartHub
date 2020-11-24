@@ -68,14 +68,13 @@ namespace SmartHub.Application.UseCases.NetworkScanner
 			{
 				var hostName = await NetworkScannerUtils.GetHostnameAsync(ip).ConfigureAwait(false);
 				var macAddress = await NetworkScannerUtils.GetMacAddressAsync(ip).ConfigureAwait(false);
-				var newFoundDevice = new NetworkDeviceResponseDto()
-				{
-					Name = NetworkScannerUtils.MakeNameFromHostname(hostName),
-					Hostname = hostName ?? "Not available",
-					MacAddress = macAddress ?? "Not available",
-					Ipv4 = ip ?? "Not available",
-					Ipv6 = reply.Address.MapToIPv6().ToString()
-				};
+				var newFoundDevice = new NetworkDeviceResponseDto(
+					NetworkScannerUtils.MakeNameFromHostname(hostName),
+					null, ip ?? "Not available",
+					reply.Address.MapToIPv6().ToString(),
+					hostName ?? "Not available", 
+					macAddress ?? "Not available"
+					);
 				_foundDevices.Add(newFoundDevice);
 			}
 		}

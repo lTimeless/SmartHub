@@ -8,20 +8,12 @@ using System.Threading.Tasks;
 
 namespace SmartHub.Application.UseCases.Entity.Groups
 {
-	public class GroupCreateCommand : IRequest<Response<string>>
+	public record GroupCreateCommand : IRequest<Response<string>>
 	{
-		public string Name { get; }
-		public string Description { get; }
-		public bool IsSubGroup { get; }
-		public string? ParentGroupId { get; }
-
-		public GroupCreateCommand(string description, string name, string? parentGroupId, bool isSubGroup = default)
-		{
-			Description = description;
-			Name = name;
-			IsSubGroup = isSubGroup;
-			ParentGroupId = parentGroupId;
-		}
+		public string Name { get; init; }
+		public string Description { get; init; }
+		public bool IsSubGroup { get; init; }
+		public string? ParentGroupId { get; init; }
 	}
 
 	public class GroupCreateHandler : IRequestHandler<GroupCreateCommand, Response<string>>

@@ -4,16 +4,10 @@ using SmartHub.Domain;
 
 namespace SmartHub.Application.UseCases.Init.App
 {
-	public class AppConfigInitCommand : IRequest<Response<AppConfig>>
+	public record AppConfigInitCommand : IRequest<Response<AppConfig>>
 	{
-		public string Name { get; set; }
-		public string Description { get; set; }
-		public bool AutoDetectAddress { get; set; }
-		public AppConfigInitCommand(string name, string description, bool autoDetectAddress)
-		{
-			Name = name;
-			Description = description;
-			AutoDetectAddress = autoDetectAddress;
-		}
+		public string Name { get; init; }
+		public string Description { get; init; }
+		public bool AutoDetectAddress { get; init; }
 	}
 }
