@@ -3,7 +3,7 @@
     <aside>
       <Sidebar />
     </aside>
-    <div class="relative md:ml-64 bg-gray-200">
+    <div class="relative md:ml-64 bg-gray-200 min-h-screen">
       <div class="absolute mx-auto w-full pt-0 z-0">
         <TopDoubleWaves />
       </div>
@@ -39,24 +39,23 @@ export default defineComponent({
   setup() {
     const store = useStore();
     const { data: appConfigData } = useSignalRHub<AppConfig>('home', 'SendAppConfig');
-    // const { data: groupsData } = useSignalRHub<Group[]>('home', 'SendGroups');
-    // const { data: devicesData } = useSignalRHub<Device[]>('home', 'SendDevices');
-    //
+    const { data: groupsData } = useSignalRHub<Group[]>('home', 'SendGroups');
+    const { data: devicesData } = useSignalRHub<Device[]>('home', 'SendDevices');
     watch(appConfigData, (newAppConfigData) => {
       if (newAppConfigData) {
         store.commit(AppMutationTypes.UPDATE_APP, newAppConfigData);
       }
     });
-    // watch(groupsData, (newGroupsData) => {
-    //   if (newGroupsData) {
-    //     store.commit(AppMutationTypes.UPDATE_GROUPS, newGroupsData);
-    //   }
-    // });
-    // watch(devicesData, (newDevicesData) => {
-    //   if (newDevicesData) {
-    //     store.commit(AppMutationTypes.UPDATE_Devices, newDevicesData);
-    //   }
-    // });
+    watch(groupsData, (newGroupsData) => {
+      if (newGroupsData) {
+        store.commit(AppMutationTypes.UPDATE_GROUPS, newGroupsData);
+      }
+    });
+    watch(devicesData, (newDevicesData) => {
+      if (newDevicesData) {
+        store.commit(AppMutationTypes.UPDATE_Devices, newDevicesData);
+      }
+    });
 
     return {};
   }

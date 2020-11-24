@@ -3,7 +3,7 @@
     <!-- Tab header -->
     <slot name="header"></slot>
     <!-- Tab content -->
-    <div class="mb-6 py-5">
+    <div>
       <slot name="content"></slot>
     </div>
   </div>
