@@ -33,10 +33,23 @@
               {{ group.name }}
             </h1>
             <button
-              class="flex justify-center items-start rounded-full bg-transparent leading-none border-0 w-6 h-6 font-bold content-center outline-none focus:outline-none hover:bg-gray-300"
+              class="rounded-full bg-transparent border-0 w-6 h-6 outline-none focus:outline-none"
               @click="toggleModal(true, group.id, group.name)"
             >
-              ...
+              <svg
+                class="-mr-1 h-5 w-5"
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M9 13h6m-3-3v6m-9 1V7a2 2 0 012-2h6l2 2h6a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2z"
+                />
+              </svg>
             </button>
           </div>
 
