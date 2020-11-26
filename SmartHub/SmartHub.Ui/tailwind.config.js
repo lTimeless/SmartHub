@@ -48,5 +48,5 @@ module.exports = {
     backgroundColor: ['responsive', 'hover', 'focus', 'active'],
     animation: ['responsive', 'motion-safe', 'motion-reduce']
   },
-  plugins: []
+  plugins: [require('@tailwindcss/forms')]
 };

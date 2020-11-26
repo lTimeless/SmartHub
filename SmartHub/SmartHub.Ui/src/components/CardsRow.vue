@@ -6,7 +6,21 @@
     >
       <div class="flex-auto p-4">
         <div class="flex flex-wrap">
-          <div class="relative w-full pr-4 max-w-full flex-grow flex-1">
+          <div class="relative w-full pr-4 max-w-full flex-grow flex justify-around items-center">
+            <svg
+              class="h-5 w-5 text-gray-500"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M10 19l-7-7m0 0l7-7m-7 7h18"
+              />
+            </svg>
             <h5 class="text-gray-500 uppercase font-bold text-xs">Back</h5>
             <span class="font-semibold text-xl text-gray-800"></span>
           </div>
@@ -27,9 +41,22 @@
           </div>
           <div class="relative w-auto pl-4 flex-initial">
             <div
-              class="text-white p-3 text-center inline-flex items-center justify-center w-12 h-12 shadow-lg rounded-full bg-red-500"
+              class="text-center inline-flex items-center justify-center w-12 h-12 shadow-lg rounded-full bg-red-400"
             >
-              <i class="far fa-chart-bar"></i>
+              <svg
+                class="h-5 w-5 text-black"
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z"
+                />
+              </svg>
             </div>
           </div>
         </div>
@@ -53,9 +80,22 @@
           </div>
           <div class="relative w-auto pl-4 flex-initial">
             <div
-              class="text-white p-3 text-center inline-flex items-center justify-center w-12 h-12 shadow-lg rounded-full bg-orange-500"
+              class="text-center inline-flex items-center justify-center w-12 h-12 shadow-lg rounded-full bg-yellow-400"
             >
-              <i class="fas fa-chart-pie"></i>
+              <svg
+                class="h-5 w-5 text-black"
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"
+                />
+              </svg>
             </div>
           </div>
         </div>
@@ -79,9 +119,22 @@
           </div>
           <div class="relative w-auto pl-4 flex-initial">
             <div
-              class="text-white p-3 text-center inline-flex items-center justify-center w-12 h-12 shadow-lg rounded-full bg-pink-500"
+              class="text-center inline-flex items-center justify-center w-12 h-12 shadow-lg rounded-full bg-green-400"
             >
-              <i class="fas fa-users"></i>
+              <svg
+                class="h-5 w-5 text-black"
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"
+                />
+              </svg>
             </div>
           </div>
         </div>
@@ -105,9 +158,22 @@
           </div>
           <div class="relative w-auto pl-4 flex-initial">
             <div
-              class="text-white p-3 text-center inline-flex items-center justify-center w-12 h-12 shadow-lg rounded-full bg-blue-500"
+              class="text-center inline-flex items-center justify-center w-12 h-12 shadow-lg rounded-full bg-blue-400"
             >
-              <i class="fas fa-percent"></i>
+              <svg
+                class="h-5 w-5 text-black"
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
+                />
+              </svg>
             </div>
           </div>
         </div>

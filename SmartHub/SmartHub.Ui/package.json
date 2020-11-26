@@ -20,6 +20,7 @@
     "vuex": "^4.0.0-rc.1"
   },
   "devDependencies": {
+    "@tailwindcss/forms": "^0.2.1",
     "@typescript-eslint/eslint-plugin": "^4.8.1",
     "@typescript-eslint/parser": "^4.8.1",
     "@vue/cli-plugin-babel": "^4.5.9",

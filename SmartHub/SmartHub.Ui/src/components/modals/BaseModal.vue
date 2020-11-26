@@ -13,20 +13,26 @@
             <!--header-->
             <div
               class="flex items-start justify-between p-5 border-b border-solid border-gray-300 rounded-t"
-              :class="headerColor"
+              :class="[`bg-${headerColor}`]"
             >
               <h3 class="text-3xl font-semibold text-white">
                 {{ title }}
               </h3>
-              <button
-                class="p-1 ml-auto bg-transparent border-0 text-black opacity-5 float-right text-3xl leading-none font-semibold outline-none focus:outline-none"
-                @click="close"
-              >
-                <span
-                  class="bg-transparent text-black opacity-5 h-6 w-6 text-2xl block outline-none focus:outline-none"
+              <button class="p-1 ml-auto outline-none focus:outline-none" @click="close">
+                <svg
+                  class="h-5 w-5 text-white"
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
                 >
-                  ×
-                </span>
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M6 18L18 6M6 6l12 12"
+                  />
+                </svg>
               </button>
             </div>
             <!--body-->
@@ -36,7 +42,7 @@
             <!--footer-->
             <div class="flex items-center justify-end p-3 border-t border-solid border-gray-300 rounded-b">
               <button
-                class="text-red-400 background-transparent font-bold uppercase px-6 py-3 text-sm outline-none focus:outline-none mr-1 mb-1"
+                class="text-red-400 border solid hover:border-red-400 bg-white font-bold uppercase px-6 py-3 text-sm mr-2 rounded"
                 type="button"
                 style="transition: all 0.15s ease"
                 @click="close"
@@ -44,15 +50,16 @@
                 {{ closeBtnTitle }}
               </button>
               <button
-                class="text-orange-400 bg-transparent border border-solid border-orange-400 font-bold uppercase text-sm px-6 py-3 rounded outline-none focus:outline-none mr-1 mb-1"
+                class="`text-gray-500 bg-transparent border border-solid font-bold uppercase text-sm px-6 py-3 rounded outline-none focus:outline-none`"
                 type="button"
                 style="transition: all 0.15s ease"
                 @click="save"
-                :class="
+                :class="[
+                  `border-${saveBtnColor}`,
                   saveBtnActive
-                    ? 'hover:bg-orange-400 hover:text-white active:bg-orange-400'
+                    ? `hover:bg-${saveBtnColor} hover:text-white`
                     : 'opacity-50 focus:outline-none cursor-not-allowed'
-                "
+                ]"
                 :disabled="!saveBtnActive"
               >
                 {{ saveBtnTitle }}
@@ -97,7 +104,11 @@ export default defineComponent({
     },
     headerColor: {
       type: String,
-      default: 'bg-ui-primary'
+      default: 'indigo-400'
+    },
+    saveBtnColor: {
+      type: String,
+      default: 'indigo-400'
     }
   },
   components: {},

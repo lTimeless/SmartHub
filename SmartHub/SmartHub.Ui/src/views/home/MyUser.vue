@@ -8,8 +8,9 @@
           <label class="text-left block text-sm">
             <span class="text-gray-600 dark:text-gray-400">Username </span>
             <input
+              type="text"
               v-model="user.userName"
-              class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outlineIndigo dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
+              class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md"
               :placeholder="user.userName"
             />
           </label>
@@ -36,24 +37,27 @@
         <label class="text-left block text-sm w-full mr-2">
           <span class="text-gray-600 dark:text-gray-400">Firstname</span>
           <input
+            type="text"
             v-model="user.personName.firstName"
-            class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outlineIndigo dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
+            class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md"
             :placeholder="user.personName.firstName === '' ? '-' : user.personName.firstName"
           />
         </label>
         <label class="text-left block text-sm w-full mr-2">
           <span class="text-gray-600 dark:text-gray-400">Middlename</span>
           <input
+            type="text"
             v-model="user.personName.middleName"
-            class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outlineIndigo dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
+            class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md"
             :placeholder="user.personName.middleName === '' ? '-' : user.personName.middleName"
           />
         </label>
         <label class="text-left block text-sm w-full mr-2">
           <span class="text-gray-600 dark:text-gray-400">Lastname</span>
           <input
+            type="text"
             v-model="user.personName.lastName"
-            class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outlineIndigo dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
+            class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md"
             :placeholder="user.personName.lastName === '' ? '-' : user.personName.lastName"
           />
         </label>
@@ -62,24 +66,27 @@
       <label class="text-left block text-sm w-full mr-2 mt-4">
         <span class="text-gray-600 dark:text-gray-400">Email</span>
         <input
+          type="text"
           v-model="user.email"
-          class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outlineIndigo dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
+          class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md"
           :placeholder="user.email === '' || user.email === null ? '-' : user.email"
         />
       </label>
       <label class="text-left block text-sm w-full mr-2 mt-4">
         <span class="text-gray-600 dark:text-gray-400">Phonenumber</span>
         <input
+          type="text"
           v-model="user.phoneNumber"
-          class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outlineIndigo dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
+          class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md"
           :placeholder="user.phoneNumber === '' || user.phoneNumber === null ? '-' : user.phoneNumber"
         />
       </label>
       <label class="text-left block text-sm w-full mr-2 mt-4">
         <span class="text-gray-600 dark:text-gray-400">Personinfo</span>
         <input
+          type="text"
           v-model="user.personInfo"
-          class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outlineIndigo dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
+          class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md"
           :placeholder="user.personInfo === '' ? '-' : user.personInfo"
         />
       </label>
@@ -89,7 +96,11 @@
     <div v-else>Something went wrong loading your accound data...</div>
     <!-- Save button -->
     <div class="md:w-2/12 mt-3">
-      <action-button title="Save" color="indigo" :height="35" :width="150" :callback="onSaveClick" />
+      <button
+        class="block w-full px-4 py-2 mt-4 text-sm text-gray-500 font-medium leading-5 text-center bg-white hover:text-white transition-colors duration-150 hover:bg-indigo-500 border border-transparent rounded-lg active:bg-ui-primary focus:outline-none focus:shadow-outlineIndigo"
+      >
+        Save
+      </button>
     </div>
   </div>
 </template>
@@ -98,16 +109,13 @@
 import { useStore } from 'vuex';
 import { defineComponent, ref, computed, reactive } from 'vue';
 import { getUserRoles, logout } from '@/services/auth/authService';
-import ActionButton from '@/components/widgets/AppButton.vue';
 import { Roles } from '@/types/enums';
 import { UserUpdateRequest } from '@/types/types';
 import { AuthActionTypes } from '@/store/auth/actions';
 
 export default defineComponent({
   name: 'MyUser',
-  components: {
-    ActionButton
-  },
+  components: {},
   setup() {
     const store = useStore();
     const user = computed(() => store.state.authModule.Me);

@@ -13,7 +13,7 @@
       <div class="flex justify-start w-full md:w-1/3 xl:w-1/6">
         <button
           @click="toggleModal(true, null, null)"
-          class="flex justify-center items-center font-bold border border-ui-border rounded-lg bg-gray-400 hover:text-white transition-colors hover:bg-orange-400 h-10 w-full"
+          class="block w-full px-4 py-2 mt-4 text-sm text-gray-500 font-medium leading-5 text-center bg-white hover:text-white transition-colors duration-150 hover:bg-indigo-500 border border-transparent rounded-lg active:bg-ui-primary focus:outline-none focus:shadow-outlineIndigo"
         >
           Add Group
         </button>
