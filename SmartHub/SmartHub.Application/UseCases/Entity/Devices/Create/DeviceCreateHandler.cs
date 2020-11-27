@@ -10,15 +10,17 @@ namespace SmartHub.Application.UseCases.Entity.Devices.Create
 {
     public class DeviceCreateHandler : IRequestHandler<DeviceCreateCommand, Response<string>>
     {
-		private readonly IBaseRepositoryAsync<Device> _deviceRepositry;
-		public DeviceCreateHandler(IBaseRepositoryAsync<Device> deviceRepositry)
+		private readonly IBaseRepositoryAsync<Device> _deviceRepository;
+		private readonly IBaseRepositoryAsync<Group> _groupRepository;
+		public DeviceCreateHandler(IBaseRepositoryAsync<Device> deviceRepository, IBaseRepositoryAsync<Group> groupRepository)
 		{
-			_deviceRepositry = deviceRepositry;
+			_deviceRepository = deviceRepository;
+			_groupRepository = groupRepository;
 		}
 
 		public async Task<Response<string>> Handle(DeviceCreateCommand request, CancellationToken cancellationToken)
         {
-			var foundDevice = await _deviceRepositry.FindbyAsync(x => x.Name == request.Name);
+			var foundDevice = await _deviceRepository.FindbyAsync(x => x.Name == request.Name);
 			if (foundDevice is not null)
 			{
 				return Response.Fail($"Device with name {request.Name} already exists", "");
@@ -29,12 +31,18 @@ namespace SmartHub.Application.UseCases.Entity.Devices.Create
                 request.PrimaryConnection, request.SecondaryConnection,
                 request.PluginName, request.PluginTypes);
 
-            if (string.IsNullOrEmpty(request.GroupName))
+            if (!string.IsNullOrEmpty(request.GroupName))
             {
-                request.GroupName = DefaultNames.DefaultGroup;
-            }
+	            // dann hier nach dem grouppennamen suchen
+                // request.GroupName = DefaultNames.DefaultGroup;
 
-			var created = await _deviceRepositry.AddAsync(newDevice);
+                var foundGroup = await _groupRepository.FindbyAsync(x => x.Name == request.GroupName);
+                if (foundGroup is not null)
+                {
+	                foundGroup.AddDevice(newDevice);
+                }
+            }
+			var created = await _deviceRepository.AddAsync(newDevice);
 			return created
 				? Response.Ok($"Created new Device with name {newDevice.Name}")
 				: Response.Fail($" Couldn't create new Device with name {newDevice.Name}", "");

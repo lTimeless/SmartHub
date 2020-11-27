@@ -5,21 +5,24 @@
     close-btn-title="Cancel"
     :close="close"
     :save="save"
-    header-color="bg-orange-400"
+    header-color="red-400"
+    save-btn-color="red-400"
   >
     <label class="text-left block text-sm">
       <span class="text-gray-600 dark:text-gray-400">Name</span>
       <input
+        type="text"
         v-model="groupDetail.name"
-        class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outlineIndigo dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
+        class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md"
         placeholder="Group name"
       />
     </label>
     <label class="text-left block text-sm mt-3">
       <span class="text-gray-600 dark:text-gray-400">Description</span>
       <input
+        type="text"
         v-model="groupDetail.description"
-        class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outlineIndigo dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
+        class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md"
         placeholder="Group description"
       />
     </label>

@@ -50,14 +50,14 @@
                 {{ closeBtnTitle }}
               </button>
               <button
-                class="`text-gray-500 bg-transparent border border-solid font-bold uppercase text-sm px-6 py-3 rounded outline-none focus:outline-none`"
+                class="` bg-transparent border border-solid font-bold uppercase text-sm px-6 py-3 rounded outline-none focus:outline-none`"
                 type="button"
                 style="transition: all 0.15s ease"
                 @click="save"
                 :class="[
                   `border-${saveBtnColor}`,
                   saveBtnActive
-                    ? `hover:bg-${saveBtnColor} hover:text-white`
+                    ? `hover:bg-${saveBtnColor} hover:text-white text-gray-600`
                     : 'opacity-50 focus:outline-none cursor-not-allowed'
                 ]"
                 :disabled="!saveBtnActive"

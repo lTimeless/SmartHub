@@ -25,7 +25,7 @@
             </span>
             <select
               v-model="selectedRole"
-              class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outlineIndigo dark:text-gray-300 dark:focus:shadow-outline-gray form-select"
+              class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md"
             >
               <option v-for="role in roles" :key="role" :value="role">{{ role }}</option>
             </select>

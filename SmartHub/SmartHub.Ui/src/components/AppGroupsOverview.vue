@@ -33,6 +33,7 @@
               {{ group.name }}
             </h1>
             <button
+              v-if="!group.isSubGroup"
               class="rounded-full bg-transparent border-0 w-6 h-6 outline-none focus:outline-none"
               @click="toggleModal(true, group.id, group.name)"
             >
@@ -51,6 +52,7 @@
                 />
               </svg>
             </button>
+            <span v-else class="text-gray-400 text-xs text-left mt-2">Is Subgroup </span>
           </div>
 
           <div class="text-gray-500 text-sm font-normal text-left">
@@ -59,37 +61,40 @@
           <div class="border-ui-border border-t my-2"></div>
 
           <!-- Show available subGroups -->
-          <template v-if="group.subGroups !== undefined && group.subGroups.length > 0">
-            <div class="text-left">
-              <div>
-                <span class="text-gray-500 text-sm text-left mt-2">SubGroups</span>
-              </div>
-              <div v-for="subgroup in group.subGroups" :key="subgroup.id" class="pl-3">
-                {{ subgroup.name }}
+          <template v-if="!group.isSubGroup">
+            <template v-if="group.subGroups !== undefined && group.subGroups.length > 0">
+              <div class="text-left">
+                <div>
+                  <span class="text-gray-500 text-sm text-left mt-2">SubGroups</span>
+                </div>
                 <!-- Show available subGroup devices-->
-                <template v-if="subgroup.devices !== undefined && subgroup.devices.length > 0">
-                  <div class="text-left pl-3">
-                    <div>
-                      <span class="text-gray-500 text-sm text-left mt-2">Devices</span>
+                <div v-for="subgroup in group.subGroups" :key="subgroup.id" class="pl-3">
+                  {{ subgroup.name }}
+                  <template v-if="subgroup.devices !== undefined && subgroup.devices.length > 0">
+                    <div class="text-left pl-3">
+                      <div>
+                        <span class="text-gray-500 text-sm text-left mt-2">Devices</span>
+                      </div>
+                      <div v-for="device in subgroup.devices" :key="device.id" class="pl-3">
+                        {{ device.name }}
+                      </div>
                     </div>
-                    <div v-for="device in subgroup.devices" :key="device.id" class="pl-3">
-                      {{ device.name }}
+                  </template>
+                  <template v-else>
+                    <div class="text-left pl-3">
+                      <span class="text-gray-500 text-sm text-left mt-2">No devices available</span>
                     </div>
-                  </div>
-                </template>
-                <template v-else>
-                  <div class="text-left pl-3">
-                    <span class="text-gray-500 text-sm text-left mt-2">No devices available</span>
-                  </div>
-                </template>
+                  </template>
+                </div>
               </div>
-            </div>
+            </template>
+            <template v-else>
+              <div class="text-left">
+                <span class="text-gray-500 text-sm text-left mt-2">No subGroups available</span>
+              </div>
+            </template>
           </template>
-          <template v-else>
-            <div class="text-left">
-              <span class="text-gray-500 text-sm text-left mt-2">No subGroups available</span>
-            </div>
-          </template>
+
           <!-- Show available devices -->
           <template v-if="group.devices !== undefined && group.devices.length > 0">
             <div class="text-left">
@@ -131,8 +136,7 @@ export default defineComponent({
   },
   setup() {
     const store = useStore();
-    const noSubGroups = computed(() => store.state.appModule.groups);
-    const groups = computed(() => noSubGroups.value?.filter((x: Group) => !x.isSubGroup));
+    const groups = computed(() => store.state.appModule.groups);
     const state = reactive({
       showAddModal: false,
       showDetailModal: false,

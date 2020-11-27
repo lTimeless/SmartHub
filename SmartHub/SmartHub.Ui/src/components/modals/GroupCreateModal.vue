@@ -73,9 +73,7 @@ export default defineComponent({
       state.title = state.groupTitle;
     }
 
-    const saveBtnActive = computed(
-      () => groupCreateRequest.name !== '' && groupCreateRequest.description !== ''
-    );
+    const saveBtnActive = computed(() => groupCreateRequest.name !== '');
     const close = () => {
       context.emit('close', false);
     };

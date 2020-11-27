@@ -37,7 +37,7 @@
         <div class="flex flex-wrap">
           <div class="relative w-full pr-4 max-w-full flex-grow flex-1">
             <h5 class="text-gray-500 uppercase font-bold text-xs">Groups</h5>
-            <span class="font-semibold text-xl text-gray-800"> 2 </span>
+            <span class="font-semibold text-xl text-gray-800"> {{ groupsAmount }} </span>
           </div>
           <div class="relative w-auto pl-4 flex-initial">
             <div
@@ -76,7 +76,7 @@
         <div class="flex flex-wrap">
           <div class="relative w-full pr-4 max-w-full flex-grow flex-1">
             <h5 class="text-gray-500 uppercase font-bold text-xs">Devices</h5>
-            <span class="font-semibold text-xl text-gray-800"> 6 </span>
+            <span class="font-semibold text-xl text-gray-800"> {{ devicesAmount }} </span>
           </div>
           <div class="relative w-auto pl-4 flex-initial">
             <div
@@ -188,6 +188,7 @@
 
 <script lang="ts">
 import { defineComponent, PropType, computed } from 'vue';
+import { useStore } from 'vuex';
 
 export default defineComponent({
   name: 'CardsRow',
@@ -236,8 +237,13 @@ export default defineComponent({
   },
   setup(props) {
     const dontShowThisTab = computed(() => props.openTab);
+    const store = useStore();
+    const groupsAmount = computed(() => store.getters.getGroupsAmount);
+    const devicesAmount = computed(() => store.getters.getDevicesAmount);
     return {
       dontShowThisTab,
+      groupsAmount,
+      devicesAmount,
       ...props
     };
   }
