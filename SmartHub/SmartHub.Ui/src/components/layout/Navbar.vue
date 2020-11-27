@@ -22,8 +22,9 @@
           </label>
         </div>
       </form>
-      <!-- User -->
+      <!-- Dropdowns -->
       <ul class="flex-col md:flex-row list-none items-center hidden md:flex">
+        <NotificationDropdown class="mr-2"></NotificationDropdown>
         <UserDropdown></UserDropdown>
       </ul>
     </div>
@@ -36,12 +37,14 @@
 import { defineComponent, ref } from 'vue';
 import UserDropdown from '@/components/layout/UserDropdown.vue';
 import { useRoute } from 'vue-router';
+import NotificationDropdown from '@/components/layout/NotificationDropdown.vue';
 // import { GithubIcon } from 'vue-feather-icons';
 
 export default defineComponent({
   name: 'Navbar',
   components: {
-    UserDropdown
+    UserDropdown,
+    NotificationDropdown
     // GithubIcon
     // ToggleDarkMode,
     // SunIcon,

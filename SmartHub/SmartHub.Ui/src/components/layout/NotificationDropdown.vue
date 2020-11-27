@@ -1,69 +1,96 @@
 <template>
-  <div>
-    <a
-      class="text-gray-600 block py-1 px-3"
-      href="#pablo"
-      ref="btnDropdownRef"
-    >
-      <i class="fas fa-bell"></i>
-    </a>
+  <div class="relative inline-block text-left">
+    <div class="relative z-10 items-center flex cursor-pointer" @click="showDropdown = !showDropdown">
+      <span
+        class="w-10 h-10 text-sm text-white text-center shadow-lg hover:opacity-75 inline-flex items-center justify-center rounded-full"
+      >
+        <svg
+          class="h-6 w-6"
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"
+          />
+        </svg>
+      </span>
+    </div>
+    <button
+      v-if="showDropdown"
+      @click="showDropdown = false"
+      tabindex="-1"
+      @keyup.esc="escapeDropdown"
+      class="fixed inset-0 h-full w-full bg-black opacity-20 cursor-default"
+    ></button>
     <div
-      ref="popoverDropdownRef"
-      class="bg-white text-base z-50 float-left py-2 list-none text-left rounded shadow-lg mt-1"
-      :class="{
-        hidden: !dropdownPopoverShow,
-        block: dropdownPopoverShow
-      }"
-      style="min-width: 12rem"
+      v-if="showDropdown"
+      class="origin-top-right z-20 absolute right-0 mt-2 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5"
+      role="menu"
+      aria-orientation="vertical"
+      aria-labelledby="options-menu"
     >
-      <a
-        href="#pablo"
-        class="text-sm py-2 px-4 font-normal block w-full whitespace-no-wrap bg-transparent text-gray-800"
-      >
-        Action
-      </a>
-      <a
-        href="#pablo"
-        class="text-sm py-2 px-4 font-normal block w-full whitespace-no-wrap bg-transparent text-gray-800"
-      >
-        Another action
-      </a>
-      <a
-        href="#pablo"
-        class="text-sm py-2 px-4 font-normal block w-full whitespace-no-wrap bg-transparent text-gray-800"
-      >
-        Something else here
-      </a>
-      <div class="h-0 my-2 border border-solid border-gray-200" />
-      <a
-        href="#pablo"
-        class="text-sm py-2 px-4 font-normal block w-full whitespace-no-wrap bg-transparent text-gray-800"
-      >
-        Seprated link
-      </a>
+      <div class="py-1">
+        <a
+          v-for="item in dropDownList"
+          :key="item.name"
+          @click="dropDownBtnClick(item.name)"
+          class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900 cursor-pointer active:bg-gray-100"
+          role="menuitem"
+          >{{ item.name }}</a
+        >
+      </div>
     </div>
   </div>
 </template>
-<script>
-// import Popper from "popper.js";
-export default {
-  data() {
-    return {
-      dropdownPopoverShow: false
+<script lang="ts">
+import { computed, defineComponent, ref } from 'vue';
+import { useStore } from 'vuex';
+import { useRouter } from 'vue-router';
+import { Routes } from '@/types/enums';
+
+export default defineComponent({
+  name: 'NotificationDropdown',
+  props: {},
+  setup() {
+    const store = useStore();
+    const router = useRouter();
+    const dropdownPopoverShow = ref<boolean>(false);
+    const showDropdown = ref(false);
+
+    const dropDownList = [
+      {
+        name: 'Notification_1'
+      },
+      {
+        name: 'Notification_2'
+      }
+    ];
+
+    const escapeDropdown = () => {
+      console.log('esc');
+      showDropdown.value = false;
     };
-  },
-  methods: {
-    // toggleDropdown: function(event) {
-    //   event.preventDefault();
-    //   if (this.dropdownPopoverShow) {
-    //     this.dropdownPopoverShow = false;
-    //   } else {
-    //     this.dropdownPopoverShow = true;
-    //     new Popper(this.$refs.btnDropdownRef, this.$refs.popoverDropdownRef, {
-    //       placement: "bottom-end"
-    //     });
-    //   }
-    // }
+
+    const dropDownBtnClick = async (name: string) => {
+      console.log(name);
+      // const item = dropDownList.find(x => x.name === name) ?? { path: Routes.NotFound }
+      // await router.push(item.path).then(() => {
+      //   showDropdown.value = false;
+      // });
+    };
+
+    return {
+      dropdownPopoverShow,
+      showDropdown,
+      dropDownList,
+      escapeDropdown,
+      dropDownBtnClick
+    };
   }
-};
+});
 </script>

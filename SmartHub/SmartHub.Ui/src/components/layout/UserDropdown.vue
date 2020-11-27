@@ -3,10 +3,22 @@
     <div v-if="user !== null && user !== undefined">
       <div class="relative z-10 items-center flex cursor-pointer" @click="showDropdown = !showDropdown">
         <span
-          class="w-12 h-12 text-sm text-white text-center text-xl bg-gray-300 inline-flex items-center justify-center rounded-full"
-          :style="{ 'background-color': imageBgColor }"
+          class="w-10 h-10 text-sm text-white shadow-lg hover:opacity-75 text-center inline-flex items-center justify-center rounded-full"
         >
-          {{ user.userName.charAt(0).toUpperCase() }}{{ user.userName.charAt(1).toUpperCase() }}
+          <svg
+            class="h-6 w-6"
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
+            />
+          </svg>
         </span>
       </div>
     </div>
@@ -61,7 +73,6 @@ export default defineComponent({
     const router = useRouter();
     const userPath = '/user';
     const dropdownPopoverShow = ref<boolean>(false);
-    const imageBgColor = `#${((Math.random() * 0xffffff) << 0).toString(16).padStart(6, '0')}`;
     const user = computed(() => store.state.authModule.Me);
     const showDropdown = ref(false);
 
@@ -78,14 +89,13 @@ export default defineComponent({
     };
 
     const dropDownBtnClick = async (name: string) => {
-      const item = dropDownList.find(x => x.name === name) ?? { path: Routes.NotFound }
+      const item = dropDownList.find((x) => x.name === name) ?? { path: Routes.NotFound };
       await router.push(item.path).then(() => {
         showDropdown.value = false;
       });
     };
 
     return {
-      imageBgColor,
       dropdownPopoverShow,
       user,
       userPath,
