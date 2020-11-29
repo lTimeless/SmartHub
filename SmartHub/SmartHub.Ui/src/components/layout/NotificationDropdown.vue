@@ -1,6 +1,6 @@
 <template>
   <div class="relative inline-block text-left">
-    <div class="relative z-20 items-center flex cursor-pointer" @click="showDropdown = !showDropdown">
+    <div class="relative z-20 items-center flex cursor-pointer" @click="setDropDownValue(!showDropdown)">
       <span
         class="w-10 h-10 text-sm md:text-white sm:text-black text-center md:shadow-lg hover:opacity-75 inline-flex items-center justify-center rounded-full"
       >
@@ -22,7 +22,7 @@
     </div>
     <button
       v-if="showDropdown"
-      @click="showDropdown = false"
+      @click="setDropDownValue(false)"
       tabindex="-1"
       @keyup.esc="escapeDropdown"
       class="fixed inset-0 h-full w-full bg-black opacity-20 cursor-default"
@@ -52,6 +52,7 @@ import { computed, defineComponent, ref } from 'vue';
 import { useStore } from 'vuex';
 import { useRouter } from 'vue-router';
 import { Routes } from '@/types/enums';
+import { AppMutationTypes } from '@/store/app/mutations';
 
 export default defineComponent({
   name: 'NotificationDropdown',
@@ -60,7 +61,7 @@ export default defineComponent({
     const store = useStore();
     const router = useRouter();
     const dropdownPopoverShow = ref<boolean>(false);
-    const showDropdown = ref(false);
+    const showDropdown = computed(() => store.state.appModule.notificationDropdownOpen);
 
     const dropDownList = [
       {
@@ -71,9 +72,17 @@ export default defineComponent({
       }
     ];
 
+    const setDropDownValue = (value: boolean) => {
+      if (value) {
+        store.commit(AppMutationTypes.SET_USER_DROPDOWN, false);
+      }
+      store.commit(AppMutationTypes.SET_NOTIFICATION_DROPDOWN, value);
+    };
+
     const escapeDropdown = () => {
       console.log('esc');
-      showDropdown.value = false;
+      // showDropdown.value = false;
+      setDropDownValue(false);
     };
 
     const dropDownBtnClick = async (name: string) => {
@@ -89,7 +98,8 @@ export default defineComponent({
       showDropdown,
       dropDownList,
       escapeDropdown,
-      dropDownBtnClick
+      dropDownBtnClick,
+      setDropDownValue
     };
   }
 });

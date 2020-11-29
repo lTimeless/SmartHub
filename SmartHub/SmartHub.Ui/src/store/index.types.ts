@@ -20,6 +20,8 @@ export interface AppState {
   groups?: Group[];
   devices?: Device[];
   appConfig?: AppConfig;
+  userDropDownOpen: boolean;
+  notificationDropdownOpen: boolean;
 }
 
 /*
