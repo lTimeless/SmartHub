@@ -13,7 +13,7 @@
             <!--header-->
             <div
               class="flex items-start justify-between p-5 border-b border-solid border-gray-300 rounded-t"
-              :class="[`bg-${headerColor}`]"
+              :class="[`${mainBgColor}`]"
             >
               <h3 class="text-3xl font-semibold text-white">
                 {{ title }}
@@ -55,9 +55,9 @@
                 style="transition: all 0.15s ease"
                 @click="save"
                 :class="[
-                  `border-${saveBtnColor}`,
+                  `${mainBorderColor}`,
                   saveBtnActive
-                    ? `hover:bg-${saveBtnColor} hover:text-white text-gray-600`
+                    ? `hover:${mainBgColor} hover:text-white text-gray-600`
                     : 'opacity-50 focus:outline-none cursor-not-allowed'
                 ]"
                 :disabled="!saveBtnActive"
@@ -102,7 +102,11 @@ export default defineComponent({
       type: Boolean,
       default: true
     },
-    headerColor: {
+    mainBgColor: {
+      type: String,
+      default: 'indigo-400'
+    },
+    mainBorderColor: {
       type: String,
       default: 'indigo-400'
     },

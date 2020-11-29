@@ -14,7 +14,7 @@
           />
         </div>
         <!-- Expand Arrow -->
-        <div class="px-4 my-2 flex justify-end cursor-pointer">
+        <div v-if="openTab === 0" class="px-4 my-2 flex justify-end cursor-pointer">
           <div class="cursor-pointer flex" @click="expandAdminRow = !expandAdminRow">
             <span v-if="!expandAdminRow" class="text-sm text-gray-700 pr-1">More</span>
             <svg

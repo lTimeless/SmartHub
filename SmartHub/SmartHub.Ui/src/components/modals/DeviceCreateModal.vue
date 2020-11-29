@@ -6,8 +6,8 @@
     :close="close"
     :save="save"
     :save-btn-active="saveBtnActive"
-    header-color="yellow-400"
-    save-btn-color="yellow-400"
+    main-bg-color="bg-yellow-400"
+    main-border-color="border-yellow-400"
   >
     <div class="flex justify-between">
       <div class="w-full mr-2">

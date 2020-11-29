@@ -1,9 +1,9 @@
 <template>
   <div class="relative inline-block text-left">
     <div v-if="user !== null && user !== undefined">
-      <div class="relative z-10 items-center flex cursor-pointer" @click="showDropdown = !showDropdown">
+      <div class="relative z-20 items-center flex cursor-pointer" @click="showDropdown = !showDropdown">
         <span
-          class="w-10 h-10 text-sm text-white shadow-lg hover:opacity-75 text-center inline-flex items-center justify-center rounded-full"
+          class="w-10 h-10 text-sm md:text-white sm:text-black shadow-lg hover:opacity-75 text-center inline-flex items-center justify-center rounded-full"
         >
           <svg
             class="h-6 w-6"

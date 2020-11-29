@@ -6,8 +6,8 @@
     :close="close"
     :save="save"
     :save-btn-active="saveBtnActive"
-    header-color="red-400"
-    save-btn-color="red-400"
+    main-border-color="border-red-400"
+    main-bg-color="bg-red-400"
   >
     <label class="text-left block text-sm">
       <span class="text-gray-600 dark:text-gray-400">Name</span>

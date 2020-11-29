@@ -3,9 +3,9 @@
   <nav
     class="absolute top-0 left-0 w-full z-10 bg-transparent md:flex-row md:flex-no-wrap md:justify-start flex items-center p-4"
   >
-    <div class="w-full mx-autp items-center flex justify-between md:flex-no-wrap flex-wrap md:px-10 px-4">
+    <div class="w-full mx-auto items-center flex justify-between md:flex-no-wrap flex-wrap md:px-10 px-4">
       <!-- Brand -->
-      <a class="text-white text-sm uppercase hidden lg:inline-block font-semibold">{{ route.name }}</a>
+      <a class="text-white text-lg uppercase lg:inline-block font-semibold">{{ route.name }}</a>
       <!-- Form -->
       <form class="md:flex hidden flex-row flex-wrap items-center lg:ml-auto mr-3">
         <div class="relative flex w-full flex-wrap items-stretch">
@@ -33,22 +33,16 @@
   <!-- End Navbar -->
 </template>
 <script lang="ts">
-// import ToggleDarkMode from '@/components/layouts/AppToggleTheme.vue';
-import { defineComponent, ref } from 'vue';
+import { defineComponent } from 'vue';
 import UserDropdown from '@/components/layout/UserDropdown.vue';
 import { useRoute } from 'vue-router';
 import NotificationDropdown from '@/components/layout/NotificationDropdown.vue';
-// import { GithubIcon } from 'vue-feather-icons';
 
 export default defineComponent({
   name: 'Navbar',
   components: {
     UserDropdown,
     NotificationDropdown
-    // GithubIcon
-    // ToggleDarkMode,
-    // SunIcon,
-    // MoonIcon
   },
   setup() {
     const route = useRoute();

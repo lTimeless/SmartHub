@@ -21,11 +21,11 @@
       </router-link>
       <!-- User -->
       <ul class="md:hidden items-center flex flex-wrap list-none">
-        <li class="inline-block relative">
-          <!--          <notification-dropdown-component></notification-dropdown-component>-->
+        <li class="inline-block relative mr-2">
+          <NotificationDropdown />
         </li>
         <li class="inline-block relative">
-          <UserDropdown></UserDropdown>
+          <UserDropdown />
         </li>
       </ul>
       <!-- Collapse -->
@@ -123,7 +123,7 @@
   </nav>
 </template>
 <script lang="ts">
-import NotificationDropdownComponent from './NotificationDropdown.vue';
+import NotificationDropdown from './NotificationDropdown.vue';
 import UserDropdown from './UserDropdown.vue';
 import { computed, defineComponent, onMounted, ref, onBeforeMount } from 'vue';
 import { useRouter } from 'vue-router';
@@ -137,7 +137,7 @@ export default defineComponent({
   name: 'AppSidebar',
   components: {
     Logo,
-    // NotificationDropdownComponent,
+    NotificationDropdown,
     UserDropdown
   },
   props: {},
