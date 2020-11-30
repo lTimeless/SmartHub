@@ -334,12 +334,12 @@
 <script lang="ts">
 import { defineComponent, computed, ref, onMounted } from 'vue';
 import AppTabs from '@/components/widgets/AppTabs.vue';
-import AppAutomation from '@/components/AppAutomations.vue';
+import AppAutomation from '@/components/AutomationsOverview.vue';
 import AppGroupsOverview from '@/components/AppGroupsOverview.vue';
 import AppDevicesOverview from '@/components/AppDevicesOverview.vue';
 import { useStore } from 'vuex';
-import BarChart from '@/components/layout/BarChart.vue';
-import LineChart from '@/components/layout/LineChart.vue';
+import BarChart from '@/components/charts/BarChart.vue';
+import LineChart from '@/components/charts/LineChart.vue';
 import { getUserRoles } from '@/services/auth/authService';
 import { Roles } from '@/types/enums';
 import AdminCardsRow from '@/components/admin/AdminCardsRow.vue';

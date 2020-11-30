@@ -104,15 +104,15 @@ export default defineComponent({
     },
     mainBgColor: {
       type: String,
-      default: 'indigo-400'
+      default: 'bg-indigo-400'
     },
     mainBorderColor: {
       type: String,
-      default: 'indigo-400'
+      default: 'border-indigo-400'
     },
     saveBtnColor: {
       type: String,
-      default: 'indigo-400'
+      default: 'bg-indigo-400'
     }
   },
   components: {},

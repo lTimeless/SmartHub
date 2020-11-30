@@ -84,34 +84,17 @@
                 >
                   {{ group.name }}
                 </h1>
-                <button
+                <GroupDropdown
                   v-if="!group.isSubGroup"
-                  class="rounded-full bg-transparent border-0 w-6 h-6 outline-none focus:outline-none"
-                  @click="toggleModal(true, group.id, group.name)"
-                >
-                  <svg
-                    class="-mr-1 h-5 w-5"
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                  >
-                    <path
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      stroke-width="2"
-                      d="M9 13h6m-3-3v6m-9 1V7a2 2 0 012-2h6l2 2h6a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2z"
-                    />
-                  </svg>
-                </button>
+                  :add-sub-group="toggleModal.bind(this, true, group.id, group.name)"
+                  :close-drop-down="closeDropdown"
+                />
                 <span v-else class="text-gray-400 text-xs text-left mt-2">Is Subgroup </span>
               </div>
-
               <div class="text-gray-500 text-sm font-normal text-left">
                 Creator: <span class="font-bold">{{ group.createdBy }}</span>
               </div>
               <div class="border-ui-border border-t my-2"></div>
-
               <!-- Show available subGroups -->
               <template v-if="!group.isSubGroup">
                 <template v-if="group.subGroups !== undefined && group.subGroups.length > 0">
@@ -146,7 +129,6 @@
                   </div>
                 </template>
               </template>
-
               <!-- Show available devices -->
               <template v-if="group.devices !== undefined && group.devices.length > 0">
                 <div class="text-left">
@@ -181,34 +163,17 @@
                 >
                   {{ group.name }}
                 </h1>
-                <button
+                <GroupDropdown
                   v-if="!group.isSubGroup"
-                  class="rounded-full bg-transparent border-0 w-6 h-6 outline-none focus:outline-none"
-                  @click="toggleModal(true, group.id, group.name)"
-                >
-                  <svg
-                    class="-mr-1 h-5 w-5"
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                  >
-                    <path
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      stroke-width="2"
-                      d="M9 13h6m-3-3v6m-9 1V7a2 2 0 012-2h6l2 2h6a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2z"
-                    />
-                  </svg>
-                </button>
+                  :add-sub-group="toggleModal.bind(this, true, group.id, group.name)"
+                  :close-drop-down="closeDropdown"
+                />
                 <span v-else class="text-gray-400 text-xs text-left mt-2">Is Subgroup </span>
               </div>
-
               <div class="text-gray-500 text-sm font-normal text-left">
                 Creator: <span class="font-bold">{{ group.createdBy }}</span>
               </div>
               <div class="border-ui-border border-t my-2"></div>
-
               <!-- Show available subGroups -->
               <template v-if="!group.isSubGroup">
                 <template v-if="group.subGroups !== undefined && group.subGroups.length > 0">
@@ -243,7 +208,6 @@
                   </div>
                 </template>
               </template>
-
               <!-- Show available devices -->
               <template v-if="group.devices !== undefined && group.devices.length > 0">
                 <div class="text-left">
@@ -277,13 +241,15 @@ import GroupCreateModal from '@/components/modals/GroupCreateModal.vue';
 import GroupDetailsModal from '@/components/modals/GroupDetailsModal.vue';
 import { Group } from '@/types/types';
 import { getByIdGroup } from '@/services/apis/group';
+import GroupDropdown from '@/components/GroupDropdown.vue';
 
 export default defineComponent({
   name: 'AppGroupsOverview',
   components: {
     AppCard,
     GroupCreateModal,
-    GroupDetailsModal
+    GroupDetailsModal,
+    GroupDropdown
   },
   setup() {
     const store = useStore();
@@ -297,12 +263,14 @@ export default defineComponent({
       group: {} as Group | null | undefined,
       showLoader: false,
       parentGroupName: '',
-      parentGroupId: ''
+      parentGroupId: '',
+      closeDropdown: false
     });
     const toggleModal = (value: boolean, parentGroupId: string | null, parentGroupName: string | null) => {
       state.parentGroupId = parentGroupId ?? '';
       state.parentGroupName = parentGroupName ?? '';
       state.showAddModal = value;
+      state.closeDropdown = value;
     };
     const closeDetailsModal = (value: boolean) => {
       state.showDetailModal = value;
