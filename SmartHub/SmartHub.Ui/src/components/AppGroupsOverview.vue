@@ -20,7 +20,7 @@
       </div>
       <div class="w-full md:w-1/3 xl:w-2/6 ml-2">
         <button
-          v-if="!showSubGroupsIcon"
+          v-if="showSubGroupsIcon"
           @click="showSubGroups()"
           class="flex justify-center content-center px-2 py-2 mt-4 text-gray-500 bg-transparent border border-transparent rounded-lg focus:outline-none"
         >
@@ -40,7 +40,7 @@
           </svg>
         </button>
         <button
-          v-if="showSubGroupsIcon"
+          v-if="!showSubGroupsIcon"
           @click="showSubGroups()"
           class="flex justify-center content-center px-2 py-2 mt-4 text-gray-500 bg-transparent border border-transparent rounded-lg focus:outline-none"
         >
@@ -69,106 +69,208 @@
     </div>
   </div>
 
-  <!-- All Groups -->
-  <div v-if="groups && groups.length > 0">
-    <div class="grid xl:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 gap-4">
-      <AppCard class="bg-white shadow-md w-full" v-for="group in groups" :key="group.id">
-        <div class="p-3 w-full">
-          <div class="flex items-start justify-between">
-            <h1
-              class="text-xl text-left text-gray-600 font-bold cursor-pointer"
-              @click="openDetailModal(true, group.id)"
-            >
-              {{ group.name }}
-            </h1>
-            <button
-              v-if="!group.isSubGroup"
-              class="rounded-full bg-transparent border-0 w-6 h-6 outline-none focus:outline-none"
-              @click="toggleModal(true, group.id, group.name)"
-            >
-              <svg
-                class="-mr-1 h-5 w-5"
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  d="M9 13h6m-3-3v6m-9 1V7a2 2 0 012-2h6l2 2h6a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2z"
-                />
-              </svg>
-            </button>
-            <span v-else class="text-gray-400 text-xs text-left mt-2">Is Subgroup </span>
-          </div>
+  <!-- Show Groups -->
+  <div v-if="groupsWithSubGroups && groupsWithSubGroups.length > 0">
+    <!-- All Groups -->
+    <template v-if="showSubGroupsIcon">
+      <div>
+        <div class="grid xl:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 gap-4">
+          <AppCard class="bg-white shadow-md w-full" v-for="group in groupsWithSubGroups" :key="group.id">
+            <div class="p-3 w-full">
+              <div class="flex items-start justify-between">
+                <h1
+                  class="text-xl text-left text-gray-600 font-bold cursor-pointer"
+                  @click="openDetailModal(true, group.id)"
+                >
+                  {{ group.name }}
+                </h1>
+                <button
+                  v-if="!group.isSubGroup"
+                  class="rounded-full bg-transparent border-0 w-6 h-6 outline-none focus:outline-none"
+                  @click="toggleModal(true, group.id, group.name)"
+                >
+                  <svg
+                    class="-mr-1 h-5 w-5"
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M9 13h6m-3-3v6m-9 1V7a2 2 0 012-2h6l2 2h6a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2z"
+                    />
+                  </svg>
+                </button>
+                <span v-else class="text-gray-400 text-xs text-left mt-2">Is Subgroup </span>
+              </div>
 
-          <div class="text-gray-500 text-sm font-normal text-left">
-            Creator: <span class="font-bold">{{ group.createdBy }}</span>
-          </div>
-          <div class="border-ui-border border-t my-2"></div>
+              <div class="text-gray-500 text-sm font-normal text-left">
+                Creator: <span class="font-bold">{{ group.createdBy }}</span>
+              </div>
+              <div class="border-ui-border border-t my-2"></div>
 
-          <!-- Show available subGroups -->
-          <template v-if="!group.isSubGroup">
-            <template v-if="group.subGroups !== undefined && group.subGroups.length > 0">
-              <div class="text-left">
-                <div>
-                  <span class="text-gray-500 text-sm text-left mt-2">SubGroups</span>
-                </div>
-                <!-- Show available subGroup devices-->
-                <div v-for="subgroup in group.subGroups" :key="subgroup.id" class="pl-3">
-                  {{ subgroup.name }}
-                  <template v-if="subgroup.devices !== undefined && subgroup.devices.length > 0">
-                    <div class="text-left pl-3">
-                      <div>
-                        <span class="text-gray-500 text-sm text-left mt-2">Devices</span>
-                      </div>
-                      <div v-for="device in subgroup.devices" :key="device.id" class="pl-3">
-                        {{ device.name }}
-                      </div>
+              <!-- Show available subGroups -->
+              <template v-if="!group.isSubGroup">
+                <template v-if="group.subGroups !== undefined && group.subGroups.length > 0">
+                  <div class="text-left">
+                    <div>
+                      <span class="text-gray-500 text-sm text-left mt-2">SubGroups</span>
                     </div>
-                  </template>
-                  <template v-else>
-                    <div class="text-left pl-3">
-                      <span class="text-gray-500 text-sm text-left mt-2">No devices available</span>
+                    <!-- Show available subGroup devices-->
+                    <div v-for="subgroup in group.subGroups" :key="subgroup.id" class="pl-3">
+                      {{ subgroup.name }}
+                      <template v-if="subgroup.devices !== undefined && subgroup.devices.length > 0">
+                        <div class="text-left pl-3">
+                          <div>
+                            <span class="text-gray-500 text-sm text-left mt-2">Devices</span>
+                          </div>
+                          <div v-for="device in subgroup.devices" :key="device.id" class="pl-3">
+                            {{ device.name }}
+                          </div>
+                        </div>
+                      </template>
+                      <template v-else>
+                        <div class="text-left pl-3">
+                          <span class="text-gray-500 text-sm text-left mt-2">No devices available</span>
+                        </div>
+                      </template>
                     </div>
-                  </template>
-                </div>
-              </div>
-            </template>
-            <template v-else>
-              <div class="text-left">
-                <span class="text-gray-500 text-sm text-left mt-2">No subGroups available</span>
-              </div>
-            </template>
-          </template>
+                  </div>
+                </template>
+                <template v-else>
+                  <div class="text-left">
+                    <span class="text-gray-500 text-sm text-left mt-2">No subGroups available</span>
+                  </div>
+                </template>
+              </template>
 
-          <!-- Show available devices -->
-          <template v-if="group.devices !== undefined && group.devices.length > 0">
-            <div class="text-left">
-              <div>
-                <span class="text-gray-500 text-sm text-left mt-2">Devices</span>
-              </div>
-              <div v-for="device in group.devices" :key="device.id" class="pl-3">
-                {{ device.name }}
-              </div>
+              <!-- Show available devices -->
+              <template v-if="group.devices !== undefined && group.devices.length > 0">
+                <div class="text-left">
+                  <div>
+                    <span class="text-gray-500 text-sm text-left mt-2">Devices</span>
+                  </div>
+                  <div v-for="device in group.devices" :key="device.id" class="pl-3">
+                    {{ device.name }}
+                  </div>
+                </div>
+              </template>
+              <template v-else>
+                <div class="text-left">
+                  <span class="text-gray-500 text-sm text-left mt-2">No devices available</span>
+                </div>
+              </template>
             </div>
-          </template>
-          <template v-else>
-            <div class="text-left">
-              <span class="text-gray-500 text-sm text-left mt-2">No devices available</span>
-            </div>
-          </template>
+          </AppCard>
         </div>
-      </AppCard>
-    </div>
+      </div>
+    </template>
+    <!-- Only Parent Groups  -->
+    <template v-if="!showSubGroupsIcon">
+      <div v-if="onlyParentGroups && onlyParentGroups.length > 0">
+        <div class="grid xl:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 gap-4">
+          <AppCard class="bg-white shadow-md w-full" v-for="group in onlyParentGroups" :key="group.id">
+            <div class="p-3 w-full">
+              <div class="flex items-start justify-between">
+                <h1
+                  class="text-xl text-left text-gray-600 font-bold cursor-pointer"
+                  @click="openDetailModal(true, group.id)"
+                >
+                  {{ group.name }}
+                </h1>
+                <button
+                  v-if="!group.isSubGroup"
+                  class="rounded-full bg-transparent border-0 w-6 h-6 outline-none focus:outline-none"
+                  @click="toggleModal(true, group.id, group.name)"
+                >
+                  <svg
+                    class="-mr-1 h-5 w-5"
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M9 13h6m-3-3v6m-9 1V7a2 2 0 012-2h6l2 2h6a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2z"
+                    />
+                  </svg>
+                </button>
+                <span v-else class="text-gray-400 text-xs text-left mt-2">Is Subgroup </span>
+              </div>
+
+              <div class="text-gray-500 text-sm font-normal text-left">
+                Creator: <span class="font-bold">{{ group.createdBy }}</span>
+              </div>
+              <div class="border-ui-border border-t my-2"></div>
+
+              <!-- Show available subGroups -->
+              <template v-if="!group.isSubGroup">
+                <template v-if="group.subGroups !== undefined && group.subGroups.length > 0">
+                  <div class="text-left">
+                    <div>
+                      <span class="text-gray-500 text-sm text-left mt-2">SubGroups</span>
+                    </div>
+                    <!-- Show available subGroup devices-->
+                    <div v-for="subgroup in group.subGroups" :key="subgroup.id" class="pl-3">
+                      {{ subgroup.name }}
+                      <template v-if="subgroup.devices !== undefined && subgroup.devices.length > 0">
+                        <div class="text-left pl-3">
+                          <div>
+                            <span class="text-gray-500 text-sm text-left mt-2">Devices</span>
+                          </div>
+                          <div v-for="device in subgroup.devices" :key="device.id" class="pl-3">
+                            {{ device.name }}
+                          </div>
+                        </div>
+                      </template>
+                      <template v-else>
+                        <div class="text-left pl-3">
+                          <span class="text-gray-500 text-sm text-left mt-2">No devices available</span>
+                        </div>
+                      </template>
+                    </div>
+                  </div>
+                </template>
+                <template v-else>
+                  <div class="text-left">
+                    <span class="text-gray-500 text-sm text-left mt-2">No subGroups available</span>
+                  </div>
+                </template>
+              </template>
+
+              <!-- Show available devices -->
+              <template v-if="group.devices !== undefined && group.devices.length > 0">
+                <div class="text-left">
+                  <div>
+                    <span class="text-gray-500 text-sm text-left mt-2">Devices</span>
+                  </div>
+                  <div v-for="device in group.devices" :key="device.id" class="pl-3">
+                    {{ device.name }}
+                  </div>
+                </div>
+              </template>
+              <template v-else>
+                <div class="text-left">
+                  <span class="text-gray-500 text-sm text-left mt-2">No devices available</span>
+                </div>
+              </template>
+            </div>
+          </AppCard>
+        </div>
+      </div>
+    </template>
   </div>
   <div v-else>No Groups available</div>
 </template>
 
 <script lang="ts">
-import { reactive, toRefs, defineComponent, computed, ref } from 'vue';
+import { reactive, toRefs, defineComponent, computed } from 'vue';
 import AppCard from '@/components/widgets/AppCard.vue';
 import { useStore } from 'vuex';
 import GroupCreateModal from '@/components/modals/GroupCreateModal.vue';
@@ -186,8 +288,7 @@ export default defineComponent({
   setup() {
     const store = useStore();
     const groupsWithSubGroups = computed(() => store.state.appModule.groups);
-    const noSubGroups = computed(() => store.state.appModule.groups?.filter((x: Group) => !x.isSubGroup));
-    const groups = ref(groupsWithSubGroups.value);
+    const onlyParentGroups = computed(() => store.getters.getOnlyParentGroups);
     const state = reactive({
       showAddModal: false,
       showDetailModal: false,
@@ -209,11 +310,6 @@ export default defineComponent({
 
     const showSubGroups = () => {
       state.showSubGroupsIcon = !state.showSubGroupsIcon;
-      if (state.showSubGroupsIcon) {
-        groups.value = noSubGroups.value;
-      } else {
-        groups.value = groupsWithSubGroups.value;
-      }
     };
 
     const openDetailModal = async (value: boolean, groupId: string) => {
@@ -235,11 +331,12 @@ export default defineComponent({
 
     return {
       ...toRefs(state),
-      groups,
       toggleModal,
       openDetailModal,
       closeDetailsModal,
-      showSubGroups
+      showSubGroups,
+      onlyParentGroups,
+      groupsWithSubGroups
     };
   }
 });
