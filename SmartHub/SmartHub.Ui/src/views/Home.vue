@@ -23,11 +23,11 @@
 import { defineComponent, watch } from 'vue';
 import { useSignalRHub } from '@/hooks/useSignalR.ts';
 import { useStore } from 'vuex';
-import { AppMutationTypes } from '@/store/app/mutations';
 import { Group, Device, AppConfig } from '@/types/types';
 import Sidebar from '@/components/layout/Sidebar.vue';
 import Navbar from '@/components/layout/Navbar.vue';
 import TopDoubleWaves from '@/components/svgs/TopDoubleWaves.vue';
+import { AppActionTypes } from '@/store/app/actions';
 
 export default defineComponent({
   name: 'Home',
@@ -43,17 +43,17 @@ export default defineComponent({
     const { data: devicesData } = useSignalRHub<Device[]>('home', 'SendDevices');
     watch(appConfigData, (newAppConfigData) => {
       if (newAppConfigData) {
-        store.commit(AppMutationTypes.UPDATE_APP, newAppConfigData);
+        store.dispatch(AppActionTypes.UPDATE_APP, newAppConfigData);
       }
     });
     watch(groupsData, (newGroupsData) => {
       if (newGroupsData) {
-        store.commit(AppMutationTypes.UPDATE_GROUPS, newGroupsData);
+        store.dispatch(AppActionTypes.UPDATE_GROUPS, newGroupsData);
       }
     });
     watch(devicesData, (newDevicesData) => {
       if (newDevicesData) {
-        store.commit(AppMutationTypes.UPDATE_Devices, newDevicesData);
+        store.dispatch(AppActionTypes.UPDATE_Devices, newDevicesData);
       }
     });
 

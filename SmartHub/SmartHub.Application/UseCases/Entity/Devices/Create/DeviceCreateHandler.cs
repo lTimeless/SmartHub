@@ -33,9 +33,6 @@ namespace SmartHub.Application.UseCases.Entity.Devices.Create
 
             if (!string.IsNullOrEmpty(request.GroupName))
             {
-	            // dann hier nach dem grouppennamen suchen
-                // request.GroupName = DefaultNames.DefaultGroup;
-
                 var foundGroup = await _groupRepository.FindbyAsync(x => x.Name == request.GroupName);
                 if (foundGroup is not null)
                 {

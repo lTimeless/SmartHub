@@ -65,6 +65,7 @@ import { logout } from '@/services/auth/authService';
 import { useRouter } from 'vue-router';
 import { Routes } from '@/types/enums';
 import { AppMutationTypes } from '@/store/app/mutations';
+import { AppActionTypes } from '@/store/app/actions';
 
 export default defineComponent({
   name: 'UserDropdown',
@@ -86,14 +87,12 @@ export default defineComponent({
 
     const setDropDownValue = (value: boolean) => {
       if (value) {
-        store.commit(AppMutationTypes.SET_NOTIFICATION_DROPDOWN, false);
+        store.dispatch(AppActionTypes.SET_NOTIFICATION_DROPDOWN, false);
       }
-      store.commit(AppMutationTypes.SET_USER_DROPDOWN, value);
+      store.dispatch(AppActionTypes.SET_USER_DROPDOWN, value);
     };
 
     const escapeDropdown = () => {
-      console.log('esc');
-      // showDropdown.value = false;
       setDropDownValue(false);
     };
 
