@@ -37,7 +37,9 @@
         <div class="flex flex-wrap">
           <div class="relative w-full pr-4 max-w-full flex-grow flex-1">
             <h5 class="text-gray-500 uppercase font-bold text-xs">Groups</h5>
-            <span class="font-semibold text-xl text-gray-800"> {{ groupsAmount }} </span>
+            <span class="font-semibold text-xl text-gray-800">
+              {{ parentGroupsAmount + subGroupsAmount }}
+            </span>
           </div>
           <div class="relative w-auto pl-4 flex-initial">
             <div
@@ -61,8 +63,10 @@
           </div>
         </div>
         <p class="text-sm text-gray-500 mt-4">
-          <span class="text-green-500 mr-2">1 </span>
-          <span class="whitespace-no-wrap"> Since last login </span>
+          <span class="text-gray-400">{{ parentGroupsAmount }} </span>
+          <span class="whitespace-no-wrap mr-3"> Groups</span>
+          <span class="text-gray-400">{{ subGroupsAmount }} </span>
+          <span class="whitespace-no-wrap"> Subgroups</span>
         </p>
       </div>
     </div>
@@ -238,12 +242,14 @@ export default defineComponent({
   setup(props) {
     const dontShowThisTab = computed(() => props.openTab);
     const store = useStore();
-    const groupsAmount = computed(() => store.getters.getGroupsAmount);
+    const parentGroupsAmount = computed(() => store.getters.getParentGroupsAmount);
+    const subGroupsAmount = computed(() => store.getters.getSubGroupsAmount);
     const devicesAmount = computed(() => store.getters.getDevicesAmount);
     return {
       dontShowThisTab,
-      groupsAmount,
+      parentGroupsAmount,
       devicesAmount,
+      subGroupsAmount,
       ...props
     };
   }

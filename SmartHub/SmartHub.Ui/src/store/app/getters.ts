@@ -5,12 +5,16 @@ import { Group } from '@/types/types';
 // Getter Types
 export type HomeGetters = {
   getOnlyParentGroups(state: AppState): Group[] | undefined;
-  getGroupsAmount(state: AppState): number;
+  getParentGroupsAmount(state: AppState): number;
+  getSubGroupsAmount(state: AppState): number;
   getDevicesAmount(state: AppState): number;
 };
 
 export const getters: GetterTree<AppState, RootState> = {
   getOnlyParentGroups: (state) => state.groups?.filter((x: Group) => !x.isSubGroup),
-  getGroupsAmount: (state) => (state.groups === undefined ? 0 : state.groups.length),
+  getParentGroupsAmount: (state) =>
+    state.groups === undefined ? 0 : state.groups.filter((x) => !x.isSubGroup).length,
+  getSubGroupsAmount: (state) =>
+    state.groups === undefined ? 0 : state.groups.filter((x) => x.isSubGroup).length,
   getDevicesAmount: (state) => (state.devices === undefined ? 0 : state.devices.length)
 };

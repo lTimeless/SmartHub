@@ -55,20 +55,12 @@
           </svg>
           <span class="text-sm">Add Subgroup</span>
         </a>
-        <a
-          v-for="item in dropDownList"
-          :key="item.name"
-          @click="dropDownBtnClick(item.name)"
-          class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900 cursor-pointer active:bg-gray-100"
-          role="menuitem"
-          >{{ item.name }}</a
-        >
       </div>
     </div>
   </div>
 </template>
 <script lang="ts">
-import { defineComponent, ref, reactive, toRefs, PropType, watch, computed } from 'vue';
+import { defineComponent, ref, reactive, toRefs, PropType, watch } from 'vue';
 
 export default defineComponent({
   name: 'GroupDropdown',
@@ -89,11 +81,6 @@ export default defineComponent({
     const state = reactive({
       showDropdown: false
     });
-    const dropDownList = [
-      {
-        name: 'Test option'
-      }
-    ];
     const { closeDropDown } = toRefs(props);
     watch(closeDropDown, (newValue) => {
       state.showDropdown = newValue;
@@ -102,19 +89,9 @@ export default defineComponent({
       state.showDropdown = !state.showDropdown;
     };
 
-    const dropDownBtnClick = async (name: string) => {
-      console.log(name);
-      // const item = dropDownList.find(x => x.name === name) ?? { path: Routes.NotFound }
-      // await router.push(item.path).then(() => {
-      //   showDropdown.value = false;
-      // });
-    };
-
     return {
       ...toRefs(state),
       dropdownPopoverShow,
-      dropDownList,
-      dropDownBtnClick,
       setDropDownValue
     };
   }
