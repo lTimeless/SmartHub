@@ -23,6 +23,7 @@ namespace SmartHub.Application.UseCases.SignalR.Services
 		private readonly IBaseRepositoryAsync<Group> _groupRepository;
 		private readonly IBaseRepositoryAsync<Device> _deviceRepository;
 
+
 		private readonly IMapper _mapper;
 		private readonly IHubContext<ActivityHub, IServerHubClient> _activityHubContext;
 		private readonly IHubContext<HomeHub, IServerHubClient> _homeHubContext;
@@ -66,16 +67,14 @@ namespace SmartHub.Application.UseCases.SignalR.Services
 			{
 				if (appConfig.SaveXLimit != null && appConfig.DeleteXAmountAfterLimit != null)
 				{
-					var amount = activities.Count;
-					var deleteXAmount = amount - (int)appConfig.SaveXLimit;
-					activities.RemoveAll(a => activities
+					var deleteXAmount = (activities.Count - (int)appConfig.SaveXLimit) + (int)appConfig.DeleteXAmountAfterLimit;
+
+					var removeList = activities
 						.OrderByDescending(x => x.CreatedAt)
-						.TakeLast(deleteXAmount)
-						.ToList()
-						.Exists(la => la.Id == a.Id));
+						.TakeLast(deleteXAmount);
+					await _activityRepository.RemoveRangeAsync(removeList);
 				}
 			}
-
 		}
 
 		public async Task SendAppConfig()

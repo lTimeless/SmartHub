@@ -53,7 +53,7 @@ namespace SmartHub.Application.UseCases.AppFolder.AppConfigParser
 			if (config is not null)
 			{
 				_appConfig = config;
-				_logger.Information("Read yaml-config-file and updated appConfig.");
+				_logger.Information("Read yaml-config-file into appConfig.");
 				return;
 			}
 			_logger.Warning($"YamlConfig is null: {config} .");

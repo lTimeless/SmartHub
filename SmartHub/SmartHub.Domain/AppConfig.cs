@@ -40,7 +40,14 @@ namespace SmartHub.Domain
 		public string? LogFolderName { get; set; }
 		public string? LogFolderPath { get; set; }
 
+		/// <summary>
+		/// The offset that will be added to the amount of deleted items if the limit is reached.
+		/// </summary>
 		public int? DeleteXAmountAfterLimit { get; set; }
+
+		/// <summary>
+		/// The limit for saving items.
+		/// </summary>
 		public int? SaveXLimit { get; set; }
 
 		#region Methods

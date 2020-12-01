@@ -9,36 +9,16 @@ namespace SmartHub.Infrastructure.Database
 {
 	public class UnitOfWork : IUnitOfWork
 	{
-		private readonly IChannelManager _channelManager;
-
 		public AppDbContext AppDbContext { get; }
 
-		public UnitOfWork(AppDbContext appDbContext, IChannelManager channelManager)
+		public UnitOfWork(AppDbContext appDbContext)
 		{
 			AppDbContext = appDbContext;
-			_channelManager = channelManager;
 		}
 
 		public async Task SaveAsync()
 		{
-			// TODO: rewrite, damit dennoch alle domainevents ausgeführt werden
-			//var aggregateRoots = AppDbContext.ChangeTracker.Entries().Where(x => x.Entity is IAggregateRoot)
-			//	.Select(x => x.Entity as IAggregateRoot).ToList();
-
 			await AppDbContext.SaveChangesAsync().ConfigureAwait(false);
-
-			//foreach (var item in aggregateRoots.Where(item => item?.Events != null))
-			//{
-			//	if (item == null)
-			//	{
-			//		continue;
-			//	}
-			//	foreach (var itemEvent in item.Events)
-			//	{
-			//		await _channelManager.PublishNextToChannel(ChannelNames.System, itemEvent).ConfigureAwait(false);
-			//	}
-			//	item.ClearDomainEvents();
-			//}
 		}
 
 		public void Dispose()

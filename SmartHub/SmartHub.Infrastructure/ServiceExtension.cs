@@ -18,7 +18,6 @@ using SmartHub.Infrastructure.Database;
 using SmartHub.Infrastructure.Database.Repositories;
 using SmartHub.Infrastructure.Helpers;
 using SmartHub.Infrastructure.Services.Auth;
-using SmartHub.Infrastructure.Services.Dispatchers;
 using SmartHub.Infrastructure.Services.FileSystem;
 using SmartHub.Infrastructure.Services.Http;
 using SmartHub.Infrastructure.Services.Initialization;
@@ -136,8 +135,6 @@ namespace SmartHub.Infrastructure
 
         public static void AddBackgroundServices(this IServiceCollection services)
         {
-            services.AddSingleton<IChannelManager,ChannelManager>();
-            services.AddSingleton<EventDispatcher>();
             services.AddHostedService<InitializationService>();
         }
 

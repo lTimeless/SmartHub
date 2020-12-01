@@ -3,10 +3,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Serilog;
-using SmartHub.Application.Common.Interfaces;
 using SmartHub.Application.Common.Interfaces.Database;
 using SmartHub.Application.UseCases.AppFolder;
-using SmartHub.Infrastructure.Services.Dispatchers;
 using System;
 using System.IO;
 using System.Threading;
@@ -19,16 +17,11 @@ namespace SmartHub.Infrastructure.Services.Initialization
 		private readonly IDbSeeder _dbSeeder;
 		private readonly IAppFolderService _appFolderService;
 		private readonly ILogger _logger = Log.ForContext(typeof(InitializationService));
-		private readonly IChannelManager _channelManagerStarter;
-		private readonly EventDispatcher _eventDispatcherStarter;
 		private readonly IConfiguration _configuration;
 
-		public InitializationService(IAppFolderService homeFolderService, IChannelManager channelManagerStarter,
-			EventDispatcher eventDispatcherStarter, IServiceProvider provider, IConfiguration configuration)
+		public InitializationService(IAppFolderService homeFolderService, IServiceProvider provider, IConfiguration configuration)
 		{
 			_appFolderService = homeFolderService;
-			_channelManagerStarter = channelManagerStarter;
-			_eventDispatcherStarter = eventDispatcherStarter;
 			using var scope = provider.CreateScope();
 			_dbSeeder = scope.ServiceProvider.GetRequiredService<IDbSeeder>();
 			_configuration = configuration;
@@ -43,16 +36,13 @@ namespace SmartHub.Infrastructure.Services.Initialization
 			_logger.Information("SmartHub folder is at {@homePath}{Seperator}{@folderName}", homePath, Path.DirectorySeparatorChar.ToString(), folderName);
 
 			_ = SeedDatabase().ConfigureAwait(true);
-			await _channelManagerStarter.StartAsync(cancellationToken);
-			await _eventDispatcherStarter.StartAsync(cancellationToken);
+
 			_logger.Information("Stop initialization.");
 		}
 
 		public async Task StopAsync(CancellationToken cancellationToken)
 		{
 			await _appFolderService.Save();
-			await _channelManagerStarter.StopAsync(cancellationToken);
-			await _eventDispatcherStarter.StopAsync(cancellationToken);
 			_logger.Information("Stopped all BackgroundServices.");
 		}
 
