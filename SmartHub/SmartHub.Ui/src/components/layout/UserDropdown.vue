@@ -49,7 +49,7 @@
       <div class="border-t border-solid border-gray-300 mx-4" />
       <div class="py-1">
         <a
-          @click="logout"
+          @click="logoutClick"
           class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900 cursor-pointer active:bg-gray-100"
           role="menuitem"
           >Logout</a
@@ -104,6 +104,12 @@ export default defineComponent({
       });
     };
 
+    const logoutClick = () => {
+      logout();
+      store.dispatch(AppActionTypes.SET_NOTIFICATION_DROPDOWN, false);
+      store.dispatch(AppActionTypes.SET_USER_DROPDOWN, false);
+    };
+
     return {
       dropdownPopoverShow,
       user,
@@ -112,7 +118,7 @@ export default defineComponent({
       dropDownList,
       escapeDropdown,
       dropDownBtnClick,
-      logout,
+      logoutClick,
       setDropDownValue
     };
   }
