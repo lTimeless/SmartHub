@@ -35,6 +35,6 @@ volumes:
   data01:
     driver: local
 
-networks:
-  elastic:
-    driver: bridge
+#networks:
+#  elastic:
+#    driver: bridge

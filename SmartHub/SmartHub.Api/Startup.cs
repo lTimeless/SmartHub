@@ -77,10 +77,15 @@ namespace SmartHub.Api
             // Endpoints
             app.UseEndpoints(endpoints =>
             {
+	            // Controllers
                 endpoints.MapControllerRoute(
                     "default",
                     "{controller}/{action=Index}/{id?}");
 
+                // GraphQl
+                endpoints.MapGraphQL();
+
+                // SignalR
                 endpoints.MapHub<ActivityHub>("/api/hub/activity");
                 endpoints.MapHub<LogHub>("/api/hub/logs");
                 endpoints.MapHub<HomeHub>("/api/hub/home");

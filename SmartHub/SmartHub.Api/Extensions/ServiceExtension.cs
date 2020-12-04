@@ -17,6 +17,7 @@ using Microsoft.OpenApi.Models;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using Polly;
+using SmartHub.Api.GraphQl;
 using SmartHub.Api.Validators;
 using SmartHub.Domain.Common.Settings;
 using SmartHub.Domain;
@@ -29,6 +30,8 @@ namespace SmartHub.Api.Extensions
 		{
 			// Server configuration
 			services.AddServerConfiguration(configuration);
+			// GraphQl
+			services.AddGraphQl();
 			// Swagger
 			services.AddSwagger();
 			// Controllers
@@ -63,6 +66,12 @@ namespace SmartHub.Api.Extensions
 			{
 				options.RootPath = "wwwroot";
 			});
+		}
+
+		private static void AddGraphQl(this IServiceCollection services)
+		{
+			services.AddGraphQLServer()
+				.AddQueryType<RootQueryType>();
 		}
 
 		private static void AddSwagger(this IServiceCollection services)
