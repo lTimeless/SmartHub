@@ -29,7 +29,7 @@ namespace SmartHub.Application.UseCases.Entity.Groups
 		{
 			if (request.IsSubGroup && !string.IsNullOrEmpty(request.ParentGroupId))
 			{
-				var foundGroup = await _groupRepository.FindbyAsync(x => x.Id == request.ParentGroupId);
+				var foundGroup = await _groupRepository.FindByAsync(x => x.Id == request.ParentGroupId);
 				if (foundGroup is not null && foundGroup.IsSubGroup)
 				{
 					return Response.Fail("You can not create a subgroup of a subgroup.", "");

@@ -45,7 +45,7 @@ namespace SmartHub.Application.UseCases.DeviceState.LightState
 
 			}
 
-			var foundDevice = await _deviceRepository.FindbyAsync(x => x.Id == request.LightStateDto.DeviceId);
+			var foundDevice = await _deviceRepository.FindByAsync(x => x.Id == request.LightStateDto.DeviceId);
 			if (foundDevice is null)
 			{
 				return Response.Fail<DeviceStateDto>($"Error: No device found by the given deviceId {request.LightStateDto.DeviceId}", new DeviceLightStateRequestDto());

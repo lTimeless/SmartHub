@@ -27,7 +27,7 @@ namespace SmartHub.Application.UseCases.Entity.Groups
 		public async Task<Response<GroupDto>> Handle(GroupGetByIdQuery request, CancellationToken cancellationToken)
         {
 
-			var group = await _grouprepository.FindbyAsync(x => x.Id == request.Id);
+			var group = await _grouprepository.FindByAsync(x => x.Id == request.Id);
             return group == null
                 ? Response.Fail("Error: No group found.", new GroupDto())
                 : Response.Ok(_mapper.Map<GroupDto>(group));

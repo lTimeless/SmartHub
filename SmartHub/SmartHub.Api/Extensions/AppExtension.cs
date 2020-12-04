@@ -2,7 +2,6 @@
 using System.Linq;
 using System.Net.NetworkInformation;
 using System.Net.Sockets;
-using Hangfire;
 using Microsoft.AspNetCore.Builder;
 using Serilog;
 using SmartHub.Api.Middleware;
@@ -27,11 +26,6 @@ namespace SmartHub.Api.Extensions
 		public static void ConfigureCustomExceptionMiddleware(this IApplicationBuilder app)
 		{
 			app.UseMiddleware<ExceptionMiddleware>();
-		}
-
-		public static void ConfigureHangfire(this IApplicationBuilder app)
-		{
-			app.UseHangfireDashboard();
 		}
 
 		public static void ShowLocalIpv4()

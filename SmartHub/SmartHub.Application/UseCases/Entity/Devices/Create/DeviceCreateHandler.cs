@@ -20,7 +20,7 @@ namespace SmartHub.Application.UseCases.Entity.Devices.Create
 
 		public async Task<Response<string>> Handle(DeviceCreateCommand request, CancellationToken cancellationToken)
         {
-			var foundDevice = await _deviceRepository.FindbyAsync(x => x.Name == request.Name);
+			var foundDevice = await _deviceRepository.FindByAsync(x => x.Name == request.Name);
 			if (foundDevice is not null)
 			{
 				return Response.Fail($"Device with name {request.Name} already exists", "");
@@ -33,7 +33,7 @@ namespace SmartHub.Application.UseCases.Entity.Devices.Create
 
             if (!string.IsNullOrEmpty(request.GroupName))
             {
-                var foundGroup = await _groupRepository.FindbyAsync(x => x.Name == request.GroupName);
+                var foundGroup = await _groupRepository.FindByAsync(x => x.Name == request.GroupName);
                 if (foundGroup is not null)
                 {
 	                foundGroup.AddDevice(newDevice);

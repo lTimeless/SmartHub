@@ -42,7 +42,7 @@ namespace SmartHub.Application.UseCases.Entity.Groups
                 return Response.Fail("Error: You can't rename the default group.", new GroupDto());
             }
 
-			var foundGroup = await _groupRepository.FindbyAsync(x => x.Id == request.Id);
+			var foundGroup = await _groupRepository.FindByAsync(x => x.Id == request.Id);
 			if (foundGroup is null)
 			{
 				return Response.Fail($"Error: Couldn't find group with id {request.Id}.", new GroupDto());

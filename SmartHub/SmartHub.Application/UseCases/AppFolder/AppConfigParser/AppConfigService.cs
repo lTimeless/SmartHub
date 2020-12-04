@@ -6,7 +6,7 @@ using SmartHub.Application.UseCases.HomeFolder;
 using SmartHub.Domain;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
-using System.IO;
+using Microsoft.Extensions.Hosting;
 
 namespace SmartHub.Application.UseCases.AppFolder.AppConfigParser
 {

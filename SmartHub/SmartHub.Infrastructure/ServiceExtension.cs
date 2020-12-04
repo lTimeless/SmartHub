@@ -1,15 +1,12 @@
 ﻿using System;
 using System.Linq;
 using System.Text;
-using Hangfire;
-using Hangfire.PostgreSql;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
-using Newtonsoft.Json;
 using SmartHub.Application.Common.Interfaces;
 using SmartHub.Application.Common.Interfaces.Database;
 using SmartHub.Domain.Common.Settings;
@@ -30,7 +27,6 @@ namespace SmartHub.Infrastructure
         {
             // Db contexts
             services.AddDbContext(configuration);
-            services.AddHangfireConfiguration(configuration);
             // Authentication and Authorization
             services.AddAuth(configuration);
             // Repositories
@@ -109,20 +105,6 @@ namespace SmartHub.Infrastructure
 
             // Handler for Authorization attribute and the "adminpolicy" on asp.net core routes
             // services.AddSingleton<IAuthorizationHandler , UserAuthHandler>();
-        }
-
-        private static void AddHangfireConfiguration(this IServiceCollection services, IConfiguration configuration)
-        {
-            var connectionString = CreateConnectionString(configuration);
-            services.AddHangfire((sp, config)  =>
-            {
-                config.UseSerializerSettings(new JsonSerializerSettings
-                {
-                    ReferenceLoopHandling = ReferenceLoopHandling.Ignore
-                });
-                config.UsePostgreSqlStorage(connectionString);
-            });
-            services.AddHangfireServer();
         }
 
         private static void AddRepositories(this IServiceCollection services)

@@ -21,7 +21,7 @@ namespace SmartHub.Application.UseCases.Entity.Devices.Read.ById
 
 		public async Task<Response<DeviceDto>> Handle(DeviceByIdQuery request, CancellationToken cancellationToken)
         {
-            var device = await _deviceRepositry.FindbyAsync(x => x.Id ==  request.Id);
+            var device = await _deviceRepositry.FindByAsync(x => x.Id ==  request.Id);
             return device == null
                 ? Response.Fail("Error: No device found.", new DeviceDto())
                 : Response.Ok(_mapper.Map<DeviceDto>(device));

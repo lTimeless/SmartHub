@@ -28,7 +28,7 @@ namespace SmartHub.Application.UseCases.Entity.Devices.Update
             {
                 return Response.Fail("Error: No home created yet.", string.Empty);
             }
-			var foundDevice = await _deviceRepository.FindbyAsync(x => x.Id == request.Id);
+			var foundDevice = await _deviceRepository.FindByAsync(x => x.Id == request.Id);
 			if (foundDevice is null)
 			{
 				return Response.Fail($"Error: Couldn't find device with id {request.Id}.", string.Empty);

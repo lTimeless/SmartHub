@@ -1,4 +1,3 @@
-using Hangfire;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -16,7 +15,7 @@ namespace SmartHub.Api
     public class Startup
     {
         private IConfiguration Configuration { get; }
-		public IHostEnvironment HostEnvironment { get; }
+        private IHostEnvironment HostEnvironment { get; }
 
 		public Startup(IConfiguration configuration, IHostEnvironment hostEnvironment)
         {
@@ -67,9 +66,6 @@ namespace SmartHub.Api
             app.UseStaticFiles();
             app.UseSpaStaticFiles();
 
-            // Hangfire
-            app.ConfigureHangfire();
-
             // Routing
             app.UseRouting();
 
@@ -84,8 +80,6 @@ namespace SmartHub.Api
                 endpoints.MapControllerRoute(
                     "default",
                     "{controller}/{action=Index}/{id?}");
-
-                endpoints.MapHangfireDashboard();
 
                 endpoints.MapHub<ActivityHub>("/api/hub/activity");
                 endpoints.MapHub<LogHub>("/api/hub/logs");
@@ -103,8 +97,8 @@ namespace SmartHub.Api
                     return;
                 }
 
-                Log.ForContext(typeof(Startup)).Warning("Serving frontend from http://localhost:8080");
-                // Start seperate FE server and Server listens to it
+                Log.ForContext(typeof(Startup)).Warning("You need to start separate FE server.. listening to http://localhost:8080");
+                // Start separate FE server and Server listens to it
                 spa.UseProxyToSpaDevelopmentServer("http://localhost:8080");
                 // To start its own FE server
             });
