@@ -1,5 +1,6 @@
 name: .Net5 CI
 on:
+  workflow_dispatch:
   push:
     branches: [ master, develop]
     paths:
