@@ -1,6 +1,7 @@
 name: Vue CI
 
 on:
+  workflow_dispatch:
   push:
     branches: [ master, develop]
     paths:
