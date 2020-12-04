@@ -28,7 +28,7 @@ namespace SmartHub.Api.Extensions
 		public static IServiceCollection AddApiLayer(this IServiceCollection services, IConfiguration configuration, IHostEnvironment appEnvironment)
 		{
 			// Server configuration
-			services.AddServerConfiguration(configuration, appEnvironment);
+			services.AddServerConfiguration(configuration);
 			// Swagger
 			services.AddSwagger();
 			// Controllers
@@ -45,7 +45,7 @@ namespace SmartHub.Api.Extensions
 			return services;
 		}
 
-		private static void AddServerConfiguration(this IServiceCollection services, IConfiguration configuration, IHostEnvironment appEnvironment)
+		private static void AddServerConfiguration(this IServiceCollection services, IConfiguration configuration)
 		{
 			services.Configure<KestrelServerOptions>(options => options.AllowSynchronousIO = true);
 

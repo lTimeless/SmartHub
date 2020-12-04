@@ -53,7 +53,7 @@ export default defineComponent({
     });
     watch(devicesData, (newDevicesData) => {
       if (newDevicesData) {
-        store.dispatch(AppActionTypes.UPDATE_Devices, newDevicesData);
+        store.dispatch(AppActionTypes.UPDATE_DEVICES, newDevicesData);
       }
     });
 

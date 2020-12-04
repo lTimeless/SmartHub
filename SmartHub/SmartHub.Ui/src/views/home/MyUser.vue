@@ -137,7 +137,7 @@ export default defineComponent({
       newRole: ''
     });
     const onSaveClick = async () => {
-      if (user.value === undefined) {
+      if (typeof user.value === 'undefined') {
         return;
       }
       updateUserRequest.userName = user.value.userName;

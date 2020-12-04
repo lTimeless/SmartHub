@@ -14,7 +14,7 @@ export enum AppActionTypes {
   // Group
   UPDATE_GROUPS = 'UPDATE_GROUPS',
   // Device
-  UPDATE_Devices = 'UPDATE_Devices',
+  UPDATE_DEVICES = 'UPDATE_DEVICES',
   // UI
   SET_USER_DROPDOWN = 'SET_USER_DROPDOWN',
   SET_NOTIFICATION_DROPDOWN = 'SET_NOTIFICATION_DROPDOWN'
@@ -37,7 +37,7 @@ export type HomeActions = {
   // Group
   [AppActionTypes.UPDATE_GROUPS]({ commit }: ActionAugments, payload: Group[]): Promise<void>;
   // Device
-  [AppActionTypes.UPDATE_Devices]({ commit }: ActionAugments, payload: Device[]): Promise<void>;
+  [AppActionTypes.UPDATE_DEVICES]({ commit }: ActionAugments, payload: Device[]): Promise<void>;
   // UI
   [AppActionTypes.SET_NOTIFICATION_DROPDOWN]({ commit }: ActionAugments, payload: boolean): Promise<void>;
   [AppActionTypes.SET_USER_DROPDOWN]({ commit }: ActionAugments, payload: boolean): Promise<void>;
@@ -75,8 +75,8 @@ export const actions: ActionTree<AppState, RootState> = {
     await commit(AppMutationTypes.UPDATE_GROUPS, payload);
   },
   // Device
-  async [AppActionTypes.UPDATE_Devices]({ commit }, payload): Promise<void> {
-    await commit(AppMutationTypes.UPDATE_Devices, payload);
+  async [AppActionTypes.UPDATE_DEVICES]({ commit }, payload): Promise<void> {
+    await commit(AppMutationTypes.UPDATE_DEVICES, payload);
   },
   // UI
   async [AppActionTypes.SET_NOTIFICATION_DROPDOWN]({ commit }, payload): Promise<void> {
