@@ -1,4 +1,4 @@
-import { Module } from 'Vuex';
+import { Module } from 'vuex';
 import { RootState, AppState } from '@/store/index.types';
 import { getters } from '@/store/app/getters';
 import { mutations } from '@/store/app/mutations';

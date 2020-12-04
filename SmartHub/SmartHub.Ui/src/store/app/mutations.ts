@@ -1,4 +1,4 @@
-import { MutationTree } from 'Vuex';
+import { MutationTree } from 'vuex';
 import { Group, Device, AppConfig } from '@/types/types';
 import { AppState } from '@/store/index.types';
 
