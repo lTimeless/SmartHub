@@ -3,29 +3,13 @@ on:
   push:
     branches: [ master, develop]
     paths:
-      - 'SmartHub/SmartHub.Api/**'
-      - 'SmartHub/SmartHub.Api.Tests/**'
-      - 'SmartHub/SmartHub.Application.Tests/**'
-      - 'SmartHub/SmartHub.Application/**'
-      - 'SmartHub/SmartHub.BasePlugin/**'
-      - 'SmartHub/SmartHub.Domain.Tests/**'
-      - 'SmartHub/SmartHub.Domain/**'
-      - 'SmartHub/SmartHub.Infrastructure.Tests/**'
-      - 'SmartHub/SmartHub.Infrastructure/**'
-      - 'SmartHub/SmartHub.Shared/**'
+      - 'SmartHub/**'
+      - '!SmartHub/SmartHub.Ui/**'
+      - '!**.md'
   pull_request:
     branches: [ master, develop]
     paths:
-      - 'SmartHub/SmartHub.Api/**'
-      - 'SmartHub/SmartHub.Api.Tests/**'
-      - 'SmartHub/SmartHub.Application.Tests/**'
-      - 'SmartHub/SmartHub.Application/**'
-      - 'SmartHub/SmartHub.BasePlugin/**'
-      - 'SmartHub/SmartHub.Domain.Tests/**'
-      - 'SmartHub/SmartHub.Domain/**'
-      - 'SmartHub/SmartHub.Infrastructure.Tests/**'
-      - 'SmartHub/SmartHub.Infrastructure/**'
-      - 'SmartHub/SmartHub.Shared/**'
+      - 'SmartHub/**'
 
 env:
   folderName: 'SmartHub/'

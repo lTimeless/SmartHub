@@ -5,10 +5,11 @@ on:
     branches: [ master, develop]
     paths:
       - 'SmartHub/SmartHub.Ui/**'
+      - '!**.md'
   pull_request:
     branches: [ master, develop]
     paths:
-      - 'SmartHub/SmartHub.Ui/**'
+      - 'SmartHub/**'
 
 env:
   SmartHubUipath: SmartHub/SmartHub.Ui
