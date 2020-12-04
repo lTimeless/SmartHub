@@ -4,7 +4,6 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Infrastructure;
 using SmartHub.Application.Common.Interfaces;
 using SmartHub.Domain.Entities;
 using SmartHub.Infrastructure.Database.Configs;
@@ -22,10 +21,11 @@ namespace SmartHub.Infrastructure.Database
 			_userAccessor = userAccessor;
 		}
 
-		public DbSet<Home> Homes { get; set; }
 		public DbSet<Group> Groups { get; set; }
-		//public DbSet<Device> Devices { get; set; }
-		//public DbSet<Plugin> Plugins { get; set; }
+		public DbSet<Device> Devices { get; set; }
+		public DbSet<Plugin> Plugins { get; set; }
+		public DbSet<Activity> Activities { get; set; }
+
 
 		protected override void OnModelCreating(ModelBuilder builder)
 		{
@@ -42,13 +42,13 @@ namespace SmartHub.Infrastructure.Database
 			builder.Entity<IdentityRoleClaim<string>>().ToTable("RoleClaims");
 
 			// Apply entity configurations
-			builder.ApplyConfiguration(new HomeConfig())
+			builder
+				//.ApplyConfiguration(new HomeConfig())
 				.ApplyConfiguration(new GroupConfig())
 				.ApplyConfiguration(new DeviceConfig())
 				.ApplyConfiguration(new RoleConfig())
 				.ApplyConfiguration(new UserConfig())
 				.ApplyConfiguration(new PluginConfig())
-				.ApplyConfiguration(new ConfigurationConfig())
 				.ApplyConfiguration(new ActivityConfig());
 		}
 

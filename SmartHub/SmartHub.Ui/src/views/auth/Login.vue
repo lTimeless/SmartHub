@@ -18,8 +18,9 @@
             <span class="text-gray-600 dark:text-gray-400">Username</span>
             <input
               required
+              type="text"
               v-model="username"
-              class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-ui-primary focus:outline-none focus:shadow-outlineIndigo dark:text-gray-300 dark:focus:shadow-outline form-input"
+              class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md"
               placeholder="Jane Doe"
             />
           </label>
@@ -28,7 +29,7 @@
             <input
               required
               v-model="password"
-              class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-ui-primary focus:outline-none focus:shadow-outlineIndigo dark:text-gray-300 dark:focus:shadow-outline form-input"
+              class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md"
               placeholder="***************"
               type="password"
               @keyup.enter="onLoginClick"
@@ -76,7 +77,7 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, ref, watch } from 'vue';
+import { computed, defineComponent, ref } from 'vue';
 import { LoginRequest } from '@/types/types';
 import { useRouter } from 'vue-router';
 import { useStore } from 'vuex';
@@ -85,9 +86,11 @@ import AppCard from '@/components/widgets/AppCard.vue';
 import { checkHome, checkUsers } from '@/services/apis/init';
 
 export default defineComponent({
+  name: 'Login',
   components: {
     AppCard
   },
+  props: {},
   setup() {
     const store = useStore();
     const router = useRouter();

@@ -8,12 +8,6 @@ namespace SmartHub.Application.UseCases.SignalR.Services
 	public interface ISendOverSignalR
 	{
 		/// <summary>
-		/// Sends the current home
-		/// </summary>
-		/// <returns>Task state</returns>
-		Task SendHome();
-
-		/// <summary>
 		/// Sends an activity object -> it is the current request but with only
 		/// the needed info
 		/// </summary>
@@ -24,5 +18,9 @@ namespace SmartHub.Application.UseCases.SignalR.Services
 		/// <param name="success"></param>
 		/// <returns>Task state</returns>
 		Task SendActivity(string userName,string requestName, string message ,long execTime, bool success);
+
+		Task SendGroups();
+		Task SendDevices();
+		Task SendAppConfig();
 	}
 }

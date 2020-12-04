@@ -6,21 +6,24 @@
     :close="close"
     :save="save"
     :save-btn-active="saveBtnActive"
-    header-color="bg-orange-400"
+    main-border-color="border-red-400"
+    main-bg-color="bg-red-400"
   >
     <label class="text-left block text-sm">
       <span class="text-gray-600 dark:text-gray-400">Name</span>
       <input
+        type="text"
         v-model="groupCreateRequest.name"
-        class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outlineIndigo dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
+        class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md"
         placeholder="Group name"
       />
     </label>
     <label class="text-left block text-sm mt-3">
       <span class="text-gray-600 dark:text-gray-400">Description</span>
       <input
+        type="text"
         v-model="groupCreateRequest.description"
-        class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outlineIndigo dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
+        class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md"
         placeholder="Group description"
       />
     </label>
@@ -31,8 +34,7 @@
 import { defineComponent, reactive, computed, toRefs } from 'vue';
 import BaseModal from '@/components/modals/BaseModal.vue';
 import { GroupCreateRequest } from '@/types/types';
-import { useStore } from 'vuex';
-import { HomeActionTypes } from '@/store/home/actions';
+import { postGroup } from '@/services/apis/group';
 
 export default defineComponent({
   name: 'GroupCreateModal',
@@ -53,7 +55,6 @@ export default defineComponent({
     BaseModal
   },
   setup(props, context) {
-    const store = useStore();
     const state = reactive({
       title: '',
       groupTitle: 'Create new Group',
@@ -72,9 +73,7 @@ export default defineComponent({
       state.title = state.groupTitle;
     }
 
-    const saveBtnActive = computed(
-      () => groupCreateRequest.name !== '' && groupCreateRequest.description !== ''
-    );
+    const saveBtnActive = computed(() => groupCreateRequest.name !== '');
     const close = () => {
       context.emit('close', false);
     };
@@ -83,9 +82,15 @@ export default defineComponent({
         groupCreateRequest.parentGroupId = props.parentGroupId;
         groupCreateRequest.isSubGroup = true;
       }
-      await store.dispatch(HomeActionTypes.CREATE_GROUP, groupCreateRequest).then(() => {
-        context.emit('close', false);
-      });
+      await postGroup(groupCreateRequest)
+        .then((response) => {
+          if (!response.success) {
+            return Promise.reject(response.message);
+          }
+          context.emit('close', false);
+          return Promise.resolve();
+        })
+        .catch((error) => Promise.reject(error));
     };
     return {
       ...toRefs(state),

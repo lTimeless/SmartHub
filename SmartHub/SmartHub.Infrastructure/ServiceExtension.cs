@@ -1,40 +1,32 @@
 ﻿using System;
 using System.Linq;
 using System.Text;
-using Hangfire;
-using Hangfire.PostgreSql;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
-using Newtonsoft.Json;
 using SmartHub.Application.Common.Interfaces;
 using SmartHub.Application.Common.Interfaces.Database;
-using SmartHub.Application.Common.Interfaces.Events;
-using SmartHub.Application.UseCases.HomeFolder;
 using SmartHub.Domain.Common.Settings;
 using SmartHub.Domain.Entities;
 using SmartHub.Infrastructure.Database;
 using SmartHub.Infrastructure.Database.Repositories;
 using SmartHub.Infrastructure.Helpers;
 using SmartHub.Infrastructure.Services.Auth;
-using SmartHub.Infrastructure.Services.Background;
-using SmartHub.Infrastructure.Services.Dispatchers;
 using SmartHub.Infrastructure.Services.FileSystem;
 using SmartHub.Infrastructure.Services.Http;
 using SmartHub.Infrastructure.Services.Initialization;
 
 namespace SmartHub.Infrastructure
 {
-    public static class ServiceExtension
+	public static class ServiceExtension
     {
         public static IServiceCollection AddInfrastructurePersistence(this IServiceCollection services, IConfiguration configuration)
         {
             // Db contexts
             services.AddDbContext(configuration);
-            services.AddHangfireConfiguration(configuration);
             // Authentication and Authorization
             services.AddAuth(configuration);
             // Repositories
@@ -115,35 +107,17 @@ namespace SmartHub.Infrastructure
             // services.AddSingleton<IAuthorizationHandler , UserAuthHandler>();
         }
 
-        private static void AddHangfireConfiguration(this IServiceCollection services, IConfiguration configuration)
-        {
-            var connectionString = CreateConnectionString(configuration);
-            services.AddHangfire((sp, config)  =>
-            {
-                config.UseSerializerSettings(new JsonSerializerSettings
-                {
-                    ReferenceLoopHandling = ReferenceLoopHandling.Ignore
-                });
-                config.UsePostgreSqlStorage(connectionString);
-            });
-            services.AddHangfireServer();
-        }
-
         private static void AddRepositories(this IServiceCollection services)
         {
             services.AddScoped<IUserRepository, UserRepository>();
-            services.AddScoped<IHomeRepository, HomeRepositoryAsync>();
+			services.AddScoped(typeof(IBaseRepositoryAsync<>), typeof(BaseRepositoryAsync<>));
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped<IDbSeeder, DbSeeder>();
         }
 
         public static void AddBackgroundServices(this IServiceCollection services)
         {
-            services.AddTransient(typeof(BackgroundServiceStarter<>));
-            services.AddSingleton<IChannelManager,ChannelManager>();
-            services.AddSingleton<IEventDispatcher, EventDispatcher>();
-            services.AddSingleton(typeof(IInitializationService),typeof(InitializationService));
-            services.AddHostedService<BackgroundServiceStarter<IInitializationService>>();
+            services.AddHostedService<InitializationService>();
         }
 
         private static void AddServices(this IServiceCollection services)
@@ -152,7 +126,7 @@ namespace SmartHub.Infrastructure
             services.AddScoped<ITokenGenerator, TokenGenerator>();
             services.AddScoped<IUserAccessor, UserAccessor>();
             // Directory
-            services.AddTransient<IHomeFolderService, HomeFolderService>();
+            services.AddTransient<IFileService, FileService>();
             services.AddTransient<IDirectoryService, DirectoryService>();
             // Http
             services.AddScoped<IPingService, PingService>();

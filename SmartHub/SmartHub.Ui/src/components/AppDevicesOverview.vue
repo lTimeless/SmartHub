@@ -7,7 +7,7 @@
       <div class="flex justify-start w-full md:w-1/3 xl:w-1/6">
         <button
           @click="toggleModal(true)"
-          class="flex justify-center items-center font-bold border border-ui-border rounded-lg bg-gray-400 hover:text-white transition-colors hover:bg-green-400 h-10 w-full"
+          class="block w-full px-4 py-2 mt-4 text-sm text-gray-500 font-medium leading-5 text-center bg-white hover:text-white transition-colors duration-150 hover:bg-yellow-400 border border-transparent rounded-lg active:bg-ui-primary focus:outline-none focus:shadow-outlineIndigo"
         >
           Add Device
         </button>
@@ -56,15 +56,7 @@ export default defineComponent({
   },
   setup() {
     const store = useStore();
-    const home = computed(() => store.state.homeModule.home);
-    const devices = computed(() => {
-      if (home.value !== undefined) {
-        const subDev = home.value.groups?.flatMap((x) => x.subGroups !== undefined ? x.subGroups.flatMap(c => c.devices) : []) as Device[];
-        const dev = home.value.groups?.flatMap((x) => x.devices) as Device[];
-        return subDev.concat(dev);
-      }
-      return [] as Device[];
-    });
+    const devices = computed(() => store.state.appModule.devices);
     const state = reactive({
       showAddModal: false,
       showDetailModal: false,
@@ -99,7 +91,6 @@ export default defineComponent({
 
     return {
       ...toRefs(state),
-      home,
       devices,
       toggleModal,
       openDetailModal,

@@ -1,5 +1,5 @@
 <template>
-  <div>Plugins</div>
+  <div class="relative">Plugins</div>
 </template>
 
 <script lang="ts">

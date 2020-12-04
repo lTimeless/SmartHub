@@ -1,5 +1,6 @@
 module.exports = {
-  purge: ['./src/**/*.html', './src/**/*.vue', './src/**/*.jsx'],
+  purge: { content: ['./public/**/*.html', './src/**/*.vue'] },
+  darkMode: false, // or 'media' or 'class'
   theme: {
     boxShadow: {
       xs: '0 0 0 1px rgba(0, 0, 0, 0.05)',
@@ -29,7 +30,10 @@ module.exports = {
         }
       },
       spacing: {
-        sm: '24rem'
+        100: '24rem',
+        102: '26rem',
+        104: '28rem',
+        112: '34rem'
       },
       screens: {
         xxl: '1400px'
@@ -38,21 +42,11 @@ module.exports = {
     container: {
       center: true,
       padding: '1rem'
-    },
-    customForms: (theme) => ({
-      default: {
-        input: {
-          borderRadius: theme('borderRadius.lg'),
-          '&:focus': {
-            borderColor: theme('colors.indigo.600')
-          }
-        }
-      }
-    })
+    }
   },
   variants: {
     backgroundColor: ['responsive', 'hover', 'focus', 'active'],
     animation: ['responsive', 'motion-safe', 'motion-reduce']
   },
-  plugins: [require('@tailwindcss/custom-forms')]
+  plugins: [require('@tailwindcss/forms')]
 };

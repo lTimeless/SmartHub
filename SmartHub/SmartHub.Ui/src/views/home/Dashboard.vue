@@ -1,66 +1,329 @@
 <template>
-  <div class="w-full" v-if="home">
-    <h1 class="text-3xl text-gray-500 font-bold mb-4">Dashboard for {{ home.name }}</h1>
+  <div class="relative">
     <AppTabs>
       <template #header>
-        <div class="flex flex-wrap justify-between my-4 space-y-2">
-          <AppButton
-            title="Home"
-            :callback="toggleTabs.bind(this, 1)"
-            class="mt-2 shadow-sm bg-white"
-            :class="{ 'text-ui-primary': openTab !== 1, 'text-white bg-indigo-400': openTab === 1 }"
-          />
-          <AppButton
-            title="Groups"
-            color="orange"
-            class="shadow-sm bg-white"
-            :callback="toggleTabs.bind(this, 2)"
-            :class="{ 'text-orange-400': openTab !== 2, 'text-white bg-orange-400': openTab === 2 }"
-          />
-          <AppButton
-            title="Devices"
-            color="green"
-            class="shadow-sm bg-white"
-            :callback="toggleTabs.bind(this, 3)"
-            :class="{ 'text-green-400': openTab !== 3, 'text-white bg-green-400': openTab === 3 }"
-          />
-          <AppButton
-            title="Automations"
-            color="teal"
-            class="shadow-sm bg-white"
-            :callback="toggleTabs.bind(this, 4)"
-            :class="{ 'text-teal-400': openTab !== 4, 'text-white bg-teal-400': openTab === 4 }"
+        <!-- Cards -->
+        <div class="flex flex-wrap">
+          <CardsRow
+            :callback-zero="toggleTabs.bind(this, 0)"
+            :callback-one="toggleTabs.bind(this, 1)"
+            :callback-two="toggleTabs.bind(this, 2)"
+            :callback-three="toggleTabs.bind(this, 3)"
+            :callback-four="toggleTabs.bind(this, 4)"
+            :open-tab="openTab"
           />
         </div>
-      </template>
-      <template #content>
-        <div :class="{ hidden: openTab !== 1, block: openTab === 1 }">
-          <div class="grid grid-cols-2 gap-6">
-            <div class="border-b border-ui-border col-span-2 mb-3">
-              <h2
-                class="flex justify-start pt-0 mt-0 mb-1 font-bold text-sm tracking-tight uppercase text-gray-500"
-              >
-                Graphs
-              </h2>
-            </div>
-            <div class="border-b border-ui-border col-span-2">
-              <h2
-                class="flex justify-start pt-0 mt-0 mb-1 font-bold text-sm tracking-tight uppercase text-gray-500"
-              >
-                Tables
-              </h2>
-            </div>
+        <!-- Expand Arrow -->
+        <div v-if="openTab === 0" class="px-4 my-2 flex justify-end cursor-pointer">
+          <div class="cursor-pointer flex" @click="expandAdminRow = !expandAdminRow">
+            <span v-if="!expandAdminRow" class="text-sm text-gray-700 pr-1">More</span>
+            <svg
+              v-if="!expandAdminRow"
+              class="-mr-1 h-5 w-5"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+            </svg>
+          </div>
+          <div class="cursor-pointer flex" @click="expandAdminRow = !expandAdminRow">
+            <span v-if="expandAdminRow" class="text-sm text-gray-700 pr-1">Hide</span>
+            <svg
+              v-if="expandAdminRow"
+              class="-mr-1 h-5 w-5"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 15l7-7 7 7" />
+            </svg>
           </div>
         </div>
-        <div :class="{ hidden: openTab !== 2, block: openTab === 2 }">
-          <AppGroupsOverview v-if="home?.groups !== undefined" />
-          <div v-else>No Groups available</div>
+        <!-- Admin Cards -->
+        <template v-if="roleIncluded(adminRole) && expandAdminRow">
+          <div class="flex flex-wrap mb-6">
+            <AdminCardsRow />
+          </div>
+        </template>
+      </template>
+      <template #content>
+        <div v-if="openTab === 0">
+          <!-- Graphs -->
+          <div class="flex flex-wrap">
+            <LineChart></LineChart>
+            <BarChart></BarChart>
+          </div>
+          <!-- Tables -->
+          <!-- Expand Arrow -->
+          <div class="px-4 my-2 flex justify-end">
+            <div class="cursor-pointer flex" @click="expandTables = !expandTables">
+              <span v-if="!expandTables" class="text-sm text-gray-700 pr-1"> Show Tables</span>
+              <svg
+                v-if="!expandTables"
+                class="-mr-1 h-5 w-5"
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+              </svg>
+            </div>
+            <div class="cursor-pointer flex" @click="expandTables = !expandTables">
+              <span v-if="expandTables" class="text-sm text-gray-700 pr-1"> Hide Tables</span>
+              <svg
+                v-if="expandTables"
+                class="-mr-1 h-5 w-5"
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 15l7-7 7 7" />
+              </svg>
+            </div>
+          </div>
+          <template v-if="expandTables">
+            <div class="flex flex-wrap mt-4">
+              <div class="w-full xl:w-8/12 mb-12 xl:mb-0 px-4">
+                <div
+                  class="relative flex flex-col min-w-0 break-words bg-white w-full mb-6 shadow-lg rounded"
+                >
+                  <div class="rounded-t mb-0 px-4 py-3 border-0">
+                    <div class="flex flex-wrap items-center">
+                      <div class="relative w-full px-4 max-w-full flex-grow flex-1">
+                        <h3 class="font-semibold text-base text-gray-800">Page visits</h3>
+                      </div>
+                      <div class="relative w-full px-4 max-w-full flex-grow flex-1 text-right">
+                        <button
+                          class="bg-indigo-500 text-white active:bg-indigo-600 text-xs font-bold uppercase px-3 py-1 rounded outline-none focus:outline-none mr-1 mb-1"
+                          type="button"
+                          style="transition: all 0.15s ease"
+                        >
+                          See all
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="block w-full overflow-x-auto">
+                    <!-- Projects table -->
+                    <table class="items-center w-full bg-transparent border-collapse">
+                      <thead>
+                        <tr>
+                          <th
+                            class="px-6 bg-gray-100 text-gray-600 align-middle border border-solid border-gray-200 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-no-wrap font-semibold text-left"
+                          >
+                            Page name
+                          </th>
+                          <th
+                            class="px-6 bg-gray-100 text-gray-600 align-middle border border-solid border-gray-200 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-no-wrap font-semibold text-left"
+                          >
+                            Visitors
+                          </th>
+                          <th
+                            class="px-6 bg-gray-100 text-gray-600 align-middle border border-solid border-gray-200 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-no-wrap font-semibold text-left"
+                          >
+                            Unique users
+                          </th>
+                          <th
+                            class="px-6 bg-gray-100 text-gray-600 align-middle border border-solid border-gray-200 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-no-wrap font-semibold text-left"
+                          >
+                            Bounce rate
+                          </th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <th
+                            class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-no-wrap p-4 text-left"
+                          >
+                            /argon/charts.html
+                          </th>
+                          <td
+                            class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-no-wrap p-4"
+                          >
+                            3,513
+                          </td>
+                          <td
+                            class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-no-wrap p-4"
+                          >
+                            294
+                          </td>
+                          <td
+                            class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-no-wrap p-4"
+                          >
+                            <i class="fas fa-arrow-down text-orange-500 mr-4"></i>
+                            36,49%
+                          </td>
+                        </tr>
+                        <tr>
+                          <th
+                            class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-no-wrap p-4 text-left"
+                          >
+                            /argon/tables.html
+                          </th>
+                          <td
+                            class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-no-wrap p-4"
+                          >
+                            2,050
+                          </td>
+                          <td
+                            class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-no-wrap p-4"
+                          >
+                            147
+                          </td>
+                          <td
+                            class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-no-wrap p-4"
+                          >
+                            <i class="fas fa-arrow-up text-green-500 mr-4"></i>
+                            50,87%
+                          </td>
+                        </tr>
+                        <tr>
+                          <th
+                            class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-no-wrap p-4 text-left"
+                          >
+                            /argon/profile.html
+                          </th>
+                          <td
+                            class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-no-wrap p-4"
+                          >
+                            1,795
+                          </td>
+                          <td
+                            class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-no-wrap p-4"
+                          >
+                            190
+                          </td>
+                          <td
+                            class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-no-wrap p-4"
+                          >
+                            <i class="fas fa-arrow-down text-red-500 mr-4"></i>
+                            46,53%
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+              <div class="w-full xl:w-4/12 px-4">
+                <div
+                  class="relative flex flex-col min-w-0 break-words bg-white w-full mb-6 shadow-lg rounded"
+                >
+                  <div class="rounded-t mb-0 px-4 py-3 border-0">
+                    <div class="flex flex-wrap items-center">
+                      <div class="relative w-full px-4 max-w-full flex-grow flex-1">
+                        <h3 class="font-semibold text-base text-gray-800">Social traffic</h3>
+                      </div>
+                      <div class="relative w-full px-4 max-w-full flex-grow flex-1 text-right">
+                        <button
+                          class="bg-indigo-500 text-white active:bg-indigo-600 text-xs font-bold uppercase px-3 py-1 rounded outline-none focus:outline-none mr-1 mb-1"
+                          type="button"
+                          style="transition: all 0.15s ease"
+                        >
+                          See all
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="block w-full overflow-x-auto">
+                    <!-- Projects table -->
+                    <table class="items-center w-full bg-transparent border-collapse">
+                      <thead class="thead-light">
+                        <tr>
+                          <th
+                            class="px-6 bg-gray-100 text-gray-600 align-middle border border-solid border-gray-200 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-no-wrap font-semibold text-left"
+                          >
+                            Referral
+                          </th>
+                          <th
+                            class="px-6 bg-gray-100 text-gray-600 align-middle border border-solid border-gray-200 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-no-wrap font-semibold text-left"
+                          >
+                            Visitors
+                          </th>
+                          <th
+                            class="px-6 bg-gray-100 text-gray-600 align-middle border border-solid border-gray-200 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-no-wrap font-semibold text-left"
+                            style="min-width: 140px"
+                          ></th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <th
+                            class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-no-wrap p-4 text-left"
+                          >
+                            Google
+                          </th>
+                          <td
+                            class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-no-wrap p-4"
+                          >
+                            4,807
+                          </td>
+                          <td
+                            class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-no-wrap p-4"
+                          >
+                            <div class="flex items-center">
+                              <span class="mr-2">80%</span>
+                              <div class="relative w-full">
+                                <div class="overflow-hidden h-2 text-xs flex rounded bg-purple-200">
+                                  <div
+                                    style="width: 80%"
+                                    class="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-purple-500"
+                                  ></div>
+                                </div>
+                              </div>
+                            </div>
+                          </td>
+                        </tr>
+                        <tr>
+                          <th
+                            class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-no-wrap p-4 text-left"
+                          >
+                            Instagram
+                          </th>
+                          <td
+                            class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-no-wrap p-4"
+                          >
+                            3,678
+                          </td>
+                          <td
+                            class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-no-wrap p-4"
+                          >
+                            <div class="flex items-center">
+                              <span class="mr-2">75%</span>
+                              <div class="relative w-full">
+                                <div class="overflow-hidden h-2 text-xs flex rounded bg-blue-200">
+                                  <div
+                                    style="width: 75%"
+                                    class="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-blue-500"
+                                  ></div>
+                                </div>
+                              </div>
+                            </div>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </template>
         </div>
-        <div :class="{ hidden: openTab !== 3, block: openTab === 3 }">
-          <AppDevicesOverview v-if="home?.groups !== undefined" />
-          <div v-else>No Devices available</div>
+        <div v-if="openTab === 1">
+          <AppGroupsOverview />
         </div>
-        <div :class="{ hidden: openTab !== 4, block: openTab === 4 }">
+        <div v-if="openTab === 2">
+          <AppDevicesOverview />
+        </div>
+        <div v-if="openTab === 3">
+          Users
+        </div>
+        <div v-if="openTab === 4">
           <AppAutomation />
         </div>
       </template>
@@ -69,38 +332,59 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, computed, ref } from 'vue';
-import AppButton from '@/components/widgets/AppButton.vue';
+import { defineComponent, computed, ref, onMounted } from 'vue';
 import AppTabs from '@/components/widgets/AppTabs.vue';
-import AppAutomation from '@/components/AppAutomations.vue';
+import AppAutomation from '@/components/AutomationsOverview.vue';
 import AppGroupsOverview from '@/components/AppGroupsOverview.vue';
 import AppDevicesOverview from '@/components/AppDevicesOverview.vue';
 import { useStore } from 'vuex';
+import BarChart from '@/components/charts/BarChart.vue';
+import LineChart from '@/components/charts/LineChart.vue';
+import { getUserRoles } from '@/services/auth/authService';
+import { Roles } from '@/types/enums';
+import AdminCardsRow from '@/components/admin/AdminCardsRow.vue';
+import CardsRow from '@/components/CardsRow.vue';
 
 export default defineComponent({
   name: 'Dashboard',
   components: {
-    AppButton,
+    AdminCardsRow,
+    BarChart,
+    LineChart,
+    CardsRow,
     AppTabs,
     AppAutomation,
     AppGroupsOverview,
     AppDevicesOverview
   },
   setup() {
-    const openTab = ref(1);
+    const openTab = ref(0);
     const store = useStore();
-    const home = computed(() => store.state.homeModule.home);
+    const appConfig = computed(() => store.state.appModule.appConfig);
+    const groups = computed(() => store.state.appModule.groups);
+    const devices = computed(() => store.state.appModule.devices);
+    const isRole = ref('');
+    const adminRole = [Roles.Admin];
+    const expandAdminRow = ref(false);
+    const expandTables = ref(false);
     const toggleTabs = (tabNumber: number) => {
       openTab.value = tabNumber;
     };
-    const onClick = (tabNumber: number) => {
-      console.log('Click button', tabNumber);
-    };
+    const roleIncluded = (rolesNeeded: string[]) => rolesNeeded.includes(isRole.value);
+
+    onMounted(() => {
+      isRole.value = getUserRoles();
+    });
     return {
       openTab,
       toggleTabs,
-      onClick,
-      home
+      appConfig,
+      groups,
+      devices,
+      roleIncluded,
+      adminRole,
+      expandAdminRow,
+      expandTables
     };
   }
 });

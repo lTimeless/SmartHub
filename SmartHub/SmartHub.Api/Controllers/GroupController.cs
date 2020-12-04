@@ -28,7 +28,7 @@ namespace SmartHub.Api.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> GetById(string id)
         {
-            return Ok(await Mediator.Send(new GroupGetByIdQuery(id)).ConfigureAwait(false));
+            return Ok(await Mediator.Send(new GroupGetByIdQuery { Id = id }).ConfigureAwait(false));
         }
 
         /// <summary>

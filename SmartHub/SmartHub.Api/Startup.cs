@@ -1,4 +1,3 @@
-using Hangfire;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -16,13 +15,13 @@ namespace SmartHub.Api
     public class Startup
     {
         private IConfiguration Configuration { get; }
-        private IHostEnvironment AppEnvironment { get; }
+        private IHostEnvironment HostEnvironment { get; }
 
-        public Startup(IHostEnvironment env, IConfiguration configuration)
+		public Startup(IConfiguration configuration, IHostEnvironment hostEnvironment)
         {
-            AppEnvironment = env;
             Configuration = configuration;
-        }
+			HostEnvironment = hostEnvironment;
+		}
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services) =>
@@ -31,7 +30,7 @@ namespace SmartHub.Api
                 .AddInfrastructurePersistence(Configuration)
                 .AddShared()
                 .AddApplicationLayer()
-                .AddApiLayer(Configuration, AppEnvironment);
+                .AddApiLayer(Configuration, HostEnvironment);
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -39,6 +38,9 @@ namespace SmartHub.Api
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+                app.UseMigrationsEndPoint();
+                // Swagger
+                app.ConfigureSwagger();
             }
             else
             {
@@ -62,16 +64,7 @@ namespace SmartHub.Api
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
-            if (!env.IsDevelopment())
-            {
-                app.UseSpaStaticFiles();
-            }
-
-            // Swagger
-            app.ConfigureSwagger();
-
-            // Hangfire
-            app.ConfigureHangfire();
+            app.UseSpaStaticFiles();
 
             // Routing
             app.UseRouting();
@@ -87,8 +80,6 @@ namespace SmartHub.Api
                 endpoints.MapControllerRoute(
                     "default",
                     "{controller}/{action=Index}/{id?}");
-
-                endpoints.MapHangfireDashboard();
 
                 endpoints.MapHub<ActivityHub>("/api/hub/activity");
                 endpoints.MapHub<LogHub>("/api/hub/logs");
@@ -106,8 +97,8 @@ namespace SmartHub.Api
                     return;
                 }
 
-                Log.ForContext(typeof(Startup)).Warning("Not serving frontend from staticfiles");
-                // Start seperate FE server and Server listens to it
+                Log.ForContext(typeof(Startup)).Warning("You need to start separate FE server.. listening to http://localhost:8080");
+                // Start separate FE server and Server listens to it
                 spa.UseProxyToSpaDevelopmentServer("http://localhost:8080");
                 // To start its own FE server
             });

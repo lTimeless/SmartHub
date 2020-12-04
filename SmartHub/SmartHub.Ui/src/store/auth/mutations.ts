@@ -1,4 +1,4 @@
-import { MutationTree } from 'vuex';
+import { MutationTree } from 'Vuex';
 import { AuthResponse, User } from '@/types/types';
 import { AuthState } from '@/store/index.types';
 

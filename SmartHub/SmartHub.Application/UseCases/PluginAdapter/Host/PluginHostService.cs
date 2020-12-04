@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Options;
 using Serilog;
 using SmartHub.Application.Common.Exceptions;
 using SmartHub.Application.Common.Interfaces.Database;
@@ -8,7 +9,9 @@ using SmartHub.Application.UseCases.PluginAdapter.Creator;
 using SmartHub.Application.UseCases.PluginAdapter.Helper;
 using SmartHub.Application.UseCases.PluginAdapter.Loader;
 using SmartHub.BasePlugin;
+using SmartHub.Domain;
 using SmartHub.Domain.Common.Extensions;
+using SmartHub.Domain.Entities;
 
 namespace SmartHub.Application.UseCases.PluginAdapter.Host
 {
@@ -18,17 +21,19 @@ namespace SmartHub.Application.UseCases.PluginAdapter.Host
 
 		// Ein plugin/package ist eine assembly und beinhaltet funktionen in mehreren classen die dann weitere spezifizierte plugins sind
 		// IPlugin = eine klasse
-		private static readonly Dictionary<string, IPlugin> PluginsDictionary = new Dictionary<string, IPlugin>();
+		private static readonly Dictionary<string, IPlugin> _pluginsDictionary = new();
 
-		private readonly IUnitOfWork _unitOfWork;
+		private readonly IOptionsSnapshot<AppConfig> _appConfig;
+		private readonly IBaseRepositoryAsync<Plugin> _pluginRepository;
 		private readonly IPluginLoadService _pluginLoadService;
 		private readonly IPluginCreatorService _pluginCreatorService;
 		private readonly ILogger _logger = Log.ForContext(typeof(PluginHostService));
-		public PluginHostService(IUnitOfWork unitOfWork, IPluginLoadService pluginLoadService, IPluginCreatorService pluginCreatorService)
+		public PluginHostService(IPluginLoadService pluginLoadService, IPluginCreatorService pluginCreatorService, IOptionsSnapshot<AppConfig> appConfig, IBaseRepositoryAsync<Plugin> pluginRepository)
 		{
-			_unitOfWork = unitOfWork;
 			_pluginLoadService = pluginLoadService;
 			_pluginCreatorService = pluginCreatorService;
+			_appConfig = appConfig;
+			_pluginRepository = pluginRepository;
 		}
 
 		/// <inheritdoc cref="IPluginHostService.GetPluginByNameAsync{TP}"/>
@@ -40,37 +45,33 @@ namespace SmartHub.Application.UseCases.PluginAdapter.Host
 				throw new PluginException($"Error: The given pluginName is null or empty - {pluginName}");
 			}
 
-			if (PluginsDictionary.TryGetValue(pluginName, out var iPlugin))
+			if (_pluginsDictionary.TryGetValue(pluginName, out var iPlugin))
 			{
 				return (TP)iPlugin;
 			}
 
-			var home = await _unitOfWork.HomeRepository.GetHome();
-			if (home is null)
+			if (_appConfig.Value.IsActive is false)
 			{
 				throw new PluginException("Error: There is no home created at the moment");
 			}
-			var setting = home.Settings.First(c => c.IsActive);
 
-			var foundIplugin= await _pluginLoadService.LoadByName(pluginName, setting.PluginPath);
-			PluginsDictionary[foundIplugin.Name] = foundIplugin; // add or update key
+			var foundIplugin = await _pluginLoadService.LoadByName(pluginName, _appConfig.Value.PluginFolderPath);
+			_pluginsDictionary[foundIplugin.Name] = foundIplugin; // add or update key
 			_logger.Information($"Loaded {pluginName} from folder and added it to the dictionary.");
-			return (TP)PluginsDictionary[pluginName];
+			return (TP)_pluginsDictionary[pluginName];
 		}
 
 		/// <inheritdoc cref="IPluginHostService.SynchronizeDictionaryAndDb"/>
 		public async Task<bool> SynchronizeDictionaryAndDb()
 		{
-			var home = await _unitOfWork.HomeRepository.GetHome();
-			if (home is null)
+			if (_appConfig.Value.IsActive is false)
 			{
 				_logger.Warning("No home available.");
 				return false;
 			}
-			var setting = home.Settings.FirstOrDefault(c => c.IsActive);
-
-			var foundPlugins = _pluginLoadService.FindPluginsInAssemblies(setting?.PluginPath ?? string.Empty);
-			var onlyNewPlugins = PluginHelper.FilterByFunction(foundPlugins, key => home.Plugins.Any(x => x.Name == key));
+			var plugins = await _pluginRepository.GetAllAsync();
+			var foundPlugins = _pluginLoadService.FindPluginsInAssemblies(_appConfig.Value.PluginFolderPath ?? string.Empty);
+			var onlyNewPlugins = PluginHelper.FilterByFunction(foundPlugins, key => plugins.Any(x => x.Name == key));
 
 			if (onlyNewPlugins.IsNullOrEmpty())
 			{
@@ -82,15 +83,22 @@ namespace SmartHub.Application.UseCases.PluginAdapter.Host
 			{
 				var newIPluginsDictionary = await _pluginLoadService.LoadAndCreateIPlugins(newPluginPath);
 				var listOfPlugins = _pluginCreatorService.CreatePluginsFromIPlugins(newIPluginsDictionary.Values, newPluginPath);
-				foreach (var plugin in listOfPlugins.Where(plugin => home.CheckIfPluginExistAndHasHigherVersion(plugin)))
+
+
+
+				foreach (var plugin in listOfPlugins.Where(newPlugin => plugins.Exists(x => x.Name == newPlugin.Name && x.AssemblyVersion > newPlugin.AssemblyVersion)))
 				{
 					listOfPlugins.Remove(plugin);
 				}
 
-				home.AddPlugins(listOfPlugins);
+				var addedPlugins = await _pluginRepository.AddRangeAsync(listOfPlugins);
+				if (addedPlugins is false)
+				{
+					throw new SmartHubException("Could not add a list of plugins to database.");
+				}
 				foreach (var (key, value) in newIPluginsDictionary)
 				{
-					PluginsDictionary[key] = value; // Add or update key
+					_pluginsDictionary[key] = value; // Add or update key
 				}
 			}
 			_logger.Information("Synchronized dictionary and database with plugin folder.");

@@ -1,74 +1,97 @@
-﻿using System;
-using AutoMapper;
+﻿using AutoMapper;
 using Microsoft.AspNetCore.SignalR;
-using SmartHub.Application.Common.Interfaces.Database;
-using SmartHub.Application.UseCases.Entity.Homes;
-using System.Threading.Tasks;
 using Microsoft.Extensions.Options;
 using SmartHub.Application.Common.Exceptions;
+using SmartHub.Application.Common.Interfaces.Database;
+using SmartHub.Application.UseCases.AppFolder.AppConfigParser;
 using SmartHub.Application.UseCases.Entity.Activities;
-using SmartHub.Domain.Common.Extensions;
-using SmartHub.Domain.Common.Settings;
+using SmartHub.Application.UseCases.Entity.Devices;
+using SmartHub.Application.UseCases.Entity.Groups;
+using SmartHub.Domain;
 using SmartHub.Domain.Entities;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace SmartHub.Application.UseCases.SignalR.Services
 {
 	/// <inheritdoc cref="ISendOverSignalR"/>
 	public class SendOverSignalR : ISendOverSignalR
 	{
-		private readonly IUnitOfWork _unitOfWork;
+		private readonly IBaseRepositoryAsync<Activity> _activityRepository;
+		private readonly IBaseRepositoryAsync<Group> _groupRepository;
+		private readonly IBaseRepositoryAsync<Device> _deviceRepository;
+
+
 		private readonly IMapper _mapper;
-		private readonly IHubContext<HomeHub, IServerHub> _homeHubContext;
-		private readonly IHubContext<ActivityHub, IServerHub> _activityHubContext;
-		private readonly IOptionsSnapshot<ApplicationSettings> _optionsSnapshot;
+		private readonly IHubContext<ActivityHub, IServerHubClient> _activityHubContext;
+		private readonly IHubContext<HomeHub, IServerHubClient> _homeHubContext;
+		private readonly IAppConfigService _appConfigService;
 
-		public SendOverSignalR(IUnitOfWork unitOfWork, IMapper mapper, IHubContext<HomeHub, IServerHub> homeHubContext,
-			IHubContext<ActivityHub, IServerHub> activityHubContext, IOptionsSnapshot<ApplicationSettings> optionsSnapshot)
+		public SendOverSignalR(IMapper mapper, IHubContext<ActivityHub, IServerHubClient> activityHubContext, 
+			IBaseRepositoryAsync<Activity> activityRepository, IHubContext<HomeHub, IServerHubClient> homeHubContext, 
+			IBaseRepositoryAsync<Group> groupRepository, IBaseRepositoryAsync<Device> deviceRepository, IAppConfigService appConfigService)
 		{
-			_unitOfWork = unitOfWork;
 			_mapper = mapper;
-			_homeHubContext = homeHubContext;
 			_activityHubContext = activityHubContext;
-			_optionsSnapshot = optionsSnapshot;
-		}
-
-		/// <inheritdoc cref="ISendOverSignalR.SendHome"/>
-		public async Task SendHome()
-		{
-			var home = await _unitOfWork.HomeRepository.GetHome();
-			await _homeHubContext.Clients.All.SendHome(_mapper.Map<HomeDto>(home));
+			_activityRepository = activityRepository;
+			_homeHubContext = homeHubContext;
+			_groupRepository = groupRepository;
+			_deviceRepository = deviceRepository;
+			_appConfigService = appConfigService;
 		}
 
 		/// <inheritdoc cref="ISendOverSignalR.SendActivity"/>
-		public async Task SendActivity(string userName,string requestName, string message, long execTime,bool success)
+		public async Task SendActivity(string userName, string requestName, string message, long execTime, bool success)
 		{
-			var home = await _unitOfWork.HomeRepository.GetHome();
-			if (home is null)
+			var appConfig = _appConfigService.GetConfig();
+			if (appConfig.IsActive is false)
 			{
 				return;
 			}
-			var activityDto = new ActivityDto
-			{
-				DateTime = DateTime.Now.ToString("HH:mm:ss"),
-				Username = userName,
-				Message = message,
-				ExecutionTime = execTime,
-				SuccessfulRequest = success
-			};
+
+			var activityDto = new ActivityDto(DateTime.Now.ToString("HH:mm:ss"), userName, message, execTime, success, requestName);
 			await _activityHubContext.Clients.All.SendActivity(activityDto);
+
 			var activity = _mapper.Map<Activity>(activityDto);
-			activity.SetName(requestName);
-			home.AddActivity(activity);
-			if (home.Activities.Count > _optionsSnapshot.Value.SaveXLimit)
+
+			var addedSuccessful = await _activityRepository.AddAsync(activity);
+			if (!addedSuccessful)
 			{
-				if (_optionsSnapshot.Value.SaveXLimit != null && _optionsSnapshot.Value.DeleteXAmountAfterLimit != null)
-				{
-					home.RemoveActivitiesOverLimit((int) _optionsSnapshot.Value.SaveXLimit,
-						(int) _optionsSnapshot.Value.DeleteXAmountAfterLimit);
-				}
-
+				throw new SmartHubException("Error adding new activity to database");
 			}
+			var activities = await _activityRepository.GetAllAsync();
 
+			if (activities.Count > appConfig.SaveXLimit)
+			{
+				if (appConfig.SaveXLimit != null && appConfig.DeleteXAmountAfterLimit != null)
+				{
+					var deleteXAmount = (activities.Count - (int)appConfig.SaveXLimit) + (int)appConfig.DeleteXAmountAfterLimit;
+
+					var removeList = activities
+						.OrderByDescending(x => x.CreatedAt)
+						.TakeLast(deleteXAmount);
+					await _activityRepository.RemoveRangeAsync(removeList);
+				}
+			}
+		}
+
+		public async Task SendAppConfig()
+		{
+			await _homeHubContext.Clients.All.SendAppConfig(_appConfigService.GetConfig());
+		}
+
+		public async Task SendDevices()
+		{
+			var devices = await _deviceRepository.GetAllAsync();
+			await _homeHubContext.Clients.All.SendDevices(_mapper.Map<IEnumerable<DeviceDto>>(devices));
+		}
+
+		public async Task SendGroups()
+		{
+			var groups = await _groupRepository.GetAllAsync();
+			await _homeHubContext.Clients.All.SendGroups(_mapper.Map<IEnumerable<GroupDto>>(groups));
 		}
 	}
 }

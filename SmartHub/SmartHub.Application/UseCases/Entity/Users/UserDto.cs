@@ -9,13 +9,13 @@ namespace SmartHub.Application.UseCases.Entity.Users
 {
 	public class UserDto : IMapFrom<User>
 	{
-		public string? UserName { get; set; }
-		public string? PersonInfo { get; set; }
-		public PersonName? PersonName { get; set; }
-		public string? LastModifiedBy { get; set; }
-		public string? LastModifiedAt { get; set; }
-		public string? Email { get; set; }
-		public string? PhoneNumber { get; set; }
+		public string? UserName { get; init; }
+		public string? PersonInfo { get; init; }
+		public PersonName? PersonName { get; init; }
+		public string? LastModifiedBy { get; init; }
+		public string? LastModifiedAt { get; init; }
+		public string? Email { get; init; }
+		public string? PhoneNumber { get; init; }
 
 		public void Mapping(Profile profile)
 		{

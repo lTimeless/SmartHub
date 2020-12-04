@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace SmartHub.Application.UseCases.NetworkScanner
 {
-	public class NetworkScannerQuery : IRequest<List<NetworkDeviceResponseDto>>
+	public record NetworkScannerQuery : IRequest<List<NetworkDeviceResponseDto>>
 	{
 	}
 }

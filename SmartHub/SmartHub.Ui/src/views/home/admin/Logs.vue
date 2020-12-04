@@ -131,9 +131,4 @@ export default defineComponent({
 });
 </script>
 
-<style scoped>
-.tableContainer {
-  height: 600px;
-  @apply overflow-x-auto bg-white rounded-lg shadow overflow-y-auto relative;
-}
-</style>
+<style scoped></style>

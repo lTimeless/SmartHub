@@ -1,12 +1,7 @@
 ﻿namespace SmartHub.Application.UseCases.Identity
 {
-	public class AuthResponseDto
+	public record AuthResponseDto
 	{
-		public string Token { get; set; }
-
-		public AuthResponseDto(string token)
-		{
-			Token = token;
-		}
+		public string Token { get; init; }
 	}
 }

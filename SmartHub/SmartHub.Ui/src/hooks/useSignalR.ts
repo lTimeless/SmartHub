@@ -1,5 +1,5 @@
 import { HubConnectionBuilder, LogLevel, HubConnection } from '@microsoft/signalr';
-import { reactive, Ref, ToRefs, toRefs, UnwrapRef } from 'vue';
+import { reactive, ToRefs, toRefs, UnwrapRef } from 'vue';
 
 interface SignalrState<T> {
   connectionEstablished: boolean;
@@ -26,13 +26,14 @@ export function useSignalRHub<T>(hubRoute: string, listenToFunctionName: string)
     state.data = null;
   });
 
+  state.connection.on(listenToFunctionName, (data: UnwrapRef<T>) => {
+    state.data = data;
+  });
+
   state.connection
     .start()
     .then(() => {
       state.connectionEstablished = true;
-      state.connection.on(listenToFunctionName, (data: UnwrapRef<T>) => {
-        state.data = data;
-      });
     })
     .catch((err) => {
       state.error = err;

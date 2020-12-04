@@ -1,4 +1,4 @@
-import { ActionContext, ActionTree } from 'vuex';
+import { ActionContext, ActionTree } from 'Vuex';
 import { LoginRequest, AuthResponse, RegistrationRequest, UserUpdateRequest, User } from '@/types/types';
 import { RootState, AuthState } from '@/store/index.types';
 import { storeAuthResponse } from '@/services/auth/authService';
@@ -42,10 +42,7 @@ export const actions: ActionTree<AuthState, RootState> & AuthActions = {
         commit(AuthMutationTypes.ME, response.data as User);
         return Promise.resolve(response.data);
       })
-      .catch((err) => {
-        console.log(err);
-        return Promise.reject(err);
-      });
+      .catch((err) => Promise.reject(err));
   },
   async [AuthActionTypes.UPDATE_ME]({ commit }, payload: UserUpdateRequest): Promise<void> {
     await putMe(payload)
@@ -56,10 +53,7 @@ export const actions: ActionTree<AuthState, RootState> & AuthActions = {
         commit(AuthMutationTypes.ME, response.data as User);
         return Promise.resolve(response.data);
       })
-      .catch((err) => {
-        console.log(err);
-        return Promise.reject(err);
-      });
+      .catch((err) => Promise.reject(err));
   },
   async [AuthActionTypes.LOGIN]({ commit }, payload: LoginRequest): Promise<void> {
     await postLogin(payload)
@@ -71,10 +65,7 @@ export const actions: ActionTree<AuthState, RootState> & AuthActions = {
         commit(AuthMutationTypes.AUTH, response.data as AuthResponse);
         return Promise.resolve(response.data);
       })
-      .catch((err) => {
-        console.log(err);
-        return Promise.reject(err);
-      });
+      .catch((err) => Promise.reject(err));
   },
   async [AuthActionTypes.REGISTRATION](state, payload: RegistrationRequest): Promise<void> {
     await postRegistration(payload)
@@ -86,10 +77,7 @@ export const actions: ActionTree<AuthState, RootState> & AuthActions = {
         state.commit(AuthMutationTypes.AUTH, response.data as AuthResponse);
         return Promise.resolve();
       })
-      .catch((err) => {
-        console.log(err);
-        return Promise.reject(err);
-      });
+      .catch((err) => Promise.reject(err));
   },
   async [AuthActionTypes.LOGOUT]() {
     console.log('logout');

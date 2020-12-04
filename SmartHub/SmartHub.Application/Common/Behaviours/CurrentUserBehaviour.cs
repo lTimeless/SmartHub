@@ -10,21 +10,21 @@ namespace SmartHub.Application.Common.Behaviours
 {
 	public class CurrentUserBehaviour<TRequest> : IRequestPreProcessor<TRequest> where TRequest : notnull
     {
-        private readonly IUnitOfWork _unitOfWork;
         private readonly IUserAccessor _userAccessor;
         private readonly CurrentUser _currentUser;
+		private readonly IUserRepository _userRepository;
 
-        public CurrentUserBehaviour(IUserAccessor currentUserService, CurrentUser currentUser, IUnitOfWork unitOfWork)
-        {
-            _userAccessor = currentUserService;
-            _currentUser = currentUser;
-            _unitOfWork = unitOfWork;
-        }
+		public CurrentUserBehaviour(IUserAccessor currentUserService, CurrentUser currentUser, IUserRepository userRepository)
+		{
+			_userAccessor = currentUserService;
+			_currentUser = currentUser;
+			_userRepository = userRepository;
+		}
 
-        public async Task Process(TRequest request, CancellationToken cancellationToken)
+		public async Task Process(TRequest request, CancellationToken cancellationToken)
         {
             var userName = _userAccessor.GetCurrentUsername();
-            var user = await _unitOfWork.UserRepository.GetUserByName(userName);
+            var user = await _userRepository.GetUserByName(userName);
             var name = typeof(TRequest).Name;
 
             if (userName == Roles.System.ToString() && (name == "LoginQuery" || name == "RegisRegistrationCommand" || name == "CheckHomeQuery" || name == "CheckUsersQuery" ))

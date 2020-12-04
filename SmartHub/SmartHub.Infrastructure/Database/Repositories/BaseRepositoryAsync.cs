@@ -9,35 +9,41 @@ using SmartHub.Domain.Entities;
 
 namespace SmartHub.Infrastructure.Database.Repositories
 {
-	public class BaseRepositoryAsync<T> : IBaseRepository<T> where T : BaseEntity
+	public class BaseRepositoryAsync<T> : IBaseRepositoryAsync<T> where T : BaseEntity
 	{
 		private readonly DbSet<T> _entities;
-		private readonly AppDbContext _appDbContext;
 
 		public BaseRepositoryAsync(AppDbContext appDbContext)
 		{
 			_entities = appDbContext.Set<T>();
-			_appDbContext = appDbContext;
 		}
 
-		#region Getter
-
-		public async Task<T> GetByIdAsync(string id)
-		{
-			return await _entities.FindAsync(id);
-		}
+		#region Get
 
 		public async Task<List<T>> GetAllAsync()
 		{
-			return await _entities.ToListAsync().ConfigureAwait(false);
+			return await _entities.ToListAsync();
 		}
 
-		public async Task<List<T>> FindAllAsync(Expression<Func<T, bool>> expression)
+		public IQueryable<T> GetAllAsQueryable()
 		{
-			return await _entities.Where(expression).ToListAsync();
+			return _entities.AsNoTracking();
 		}
 
-		public async Task<T> FindbyAsync(Expression<Func<T, bool>> expression)
+		#endregion
+
+		#region Find
+
+		public async Task<T> FindByIdAsync(string id)
+		{
+			return await _entities.FindAsync(id);
+		}
+		public IQueryable<T> FindAllAsync(Expression<Func<T, bool>> expression)
+		{
+			return _entities.Where(expression);
+		}
+
+		public async Task<T> FindByAsync(Expression<Func<T, bool>> expression)
 		{
 			return await _entities.Where(expression).FirstOrDefaultAsync();
 		}
@@ -73,38 +79,6 @@ namespace SmartHub.Infrastructure.Database.Repositories
 		}
 
 		#endregion Add
-
-		#region Update
-
-		public async Task<bool> UpdateAsync(T entity)
-		{
-			try
-			{
-				_entities.Attach(entity);
-				_appDbContext.Entry(entity).State = EntityState.Modified;
-				return true;
-			}
-			catch (Exception)
-			{
-				return await Task.FromResult(false).ConfigureAwait(false);
-			}
-		}
-
-		public async Task<bool> UpdateRangeAsync(IEnumerable<T> entities)
-		{
-			try
-			{
-				_entities.AttachRange(entities);
-				_appDbContext.Entry(entities).State = EntityState.Modified;
-				return await Task.FromResult(true).ConfigureAwait(false);
-			}
-			catch (Exception)
-			{
-				return await Task.FromResult(false).ConfigureAwait(false);
-			}
-		}
-
-		#endregion Update
 
 		#region Remove
 		public async Task<bool> RemoveAsync(T entity)

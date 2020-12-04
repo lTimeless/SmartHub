@@ -5,21 +5,24 @@
     close-btn-title="Cancel"
     :close="close"
     :save="save"
-    header-color="bg-orange-400"
+    main-border-color="border-red-400"
+    main-bg-color="bg-red-400"
   >
     <label class="text-left block text-sm">
       <span class="text-gray-600 dark:text-gray-400">Name</span>
       <input
+        type="text"
         v-model="groupDetail.name"
-        class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outlineIndigo dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
+        class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md"
         placeholder="Group name"
       />
     </label>
     <label class="text-left block text-sm mt-3">
       <span class="text-gray-600 dark:text-gray-400">Description</span>
       <input
+        type="text"
         v-model="groupDetail.description"
-        class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outlineIndigo dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
+        class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md"
         placeholder="Group description"
       />
     </label>
@@ -80,8 +83,7 @@
 import { defineComponent, PropType, ref } from 'vue';
 import BaseModal from '@/components/modals/BaseModal.vue';
 import { Group, GroupUpdateRequest } from '@/types/types';
-import { HomeActionTypes } from '@/store/home/actions';
-import { useStore } from 'vuex';
+import { putByIdGroup } from '@/services/apis/group';
 
 export default defineComponent({
   name: 'GroupDetailsModal',
@@ -96,7 +98,6 @@ export default defineComponent({
     }
   },
   setup(props, context) {
-    const store = useStore();
     const groupDetail = ref(props.group);
     const close = () => {
       context.emit('close', false);
@@ -109,7 +110,14 @@ export default defineComponent({
         description: groupDetail.value.description,
         devices: groupDetail.value.devices
       };
-      await store.dispatch(HomeActionTypes.UPDATE_GROUP, updatedGroup);
+      await putByIdGroup(updatedGroup)
+        .then((response) => {
+          if (!response.success) {
+            return Promise.reject(response.message);
+          }
+          return Promise.resolve();
+        })
+        .catch((error) => Promise.reject(error));
       context.emit('close', false);
     };
 

@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using MediatR;
 using Serilog;
 using SmartHub.Application.Common.Models;
-using SmartHub.Application.UseCases.Entity.Activities;
 using SmartHub.Application.UseCases.SignalR.Services;
 
 namespace SmartHub.Application.Common.Behaviours
@@ -20,7 +19,7 @@ namespace SmartHub.Application.Common.Behaviours
         private readonly ILogger _logger = Log.ForContext(typeof(RequestLoggerBehaviour<,>));
         private readonly CurrentUser _currentUser;
         private readonly ISendOverSignalR _sendOverSignalR;
-        private const int MaxElapsableTime = 500;
+        private const int _maxElapsableTime = 500;
 
         public RequestLoggerBehaviour(CurrentUser currentUser, ISendOverSignalR sendOverSignalR)
         {
@@ -42,7 +41,7 @@ namespace SmartHub.Application.Common.Behaviours
             var successProp = response?.GetType().GetProperty("Success")?.GetValue(response) as bool? ?? false;
             var message = response?.GetType().GetProperty("Message")?.GetValue(response) as string;
 
-            if (_timer.ElapsedMilliseconds > MaxElapsableTime)
+            if (_timer.ElapsedMilliseconds > _maxElapsableTime)
             {
                 _logger.Warning(
                     "Long Request: {Name} - {@UserName} - {@Request} [{ElapsedMilliseconds} milliseconds]",

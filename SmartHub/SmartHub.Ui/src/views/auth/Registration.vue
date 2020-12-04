@@ -7,8 +7,8 @@
       :callback="registrationComplete"
     >
       <div class="text-gray-600 mb-8">
-        Thank you. We have sent you an email to ... . Please click the link in the message to
-        activate your account.
+        Thank you. We have sent you an email to ... . Please click the link in the message to activate your
+        account.
         <br /><a class="text-orange-500">This feature is not yet implemented.</a>
       </div>
       <!--  TODO: Email activation -->
@@ -31,8 +31,9 @@
           <label class="text-left block text-sm">
             <span class="text-gray-600 dark:text-gray-400">Username</span>
             <input
+              type="text"
               v-model="registrationRequest.username"
-              class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outlineIndigo dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
+              class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md"
               placeholder="Jane Doe"
             />
           </label>
@@ -44,7 +45,7 @@
                 @keydown="checkPasswordStrength"
                 @blur="checkPasswordStrength"
                 v-model="registrationRequest.password"
-                class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outlineIndigo dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
+                class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md"
                 placeholder="***************"
               />
               <div
@@ -91,7 +92,7 @@
               <input
                 :type="togglePassword ? 'text' : 'password'"
                 v-model="confirmPwd"
-                class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outlineIndigo dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
+                class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md"
                 placeholder="***************"
               />
             </label>
@@ -109,9 +110,8 @@
               ></div>
               <div
                 :class="{
-                  'bg-orange-400':
-                    passwordStrengthText === 'Could be stronger' ||
-                    passwordStrengthText === 'Strong password'
+                  'bg-yellow-400':
+                    passwordStrengthText === 'Could be stronger' || passwordStrengthText === 'Strong password'
                 }"
                 class="h-2 rounded-full mr-1 w-1/3 bg-gray-300"
               ></div>
@@ -125,22 +125,12 @@
             </div>
           </div>
 
-          <div class="flex mt-6 text-sm">
-            <label class="flex items-center dark:text-gray-400">
-              <input
-                v-model="privacyPolicy"
-                type="checkbox"
-                class="text-purple-600 form-checkbox focus:border-purple-400 focus:outline-none focus:shadow-outlineIndigo dark:focus:shadow-outline-gray"
-              />
-              <span class="ml-2">
-                I agree to the
-                <span class="underline">privacy policy</span>
-              </span>
-            </label>
+          <div v-if="registrationRequest.password !== confirmPwd" class="flex mt-4 text-sm">
+            <span class="text-red-400">Password is not identical </span>
           </div>
 
           <button
-            class="block w-full px-4 py-2 mt-4 text-sm font-medium leading-5 text-center text-white transition-colors duration-150 bg-ui-primary border border-transparent rounded-lg active:bg-ui-primary focus:outline-none focus:shadow-outlineIndigo"
+            class="block w-full px-4 py-2 mt-2 text-sm font-medium leading-5 text-center text-white transition-colors duration-150 bg-ui-primary border border-transparent rounded-lg active:bg-ui-primary focus:outline-none focus:shadow-outlineIndigo"
             :class="
               registrationDisabled
                 ? 'opacity-50 focus:outline-none cursor-not-allowed'
@@ -154,10 +144,8 @@
           <hr class="my-8" />
           <button
             disabled
-            class="flex items-center justify-center w-full px-4 py-2 text-sm font-medium leading-5 text-white transition-colors duration-150 border border-gray-300 rounded-lg dark:text-gray-400 active:bg-transparent focus:border-gray-500 active:text-gray-500 focus:outline-none focus:shadow-outline-gray"
-            :class="
-              true ? 'opacity-50 focus:outline-none cursor-not-allowed' : 'hover:border-gray-500'
-            "
+            class="flex items-center justify-center w-full px-4 py-2 text-sm font-medium leading-5 text-black transition-colors duration-150 border border-gray-300 rounded-lg dark:text-gray-400 active:bg-transparent focus:border-gray-500 active:text-gray-500 focus:outline-none focus:shadow-outline-gray"
+            :class="true ? 'opacity-50 focus:outline-none cursor-not-allowed' : 'hover:border-gray-500'"
           >
             Additional options....
           </button>
@@ -187,9 +175,7 @@ import Loader from '@/components/Loader.vue';
 
 const ConfirmationModalAsync = defineAsyncComponent({
   loader: () =>
-    import(
-      /* webpackChunkName: "ConfirmationModal" */ '../../components/modals/ConfirmationModal.vue'
-    ),
+    import(/* webpackChunkName: "ConfirmationModal" */ '../../components/modals/ConfirmationModal.vue'),
   loadingComponent: Loader,
   delay: 200
 });
@@ -200,6 +186,7 @@ export default defineComponent({
     AppCard,
     ConfirmationModalAsync
   },
+  props: {},
   setup() {
     const store = useStore();
     const router = useRouter();
@@ -207,7 +194,6 @@ export default defineComponent({
     const doneRegistration = ref(false);
     const passwordStrengthText = ref('');
     const togglePassword = ref(false);
-    const privacyPolicy = ref(false);
     const confirmPwd = ref('');
     const registrationRequest: RegistrationRequest = reactive({
       username: '',
@@ -225,7 +211,6 @@ export default defineComponent({
     const registrationDisabled = computed(
       () =>
         registrationRequest.username === '' ||
-        !privacyPolicy.value ||
         checkPwd.value ||
         !passwordStrength.value
     );
@@ -251,7 +236,7 @@ export default defineComponent({
         .then(() => {
           doneRegistration.value = true;
         })
-        .catch((err) => {
+        .catch((err: unknown) => {
           console.log(err);
           doneRegistration.value = false;
         });
@@ -266,7 +251,6 @@ export default defineComponent({
       togglePassword,
       title,
       doneRegistration,
-      privacyPolicy,
       confirmPwd,
       checkPasswordStrength,
       passwordStrengthText,
