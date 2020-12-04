@@ -5,12 +5,14 @@
       <template #header>
         <div class="flex flex-wrap justify-between my-4 space-y-2">
           <AppButton
+            id="v-step-1"
             title="Home"
             :callback="toggleTabs.bind(this, 1)"
             class="mt-2 shadow-sm bg-white"
             :class="{ 'text-ui-primary': openTab !== 1, 'text-white bg-indigo-400': openTab === 1 }"
           />
           <AppButton
+            id="v-step-2"
             title="Groups"
             color="orange"
             class="shadow-sm bg-white"
@@ -18,6 +20,7 @@
             :class="{ 'text-orange-400': openTab !== 2, 'text-white bg-orange-400': openTab === 2 }"
           />
           <AppButton
+            id="v-step-3"
             title="Devices"
             color="green"
             class="shadow-sm bg-white"
@@ -25,6 +28,7 @@
             :class="{ 'text-green-400': openTab !== 3, 'text-white bg-green-400': openTab === 3 }"
           />
           <AppButton
+            id="v-step-4"
             title="Automations"
             color="teal"
             class="shadow-sm bg-white"
@@ -66,6 +70,7 @@
       </template>
     </AppTabs>
   </div>
+  <footer></footer>
 </template>
 
 <script lang="ts">
@@ -76,6 +81,7 @@ import AppAutomation from '@/components/AppAutomations.vue';
 import AppGroupsOverview from '@/components/AppGroupsOverview.vue';
 import AppDevicesOverview from '@/components/AppDevicesOverview.vue';
 import { useStore } from 'vuex';
+import { HomeActionTypes } from '@/store/home/actions';
 
 export default defineComponent({
   name: 'Dashboard',
@@ -90,12 +96,14 @@ export default defineComponent({
     const openTab = ref(1);
     const store = useStore();
     const home = computed(() => store.state.homeModule.home);
+    store.dispatch(HomeActionTypes.CREATE_HOME);
     const toggleTabs = (tabNumber: number) => {
       openTab.value = tabNumber;
     };
     const onClick = (tabNumber: number) => {
       console.log('Click button', tabNumber);
     };
+
     return {
       openTab,
       toggleTabs,
