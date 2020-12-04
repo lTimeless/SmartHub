@@ -204,39 +204,24 @@ export default defineComponent({
       required: true
     },
     callbackZero: {
-      default: (): void => {
-        console.log('click zero');
-      },
       type: Function as PropType<() => void>,
-      required: false
+      required: true
     },
     callbackOne: {
-      default: (): void => {
-        console.log('click one');
-      },
       type: Function as PropType<() => void>,
-      required: false
+      required: true
     },
     callbackTwo: {
-      default: (): void => {
-        console.log('click two');
-      },
       type: Function as PropType<() => void>,
-      required: false
+      required: true
     },
     callbackThree: {
-      default: (): void => {
-        console.log('click three');
-      },
       type: Function as PropType<() => void>,
-      required: false
+      required: true
     },
     callbackFour: {
-      default: (): void => {
-        console.log('click four');
-      },
       type: Function as PropType<() => void>,
-      required: false
+      required: true
     }
   },
   setup(props) {

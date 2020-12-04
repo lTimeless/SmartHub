@@ -66,9 +66,6 @@ export default defineComponent({
   name: 'GroupDropdown',
   props: {
     addSubGroup: {
-      default: (): void => {
-        console.log('click add subgroup');
-      },
       type: Function as PropType<() => void>,
       required: true
     },

@@ -48,7 +48,7 @@ export default defineComponent({
     searchKeys: {
       type: Array,
       required: true,
-      validator: (prop: any) => prop.every((e: any) => typeof e === 'string')
+      validator: (prop: any) => prop.every((e: unknown) => typeof e === 'string')
     },
     withDropdown: {
       type: Boolean,

@@ -50,7 +50,6 @@
 <script lang="ts">
 import { computed, defineComponent, ref } from 'vue';
 import { useStore } from 'vuex';
-import { useRouter } from 'vue-router';
 import { AppActionTypes } from '@/store/app/actions';
 
 export default defineComponent({
@@ -58,7 +57,6 @@ export default defineComponent({
   props: {},
   setup() {
     const store = useStore();
-    const router = useRouter();
     const dropdownPopoverShow = ref<boolean>(false);
     const showDropdown = computed(() => store.state.appModule.notificationDropdownOpen);
 
@@ -79,7 +77,6 @@ export default defineComponent({
     };
 
     const escapeDropdown = () => {
-      console.log('esc');
       setDropDownValue(false);
     };
 

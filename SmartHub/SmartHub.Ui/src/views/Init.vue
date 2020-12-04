@@ -45,27 +45,14 @@
           <div class="text-gray-700 font-medium mt-3 mb-4 text-left">
             Please type in a name and/or a description for your smartHub.
           </div>
-          <div class="md:flex md:items-center mb-6">
-            <label class="text-gray-500 flex items-center">
-              <input
-                class="form-checkbox text-ui-primary form-checkbox focus:border-purple-400 focus:outline-none focus:shadow-outlineIndigo dark:focus:shadow-outline-gray"
-                type="checkbox"
-                v-model="useFakeDbDisabled"
-                @change="triggerFakeDb"
-              />
-              <span class="ml-2 text-sm"> Use fake data, for testing purposes? </span>
-            </label>
-          </div>
           <label class="flex flex-col text-sm">
             <span class="text-gray-600 dark:text-gray-400 justify-start text-left">Name</span>
             <input
               required
               class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-ui-primary focus:outline-none focus:shadow-outlineIndigo dark:text-gray-300 dark:focus:shadow-outline form-input"
-              :class="useFakeDbDisabled ? 'bg-gray-300' : ''"
               placeholder="SmartHub (default)"
               type="text"
               v-model="appConfigCreateRequest.name"
-              :disabled="useFakeDbDisabled"
             />
           </label>
           <label class="flex flex-col text-sm mt-4">
@@ -74,10 +61,8 @@
               required
               class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-ui-primary focus:outline-none focus:shadow-outlineIndigo dark:text-gray-300 dark:focus:shadow-outline form-input"
               placeholder="This is an awesome description (default)"
-              :class="useFakeDbDisabled ? 'bg-gray-300' : ''"
               type="text"
               v-model="appConfigCreateRequest.description"
-              :disabled="useFakeDbDisabled"
             />
           </label>
           <div class="mt-4">
@@ -85,47 +70,29 @@
               <label class="text-gray-500 flex items-center">
                 <input
                   class="form-checkbox text-ui-primary form-checkbox focus:border-purple-400 focus:outline-none focus:shadow-outlineIndigo dark:focus:shadow-outline-gray"
-                  :class="useFakeDbDisabled ? 'bg-gray-300' : ''"
                   type="checkbox"
                   v-model="appConfigCreateRequest.autoDetectAddress"
-                  :disabled="useFakeDbDisabled"
                 />
                 <span class="ml-2 text-sm"> Automatically detect your home address. </span>
               </label>
             </div>
             <div class="md:flex md:items-center mb-6">
               <label class="text-gray-500 flex items-center">
-                <input
-                  class="form-checkbox text-ui-primary"
-                  :class="useFakeDbDisabled ? 'bg-gray-300' : ''"
-                  type="checkbox"
-                  v-model="acceptWip"
-                  :disabled="useFakeDbDisabled"
-                />
+                <input class="form-checkbox text-ui-primary" type="checkbox" v-model="acceptWip" />
                 <span class="ml-2 text-sm"> This project is still under development. </span>
               </label>
             </div>
           </div>
-          <template v-if="!useFakeDbDisabled">
-            <button
-              @click="InitHome"
-              class="block w-full px-4 py-2 mt-4 text-sm font-medium leading-5 text-center text-white transition-colors duration-150 bg-ui-primary border border-transparent rounded-lg active:bg-ui-primary focus:outline-none focus:shadow-outlineIndigo"
-              :class="
-                allDeactive ? 'opacity-50 focus:outline-none cursor-not-allowed' : 'hover:bg-ui-primaryHover'
-              "
-              :disabled="allDeactive"
-            >
-              Complete
-            </button>
-          </template>
-          <template v-else>
-            <button
-              @click="showgoToFakeModal = !showgoToFakeModal"
-              class="block w-full px-4 py-2 mt-4 text-sm font-medium leading-5 text-center text-white transition-colors duration-150 bg-ui-primary border border-transparent rounded-lg active:bg-ui-primary focus:outline-none focus:shadow-outlineIndigo"
-            >
-              Go to
-            </button>
-          </template>
+          <button
+            @click="InitHome"
+            class="block w-full px-4 py-2 mt-4 text-sm font-medium leading-5 text-center text-white transition-colors duration-150 bg-ui-primary border border-transparent rounded-lg active:bg-ui-primary focus:outline-none focus:shadow-outlineIndigo"
+            :class="
+              allDeactive ? 'opacity-50 focus:outline-none cursor-not-allowed' : 'hover:bg-ui-primaryHover'
+            "
+            :disabled="allDeactive"
+          >
+            Complete
+          </button>
 
           <hr class="my-8" />
           <button
@@ -168,10 +135,8 @@ export default defineComponent({
     const store = useStore();
     const router = useRouter();
     const title = 'Welcome to SmartHub';
-    const showgoToFakeModal = ref(false);
     const acceptWip = ref(false);
     const doneInit = ref(false);
-    const useFakeDbDisabled = ref(false);
     const appConfigCreateRequest: AppConfigInitRequest = reactive({
       name: '',
       description: '',
@@ -197,40 +162,24 @@ export default defineComponent({
       if (appConfigCreateRequest.description === '') {
         appConfigCreateRequest.description = 'This is an awesome description';
       }
-      store
-        .dispatch(AppActionTypes.CREATE_APP, appConfigCreateRequest)
-        .then(() => {
-          doneInit.value = true;
-        })
-        .catch((err: unknown) => {
-          console.log(err);
-        });
+      store.dispatch(AppActionTypes.CREATE_APP, appConfigCreateRequest).then(() => {
+        doneInit.value = true;
+      });
     };
 
     const modalCallback = () => {
       router.push('/registration');
     };
-    const triggerFakeDb = () => {
-      useFakeDbDisabled.value = !useFakeDbDisabled.value;
-    };
 
-    const goToFake = () => {
-      console.log('This feature is not implemented at the moment.');
-      router.push('/login');
-    };
     const allDeactive = computed(() => !appConfigCreateRequest.autoDetectAddress || !acceptWip.value);
     return {
       title,
       acceptWip,
-      showgoToFakeModal,
       doneInit,
       appConfigCreateRequest,
-      useFakeDbDisabled,
       InitHome,
       allDeactive,
-      modalCallback,
-      goToFake,
-      triggerFakeDb
+      modalCallback
     };
   }
 });
