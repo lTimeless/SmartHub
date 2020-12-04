@@ -1,4 +1,4 @@
-import { ActionContext, ActionTree } from 'Vuex';
+import { ActionContext, ActionTree } from 'vuex';
 import { LoginRequest, AuthResponse, RegistrationRequest, UserUpdateRequest, User } from '@/types/types';
 import { RootState, AuthState } from '@/store/index.types';
 import { storeAuthResponse } from '@/services/auth/authService';
