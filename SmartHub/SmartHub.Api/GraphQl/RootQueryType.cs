@@ -1,9 +1,14 @@
 ﻿using HotChocolate.Types;
 using SmartHub.Application.UseCases.Entity.Devices;
 using SmartHub.Application.UseCases.Entity.Groups;
+using SmartHub.Application.UseCases.Init;
+using SmartHub.Application.UseCases.NetworkScanner;
 
 namespace SmartHub.Api.GraphQl
 {
+	/// <summary>
+	/// Root GraphQL Queries Endpoint.
+	/// </summary>
 	public class RootQueryType : ObjectType
 	{
 		protected override void Configure(IObjectTypeDescriptor descriptor)
@@ -11,8 +16,18 @@ namespace SmartHub.Api.GraphQl
 			descriptor.Name("AppQueries");
 			descriptor.Description("Main entrypoint for all queries.");
 
-			descriptor.Include<GroupQueries>();
-			descriptor.Include<DeviceQueries>();
+			// Group
+			descriptor.Include<GroupQueries>()
+				.Description("All queries for the GroupEntity.");
+			// Device
+			descriptor.Include<DeviceQueries>()
+				.Description("All queries for the DeviceEntity.");
+			// NetworkScanner
+			descriptor.Include<NetworkScannerQueries>()
+				.Description("All queries for network scanning operations");
+			// Initialize
+			descriptor.Include<InitQueries>()
+				.Description("All queries for the initialization service.");
 
 		}
 	}

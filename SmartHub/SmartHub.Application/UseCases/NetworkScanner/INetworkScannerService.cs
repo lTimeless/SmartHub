@@ -12,6 +12,6 @@ namespace SmartHub.Application.UseCases.NetworkScanner
 		/// Scans the network for devices
 		/// </summary>
 		/// <returns>A list with devices found in the network</returns>
-		Task<List<NetworkDeviceResponseDto>> SearchNetworkDevicesAsync();
+		Task<List<NetworkDevice>> SearchNetworkDevicesAsync();
 	}
 }

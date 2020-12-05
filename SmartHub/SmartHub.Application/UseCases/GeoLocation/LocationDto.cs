@@ -2,6 +2,7 @@
 
 namespace SmartHub.Application.UseCases.GeoLocation
 {
+	// TODO cahnge to record ?!?!
     public class LocationDto
     {
         [JsonPropertyName("ip")]

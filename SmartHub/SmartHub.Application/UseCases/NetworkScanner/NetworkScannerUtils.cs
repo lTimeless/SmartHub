@@ -8,8 +8,16 @@ using Serilog;
 
 namespace SmartHub.Application.UseCases.NetworkScanner
 {
+	/// <summary>
+	/// Utility methods for the network scanner service.
+	/// </summary>
     public static class NetworkScannerUtils
     {
+	    /// <summary>
+	    /// Creates a readable name from the given hostname.
+	    /// </summary>
+	    /// <param name="hostname">the hostname to transform.</param>
+	    /// <returns>A more readable hostname.</returns>
         public static string MakeNameFromHostname(string? hostname)
         {
             if (hostname == null)
@@ -35,15 +43,24 @@ namespace SmartHub.Application.UseCases.NetworkScanner
             return "Not available";
         }
 
+	    /// <summary>
+	    /// Looks for system gateway.
+	    /// </summary>
+	    /// <returns>The gateway address or an empty string.</returns>
         public static string FindMyNetworkGateway()
         {
             var host = Dns.GetHostEntry(Dns.GetHostName());
             return host
                 .AddressList
-                .FirstOrDefault(ip => ip.AddressFamily == AddressFamily.InterNetwork)?
-                .ToString() ?? "";
+                .FirstOrDefault(ip => ip.AddressFamily == AddressFamily.InterNetwork && ip.ToString().StartsWith("192"))?
+                .ToString() ?? string.Empty;
         }
 
+	    /// <summary>
+	    /// Retrieves the hostname to the given ip.
+	    /// </summary>
+	    /// <param name="ip">The ip.</param>
+	    /// <returns>The found hostname or empty string.</returns>
         public static async Task<string> GetHostnameAsync(string ip)
         {
             IPHostEntry? res = null;
@@ -56,9 +73,14 @@ namespace SmartHub.Application.UseCases.NetworkScanner
                 Log.ForContext(typeof(NetworkScannerUtils)).Information($"{e.Message}");
             }
 
-            return res?.HostName ?? "";
+            return res?.HostName ?? string.Empty;
         }
 
+	    /// <summary>
+	    /// Retrieves th mac address to the given ip.
+	    /// </summary>
+	    /// <param name="ipAddress">The ip.</param>
+	    /// <returns>Returns found mac address or an empty string.</returns>
         public static async Task<string> GetMacAddressAsync(string ipAddress)
         {
             try
