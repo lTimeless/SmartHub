@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using HotChocolate.Execution.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.IO;
 using System.IO.Compression;
@@ -18,6 +19,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using Polly;
 using SmartHub.Api.GraphQl;
+using SmartHub.Api.Middleware;
 using SmartHub.Api.Validators;
 using SmartHub.Domain.Common.Settings;
 using SmartHub.Domain;
@@ -71,7 +73,13 @@ namespace SmartHub.Api.Extensions
 		private static void AddGraphQl(this IServiceCollection services)
 		{
 			services.AddGraphQLServer()
-				.AddQueryType<RootQueryType>();
+				.AddQueryType<RootQueryType>()
+				.AddMutationType<RootMutationType>()
+				.AddTypes()
+				.AddProjections()
+				.AddFiltering()
+				.AddSorting()
+				;
 		}
 
 		private static void AddSwagger(this IServiceCollection services)

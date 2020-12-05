@@ -28,6 +28,9 @@
     <PackageReference Include="AutoMapper" Version="10.1.1" />
     <PackageReference Include="HotChocolate" Version="11.0.1" />
     <PackageReference Include="HotChocolate.AspNetCore" Version="11.0.1" />
+    <PackageReference Include="HotChocolate.Data" Version="11.0.1" />
+    <PackageReference Include="HotChocolate.Subscriptions" Version="11.0.1" />
+    <PackageReference Include="HotChocolate.Subscriptions.InMemory" Version="11.0.1" />
     <PackageReference Include="MediatR" Version="9.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.JsonPatch" Version="5.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="5.0.0" />
@@ -93,10 +96,6 @@
     <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleToAttribute">
       <_Parameter1>DynamicProxyGenAssembly2</_Parameter1>
     </AssemblyAttribute>
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="GraphQl\Mutations" />
-    <Folder Include="GraphQl\Subscriptions" />
   </ItemGroup>
 
   <!-- Smarthub.Ui build process for 'dotnet build' -->

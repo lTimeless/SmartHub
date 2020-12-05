@@ -13,6 +13,7 @@ namespace SmartHub.Domain.Entities.ValueObjects
 		public Address()
 		{
 		}
+
 		public Address(string street, string city, string state, string country, string zipcode)
 		{
 			Street = street;

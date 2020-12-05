@@ -4,12 +4,12 @@ namespace SmartHub.Domain.Entities
 {
 	public class Group : BaseEntity
 	{
-		public virtual List<Device> Devices { get; set; } = new List<Device>();
+		public virtual List<Device> Devices { get; set; } = new();
 
 		public bool IsSubGroup { get; set; }
-		public virtual List<Group> SubGroups { get; set; } = new List<Group>();
+		public virtual List<Group> SubGroups { get; set; } = new();
 
-		protected Group()
+		public Group()
 		{
 		}
 

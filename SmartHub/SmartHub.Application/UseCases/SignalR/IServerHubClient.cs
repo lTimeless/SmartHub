@@ -19,9 +19,9 @@ namespace SmartHub.Application.UseCases.SignalR
         /// <returns>Task</returns>
         Task SendActivity(ActivityDto activityDto);
 
-		Task SendGroups(IEnumerable<GroupDto> homeDto);
+		// Task SendGroups(IEnumerable<GroupDto> homeDto);
 
-		Task SendDevices(IEnumerable<DeviceDto> homeDto);
+		// Task SendDevices(IEnumerable<DeviceDto> homeDto);
 
 		Task SendAppConfig(AppConfig appConfig);
 	}

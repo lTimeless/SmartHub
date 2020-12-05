@@ -1,3 +1,4 @@
+using HotChocolate.AspNetCore;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -83,7 +84,11 @@ namespace SmartHub.Api
                     "{controller}/{action=Index}/{id?}");
 
                 // GraphQl
-                endpoints.MapGraphQL();
+                endpoints.MapGraphQL().WithOptions(
+	                new GraphQLServerOptions
+	                {
+		                Tool = { Enable = false }
+	                });
 
                 // SignalR
                 endpoints.MapHub<ActivityHub>("/api/hub/activity");

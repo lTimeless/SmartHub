@@ -43,6 +43,7 @@ namespace SmartHub.Infrastructure
             services.AddDbContext<AppDbContext>(builder =>
                 {
                     builder.UseLazyLoadingProxies();
+                    // builder.LogTo(Console.WriteLine);
                     builder.UseNpgsql(connectionString,
                         options =>
                         {
@@ -115,7 +116,7 @@ namespace SmartHub.Infrastructure
             services.AddScoped<IDbSeeder, DbSeeder>();
         }
 
-        public static void AddBackgroundServices(this IServiceCollection services)
+        private static void AddBackgroundServices(this IServiceCollection services)
         {
             services.AddHostedService<InitializationService>();
         }

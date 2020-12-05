@@ -1,5 +1,6 @@
 ﻿using HotChocolate.Types;
-using SmartHub.Api.GraphQl.Queries;
+using SmartHub.Application.UseCases.Entity.Devices;
+using SmartHub.Application.UseCases.Entity.Groups;
 
 namespace SmartHub.Api.GraphQl
 {
@@ -7,13 +8,11 @@ namespace SmartHub.Api.GraphQl
 	{
 		protected override void Configure(IObjectTypeDescriptor descriptor)
 		{
-			base.Configure(descriptor);
-
 			descriptor.Name("AppQueries");
 			descriptor.Description("Main entrypoint for all queries.");
 
-			descriptor.Include<GroupQuery>();
-			descriptor.Include<DeviceQuery>();
+			descriptor.Include<GroupQueries>();
+			descriptor.Include<DeviceQueries>();
 
 		}
 	}

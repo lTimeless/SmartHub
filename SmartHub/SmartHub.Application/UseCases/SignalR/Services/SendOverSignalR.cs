@@ -85,13 +85,13 @@ namespace SmartHub.Application.UseCases.SignalR.Services
 		public async Task SendDevices()
 		{
 			var devices = await _deviceRepository.GetAllAsync();
-			await _homeHubContext.Clients.All.SendDevices(_mapper.Map<IEnumerable<DeviceDto>>(devices));
+			// await _homeHubContext.Clients.All.SendDevices(_mapper.Map<IEnumerable<DeviceDto>>(devices));
 		}
 
 		public async Task SendGroups()
 		{
 			var groups = await _groupRepository.GetAllAsync();
-			await _homeHubContext.Clients.All.SendGroups(_mapper.Map<IEnumerable<GroupDto>>(groups));
+			// await _homeHubContext.Clients.All.SendGroups(_mapper.Map<IEnumerable<GroupDto>>(groups));
 		}
 	}
 }
