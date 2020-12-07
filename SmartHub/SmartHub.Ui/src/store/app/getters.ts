@@ -13,8 +13,8 @@ export type HomeGetters = {
 export const getters: GetterTree<AppState, RootState> = {
   getOnlyParentGroups: (state) => state.groups?.filter((x: Group) => !x.isSubGroup),
   getParentGroupsAmount: (state) =>
-    typeof state.groups === 'undefined' ? 0 : state.groups.filter((x) => !x.isSubGroup).length,
+    typeof state.groups === 'undefined' ? 0 : state.groups?.filter((x) => !x.isSubGroup).length,
   getSubGroupsAmount: (state) =>
-    typeof state.groups === 'undefined' ? 0 : state.groups.filter((x) => x.isSubGroup).length,
-  getDevicesAmount: (state) => (typeof state.devices === 'undefined' ? 0 : state.devices.length)
+    typeof state.groups === 'undefined' ? 0 : state.groups?.filter((x) => x.isSubGroup).length,
+  getDevicesAmount: (state) => (typeof state.devices === 'undefined' ? 0 : state.devices?.length)
 };

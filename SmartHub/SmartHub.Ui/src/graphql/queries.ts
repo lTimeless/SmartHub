@@ -1,5 +1,40 @@
 import gql from 'graphql-tag';
 
+// App
+export const getAppConfig = gql`
+  {
+    appConfig {
+      configFilePath
+      applicationName
+      configFileName
+      configName
+      description
+      address {
+        street
+        city
+        state
+        country
+        zipCode
+      }
+      isActive
+      unitSystem
+      timeZone
+      downloadServerUrl
+      saveXLimit
+      deleteXAmountAfterLimit
+      logFolderPath
+      logFolderName
+      pluginFolderPath
+      pluginFolderName
+      configFolderPath
+      configFolderName
+      baseFolderName
+      downloadServerUrl
+    }
+  }
+`;
+
+// Init
 export const checkApp = gql`
   {
     checkApp {
@@ -20,20 +55,50 @@ export const checkUsers = gql`
   }
 `;
 
+// Device
 export const getDevices = gql`
   {
     devices {
-      name
       id
+      name
+      description
+      primaryConnection
+      secondaryConnection
+      createdAt
+      lastModifiedAt
+      createdBy
+      lastModifiedBy
+      pluginName
+      pluginTypes
+      ip {
+        ipv4
+      }
+      company {
+        name
+        shortName
+      }
     }
   }
 `;
 
+// Group
 export const getGroups = gql`
   {
     groups {
-      name
       id
+      name
+      isSubGroup
+      createdBy
+      lastModifiedBy
+      lastModifiedAt
+      createdAt
+      description
+      devices {
+        id
+        name
+        pluginName
+        pluginName
+      }
     }
   }
 `;

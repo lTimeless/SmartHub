@@ -1,7 +1,6 @@
 ﻿using HotChocolate;
 using SmartHub.Application.Common.Interfaces.Database;
 using SmartHub.Application.Common.Models;
-using SmartHub.Application.UseCases.AppFolder.AppConfigParser;
 using SmartHub.Domain.Entities;
 using System.Threading.Tasks;
 
