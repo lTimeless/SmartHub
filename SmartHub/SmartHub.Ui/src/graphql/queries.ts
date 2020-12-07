@@ -19,3 +19,21 @@ export const checkUsers = gql`
     }
   }
 `;
+
+export const getDevices = gql`
+  {
+    devices {
+      name
+      id
+    }
+  }
+`;
+
+export const getGroups = gql`
+  {
+    groups {
+      name
+      id
+    }
+  }
+`;
