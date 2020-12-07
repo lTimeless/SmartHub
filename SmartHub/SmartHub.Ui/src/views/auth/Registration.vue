@@ -1,5 +1,5 @@
 <template>
-  <div class="flex items-center min-h-screen p-6 bg-ui-loginBackground dark:bg-gray-900">
+  <div class="flex items-center min-h-screen p-6 bg-loginBackground dark:bg-gray-900">
     <ConfirmationModalAsync
       v-if="doneRegistration"
       title="Registration Success"
@@ -130,11 +130,11 @@
           </div>
 
           <button
-            class="block w-full px-4 py-2 mt-2 text-sm font-medium leading-5 text-center text-white transition-colors duration-150 bg-ui-primary border border-transparent rounded-lg active:bg-ui-primary focus:outline-none focus:shadow-outlineIndigo"
+            class="block w-full px-4 py-2 mt-2 text-sm font-medium leading-5 text-center text-white transition-colors duration-150 bg-primary border border-transparent rounded-lg active:bg-primary focus:outline-none focus:shadow-outlineIndigo"
             :class="
               registrationDisabled
                 ? 'opacity-50 focus:outline-none cursor-not-allowed'
-                : 'hover:bg-ui-primaryHover'
+                : 'hover:bg-primaryHover'
             "
             @click="onRegistrationClick"
             :disabled="registrationDisabled"
@@ -151,7 +151,7 @@
           </button>
           <p class="mt-4 text-left">
             <router-link
-              class="text-sm font-medium text-ui-primary dark:text-ui-primary hover:underline"
+              class="text-sm font-medium text-primary dark:text-primary hover:underline"
               to="/login"
             >
               Already have an account? Login
@@ -172,6 +172,7 @@ import { AuthActionTypes } from '@/store/auth/actions';
 import { useStore } from 'vuex';
 import AppCard from '@/components/widgets/AppCard.vue';
 import Loader from '@/components/Loader.vue';
+import { Routes } from '@/types/enums';
 
 const ConfirmationModalAsync = defineAsyncComponent({
   loader: () =>
@@ -209,10 +210,7 @@ export default defineComponent({
       () => registrationRequest.password === '' || registrationRequest.password !== confirmPwd.value
     );
     const registrationDisabled = computed(
-      () =>
-        registrationRequest.username === '' ||
-        checkPwd.value ||
-        !passwordStrength.value
+      () => registrationRequest.username === '' || checkPwd.value || !passwordStrength.value
     );
 
     const checkPasswordStrength = () => {
@@ -243,7 +241,7 @@ export default defineComponent({
     };
 
     const registrationComplete = () => {
-      router.push('/');
+      router.push(Routes.Home);
     };
 
     return {

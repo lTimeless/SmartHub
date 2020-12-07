@@ -1,5 +1,5 @@
 <template>
-  <div class="flex items-center min-h-screen p-6 bg-ui-loginBackground dark:bg-gray-900 login">
+  <div class="flex items-center min-h-screen p-6 bg-loginBackground dark:bg-gray-900 login">
     <ConfirmationModalAsync
       v-if="doneInit"
       title="SmartHub initialization success"
@@ -9,26 +9,11 @@
       <div class="text-gray-600 mb-8">
         Thank you for using SmartHub.
         <br />If you encounter any problems or have any suggestions, please visit
-        <a class="text-ui-primary" href="https://github.com/SmartHub-Io/SmartHub">github</a>
+        <a class="text-primary" href="https://github.com/SmartHub-Io/SmartHub">github</a>
         and create an issue. 🔥👌🚀❤
       </div>
     </ConfirmationModalAsync>
-    <NotImplementedModalAsync
-      v-if="showgoToFakeModal"
-      title="SmartHub initialization success"
-      button-title="Go to Testwebsite"
-      :callback="goToFake"
-    >
-      <div class="text-gray-600 mb-8">
-        <h2 class="text-orange-500">This feature is not implemented at the moment</h2>
-        You want to test SmartHub with fake data?
-        <br />Than click the button and you will be redirected to the official testwebsite. <br />If you
-        encounter any problems or have any suggestions, please visit
-        <a class="text-ui-primary" href="https://github.com/SmartHub-Io/SmartHub">github</a>
-        and create an issue. 🔥👌🚀❤
-      </div>
-    </NotImplementedModalAsync>
-    <AppCard v-if="!doneInit && !showgoToFakeModal" class="bg-white shadow-md">
+    <AppCard v-if="!doneInit" class="bg-white shadow-md">
       <div class="h-32 md:h-auto md:w-1/2">
         <img
           aria-hidden="true"
@@ -49,7 +34,7 @@
             <span class="text-gray-600 dark:text-gray-400 justify-start text-left">Name</span>
             <input
               required
-              class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-ui-primary focus:outline-none focus:shadow-outlineIndigo dark:text-gray-300 dark:focus:shadow-outline form-input"
+              class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-primary focus:outline-none focus:shadow-outlineIndigo dark:text-gray-300 dark:focus:shadow-outline form-input"
               placeholder="SmartHub (default)"
               type="text"
               v-model="appConfigCreateRequest.name"
@@ -59,7 +44,7 @@
             <span class="text-gray-600 dark:text-gray-400 justify-start text-left">Description</span>
             <input
               required
-              class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-ui-primary focus:outline-none focus:shadow-outlineIndigo dark:text-gray-300 dark:focus:shadow-outline form-input"
+              class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-primary focus:outline-none focus:shadow-outlineIndigo dark:text-gray-300 dark:focus:shadow-outline form-input"
               placeholder="This is an awesome description (default)"
               type="text"
               v-model="appConfigCreateRequest.description"
@@ -69,7 +54,7 @@
             <div class="md:flex md:items-center mb-6">
               <label class="text-gray-500 flex items-center">
                 <input
-                  class="form-checkbox text-ui-primary form-checkbox focus:border-purple-400 focus:outline-none focus:shadow-outlineIndigo dark:focus:shadow-outline-gray"
+                  class="form-checkbox text-primary form-checkbox focus:border-purple-400 focus:outline-none focus:shadow-outlineIndigo dark:focus:shadow-outline-gray"
                   type="checkbox"
                   v-model="appConfigCreateRequest.autoDetectAddress"
                 />
@@ -78,16 +63,16 @@
             </div>
             <div class="md:flex md:items-center mb-6">
               <label class="text-gray-500 flex items-center">
-                <input class="form-checkbox text-ui-primary" type="checkbox" v-model="acceptWip" />
+                <input class="form-checkbox text-primary" type="checkbox" v-model="acceptWip" />
                 <span class="ml-2 text-sm"> This project is still under development. </span>
               </label>
             </div>
           </div>
           <button
             @click="InitHome"
-            class="block w-full px-4 py-2 mt-4 text-sm font-medium leading-5 text-center text-white transition-colors duration-150 bg-ui-primary border border-transparent rounded-lg active:bg-ui-primary focus:outline-none focus:shadow-outlineIndigo"
+            class="block w-full px-4 py-2 mt-4 text-sm font-medium leading-5 text-center text-white transition-colors duration-150 bg-primary border border-transparent rounded-lg active:bg-ui-primary focus:outline-none focus:shadow-outlineIndigo"
             :class="
-              allDeactive ? 'opacity-50 focus:outline-none cursor-not-allowed' : 'hover:bg-ui-primaryHover'
+              allDeactive ? 'opacity-50 focus:outline-none cursor-not-allowed' : 'hover:bg-primaryHover'
             "
             :disabled="allDeactive"
           >
@@ -109,27 +94,25 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, defineAsyncComponent, reactive, ref, computed } from 'vue';
+import { defineComponent, defineAsyncComponent, reactive, ref, computed, onMounted } from 'vue';
 import { AppConfigInitRequest } from '@/types/types';
 import { AppActionTypes } from '@/store/app/actions';
 import { useStore } from 'vuex';
 import { useRouter } from 'vue-router';
 import AppCard from '@/components/widgets/AppCard.vue';
-import { checkHome } from '@/services/apis/init';
+import { useQuery } from '@vue/apollo-composable';
+import { checkApp } from '@/graphql/queries';
+import { Routes } from '@/types/enums';
 
 const ConfirmationModalAsync = defineAsyncComponent(
   () => import(/* webpackChunkName: "ConfirmationModal" */ '../components/modals/ConfirmationModal.vue')
-);
-const NotImplementedModalAsync = defineAsyncComponent(
-  () => import(/* webpackChunkName: "NotImplementedModal" */ '../components/modals/NotImplementedModal.vue')
 );
 
 export default defineComponent({
   name: 'Init',
   components: {
     AppCard,
-    ConfirmationModalAsync,
-    NotImplementedModalAsync
+    ConfirmationModalAsync
   },
   setup() {
     const store = useStore();
@@ -143,17 +126,16 @@ export default defineComponent({
       autoDetectAddress: false
     });
 
-    checkHome()
-      .then((response) => {
-        if (response.data) {
-          router.push('/login');
+    const { refetch } = useQuery(checkApp);
+
+    onMounted(() => {
+      refetch().then((response) => {
+        if (response.data.checkApp.data) {
+          router.push(Routes.Login);
+          return Promise.resolve();
         }
-        return Promise.resolve();
-      })
-      .catch((err) => {
-        console.log(err);
-        return Promise.reject(err);
       });
+    });
 
     const InitHome = () => {
       if (appConfigCreateRequest.name === '') {
@@ -190,7 +172,7 @@ export default defineComponent({
   width: 100%;
   height: 100vh;
   display: flex;
-  background-color: var(--color-ui-login-background);
+  background-color: var(--color-login-background);
   .fully-centered {
     align-self: center;
     height: 80%;

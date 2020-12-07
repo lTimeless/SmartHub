@@ -21,7 +21,7 @@ namespace SmartHub.Api.GraphQl
 			// Device
 			descriptor.Include<DeviceMutations>()
 				.Description("All mutations for DeviceEntity.");
-			// Initialize
+			// Initialization
 			descriptor.Include<InitMutations>()
 				.Description("All mutations for the initialization service.");
 

@@ -1,5 +1,5 @@
 <template>
-  <div class="flex items-center min-h-screen p-6 bg-ui-loginBackground dark:bg-gray-900">
+  <div class="flex items-center min-h-screen p-6 bg-loginBackground dark:bg-gray-900">
     <AppCard class="bg-white shadow-md">
       <div class="h-32 md:h-auto md:w-1/2">
         <img
@@ -37,9 +37,9 @@
           </label>
 
           <button
-            class="block w-full px-4 py-2 mt-4 text-sm font-medium leading-5 text-center text-white transition-colors duration-150 bg-ui-primary border border-transparent rounded-lg active:bg-ui-primary focus:outline-none focus:shadow-outlineIndigo"
+            class="block w-full px-4 py-2 mt-4 text-sm font-medium leading-5 text-center text-white transition-colors duration-150 bg-primary border border-transparent rounded-lg active:bg-primary focus:outline-none focus:shadow-outlineIndigo"
             :class="
-              signInDisabled ? 'opacity-50 focus:outline-none cursor-not-allowed' : 'hover:bg-ui-primaryHover'
+              signInDisabled ? 'opacity-50 focus:outline-none cursor-not-allowed' : 'hover:bg-primaryHover'
             "
             @click="onLoginClick"
             :disabled="signInDisabled"
@@ -56,7 +56,7 @@
           </button>
           <p class="mt-4 text-left">
             <router-link
-              class="text-sm font-medium text-ui-primary dark:text-ui-primary hover:underline"
+              class="text-sm font-medium text-primary dark:text-primary hover:underline"
               to="/forgotpassword"
             >
               Forgot your password?
@@ -64,7 +64,7 @@
           </p>
           <p class="mt-1 text-left">
             <router-link
-              class="text-sm font-medium text-ui-primary dark:text-ui-primary hover:underline"
+              class="text-sm font-medium text-primary dark:text-primary hover:underline"
               to="/registration"
             >
               Create account
@@ -77,13 +77,15 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, ref } from 'vue';
+import { computed, defineComponent, ref, onMounted } from 'vue';
 import { LoginRequest } from '@/types/types';
 import { useRouter } from 'vue-router';
 import { useStore } from 'vuex';
 import { AuthActionTypes } from '@/store/auth/actions';
 import AppCard from '@/components/widgets/AppCard.vue';
-import { checkHome, checkUsers } from '@/services/apis/init';
+import { useQuery } from '@vue/apollo-composable';
+import { checkApp, checkUsers } from '@/graphql/queries';
+import { Routes } from '@/types/enums';
 
 export default defineComponent({
   name: 'Login',
@@ -99,20 +101,23 @@ export default defineComponent({
     const username = ref('');
     const isSignInBtnClicked = ref(false);
 
-    checkHome()
-      .then((response) => {
-        if (!response.data) {
-          router.push('/init');
+    const { refetch } = useQuery(checkApp);
+    const { refetch: userRefetch } = useQuery(checkUsers);
+
+    onMounted(() => {
+      refetch().then((response) => {
+        if (!response.data.checkApp.data) {
+          router.push(Routes.Init);
           return Promise.resolve();
         }
-        checkUsers().then((response) => {
-          if (!response.data) {
-            router.push('/registration');
+        userRefetch().then((response) => {
+          if (!response.data.checkUsers.data) {
+            router.push(Routes.Registration);
+            return Promise.resolve();
           }
         });
-        return Promise.resolve();
-      })
-      .catch((err) => Promise.reject(err));
+      });
+    });
 
     const onLoginClick = async () => {
       isSignInBtnClicked.value = true;

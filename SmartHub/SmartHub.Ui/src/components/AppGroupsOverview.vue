@@ -13,7 +13,7 @@
       <div class="w-full md:w-1/3 xl:w-3/6">
         <button
           @click="toggleModal(true, null, null)"
-          class="block w-full px-4 py-2 mt-4 text-sm text-gray-500 font-medium leading-5 text-center bg-white hover:text-white hover:bg-indigo-500 border border-transparent rounded-lg active:bg-ui-primary focus:outline-none"
+          class="block w-full px-4 py-2 mt-4 text-sm text-gray-500 font-medium leading-5 text-center bg-white hover:text-white hover:bg-indigo-500 border border-transparent rounded-lg active:bg-primary focus:outline-none"
         >
           Add Group
         </button>
@@ -94,7 +94,7 @@
               <div class="text-gray-500 text-sm font-normal text-left">
                 Creator: <span class="font-bold">{{ group.createdBy }}</span>
               </div>
-              <div class="border-ui-border border-t my-2"></div>
+              <div class="border-border border-t my-2"></div>
               <!-- Show available subGroups -->
               <template v-if="!group.isSubGroup">
                 <template v-if="group.subGroups !== undefined && group.subGroups.length > 0">
@@ -173,7 +173,7 @@
               <div class="text-gray-500 text-sm font-normal text-left">
                 Creator: <span class="font-bold">{{ group.createdBy }}</span>
               </div>
-              <div class="border-ui-border border-t my-2"></div>
+              <div class="border-border border-t my-2"></div>
               <!-- Show available subGroups -->
               <template v-if="!group.isSubGroup">
                 <template v-if="group.subGroups !== undefined && group.subGroups.length > 0">

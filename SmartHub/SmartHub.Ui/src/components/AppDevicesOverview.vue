@@ -7,7 +7,7 @@
       <div class="flex justify-start w-full md:w-1/3 xl:w-1/6">
         <button
           @click="toggleModal(true)"
-          class="block w-full px-4 py-2 mt-4 text-sm text-gray-500 font-medium leading-5 text-center bg-white hover:text-white transition-colors duration-150 hover:bg-yellow-400 border border-transparent rounded-lg active:bg-ui-primary focus:outline-none focus:shadow-outlineIndigo"
+          class="block w-full px-4 py-2 mt-4 text-sm text-gray-500 font-medium leading-5 text-center bg-white hover:text-white transition-colors duration-150 hover:bg-yellow-400 border border-transparent rounded-lg active:bg-primary focus:outline-none focus:shadow-outlineIndigo"
         >
           Add Device
         </button>
@@ -28,7 +28,7 @@
           <div class="text-gray-500 text-sm font-normal text-left">
             Creator: <span class="font-bold">{{ device.createdBy }}</span>
           </div>
-          <div class="border-ui-border border-t my-2"></div>
+          <div class="border-border border-t my-2"></div>
           <!-- TODO: Here add the actual controlls or infos for the device -->
         </div>
         <div v-else>Error loading device ...</div>

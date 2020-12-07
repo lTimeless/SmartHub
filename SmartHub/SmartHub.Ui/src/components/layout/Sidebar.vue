@@ -15,8 +15,8 @@
         X
       </button>
       <!-- Brand -->
-      <router-link to="/" class="flex items-center text-ui-primary" title="Home">
-        <Logo :width="40" class="text-ui-primary" />
+      <router-link to="/" class="flex items-center text-primary" title="Home">
+        <Logo :width="40" class="text-primary" />
         <span class="hidden ml-2 text-xl font-black tracking-tighter uppercase sm:block"> SmartHub </span>
       </router-link>
       <!-- User -->
@@ -53,8 +53,8 @@
               </button>
             </div>
             <div class="w-8/12">
-              <router-link to="/" class="flex items-center text-ui-primary" title="Home">
-                <Logo :width="40" class="text-ui-primary" />
+              <router-link to="/" class="flex items-center text-primary" title="Home">
+                <Logo :width="40" class="text-primary" />
                 <span class="hidden ml-2 text-xl font-black tracking-tighter uppercase sm:block">
                   SmartHub
                 </span>
@@ -78,7 +78,7 @@
           <template v-if="roleIncluded(page.roleNeeded)">
             <div
               v-if="page.name === 'Events' || page.name === 'Dashboard'"
-              class="border-ui-border border-t mb-2"
+              class="border-border border-t mb-2"
             ></div>
             <router-link :to="page.path">
               <h2
@@ -86,7 +86,7 @@
                 :class="this.getClassesForAnchor(page.path)"
               >
                 <span
-                  class="mr-2 w-2 h-2 rounded-full opacity-0 bg-ui-primary transition transform scale-1"
+                  class="mr-2 w-2 h-2 rounded-full opacity-0 bg-primary transition transform scale-1"
                   :class="{
                     'opacity-100 scale-100': this.currentPath === page.path
                   }"
@@ -101,12 +101,12 @@
                 :id="child.path"
                 :key="child.path"
                 :class="this.getClassesForAnchor(child.path)"
-                class="hover:text-ui-primary"
+                class="hover:text-primary"
               >
                 <template v-if="roleIncluded(child.roleNeeded)">
                   <router-link :to="child.path" class="flex items-center">
                     <span
-                      class="flex mr-2 w-2 h-2 rounded-full opacity-0 bg-ui-primary transition transform scale-0 origin-center"
+                      class="flex mr-2 w-2 h-2 rounded-full opacity-0 bg-primary transition transform scale-0 origin-center"
                       :class="{
                         'opacity-100 scale-100': this.currentPath === child.path
                       }"
@@ -224,8 +224,8 @@ export default defineComponent({
     ];
 
     const getClassesForAnchor = (path: string) => ({
-      'text-ui-primary': router.currentRoute.value.path === path,
-      'transition transform hover:translate-x-1 hover:text-ui-primary':
+      'text-primary': router.currentRoute.value.path === path,
+      'transition transform hover:translate-x-1 hover:text-primary':
         router.currentRoute.value.path !== path
     });
 

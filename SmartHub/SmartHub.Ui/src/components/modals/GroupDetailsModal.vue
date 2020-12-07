@@ -26,7 +26,7 @@
         placeholder="Group description"
       />
     </label>
-    <div class="border-ui-border border-t my-2"></div>
+    <div class="border-border border-t my-2"></div>
     <!-- Show available subGroups -->
     <template v-if="group.subGroups !== undefined && group.subGroups.length > 0">
       <div class="text-left">

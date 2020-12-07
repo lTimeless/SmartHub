@@ -321,8 +321,7 @@
           <AppDevicesOverview />
         </div>
         <div v-if="openTab === 3">
-          Users
-        </div>
+          Users</div>
         <div v-if="openTab === 4">
           <AppAutomation />
         </div>

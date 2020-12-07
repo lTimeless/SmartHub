@@ -97,7 +97,7 @@ export default defineComponent({
 
     watch(data, (newData) => {
       if (newData) {
-        logsArray.push(newData);
+        logsArray.push(newData as ServerLog);
       }
     });
 

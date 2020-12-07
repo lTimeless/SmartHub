@@ -104,7 +104,7 @@ export default defineComponent({
     ];
     watch(data, (newData) => {
       if (newData) {
-        activityArray.push(newData);
+        activityArray.push(newData as ServerActivity);
       }
     });
     const searchKeys = ['DateTime', 'Requester', 'SuccessfulRequest', 'ExecutionTime'];

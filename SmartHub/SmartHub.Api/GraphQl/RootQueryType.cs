@@ -25,7 +25,7 @@ namespace SmartHub.Api.GraphQl
 			// NetworkScanner
 			descriptor.Include<NetworkScannerQueries>()
 				.Description("All queries for network scanning operations");
-			// Initialize
+			// Initialization
 			descriptor.Include<InitQueries>()
 				.Description("All queries for the initialization service.");
 
