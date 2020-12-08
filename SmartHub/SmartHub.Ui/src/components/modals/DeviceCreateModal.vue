@@ -128,10 +128,10 @@
 <script lang="ts">
 import { defineComponent, reactive, computed } from 'vue';
 import BaseModal from '@/components/modals/BaseModal.vue';
-import { DeviceCreateRequest } from '@/types/types';
+import { CreateDeviceInput } from '@/types/types';
 import { ConnectionTypes, PluginTypes } from '@/types/enums';
 import { useEnumTypes } from '@/hooks/useEnums.ts';
-import { postDevice } from '@/services/apis/device';
+// import { postDevice } from '@/services/apis/device';
 
 export default defineComponent({
   name: 'DeviceCreateModal',
@@ -140,7 +140,7 @@ export default defineComponent({
     BaseModal
   },
   setup(props, context) {
-    const deviceCreateRequest = reactive<DeviceCreateRequest>({
+    const deviceCreateRequest = reactive<CreateDeviceInput>({
       name: '',
       description: '',
       groupName: '',
@@ -160,14 +160,14 @@ export default defineComponent({
       const { pluginTypesValues } = useEnumTypes();
 
       deviceCreateRequest.pluginTypes = pluginTypesValues.value[deviceCreateRequest.pluginTypes];
-      await postDevice(deviceCreateRequest)
-        .then((response) => {
-          if (!response.success) {
-            return Promise.reject(response.message);
-          }
-          return Promise.resolve();
-        })
-        .catch((error) => Promise.reject(error));
+      // await postDevice(deviceCreateRequest)
+      //   .then((response) => {
+      //     if (!response.success) {
+      //       return Promise.reject(response.message);
+      //     }
+      //     return Promise.resolve();
+      //   })
+      //   .catch((error) => Promise.reject(error));
       context.emit('close', false);
     };
     return {

@@ -1,6 +1,7 @@
 ﻿using HotChocolate;
 using SmartHub.Application.Common.Interfaces.Database;
 using SmartHub.Application.Common.Models;
+using SmartHub.Domain.Common.Enums;
 using SmartHub.Domain.Entities;
 using System.Threading.Tasks;
 
@@ -19,7 +20,7 @@ namespace SmartHub.Application.UseCases.Entity.Devices
 		/// <param name="unitOfWork">The unit-of-work.</param>
 		/// <param name="input">The device to create.</param>
 		/// <returns>Response with message.</returns>
-		public async Task<Response<string>> CreateDevice([Service] IBaseRepositoryAsync<Device> deviceRepository,
+		public async Task<DevicePayload> CreateDevice([Service] IBaseRepositoryAsync<Device> deviceRepository,
 			[Service] IBaseRepositoryAsync<Group> groupRepository,
 			[Service] IUnitOfWork unitOfWork,
 			CreateDeviceInput input)
@@ -27,8 +28,7 @@ namespace SmartHub.Application.UseCases.Entity.Devices
 			var foundDevice = await deviceRepository.FindByAsync(x => x.Name == input.Name);
 			if (foundDevice is not null)
 			{
-				return Response.Fail($"Device with name {input.Name} already exists", "");
-
+				return new DevicePayload(new UserError($"Device with name {input.Name} already exists", AppErrorCodes.NotFound));
 			}
 
 			var newDevice = new Device(input.Name, input.Description, input.Ipv4, input.CompanyName,
@@ -48,9 +48,9 @@ namespace SmartHub.Application.UseCases.Entity.Devices
 			{
 				await unitOfWork.SaveAsync();
 				// TODO hier dann über den TopicSender an eine Subscription senden
-				return Response.Ok($"Created new Device with name {newDevice.Name}");
+				return new DevicePayload(newDevice, $"Created new Device with name {newDevice.Name}");
 			}
-			return Response.Fail($" Couldn't create new Device with name {newDevice.Name}", "");
+			return new DevicePayload(new UserError($" Couldn't create new Device with name {newDevice.Name}", AppErrorCodes.NotCreated));
 		}
 
 		/// <summary>
@@ -60,14 +60,14 @@ namespace SmartHub.Application.UseCases.Entity.Devices
 		/// <param name="unitOfWork">The unit-of-work.</param>
 		/// <param name="input">The device to update.</param>
 		/// <returns>Response with message.</returns>
-		public async Task<Response<string>> updateDevice([Service] IBaseRepositoryAsync<Device> deviceRepository,
+		public async Task<DevicePayload> updateDevice([Service] IBaseRepositoryAsync<Device> deviceRepository,
 			[Service] IUnitOfWork unitOfWork,
 			UpdateDeviceInput input)
 		{
 			var foundDevice = await deviceRepository.FindByAsync(x => x.Id == input.Id);
 			if (foundDevice is null)
 			{
-				return Response.Fail($"Error: Couldn't find device with id {input.Id}.", string.Empty);
+				return new DevicePayload(new UserError($"Error: Couldn't find device with id {input.Id}.", AppErrorCodes.NotFound));
 			}
 
 			if (!string.IsNullOrEmpty(input.Name))
@@ -83,9 +83,9 @@ namespace SmartHub.Application.UseCases.Entity.Devices
 				foundDevice.SetIp(input.Ipv4);
 			}
 			foundDevice.SetConnectionTypes(input.PrimaryConnection, input.SecondaryConnection);
-			// TODO hier dann über den TopicSender an eine Subscription senden
 			await unitOfWork.SaveAsync();
-			return Response.Ok($"Updated device with name {input.Name}");
+			// TODO hier dann über den TopicSender an eine Subscription senden
+			return new DevicePayload(foundDevice, $"Updated device with name {input.Name}");
 		}
 	}
 }

@@ -1,8 +1,5 @@
-﻿// unset
-
-using HotChocolate;
+﻿using HotChocolate;
 using SmartHub.Application.Common.Interfaces.Database;
-using SmartHub.Application.Common.Models;
 using SmartHub.Application.UseCases.AppFolder.AppConfigParser;
 using SmartHub.Domain;
 using System.Threading.Tasks;
@@ -14,6 +11,7 @@ namespace SmartHub.Application.UseCases.Init
 	/// </summary>
 	public class InitQueries
 	{
+		// TODO move to separate query file
 		/// <summary>
 		/// Gets the application information.
 		/// </summary>
@@ -29,10 +27,9 @@ namespace SmartHub.Application.UseCases.Init
 		/// </summary>
 		/// <param name="userRepository">The user repository</param>
 		/// <returns>Returns true if there are already users created.</returns>
-		public async Task<Response<bool>> CheckUsers([Service] IUserRepository userRepository)
+		public async Task<bool> CheckUsers([Service] IUserRepository userRepository)
 		{
-			var usersExist = await userRepository.UsersExist();
-			return usersExist ? Response.Ok(true) : Response.Fail("No users exist.", false);
+			return await userRepository.UsersExist();
 		}
 
 		/// <summary>
@@ -40,11 +37,9 @@ namespace SmartHub.Application.UseCases.Init
 		/// </summary>
 		/// <param name="appConfigService">The AppConfigService.</param>
 		/// <returns>Returns true if the app is initialized.</returns>
-		public Response<bool> CheckApp([Service] IAppConfigService appConfigService)
+		public bool CheckApp([Service] IAppConfigService appConfigService)
 		{
-			return appConfigService.GetConfig().IsActive
-				? Response.Ok(true)
-				: Response.Fail("No home exists.", false);
+			return appConfigService.GetConfig().IsActive;
 		}
 	}
 }

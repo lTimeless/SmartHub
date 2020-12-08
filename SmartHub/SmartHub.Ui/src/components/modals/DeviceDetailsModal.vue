@@ -131,9 +131,9 @@
 <script lang="ts">
 import { defineComponent, PropType, ref } from 'vue';
 import BaseModal from '@/components/modals/BaseModal.vue';
-import { Device, DeviceUpdateRequest } from '@/types/types';
+import { Device, UpdateDeviceInput } from '@/types/types';
 import { useEnumTypes } from '@/hooks/useEnums';
-import { putByIdDevice } from '@/services/apis/device';
+// import { putByIdDevice } from '@/services/apis/device';
 
 export default defineComponent({
   name: 'DeviceDetailsModal',
@@ -164,7 +164,7 @@ export default defineComponent({
     };
 
     const save = async () => {
-      const updatedGroup: DeviceUpdateRequest = {
+      const updatedGroup: UpdateDeviceInput = {
         id: deviceDetail.value.id,
         name: deviceDetail.value.name,
         description: deviceDetail.value.description,
@@ -173,14 +173,14 @@ export default defineComponent({
         ipv4: deviceDetail.value.ip.ipv4
       };
 
-      await putByIdDevice(updatedGroup)
-        .then((response) => {
-          if (!response.success) {
-            return Promise.reject(response.message);
-          }
-          return Promise.resolve();
-        })
-        .catch((error) => Promise.reject(error));
+      // await putByIdDevice(updatedGroup)
+      //   .then((response) => {
+      //     if (!response.success) {
+      //       return Promise.reject(response.message);
+      //     }
+      //     return Promise.resolve();
+      //   })
+      //   .catch((error) => Promise.reject(error));
       context.emit('close', false);
     };
 

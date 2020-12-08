@@ -19,7 +19,7 @@
             <input
               required
               type="text"
-              v-model="username"
+              v-model="userName"
               class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md"
               placeholder="Jane Doe"
             />
@@ -78,14 +78,15 @@
 
 <script lang="ts">
 import { computed, defineComponent, ref, onMounted } from 'vue';
-import { LoginRequest } from '@/types/types';
+import { LoginInput } from '@/types/types';
 import { useRouter } from 'vue-router';
 import { useStore } from 'vuex';
 import { AuthActionTypes } from '@/store/auth/actions';
 import AppCard from '@/components/widgets/AppCard.vue';
-import { useQuery } from '@vue/apollo-composable';
+import { useMutation, useQuery } from '@vue/apollo-composable';
 import { checkApp, checkUsers } from '@/graphql/queries';
 import { Routes } from '@/types/enums';
+import { login } from '@/graphql/mutations';
 
 export default defineComponent({
   name: 'Login',
@@ -98,20 +99,21 @@ export default defineComponent({
     const router = useRouter();
     const title = 'Login';
     const password = ref('');
-    const username = ref('');
+    const userName = ref('');
     const isSignInBtnClicked = ref(false);
-
+    const input = ref<LoginInput>();
     const { refetch } = useQuery(checkApp);
     const { refetch: userRefetch } = useQuery(checkUsers);
+    const { mutate: sendLogin } = useMutation(login);
 
     onMounted(() => {
       refetch().then((response) => {
-        if (!response.data.checkApp.data) {
+        if (!response.data.checkApp) {
           router.push(Routes.Init);
           return Promise.resolve();
         }
         userRefetch().then((response) => {
-          if (!response.data.checkUsers.data) {
+          if (!response.data.checkUsers) {
             router.push(Routes.Registration);
             return Promise.resolve();
           }
@@ -121,30 +123,30 @@ export default defineComponent({
 
     const onLoginClick = async () => {
       isSignInBtnClicked.value = true;
-      const login: LoginRequest = {
-        username: username.value,
+      input.value = {
+        userName: userName.value,
         password: password.value
       };
-      await store
-        .dispatch(AuthActionTypes.LOGIN, login)
-        .then(() => {
+      sendLogin({ input: input.value })
+        .then((res) => {
+          store.dispatch(AuthActionTypes.LOGIN, { token: res.data.login.token, user: res.data.login.user });
           isSignInBtnClicked.value = false;
+          router.push(Routes.Home);
         })
         .catch(() => {
           isSignInBtnClicked.value = false;
         });
-      await router.push('/');
     };
 
     const signInDisabled = computed(
-      () => username.value.length === 0 || password.value.length < 4 || isSignInBtnClicked.value
+      () => userName.value.length === 0 || password.value.length < 4 || isSignInBtnClicked.value
     );
 
     return {
       title,
       onLoginClick,
       password,
-      username,
+      userName,
       signInDisabled
     };
   }

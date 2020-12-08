@@ -64,7 +64,6 @@ import { useStore } from 'vuex';
 import { logout } from '@/services/auth/authService';
 import { useRouter } from 'vue-router';
 import { Routes } from '@/types/enums';
-import { AppMutationTypes } from '@/store/app/mutations';
 import { AppActionTypes } from '@/store/app/actions';
 
 export default defineComponent({
@@ -75,7 +74,7 @@ export default defineComponent({
     const router = useRouter();
     const userPath = '/user';
     const dropdownPopoverShow = ref<boolean>(false);
-    const user = computed(() => store.state.authModule.Me);
+    const user = computed(() => store.state.authModule.user);
     const showDropdown = computed(() => store.state.appModule.userDropDownOpen);
 
     const dropDownList = [
@@ -99,7 +98,6 @@ export default defineComponent({
     const dropDownBtnClick = async (name: string) => {
       const item = dropDownList.find((x) => x.name === name) ?? { path: Routes.NotFound };
       await router.push(item.path).then(() => {
-        // showDropdown.value = false;
         setDropDownValue(false);
       });
     };

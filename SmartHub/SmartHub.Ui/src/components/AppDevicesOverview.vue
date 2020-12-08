@@ -45,7 +45,7 @@ import { useStore } from 'vuex';
 import DeviceCreateModal from '@/components/modals/DeviceCreateModal.vue';
 import DeviceDetailsModal from '@/components/modals/DeviceDetailsModal.vue';
 import { Device } from '@/types/types';
-import { getByIdDevice } from '@/services/apis/device';
+// import { getByIdDevice } from '@/services/apis/device';
 
 export default defineComponent({
   name: 'AppDevicesOverview',
@@ -75,14 +75,14 @@ export default defineComponent({
     const openDetailModal = async (value: boolean, deviceId: string) => {
       state.showLoader = true;
       if (value) {
-        state.device = await getByIdDevice(deviceId)
-          .then((response) => {
-            if (!response.success) {
-              return Promise.reject(response.message);
-            }
-            return Promise.resolve(response.data as Device);
-          })
-          .catch((error) => Promise.reject(error));
+        // state.device = await getByIdDevice(deviceId)
+        //   .then((response) => {
+        //     if (!response.success) {
+        //       return Promise.reject(response.message);
+        //     }
+        //     return Promise.resolve(response.data as Device);
+        //   })
+        //   .catch((error) => Promise.reject(error));
       }
       state.showLoader = false;
       state.selectedDeviceId = deviceId;

@@ -1,6 +1,7 @@
 ﻿using HotChocolate.Types;
 using SmartHub.Application.UseCases.Entity.Devices;
 using SmartHub.Application.UseCases.Entity.Groups;
+using SmartHub.Application.UseCases.Identity;
 using SmartHub.Application.UseCases.Init;
 
 namespace SmartHub.Api.GraphQl
@@ -17,13 +18,16 @@ namespace SmartHub.Api.GraphQl
 
 			// Group
 			descriptor.Include<GroupMutations>()
-				.Description("All mutations for GroupEntity.");
+				.Description("All mutations for group entity.");
 			// Device
 			descriptor.Include<DeviceMutations>()
-				.Description("All mutations for DeviceEntity.");
+				.Description("All mutations for device entity.");
 			// Initialization
 			descriptor.Include<InitMutations>()
-				.Description("All mutations for the initialization service.");
+				.Description("All mutations for the initialization services.");
+			// Identity
+			descriptor.Include<IdentityMutations>()
+				.Description("All mutations for the identity services.");
 
 		}
 	}

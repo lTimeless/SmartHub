@@ -12,11 +12,9 @@ interface BaseEntity {
 
 // ########## Interfaces ##########
 // ServiceResponse
-export interface ServerResponse<T> {
-  data?: T;
-  success: boolean;
-  message: string;
-  errors: string[];
+export interface Payload {
+  message?: string;
+  errors?: string[];
 }
 
 export interface ServerActivity {
@@ -37,16 +35,17 @@ export interface ServerLog {
 }
 
 // Identity
-export interface AuthResponse {
-  token: string;
+export interface IdentityPayload extends Payload {
+  token?: string;
+  user?: User;
 }
 
-export interface LoginRequest {
-  username: string;
+export interface LoginInput {
+  userName: string;
   password: string;
 }
 
-export interface RegistrationRequest {
+export interface RegistrationInput {
   username: string;
   password: string;
   role: string;
@@ -70,7 +69,7 @@ export interface User {
   lastModifiedBy: string;
 }
 
-export interface UserUpdateRequest {
+export interface UpdateUserInput {
   userName: string;
   personInfo: string;
   firstName: string;
@@ -99,7 +98,7 @@ export interface Device extends BaseEntity {
   secondaryConnection: ConnectionTypes;
 }
 
-export interface DeviceCreateRequest {
+export interface CreateDeviceInput {
   groupName?: string;
   name: string;
   description?: string;
@@ -111,7 +110,7 @@ export interface DeviceCreateRequest {
   secondaryConnection: ConnectionTypes;
 }
 
-export interface DeviceUpdateRequest {
+export interface UpdateDeviceInput {
   id: string;
   groupName?: string;
   name?: string;
@@ -128,14 +127,14 @@ export interface Group extends BaseEntity {
   subGroups?: Group[];
 }
 
-export interface GroupCreateRequest {
+export interface CreateGroupInput {
   name: string;
   description: string;
   parentGroupId?: string;
   isSubGroup?: boolean;
 }
 
-export interface GroupUpdateRequest {
+export interface UpdateGroupInput {
   id: string;
   name?: string;
   description?: string;
@@ -174,7 +173,7 @@ interface Address {
   zipCode: string;
 }
 
-export interface AppConfigInitRequest {
+export interface AppConfigInitInput {
   name: string;
   description: string | null;
   autoDetectAddress: boolean;

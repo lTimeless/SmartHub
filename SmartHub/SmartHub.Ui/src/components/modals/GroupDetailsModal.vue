@@ -82,8 +82,8 @@
 <script lang="ts">
 import { defineComponent, PropType, ref } from 'vue';
 import BaseModal from '@/components/modals/BaseModal.vue';
-import { Group, GroupUpdateRequest } from '@/types/types';
-import { putByIdGroup } from '@/services/apis/group';
+import { Group, UpdateGroupInput } from '@/types/types';
+// import { putByIdGroup } from '@/services/apis/group';
 
 export default defineComponent({
   name: 'GroupDetailsModal',
@@ -104,20 +104,20 @@ export default defineComponent({
     };
 
     const save = async () => {
-      const updatedGroup: GroupUpdateRequest = {
+      const updatedGroup: UpdateGroupInput = {
         id: groupDetail.value.id,
         name: groupDetail.value.name,
         description: groupDetail.value.description,
         devices: groupDetail.value.devices
       };
-      await putByIdGroup(updatedGroup)
-        .then((response) => {
-          if (!response.success) {
-            return Promise.reject(response.message);
-          }
-          return Promise.resolve();
-        })
-        .catch((error) => Promise.reject(error));
+      // await putByIdGroup(updatedGroup)
+      //   .then((response) => {
+      //     if (!response.success) {
+      //       return Promise.reject(response.message);
+      //     }
+      //     return Promise.resolve();
+      //   })
+      //   .catch((error) => Promise.reject(error));
       context.emit('close', false);
     };
 

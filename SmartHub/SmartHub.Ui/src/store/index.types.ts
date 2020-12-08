@@ -1,4 +1,4 @@
-import { AppConfig, AuthResponse, Device, Group, User } from '@/types/types';
+import { AppConfig, Device, Group, User } from '@/types/types';
 
 export interface RootState {
   authModule: AuthState;
@@ -28,6 +28,6 @@ export interface AppState {
   State for all identity information with my own user data
 */
 export interface AuthState {
-  authResponse?: AuthResponse;
-  Me?: User;
+  token?: string;
+  user?: User;
 }

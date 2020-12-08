@@ -125,11 +125,9 @@
 <script lang="ts">
 import NotificationDropdown from './NotificationDropdown.vue';
 import UserDropdown from './UserDropdown.vue';
-import { computed, defineComponent, onMounted, ref, onBeforeMount } from 'vue';
+import { computed, defineComponent, onMounted, ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { getUserRoles } from '@/services/auth/authService';
-import { useStore } from 'vuex';
-import { AuthActionTypes } from '@/store/auth/actions';
 import { Roles } from '@/types/enums';
 import Logo from '@/components/svgs/Logo.vue';
 
@@ -143,8 +141,6 @@ export default defineComponent({
   props: {},
   setup() {
     const router = useRouter();
-    const store = useStore();
-    const userPath = '/user';
     const isRole = ref('');
     const collapseShow = ref<string>('hidden');
     const collapseShowBool = ref(false);
@@ -232,12 +228,6 @@ export default defineComponent({
     const currentPath = computed(() => router.currentRoute.value.path);
     const roleIncluded = (rolesNeeded: string[]) => rolesNeeded.includes(isRole.value);
 
-    const user = computed(() => store.state.authModule.Me);
-
-    onBeforeMount(async () => {
-      await store.dispatch(AuthActionTypes.ME);
-    });
-
     onMounted(() => {
       isRole.value = getUserRoles();
     });
@@ -251,8 +241,6 @@ export default defineComponent({
       sidebarLists,
       roleIncluded,
       getClassesForAnchor,
-      user,
-      userPath,
       toggleCollapseShow,
       collapseShow,
       collapseShowBool

@@ -1,8 +1,8 @@
 import { ActionContext, ActionTree } from 'vuex';
 import { RootState, AppState, AuthState } from '@/store/index.types';
-import { AppConfig, AppConfigInitRequest, Device, Group } from '@/types/types';
+import { AppConfig, AppConfigInitInput, Device, Group } from '@/types/types';
 import { AppMutations, AppMutationTypes } from '@/store/app/mutations';
-import { postInit } from '@/services/apis/init';
+// import { postInit } from '@/services/apis/init';
 import { useQuery, useResult } from '@vue/apollo-composable';
 import { getDevices, getGroups, getAppConfig } from '@/graphql/queries';
 
@@ -10,7 +10,7 @@ import { getDevices, getGroups, getAppConfig } from '@/graphql/queries';
 export enum AppActionTypes {
   // App
   GET_APP = 'GET_APP',
-  CREATE_APP = 'CREATE_App',
+  InitIALIZE_APP = 'CREATE_App',
   UPDATE_APP = 'UPDATE_App',
   // Group
   GET_GROUPS = 'GET_GROUPS',
@@ -35,7 +35,7 @@ type ActionAugments = Omit<ActionContext<AuthState, RootState>, 'commit'> & {
 export type HomeActions = {
   // App
   [AppActionTypes.GET_APP]({ commit }: ActionAugments): Promise<void>;
-  [AppActionTypes.CREATE_APP]({ commit }: ActionAugments, payload: AppConfigInitRequest): Promise<void>;
+  [AppActionTypes.InitIALIZE_APP]({ commit }: ActionAugments, payload: AppConfigInitInput): Promise<void>;
   [AppActionTypes.UPDATE_APP]({ commit }: ActionAugments, payload: AppConfig): Promise<void>;
   // Group
   [AppActionTypes.GET_GROUPS]({ commit }: ActionAugments): Promise<void>;
@@ -55,16 +55,16 @@ export const actions: ActionTree<AppState, RootState> = {
     const appConfig = useResult(result, null, (data) => data.appConfig);
     commit(AppMutationTypes.UPDATE_APP, appConfig);
   },
-  async [AppActionTypes.CREATE_APP]({ commit }, payload): Promise<void> {
-    await postInit(payload)
-      .then((response) => {
-        if (!response.success) {
-          return Promise.reject(response.message);
-        }
-        commit(AppMutationTypes.UPDATE_APP, response.data);
-        return Promise.resolve(response.data);
-      })
-      .catch((error) => Promise.reject(error));
+  async [AppActionTypes.InitIALIZE_APP]({ commit }, payload): Promise<void> {
+    // await postInit(payload)
+    //   .then((response) => {
+    //     if (!response.success) {
+    //       return Promise.reject(response.message);
+    //     }
+    //     commit(AppMutationTypes.UPDATE_APP, response.data);
+    //     return Promise.resolve(response.data);
+    //   })
+    //   .catch((error) => Promise.reject(error));
   },
   async [AppActionTypes.UPDATE_APP]({ commit }, payload): Promise<void> {
     await commit(AppMutationTypes.UPDATE_APP, payload);

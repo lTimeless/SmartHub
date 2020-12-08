@@ -1,6 +1,6 @@
 import gql from 'graphql-tag';
 
-// App
+// Initialize
 export const getAppConfig = gql`
   {
     appConfig {
@@ -33,24 +33,24 @@ export const getAppConfig = gql`
     }
   }
 `;
-
-// Init
 export const checkApp = gql`
   {
-    checkApp {
-      data
-      success
-      message
-    }
+    checkApp
+  }
+`;
+export const checkUsers = gql`
+  {
+    checkUsers
   }
 `;
 
-export const checkUsers = gql`
+// Identity
+export const whoAmI = gql`
   {
-    checkUsers {
-      data
-      success
-      message
+    me {
+      id
+      userName
+      createdAt
     }
   }
 `;

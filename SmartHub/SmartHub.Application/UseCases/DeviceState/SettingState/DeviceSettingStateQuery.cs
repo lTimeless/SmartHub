@@ -1,11 +1,10 @@
 ﻿using MediatR;
-using SmartHub.Application.Common.Models;
-using SmartHub.Domain.Common;
 
 namespace SmartHub.Application.UseCases.DeviceState.SettingState
 {
-	public class DeviceSettingStateQuery : IRequest<Response<DeviceSettingStateRequestDto>>
+	public class DeviceSettingStateQuery : IRequest<DeviceSettingStateRequestDto?>
 	{
+		// TODO hier aufräumen
 		public DeviceSettingStateRequestDto DeviceSettingsStateDto { get; }
 
 		public DeviceSettingStateQuery(DeviceSettingStateRequestDto deviceSettingsStateDto)

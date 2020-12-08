@@ -1,4 +1,4 @@
-import { AuthResponse } from '@/types/types';
+import { IdentityPayload } from '@/types/types';
 import { Roles } from '@/types/enums';
 import JwtDecode from 'jwt-decode';
 import router from '@/router';
@@ -11,21 +11,21 @@ type TokenPayload = {
   exp: number;
   iat: number;
 };
-const numberThousand = 1000; // uesed for tokenpayload exp date conversion
+const numberThousand = 1000; // used for tokenpayload exp date conversion
 // Storage keys
-const LOCAL_STORAGE_AUTH_RESPONSE = 'authResponse';
+const LOCAL_STORAGE_TOKEN = 'token';
 
-export const getAuthResponse = (): AuthResponse | null => {
-  const storage = localStorage.getItem(LOCAL_STORAGE_AUTH_RESPONSE);
-  if (storage === null) {
+export const getStoreToken = (): string | null => {
+  const storageToken = localStorage.getItem(LOCAL_STORAGE_TOKEN);
+  if (storageToken === null) {
     return null;
   }
-  return JSON.parse(storage) as AuthResponse;
+  return storageToken;
 };
 
 export const getToken = (): string | null => {
-  const auth = getAuthResponse();
-  return auth === null ? null : auth.token;
+  const token = getStoreToken();
+  return token === null ? null : token;
 };
 
 export const isAuthenticated = (): boolean => getToken() !== null;
@@ -47,22 +47,22 @@ export const isAuthenticated = (): boolean => getToken() !== null;
 //   });
 // }
 
-export const storeAuthResponse = (response: AuthResponse): void => {
-  localStorage.setItem(LOCAL_STORAGE_AUTH_RESPONSE, JSON.stringify(response));
+export const storeToken = (token: string): void => {
+  localStorage.setItem(LOCAL_STORAGE_TOKEN, token);
 };
 
 export const clearStorage = (): void => {
-  localStorage.removeItem(LOCAL_STORAGE_AUTH_RESPONSE);
+  localStorage.removeItem(LOCAL_STORAGE_TOKEN);
 };
 
 // export const getRefreshToken = (): string | null => localStorage.getItem(LOCAL_STORAGE_REFRESH_TOKEN);
 
 export const getUserRoles = (): Roles => {
-  const authResponse = getAuthResponse();
-  if (authResponse == null) {
+  const token = getToken();
+  if (token == null) {
     return Roles.None;
   }
-  const tokenPayload = JwtDecode(authResponse.token) as TokenPayload;
+  const tokenPayload = JwtDecode(token) as TokenPayload;
   if (Date.now() >= tokenPayload.exp * numberThousand) {
     console.log(tokenPayload.exp * numberThousand, Date.now());
     return Roles.None;
@@ -81,11 +81,11 @@ export const getUserRoles = (): Roles => {
 };
 
 export const getUserName = (): string => {
-  const authResponse = getAuthResponse();
-  if (authResponse === null) {
+  const token = getToken();
+  if (token === null) {
     return '';
   }
-  const tokenPayload = JwtDecode(authResponse.token) as TokenPayload;
+  const tokenPayload = JwtDecode(token) as TokenPayload;
   return tokenPayload.unique_name;
 };
 

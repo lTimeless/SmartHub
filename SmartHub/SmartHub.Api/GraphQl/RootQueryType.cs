@@ -1,6 +1,7 @@
 ﻿using HotChocolate.Types;
 using SmartHub.Application.UseCases.Entity.Devices;
 using SmartHub.Application.UseCases.Entity.Groups;
+using SmartHub.Application.UseCases.Identity;
 using SmartHub.Application.UseCases.Init;
 using SmartHub.Application.UseCases.NetworkScanner;
 
@@ -28,7 +29,9 @@ namespace SmartHub.Api.GraphQl
 			// Initialization
 			descriptor.Include<InitQueries>()
 				.Description("All queries for the initialization service.");
-
+			// Identity
+			descriptor.Include<IdentityQueries>()
+				.Description("All queries for the me services.");
 		}
 	}
 }

@@ -113,7 +113,7 @@ import { useStore } from 'vuex';
 import { defineComponent, ref, computed, reactive } from 'vue';
 import { getUserRoles, logout } from '@/services/auth/authService';
 import { Roles } from '@/types/enums';
-import { UserUpdateRequest } from '@/types/types';
+import { UpdateUserInput } from '@/types/types';
 import { AuthActionTypes } from '@/store/auth/actions';
 
 export default defineComponent({
@@ -121,12 +121,12 @@ export default defineComponent({
   components: {},
   setup() {
     const store = useStore();
-    const user = computed(() => store.state.authModule.Me);
+    const user = computed(() => store.state.authModule.user);
     const userRole = computed(() => getUserRoles());
     const selectedRole = ref(userRole.value);
     const prevRole = selectedRole.value;
     const roles = Roles;
-    const updateUserRequest: UserUpdateRequest = reactive({
+    const updateUserRequest: UpdateUserInput = reactive({
       userName: '',
       personInfo: '',
       firstName: '',

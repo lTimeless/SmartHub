@@ -240,7 +240,7 @@ import { useStore } from 'vuex';
 import GroupCreateModal from '@/components/modals/GroupCreateModal.vue';
 import GroupDetailsModal from '@/components/modals/GroupDetailsModal.vue';
 import { Group } from '@/types/types';
-import { getByIdGroup } from '@/services/apis/group';
+// import { getByIdGroup } from '@/services/apis/group';
 import GroupDropdown from '@/components/GroupDropdown.vue';
 
 export default defineComponent({
@@ -283,14 +283,14 @@ export default defineComponent({
     const openDetailModal = async (value: boolean, groupId: string) => {
       state.showLoader = true;
       if (value) {
-        state.group = await getByIdGroup(groupId)
-          .then((response) => {
-            if (!response.success) {
-              return Promise.reject(response.message);
-            }
-            return Promise.resolve(response.data as Group);
-          })
-          .catch((error) => Promise.reject(error));
+        // state.group = await getByIdGroup(groupId)
+        //   .then((response) => {
+        //     if (!response.success) {
+        //       return Promise.reject(response.message);
+        //     }
+        //     return Promise.resolve(response.data as Group);
+        //   })
+        //   .catch((error) => Promise.reject(error));
       }
       state.showLoader = false;
       state.selectedGroupId = groupId;

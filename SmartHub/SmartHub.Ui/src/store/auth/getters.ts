@@ -10,6 +10,6 @@ export type AuthGetters = {
 // Define Getters
 export const getters: GetterTree<AuthState, RootState> & AuthGetters = {
   getMe(state) {
-    return state.Me;
+    return state.user;
   }
 };

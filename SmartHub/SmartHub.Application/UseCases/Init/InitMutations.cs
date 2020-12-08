@@ -1,11 +1,9 @@
-﻿// unset
-
-using HotChocolate;
+﻿using HotChocolate;
 using Serilog;
 using SmartHub.Application.Common.Models;
 using SmartHub.Application.UseCases.AppFolder.AppConfigParser;
 using SmartHub.Application.UseCases.GeoLocation;
-using SmartHub.Domain;
+using SmartHub.Domain.Common.Enums;
 using SmartHub.Domain.Common.Extensions;
 using System.Threading.Tasks;
 
@@ -13,7 +11,7 @@ namespace SmartHub.Application.UseCases.Init
 {
 	public class InitMutations
 	{
-		public async Task<Response<AppConfig>> InitApp(AppConfigInitInput input,
+		public async Task<InitPayload> InitializeApp(AppConfigInitInput input,
 			[Service] IAppConfigService appConfigService,
 			[Service] ILocationService locationService,
 			[Service] ILogger logger)
@@ -21,7 +19,8 @@ namespace SmartHub.Application.UseCases.Init
 			var appConfig = appConfigService.GetConfig();
 			if (appConfig.IsActive)
 			{
-				return Response.Fail("Error: There is already a home.", new AppConfig());
+				return new InitPayload(
+					new UserError("There is already a home.", AppErrorCodes.Exists));
 			}
 
 			if (input.AutoDetectAddress)
@@ -40,7 +39,7 @@ namespace SmartHub.Application.UseCases.Init
 
 			await appConfigService.UpdateConfig(appConfig);
 			logger.Information("SmartHub successfully created.");
-			return Response.Ok("SmartHub successfully created.", appConfig);
+			return new InitPayload(appConfig, "SmartHub successfully created.");
 		}
 	}
 }

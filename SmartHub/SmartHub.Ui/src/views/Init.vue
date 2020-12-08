@@ -95,7 +95,7 @@
 
 <script lang="ts">
 import { defineComponent, defineAsyncComponent, reactive, ref, computed, onMounted } from 'vue';
-import { AppConfigInitRequest } from '@/types/types';
+import { AppConfigInitInput } from '@/types/types';
 import { AppActionTypes } from '@/store/app/actions';
 import { useStore } from 'vuex';
 import { useRouter } from 'vue-router';
@@ -120,7 +120,7 @@ export default defineComponent({
     const title = 'Welcome to SmartHub';
     const acceptWip = ref(false);
     const doneInit = ref(false);
-    const appConfigCreateRequest: AppConfigInitRequest = reactive({
+    const appConfigCreateRequest: AppConfigInitInput = reactive({
       name: '',
       description: '',
       autoDetectAddress: false
@@ -130,7 +130,7 @@ export default defineComponent({
 
     onMounted(() => {
       refetch().then((response) => {
-        if (response.data.checkApp.data) {
+        if (response.data.checkApp) {
           router.push(Routes.Login);
           return Promise.resolve();
         }
@@ -144,7 +144,7 @@ export default defineComponent({
       if (appConfigCreateRequest.description === '') {
         appConfigCreateRequest.description = 'This is an awesome description';
       }
-      store.dispatch(AppActionTypes.CREATE_APP, appConfigCreateRequest).then(() => {
+      store.dispatch(AppActionTypes.InitIALIZE_APP, appConfigCreateRequest).then(() => {
         doneInit.value = true;
       });
     };

@@ -33,8 +33,8 @@
 <script lang="ts">
 import { defineComponent, reactive, computed, toRefs } from 'vue';
 import BaseModal from '@/components/modals/BaseModal.vue';
-import { GroupCreateRequest } from '@/types/types';
-import { postGroup } from '@/services/apis/group';
+import { CreateGroupInput } from '@/types/types';
+// import { postGroup } from '@/services/apis/group';
 
 export default defineComponent({
   name: 'GroupCreateModal',
@@ -60,7 +60,7 @@ export default defineComponent({
       groupTitle: 'Create new Group',
       subGroupTitle: 'Create new SubGroup to '
     });
-    const groupCreateRequest: GroupCreateRequest = reactive({
+    const groupCreateRequest: CreateGroupInput = reactive({
       name: '',
       description: '',
       parentGroupId: '',
@@ -82,15 +82,15 @@ export default defineComponent({
         groupCreateRequest.parentGroupId = props.parentGroupId;
         groupCreateRequest.isSubGroup = true;
       }
-      await postGroup(groupCreateRequest)
-        .then((response) => {
-          if (!response.success) {
-            return Promise.reject(response.message);
-          }
-          context.emit('close', false);
-          return Promise.resolve();
-        })
-        .catch((error) => Promise.reject(error));
+      // await postGroup(groupCreateRequest)
+      //   .then((response) => {
+      //     if (!response.success) {
+      //       return Promise.reject(response.message);
+      //     }
+      //     context.emit('close', false);
+      //     return Promise.resolve();
+      //   })
+      //   .catch((error) => Promise.reject(error));
     };
     return {
       ...toRefs(state),

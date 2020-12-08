@@ -165,7 +165,7 @@
 
 <script lang="ts">
 import { defineComponent, onMounted, ref, reactive, computed, defineAsyncComponent } from 'vue';
-import { RegistrationRequest } from '@/types/types';
+import { RegistrationInput } from '@/types/types';
 import { clearStorage } from '@/services/auth/authService';
 import { useRouter } from 'vue-router';
 import { AuthActionTypes } from '@/store/auth/actions';
@@ -196,7 +196,7 @@ export default defineComponent({
     const passwordStrengthText = ref('');
     const togglePassword = ref(false);
     const confirmPwd = ref('');
-    const registrationRequest: RegistrationRequest = reactive({
+    const registrationRequest: RegistrationInput = reactive({
       username: '',
       password: '',
       role: 'User' // default role, can only be changed after registration
