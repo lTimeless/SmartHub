@@ -29,7 +29,10 @@ type ActionAugments = Omit<ActionContext<AuthState, RootState>, 'commit'> & {
 
 // Action Interface
 export type AuthActions = {
+  // Me
   [AuthActionTypes.ME]({ commit }: ActionAugments): Promise<void>;
+  [AuthActionTypes.UPDATE_ME]({ commit }: ActionAugments, payload: UpdateUserInput): Promise<void>;
+  // Identity
   [AuthActionTypes.LOGIN]({ commit }: ActionAugments, payload: IdentityPayload): Promise<void>;
   [AuthActionTypes.REGISTRATION](state: ActionAugments, payload: RegistrationInput): Promise<void>;
   [AuthActionTypes.LOGOUT]({ commit }: ActionAugments): void;
@@ -45,10 +48,9 @@ export const actions: ActionTree<AuthState, RootState> & AuthActions = {
     // @ts-ignore
     commit(AuthMutationTypes.UPDATE_ME, user);
   },
-
   async [AuthActionTypes.UPDATE_ME]({ commit }, payload: UpdateUserInput): Promise<void> {
     await apolloClient.mutate({ mutation: UPDATE_USER, variables: { input: payload } }).then((res) => {
-      commit(AuthActionTypes.UPDATE_ME, res.data.user);
+      commit(AuthMutationTypes.UPDATE_ME, res.data.user);
     });
   },
   // Identity

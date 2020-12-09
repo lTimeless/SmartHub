@@ -134,7 +134,8 @@ export default defineComponent({
         return;
       }
       updateUserInput.userId = user.value.id;
-      console.log(updateUserInput);
+      updateUserInput.newRole = selectedRole.value !== prevRole ? selectedRole.value : undefined;
+      console.log(updateUserInput, updateUserInput.newRole, selectedRole.value);
       await store.dispatch(AuthActionTypes.UPDATE_ME, updateUserInput);
       if (typeof updateUserInput.newRole !== 'undefined' && updateUserInput.newRole !== prevRole) {
         logout();
