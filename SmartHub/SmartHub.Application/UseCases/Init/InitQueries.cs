@@ -11,7 +11,7 @@ namespace SmartHub.Application.UseCases.Init
 	/// </summary>
 	public class InitQueries
 	{
-		// TODO move to separate query file
+		// TODO move to separate query file damit das besser gesplitter ist?
 		/// <summary>
 		/// Gets the application information.
 		/// </summary>
@@ -27,7 +27,7 @@ namespace SmartHub.Application.UseCases.Init
 		/// </summary>
 		/// <param name="userRepository">The user repository</param>
 		/// <returns>Returns true if there are already users created.</returns>
-		public async Task<bool> CheckUsers([Service] IUserRepository userRepository)
+		public async Task<bool> UsersExist([Service] IUserRepository userRepository)
 		{
 			return await userRepository.UsersExist();
 		}
@@ -37,7 +37,7 @@ namespace SmartHub.Application.UseCases.Init
 		/// </summary>
 		/// <param name="appConfigService">The AppConfigService.</param>
 		/// <returns>Returns true if the app is initialized.</returns>
-		public bool CheckApp([Service] IAppConfigService appConfigService)
+		public bool ApplicationIsActive([Service] IAppConfigService appConfigService)
 		{
 			return appConfigService.GetConfig().IsActive;
 		}

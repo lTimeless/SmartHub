@@ -4,7 +4,7 @@ import { AppConfig, AppConfigInitInput, Device, Group } from '@/types/types';
 import { AppMutations, AppMutationTypes } from '@/store/app/mutations';
 // import { postInit } from '@/services/apis/init';
 import { useQuery, useResult } from '@vue/apollo-composable';
-import { getDevices, getGroups, getAppConfig } from '@/graphql/queries';
+import { getDevices, getGroups, GET_APP_CONFIG } from '@/graphql/queries';
 
 // Keys
 export enum AppActionTypes {
@@ -51,7 +51,7 @@ export type HomeActions = {
 export const actions: ActionTree<AppState, RootState> = {
   // App
   async [AppActionTypes.GET_APP]({ commit }): Promise<void> {
-    const { result } = useQuery(getAppConfig);
+    const { result } = useQuery(GET_APP_CONFIG);
     const appConfig = useResult(result, null, (data) => data.appConfig);
     commit(AppMutationTypes.UPDATE_APP, appConfig);
   },

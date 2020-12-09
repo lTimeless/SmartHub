@@ -4,7 +4,7 @@ import { RootState, AuthState } from '@/store/index.types';
 import { storeToken } from '@/services/auth/authService';
 import { AuthMutations, AuthMutationTypes } from '@/store/auth/mutations';
 // import { postLogin, postRegistration, getMe, putMe } from '@/services/apis/identity';
-import { useQuery, useResult } from '@vue/apollo-composable';
+import { useQuery, useResult, useApolloClient } from '@vue/apollo-composable';
 import { whoAmI } from '@/graphql/queries';
 
 // Keys
@@ -54,6 +54,8 @@ export const actions: ActionTree<AuthState, RootState> & AuthActions = {
     //     return Promise.resolve(response.data);
     //   })
     //   .catch((err) => Promise.reject(err));
+    const { client } = useApolloClient();
+    await client.mutate({ mutation: whoAmI, variables: payload });
   },
   async [AuthActionTypes.LOGIN]({ commit }, payload: IdentityPayload): Promise<void> {
     if (payload.token != null) {

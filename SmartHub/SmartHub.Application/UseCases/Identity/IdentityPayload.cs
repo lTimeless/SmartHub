@@ -6,6 +6,7 @@ namespace SmartHub.Application.UseCases.Identity
 	public class IdentityPayload : Payload
 	{
 		public string? Token { get; }
+		// TODO anstatt user dann vlt role(s) und username/id übergeben
 		public User? User { get; }
 
 		public IdentityPayload(User? user, string? token, string? message = null) : base(message)

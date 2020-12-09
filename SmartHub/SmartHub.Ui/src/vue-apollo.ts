@@ -4,7 +4,7 @@ import { setContext } from '@apollo/client/link/context';
 // HTTP connection to the API
 const httpLink = createHttpLink({
   // You should use an absolute URL here
-  uri: 'https://localhost:5001/graphql'
+  uri: process.env.GRAPHQL_PATH
 });
 
 const authLink = setContext((_, { headers }) => {

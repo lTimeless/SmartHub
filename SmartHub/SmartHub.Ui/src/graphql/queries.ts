@@ -1,8 +1,8 @@
 import gql from 'graphql-tag';
 
 // Initialize
-export const getAppConfig = gql`
-  {
+export const GET_APP_CONFIG = gql`
+  query getAppConfig {
     appConfig {
       configFilePath
       applicationName
@@ -33,20 +33,20 @@ export const getAppConfig = gql`
     }
   }
 `;
-export const checkApp = gql`
-  {
-    checkApp
+export const ApplicationIsActive = gql`
+  query ApplicationIsActive {
+    applicationIsActive
   }
 `;
-export const checkUsers = gql`
-  {
-    checkUsers
+export const UsersExist = gql`
+  query UsersExist {
+    usersExist
   }
 `;
 
 // Identity
 export const whoAmI = gql`
-  {
+  query GetMe {
     me {
       id
       userName
@@ -57,7 +57,7 @@ export const whoAmI = gql`
 
 // Device
 export const getDevices = gql`
-  {
+  query GetDevices {
     devices {
       id
       name
@@ -83,7 +83,7 @@ export const getDevices = gql`
 
 // Group
 export const getGroups = gql`
-  {
+  query GetGroups {
     groups {
       id
       name

@@ -84,7 +84,7 @@ import { useStore } from 'vuex';
 import { AuthActionTypes } from '@/store/auth/actions';
 import AppCard from '@/components/widgets/AppCard.vue';
 import { useMutation, useQuery } from '@vue/apollo-composable';
-import { checkApp, checkUsers } from '@/graphql/queries';
+import { ApplicationIsActive, UsersExist } from '@/graphql/queries';
 import { Routes } from '@/types/enums';
 import { login } from '@/graphql/mutations';
 
@@ -102,18 +102,18 @@ export default defineComponent({
     const userName = ref('');
     const isSignInBtnClicked = ref(false);
     const input = ref<LoginInput>();
-    const { refetch } = useQuery(checkApp);
-    const { refetch: userRefetch } = useQuery(checkUsers);
+    const { refetch } = useQuery(ApplicationIsActive);
+    const { refetch: userRefetch } = useQuery(UsersExist);
     const { mutate: sendLogin } = useMutation(login);
 
     onMounted(() => {
       refetch().then((response) => {
-        if (!response.data.checkApp) {
+        if (!response.data.applicationIsActive) {
           router.push(Routes.Init);
           return Promise.resolve();
         }
         userRefetch().then((response) => {
-          if (!response.data.checkUsers) {
+          if (!response.data.usersExist) {
             router.push(Routes.Registration);
             return Promise.resolve();
           }

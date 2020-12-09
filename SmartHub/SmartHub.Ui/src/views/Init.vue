@@ -9,7 +9,7 @@
       <div class="text-gray-600 mb-8">
         Thank you for using SmartHub.
         <br />If you encounter any problems or have any suggestions, please visit
-        <a class="text-primary" href="https://github.com/SmartHub-Io/SmartHub">github</a>
+        <a class="text-primary" :href="process.env.GITHUB_SMARTHUB">github</a>
         and create an issue. 🔥👌🚀❤
       </div>
     </ConfirmationModalAsync>
@@ -101,7 +101,7 @@ import { useStore } from 'vuex';
 import { useRouter } from 'vue-router';
 import AppCard from '@/components/widgets/AppCard.vue';
 import { useQuery } from '@vue/apollo-composable';
-import { checkApp } from '@/graphql/queries';
+import { ApplicationIsActive } from '@/graphql/queries';
 import { Routes } from '@/types/enums';
 
 const ConfirmationModalAsync = defineAsyncComponent(
@@ -126,11 +126,11 @@ export default defineComponent({
       autoDetectAddress: false
     });
 
-    const { refetch } = useQuery(checkApp);
+    const { refetch } = useQuery(ApplicationIsActive);
 
     onMounted(() => {
       refetch().then((response) => {
-        if (response.data.checkApp) {
+        if (response.data.applicationIsActive) {
           router.push(Routes.Login);
           return Promise.resolve();
         }

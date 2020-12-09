@@ -3,6 +3,7 @@ using Serilog;
 using SmartHub.Application.Common.Models;
 using SmartHub.Application.UseCases.AppFolder.AppConfigParser;
 using SmartHub.Application.UseCases.GeoLocation;
+using SmartHub.Domain.Common;
 using SmartHub.Domain.Common.Enums;
 using SmartHub.Domain.Common.Extensions;
 using System.Threading.Tasks;
@@ -36,7 +37,10 @@ namespace SmartHub.Application.UseCases.Init
 				}
 			}
 			appConfig.IsActive = true;
-
+			if (input.Description.HasValue)
+			{
+				appConfig.Description = input.Description.Value;
+			}
 			await appConfigService.UpdateConfig(appConfig);
 			logger.Information("SmartHub successfully created.");
 			return new InitPayload(appConfig, "SmartHub successfully created.");
