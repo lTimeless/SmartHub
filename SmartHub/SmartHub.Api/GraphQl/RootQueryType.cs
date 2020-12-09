@@ -32,6 +32,9 @@ namespace SmartHub.Api.GraphQl
 			// Identity
 			descriptor.Include<IdentityQueries>()
 				.Description("All queries for the me services.");
+			// User
+			// descriptor.Include<UserQueries>()
+			// 	.Description("All queries for the me services.");
 		}
 	}
 }

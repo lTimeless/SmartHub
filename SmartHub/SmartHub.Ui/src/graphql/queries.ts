@@ -45,18 +45,29 @@ export const UsersExist = gql`
 `;
 
 // Identity
-export const whoAmI = gql`
+export const WHO_AM_I = gql`
   query GetMe {
     me {
       id
       userName
       createdAt
+      createdBy
+      lastModifiedAt
+      lastModifiedBy
+      phoneNumber
+      personInfo
+      email
+      personName {
+        firstName
+        lastName
+        middleName
+      }
     }
   }
 `;
 
 // Device
-export const getDevices = gql`
+export const GET_DEVICES = gql`
   query GetDevices {
     devices {
       id
@@ -82,7 +93,7 @@ export const getDevices = gql`
 `;
 
 // Group
-export const getGroups = gql`
+export const GET_GROUPS = gql`
   query GetGroups {
     groups {
       id

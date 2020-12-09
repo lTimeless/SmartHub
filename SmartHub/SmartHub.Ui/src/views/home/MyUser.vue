@@ -9,7 +9,7 @@
             <span class="text-gray-600 dark:text-gray-400">Username</span>
             <input
               type="text"
-              v-model="user.userName"
+              v-model="updateUserInput.userName"
               class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md"
               :placeholder="user.userName"
             />
@@ -40,7 +40,7 @@
           <span class="text-gray-600 dark:text-gray-400">Firstname</span>
           <input
             type="text"
-            v-model="user.personName.firstName"
+            v-model="updateUserInput.firstName"
             class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md"
             :placeholder="user.personName.firstName === '' ? '-' : user.personName.firstName"
           />
@@ -49,7 +49,7 @@
           <span class="text-gray-600 dark:text-gray-400">Middlename</span>
           <input
             type="text"
-            v-model="user.personName.middleName"
+            v-model="updateUserInput.middleName"
             class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md"
             :placeholder="user.personName.middleName === '' ? '-' : user.personName.middleName"
           />
@@ -58,7 +58,7 @@
           <span class="text-gray-600 dark:text-gray-400">Lastname</span>
           <input
             type="text"
-            v-model="user.personName.lastName"
+            v-model="updateUserInput.lastName"
             class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md"
             :placeholder="user.personName.lastName === '' ? '-' : user.personName.lastName"
           />
@@ -69,7 +69,7 @@
         <span class="text-gray-600 dark:text-gray-400">Email</span>
         <input
           type="text"
-          v-model="user.email"
+          v-model="updateUserInput.email"
           class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md"
           :placeholder="user.email === '' || user.email === null ? '-' : user.email"
         />
@@ -78,7 +78,7 @@
         <span class="text-gray-600 dark:text-gray-400">Phonenumber</span>
         <input
           type="text"
-          v-model="user.phoneNumber"
+          v-model="updateUserInput.phoneNumber"
           class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md"
           :placeholder="user.phoneNumber === '' || user.phoneNumber === null ? '-' : user.phoneNumber"
         />
@@ -87,7 +87,7 @@
         <span class="text-gray-600 dark:text-gray-400">Personinfo</span>
         <input
           type="text"
-          v-model="user.personInfo"
+          v-model="updateUserInput.personInfo"
           class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md"
           :placeholder="user.personInfo === '' ? '-' : user.personInfo"
         />
@@ -126,39 +126,23 @@ export default defineComponent({
     const selectedRole = ref(userRole.value);
     const prevRole = selectedRole.value;
     const roles = Roles;
-    const updateUserRequest: UpdateUserInput = reactive({
-      userName: '',
-      personInfo: '',
-      firstName: '',
-      middleName: '',
-      lastName: '',
-      email: '',
-      phoneNumber: '',
-      newRole: ''
+    const updateUserInput: UpdateUserInput = reactive({
+      userId: ''
     });
     const onSaveClick = async () => {
       if (typeof user.value === 'undefined') {
         return;
       }
-      updateUserRequest.userName = user.value.userName;
-      updateUserRequest.personInfo = user.value.personInfo === null ? '' : user.value.personInfo;
-      updateUserRequest.firstName =
-        user.value.personName.firstName === null ? '' : user.value.personName.firstName;
-      updateUserRequest.middleName =
-        user.value.personName.middleName === null ? '' : user.value.personName.middleName;
-      updateUserRequest.lastName =
-        user.value.personName.lastName === null ? '' : user.value.personName.lastName;
-      updateUserRequest.email = user.value.email === null ? '' : user.value.email;
-      updateUserRequest.phoneNumber = user.value.phoneNumber === null ? '' : user.value.phoneNumber;
-      updateUserRequest.newRole = selectedRole.value;
-      await store.dispatch(AuthActionTypes.UPDATE_ME, updateUserRequest);
-      if (updateUserRequest.newRole !== prevRole) {
+      updateUserInput.userId = user.value.id;
+      console.log(updateUserInput);
+      await store.dispatch(AuthActionTypes.UPDATE_ME, updateUserInput);
+      if (typeof updateUserInput.newRole !== 'undefined' && updateUserInput.newRole !== prevRole) {
         logout();
       }
     };
     return {
       user,
-      updateUserRequest,
+      updateUserInput,
       onSaveClick,
       roles,
       selectedRole

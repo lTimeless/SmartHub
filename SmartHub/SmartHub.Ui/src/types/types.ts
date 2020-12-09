@@ -59,6 +59,7 @@ interface PersonName {
 }
 
 export interface User {
+  id: string;
   userName: string;
   personInfo: string | null;
   personName: PersonName;
@@ -70,14 +71,15 @@ export interface User {
 }
 
 export interface UpdateUserInput {
-  userName: string;
-  personInfo: string;
-  firstName: string;
-  middleName: string;
-  lastName: string;
-  email: string;
-  phoneNumber: string;
-  newRole: string;
+  userId: string;
+  userName?: string;
+  personInfo?: string;
+  firstName?: string;
+  middleName?: string;
+  lastName?: string;
+  email?: string;
+  phoneNumber?: string;
+  newRole?: string;
 }
 
 // Device

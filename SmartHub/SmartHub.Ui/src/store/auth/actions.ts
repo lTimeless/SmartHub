@@ -3,9 +3,10 @@ import { IdentityPayload, RegistrationInput, UpdateUserInput, User } from '@/typ
 import { RootState, AuthState } from '@/store/index.types';
 import { storeToken } from '@/services/auth/authService';
 import { AuthMutations, AuthMutationTypes } from '@/store/auth/mutations';
-// import { postLogin, postRegistration, getMe, putMe } from '@/services/apis/identity';
-import { useQuery, useResult, useApolloClient } from '@vue/apollo-composable';
-import { whoAmI } from '@/graphql/queries';
+import { useQuery, useResult } from '@vue/apollo-composable';
+import { WHO_AM_I } from '@/graphql/queries';
+import { apolloClient } from '@/apollo';
+import { LOGIN, UPDATE_USER } from '@/graphql/mutations';
 
 // Keys
 export enum AuthActionTypes {
@@ -29,7 +30,6 @@ type ActionAugments = Omit<ActionContext<AuthState, RootState>, 'commit'> & {
 // Action Interface
 export type AuthActions = {
   [AuthActionTypes.ME]({ commit }: ActionAugments): Promise<void>;
-  [AuthActionTypes.UPDATE_ME]({ commit }: ActionAugments, payload: UpdateUserInput): Promise<void>;
   [AuthActionTypes.LOGIN]({ commit }: ActionAugments, payload: IdentityPayload): Promise<void>;
   [AuthActionTypes.REGISTRATION](state: ActionAugments, payload: RegistrationInput): Promise<void>;
   [AuthActionTypes.LOGOUT]({ commit }: ActionAugments): void;
@@ -37,32 +37,28 @@ export type AuthActions = {
 
 // Define Actions
 export const actions: ActionTree<AuthState, RootState> & AuthActions = {
+  // User
   async [AuthActionTypes.ME]({ commit }): Promise<void> {
-    const { result } = useQuery(whoAmI);
+    const { result } = useQuery(WHO_AM_I);
     const user = useResult<User>(result);
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
-    commit(AuthMutationTypes.User, user);
+    commit(AuthMutationTypes.UPDATE_ME, user);
   },
+
   async [AuthActionTypes.UPDATE_ME]({ commit }, payload: UpdateUserInput): Promise<void> {
-    // await putMe(payload)
-    //   .then((response) => {
-    //     if (!response.success) {
-    //       return Promise.reject(response.message);
-    //     }
-    //     commit(AuthMutationTypes.ME, response.data as User);
-    //     return Promise.resolve(response.data);
-    //   })
-    //   .catch((err) => Promise.reject(err));
-    const { client } = useApolloClient();
-    await client.mutate({ mutation: whoAmI, variables: payload });
+    await apolloClient.mutate({ mutation: UPDATE_USER, variables: { input: payload } }).then((res) => {
+      commit(AuthActionTypes.UPDATE_ME, res.data.user);
+    });
   },
+  // Identity
   async [AuthActionTypes.LOGIN]({ commit }, payload: IdentityPayload): Promise<void> {
-    if (payload.token != null) {
-      storeToken(payload.token);
-    }
-    commit(AuthMutationTypes.User, payload.user);
-    commit(AuthMutationTypes.TOKEN, payload.token);
+    await apolloClient.mutate({ mutation: LOGIN, variables: { input: payload } }).then((res) => {
+      if (res.data.login.token != null) {
+        storeToken(res.data.login.token);
+      }
+      commit(AuthMutationTypes.UPDATE_TOKEN, res.data.login.token);
+    });
   },
   async [AuthActionTypes.REGISTRATION](state, payload: RegistrationInput): Promise<void> {
     // await postRegistration(payload)

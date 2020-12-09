@@ -7,9 +7,30 @@ import gql from 'graphql-tag';
 // Device
 
 // User
-
+export const UPDATE_USER = gql`
+  mutation Updateuser($input: UpdateUserInput!) {
+    updateUser(input: $input) {
+      user {
+        id
+        userName
+        createdAt
+        createdBy
+        lastModifiedAt
+        lastModifiedBy
+        phoneNumber
+        personInfo
+        email
+        personName {
+          firstName
+          lastName
+          middleName
+        }
+      }
+    }
+  }
+`;
 // Identity
-export const login = gql`
+export const LOGIN = gql`
   mutation Login($input: LoginInput!) {
     login(input: $input) {
       token
@@ -25,7 +46,7 @@ export const login = gql`
     }
   }
 `;
-export const registration = gql`
+export const REGISTRATION = gql`
   mutation Registration($input: RegistrationInput!) {
     registration(input: $input) {
       token

@@ -23,23 +23,19 @@ namespace SmartHub.Application.UseCases.Entity.Users
 		public async Task<UserPayload> UpdateUser([Service] IUserRepository userRepository,
 			[Service] IUnitOfWork unitOfWork, UpdateUserInput input)
 		{
-			if (string.IsNullOrEmpty(input.UserName))
-			{
-				return new UserPayload(new UserError("New username can't be empty.", AppErrorCodes.IsEmpty));
-			}
-
 			var userEntity = await userRepository.FindByIdAsync(input.UserId);
 			if (userEntity == null)
 			{
 				return new UserPayload(new UserError($"Couldn't find user with {input.UserName}.", AppErrorCodes.NotFound));
 			}
-			userEntity.UserName = input.UserName;
-			userEntity.PersonInfo = input.PersonInfo;
-			userEntity.PersonName.FirstName = input.FirstName;
-			userEntity.PersonName.MiddleName = input.MiddleName;
-			userEntity.PersonName.LastName = input.LastName;
-			userEntity.Email = input.Email;
-			userEntity.PhoneNumber = input.PhoneNumber;
+
+			userEntity.UserName =  input.UserName.HasValue && !string.IsNullOrEmpty(input.UserName) ? input.UserName : userEntity.UserName;
+			userEntity.PersonInfo = input.PersonInfo.HasValue ? input.PersonInfo: userEntity.PersonInfo;
+			userEntity.PersonName.FirstName = input.FirstName.HasValue ? input.FirstName : userEntity.PersonName.FirstName;
+			userEntity.PersonName.MiddleName = input.MiddleName.HasValue ? input.MiddleName : userEntity.PersonName.MiddleName;
+			userEntity.PersonName.LastName = input.LastName.HasValue ? input.LastName : userEntity.PersonName.LastName;
+			userEntity.Email = input.Email.HasValue ? input.Email : userEntity.Email;
+			userEntity.PhoneNumber = input.PhoneNumber.HasValue ? input.PhoneNumber : userEntity.PhoneNumber;
 
 			var updateUser = await userRepository.UpdateUser(userEntity);
 			if (!updateUser)
@@ -48,9 +44,13 @@ namespace SmartHub.Application.UseCases.Entity.Users
 					new UserError($"Error: Something went wrong updating user {userEntity.UserName}.", AppErrorCodes.NotUpdated));
 			}
 
-			var currentRoles = await userRepository.GetUserRoles(userEntity);
-			// checks if the list has an entry and if that one is equal to the new role
-			if (!currentRoles.Except(new List<string> {input.NewRole}).Any())
+			if (string.IsNullOrEmpty(input.NewRole))
+			{
+				return new UserPayload(userEntity);
+			}
+			var currentUserRoles = await userRepository.GetUserRoles(userEntity);
+			// checks if currentRoles List has an entry and if that one is equal to the new role
+			if (!currentUserRoles.Except(new List<string> {input.NewRole}).Any())
 			{
 				return new UserPayload(userEntity);
 			}

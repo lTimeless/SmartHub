@@ -1,6 +1,7 @@
 ﻿using HotChocolate.Types;
 using SmartHub.Application.UseCases.Entity.Devices;
 using SmartHub.Application.UseCases.Entity.Groups;
+using SmartHub.Application.UseCases.Entity.Users;
 using SmartHub.Application.UseCases.Identity;
 using SmartHub.Application.UseCases.Init;
 
@@ -28,7 +29,9 @@ namespace SmartHub.Api.GraphQl
 			// Identity
 			descriptor.Include<IdentityMutations>()
 				.Description("All mutations for the identity services.");
-
+			// User
+			descriptor.Include<UserMutations>()
+				.Description("All mutations for the users entity.");
 		}
 	}
 }

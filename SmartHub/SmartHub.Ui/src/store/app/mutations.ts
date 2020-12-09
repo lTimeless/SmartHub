@@ -1,11 +1,11 @@
 import { MutationTree } from 'vuex';
-import { Group, Device, AppConfig } from '@/types/types';
+import { Group, Device, AppConfig, User } from '@/types/types';
 import { AppState } from '@/store/index.types';
 
 // Keys
 export enum AppMutationTypes {
   // App
-  UPDATE_APP = 'UPDATE_App',
+  UPDATE_APP = 'UPDATE_APP',
   // Group
   SET_GROUPS = 'SET_GROUPS',
   ADD_GROUP = 'ADD_GROUP',

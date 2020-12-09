@@ -5,7 +5,7 @@ import router from './router';
 import { store } from './store';
 import './assets/tailwind.css';
 import { DefaultApolloClient } from '@vue/apollo-composable';
-import { apolloClient } from './vue-apollo';
+import { apolloClient } from './apollo';
 
 const app = createApp(App)
   .provide(DefaultApolloClient, apolloClient)

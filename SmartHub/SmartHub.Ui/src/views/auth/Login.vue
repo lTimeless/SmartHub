@@ -86,7 +86,8 @@ import AppCard from '@/components/widgets/AppCard.vue';
 import { useMutation, useQuery } from '@vue/apollo-composable';
 import { ApplicationIsActive, UsersExist } from '@/graphql/queries';
 import { Routes } from '@/types/enums';
-import { login } from '@/graphql/mutations';
+// import { login } from '@/graphql/mutations';
+import { AppActionTypes } from '@/store/app/actions';
 
 export default defineComponent({
   name: 'Login',
@@ -104,21 +105,20 @@ export default defineComponent({
     const input = ref<LoginInput>();
     const { refetch } = useQuery(ApplicationIsActive);
     const { refetch: userRefetch } = useQuery(UsersExist);
-    const { mutate: sendLogin } = useMutation(login);
 
     onMounted(() => {
-      refetch().then((response) => {
-        if (!response.data.applicationIsActive) {
-          router.push(Routes.Init);
-          return Promise.resolve();
-        }
-        userRefetch().then((response) => {
-          if (!response.data.usersExist) {
-            router.push(Routes.Registration);
-            return Promise.resolve();
-          }
-        });
-      });
+      // refetch().then((response) => {
+      //   if (!response.data.applicationIsActive) {
+      //     router.push(Routes.Init);
+      //     return Promise.resolve();
+      //   }
+      //   userRefetch().then((response) => {
+      //     if (!response.data.usersExist) {
+      //       router.push(Routes.Registration);
+      //       return Promise.resolve();
+      //     }
+      //   });
+      // });
     });
 
     const onLoginClick = async () => {
@@ -127,9 +127,9 @@ export default defineComponent({
         userName: userName.value,
         password: password.value
       };
-      sendLogin({ input: input.value })
-        .then((res) => {
-          store.dispatch(AuthActionTypes.LOGIN, { token: res.data.login.token, user: res.data.login.user });
+      store
+        .dispatch(AuthActionTypes.LOGIN, input.value)
+        .then(() => {
           isSignInBtnClicked.value = false;
           router.push(Routes.Home);
         })
