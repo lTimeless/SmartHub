@@ -32,7 +32,7 @@
             <span class="text-gray-600 dark:text-gray-400">Username</span>
             <input
               type="text"
-              v-model="registrationRequest.username"
+              v-model="registrationRequest.userName"
               class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md"
               placeholder="Jane Doe"
             />
@@ -197,7 +197,7 @@ export default defineComponent({
     const togglePassword = ref(false);
     const confirmPwd = ref('');
     const registrationRequest: RegistrationInput = reactive({
-      username: '',
+      userName: '',
       password: '',
       role: 'User' // default role, can only be changed after registration
     });
@@ -210,7 +210,7 @@ export default defineComponent({
       () => registrationRequest.password === '' || registrationRequest.password !== confirmPwd.value
     );
     const registrationDisabled = computed(
-      () => registrationRequest.username === '' || checkPwd.value || !passwordStrength.value
+      () => registrationRequest.userName === '' || checkPwd.value || !passwordStrength.value
     );
 
     const checkPasswordStrength = () => {

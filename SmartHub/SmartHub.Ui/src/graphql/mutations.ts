@@ -1,7 +1,20 @@
 import gql from 'graphql-tag';
 
 // App
-
+export const INITIALIZE_APP = gql`
+  mutation InitApp($input: AppConfigInitInput!) {
+    initializeApp(input: $input) {
+      errors {
+        message
+        code
+      }
+      appConfig {
+        applicationName
+      }
+      message
+    }
+  }
+`;
 // Group
 
 // Device
@@ -35,8 +48,8 @@ export const LOGIN = gql`
     login(input: $input) {
       token
       user {
-        userName
         id
+        userName
       }
       errors {
         message
@@ -51,8 +64,8 @@ export const REGISTRATION = gql`
     registration(input: $input) {
       token
       user {
-        userName
         id
+        userName
       }
       errors {
         message

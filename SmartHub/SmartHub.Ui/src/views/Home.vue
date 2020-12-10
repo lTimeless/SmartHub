@@ -21,9 +21,7 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
-import { useSignalRHub } from '@/hooks/useSignalR.ts';
 import { useStore } from 'vuex';
-import { Group, Device, AppConfig } from '@/types/types';
 import Sidebar from '@/components/layout/Sidebar.vue';
 import Navbar from '@/components/layout/Navbar.vue';
 import TopDoubleWaves from '@/components/svgs/TopDoubleWaves.vue';

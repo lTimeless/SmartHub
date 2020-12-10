@@ -129,14 +129,15 @@ export default defineComponent({
     const updateUserInput: UpdateUserInput = reactive({
       userId: ''
     });
+
     const onSaveClick = async () => {
       if (typeof user.value === 'undefined') {
         return;
       }
       updateUserInput.userId = user.value.id;
-      updateUserInput.newRole = selectedRole.value !== prevRole ? selectedRole.value : undefined;
-      console.log(updateUserInput, updateUserInput.newRole, selectedRole.value);
+      updateUserInput.newRole = selectedRole.value;
       await store.dispatch(AuthActionTypes.UPDATE_ME, updateUserInput);
+
       if (typeof updateUserInput.newRole !== 'undefined' && updateUserInput.newRole !== prevRole) {
         logout();
       }

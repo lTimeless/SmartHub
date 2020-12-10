@@ -252,6 +252,9 @@ export default defineComponent({
     GroupDropdown
   },
   setup() {
+    // TODO hier anstatt im template 2mal das selbe zu haben und die liste an groups zu filtern, kann man auch einfach
+    // einen query mit den filtern schicken
+    // dadurch spart man tempalte code !!
     const store = useStore();
     const groupsWithSubGroups = computed(() => store.state.appModule.groups);
     const onlyParentGroups = computed(() => store.getters.getOnlyParentGroups);

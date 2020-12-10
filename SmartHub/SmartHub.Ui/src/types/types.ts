@@ -46,7 +46,7 @@ export interface LoginInput {
 }
 
 export interface RegistrationInput {
-  username: string;
+  userName: string;
   password: string;
   role: string;
 }

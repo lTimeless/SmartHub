@@ -1,26 +1,24 @@
 <template>
   <div class="relative inline-block text-left">
-    <div v-if="user !== null && user !== undefined">
-      <div class="relative z-20 items-center flex cursor-pointer" @click="setDropDownValue(!showDropdown)">
-        <span
-          class="w-10 h-10 text-sm md:text-white sm:text-black shadow-lg hover:opacity-75 text-center inline-flex items-center justify-center rounded-full"
+    <div class="relative z-20 items-center flex cursor-pointer" @click="setDropDownValue(!showDropdown)">
+      <span
+        class="w-10 h-10 text-sm md:text-white sm:text-black shadow-lg hover:opacity-75 text-center inline-flex items-center justify-center rounded-full"
+      >
+        <svg
+          class="h-6 w-6"
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
         >
-          <svg
-            class="h-6 w-6"
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-          >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
-            />
-          </svg>
-        </span>
-      </div>
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
+          />
+        </svg>
+      </span>
     </div>
     <button
       v-if="showDropdown"
@@ -72,9 +70,7 @@ export default defineComponent({
   setup() {
     const store = useStore();
     const router = useRouter();
-    const userPath = '/user';
     const dropdownPopoverShow = ref<boolean>(false);
-    const user = computed(() => store.state.authModule.user);
     const showDropdown = computed(() => store.state.appModule.userDropDownOpen);
 
     const dropDownList = [
@@ -110,8 +106,6 @@ export default defineComponent({
 
     return {
       dropdownPopoverShow,
-      user,
-      userPath,
       showDropdown,
       dropDownList,
       escapeDropdown,

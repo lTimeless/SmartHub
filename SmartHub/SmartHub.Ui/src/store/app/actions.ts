@@ -1,11 +1,11 @@
 import { ActionContext, ActionTree } from 'vuex';
 import { RootState, AppState, AuthState } from '@/store/index.types';
-import { AppConfig, AppConfigInitInput, Device, Group, UpdateUserInput } from '@/types/types';
+import { AppConfig, AppConfigInitInput, Device, Group } from '@/types/types';
 import { AppMutations, AppMutationTypes } from '@/store/app/mutations';
 import { useQuery, useResult } from '@vue/apollo-composable';
 import { GET_DEVICES, GET_GROUPS, GET_APP_CONFIG } from '@/graphql/queries';
 import { apolloClient } from '@/apollo';
-import { UPDATE_USER } from '@/graphql/mutations';
+import { INITIALIZE_APP } from '@/graphql/mutations';
 
 // Keys
 export enum AppActionTypes {
@@ -59,15 +59,16 @@ export const actions: ActionTree<AppState, RootState> = {
     commit(AppMutationTypes.UPDATE_APP, appConfig);
   },
   async [AppActionTypes.InitIALIZE_APP]({ commit }, payload): Promise<void> {
-    // await postInit(payload)
-    //   .then((response) => {
-    //     if (!response.success) {
-    //       return Promise.reject(response.message);
-    //     }
-    //     commit(AppMutationTypes.UPDATE_APP, response.data);
-    //     return Promise.resolve(response.data);
-    //   })
-    //   .catch((error) => Promise.reject(error));
+    await apolloClient
+      .mutate({ mutation: INITIALIZE_APP, variables: { input: payload } })
+      .then((res) => {
+        if (res.data.errors.length > 0) {
+          return Promise.reject(`${res.data.errors.code}: ${res.data.errors.message}`);
+        }
+        commit(AppActionTypes.UPDATE_APP, res.data.appConfig);
+        return Promise.resolve();
+      })
+      .catch((err) => Promise.reject(err));
   },
   async [AppActionTypes.UPDATE_APP]({ commit }, payload): Promise<void> {
     commit(AppMutationTypes.UPDATE_APP, payload);
