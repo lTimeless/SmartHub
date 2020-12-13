@@ -98,10 +98,55 @@ export const GET_DEVICES = gql`
   }
 `;
 
+export const GET_DEVICE_BY_ID = gql`
+  query GET_DEVICE_BY_ID($id: String!) {
+    devices(where: { id: { eq: $id } }) {
+      id
+      name
+      description
+      primaryConnection
+      secondaryConnection
+      createdAt
+      lastModifiedAt
+      createdBy
+      lastModifiedBy
+      pluginName
+      pluginTypes
+      ip {
+        ipv4
+      }
+      company {
+        name
+        shortName
+      }
+    }
+  }
+`;
 // Group
 export const GET_GROUPS = gql`
   query GetGroups {
     groups {
+      id
+      name
+      isSubGroup
+      createdBy
+      lastModifiedBy
+      lastModifiedAt
+      createdAt
+      description
+      devices {
+        id
+        name
+        pluginName
+        pluginName
+      }
+    }
+  }
+`;
+
+export const GET_GROUP_BY_ID = gql`
+  query GET_GROUP_BY_ID($id: String!) {
+    groups(where: { id: { eq: $id } }) {
       id
       name
       isSubGroup

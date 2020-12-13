@@ -8,108 +8,134 @@
     main-border-color="border-red-400"
     main-bg-color="bg-red-400"
   >
-    <label class="text-left block text-sm">
-      <span class="text-gray-600 dark:text-gray-400">Name</span>
-      <input
-        type="text"
-        v-model="groupDetail.name"
-        class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md"
-        placeholder="Group name"
-      />
-    </label>
-    <label class="text-left block text-sm mt-3">
-      <span class="text-gray-600 dark:text-gray-400">Description</span>
-      <input
-        type="text"
-        v-model="groupDetail.description"
-        class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md"
-        placeholder="Group description"
-      />
-    </label>
-    <div class="border-border border-t my-2"></div>
-    <!-- Show available subGroups -->
-    <template v-if="group.subGroups !== undefined && group.subGroups.length > 0">
-      <div class="text-left">
-        <div>
-          <span class="text-gray-500 text-sm text-left mt-2">SubGroups</span>
-        </div>
-        <div v-for="subgroup in group.subGroups" :key="subgroup.id" class="pl-3">
-          {{ subgroup.name }}
-          <!-- Show available subGroup devices-->
-          <template v-if="subgroup.devices !== undefined && subgroup.devices.length > 0">
-            <div class="text-left pl-3">
-              <div>
-                <span class="text-gray-500 text-sm text-left mt-2">Devices</span>
+    <template v-if="loading">
+      <div class="flex items-center justify-center w-full h-full">
+        <Loader />
+      </div>
+    </template>
+    <template v-else-if="error">
+      <div class="flex items-center justify-center w-full h-full">
+        <p>Error: {{ error.name }} {{ error.message }}</p>
+      </div>
+    </template>
+    <template v-else-if="group">
+      <label class="text-left block text-sm">
+        <span class="text-gray-600 dark:text-gray-400">Name</span>
+        <input
+          type="text"
+          v-model="group.name"
+          class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md"
+          placeholder="Group name"
+        />
+      </label>
+      <label class="text-left block text-sm mt-3">
+        <span class="text-gray-600 dark:text-gray-400">Description</span>
+        <input
+          type="text"
+          v-model="group.description"
+          class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md"
+          placeholder="Group description"
+        />
+      </label>
+      <div class="border-border border-t my-2"></div>
+      <!-- Show available subGroups -->
+      <template v-if="group.subGroups !== undefined && group.subGroups.length > 0">
+        <div class="text-left">
+          <div>
+            <span class="text-gray-500 text-sm text-left mt-2">SubGroups</span>
+          </div>
+          <div v-for="subgroup in group.subGroups" :key="subgroup.id" class="pl-3">
+            {{ subgroup.name }}
+            <!-- Show available subGroup devices-->
+            <template v-if="subgroup.devices !== undefined && subgroup.devices.length > 0">
+              <div class="text-left pl-3">
+                <div>
+                  <span class="text-gray-500 text-sm text-left mt-2">Devices</span>
+                </div>
+                <div v-for="device in subgroup.devices" :key="device.id" class="pl-3">
+                  {{ device.name }}
+                </div>
               </div>
-              <div v-for="device in subgroup.devices" :key="device.id" class="pl-3">
-                {{ device.name }}
+            </template>
+            <template v-else>
+              <div class="text-left pl-3">
+                <span class="text-gray-500 text-sm text-left mt-2">No devices available</span>
               </div>
-            </div>
-          </template>
-          <template v-else>
-            <div class="text-left pl-3">
-              <span class="text-gray-500 text-sm text-left mt-2">No devices available</span>
-            </div>
-          </template>
+            </template>
+          </div>
         </div>
-      </div>
-    </template>
-    <template v-else>
-      <div class="text-left">
-        <span class="text-gray-500 text-sm text-left mt-2">No subGroups available</span>
-      </div>
-    </template>
-    <!-- Show available devices -->
-    <template v-if="group.devices !== undefined && group.devices.length > 0">
-      <div class="text-left">
-        <div>
-          <span class="text-gray-500 text-sm text-left mt-2">Devices</span>
+      </template>
+      <template v-else>
+        <div class="text-left">
+          <span class="text-gray-500 text-sm text-left mt-2">No subGroups available</span>
         </div>
-        <div v-for="device in group.devices" :key="device.id" class="pl-3">
-          {{ device.name }}
+      </template>
+      <!-- Show available devices -->
+      <template v-if="group.devices !== undefined && group.devices.length > 0">
+        <div class="text-left">
+          <div>
+            <span class="text-gray-500 text-sm text-left mt-2">Devices</span>
+          </div>
+          <div v-for="device in group.devices" :key="device.id" class="pl-3">
+            {{ device.name }}
+          </div>
         </div>
-      </div>
+      </template>
+      <template v-else>
+        <div class="text-left">
+          <span class="text-gray-500 text-sm text-left mt-2">No devices available</span>
+        </div>
+      </template>
+      <div class="text-gray-500 text-sm text-left mt-10">Creator: {{ group.createdBy }}</div>
     </template>
-    <template v-else>
-      <div class="text-left">
-        <span class="text-gray-500 text-sm text-left mt-2">No devices available</span>
-      </div>
-    </template>
-    <div class="text-gray-500 text-sm text-left mt-10">Creator: {{ groupDetail.createdBy }}</div>
   </BaseModal>
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType, ref } from 'vue';
+import { defineComponent, ref, watch } from 'vue';
 import BaseModal from '@/components/modals/BaseModal.vue';
 import { Group, UpdateGroupInput } from '@/types/types';
-// import { putByIdGroup } from '@/services/apis/group';
+import { useQuery } from '@vue/apollo-composable';
+import { GET_GROUP_BY_ID } from '@/graphql/queries';
+import Loader from '@/components/Loader.vue';
 
 export default defineComponent({
   name: 'GroupDetailsModal',
   emits: ['close'],
   components: {
-    BaseModal
+    BaseModal,
+    Loader
   },
   props: {
-    group: {
-      type: Object as PropType<Group>,
+    groupId: {
+      type: String,
       required: true
     }
   },
   setup(props, context) {
-    const groupDetail = ref(props.group);
+    const group = ref<Group | undefined>();
     const close = () => {
-      context.emit('close', false);
+      context.emit('close');
     };
+    const { result, loading, error } = useQuery(GET_GROUP_BY_ID, () => ({ id: props.groupId }), {
+      fetchPolicy: 'no-cache'
+    });
+    watch([loading, error], ([newLoad, newError]) => {
+      if (!newLoad && !newError) {
+        group.value = result.value.groups[0];
+      }
+    });
 
     const save = async () => {
-      const updatedGroup: UpdateGroupInput = {
-        id: groupDetail.value.id,
-        name: groupDetail.value.name,
-        description: groupDetail.value.description,
-        devices: groupDetail.value.devices
-      };
+      if (group.value) {
+        const updatedGroup: UpdateGroupInput = {
+          id: group.value.id,
+          name: group.value.name,
+          description: group.value.description,
+          devices: group.value.devices
+        };
+      }
+
       // await putByIdGroup(updatedGroup)
       //   .then((response) => {
       //     if (!response.success) {
@@ -122,7 +148,9 @@ export default defineComponent({
     };
 
     return {
-      groupDetail,
+      loading,
+      error,
+      group,
       close,
       save
     };

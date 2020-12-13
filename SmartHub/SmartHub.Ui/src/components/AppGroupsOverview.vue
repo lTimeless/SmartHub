@@ -1,18 +1,13 @@
 <template>
-  <GroupCreateModal
-    v-if="showAddModal"
-    @close="toggleModal"
-    :parent-group-id="parentGroupId"
-    :parent-group-name="parentGroupName"
-  />
-  <GroupDetailsModal v-if="showDetailModal" @close="closeDetailsModal" :group="group" />
+  <GroupCreateModal v-if="showCreateModal" @close="toggleCreateModal" />
+  <GroupDetailsModal v-if="showDetailModal" @close="toggleDetailModal(null)" :group-id="groupId" />
 
   <!-- Add Group button -->
   <div class="w-full">
     <div class="flex justify-start items-center mb-4 xl:w-1/3">
       <div class="w-full md:w-1/3 xl:w-3/6">
         <button
-          @click="toggleModal(true, null, null)"
+          @click="toggleCreateModal"
           class="block w-full px-4 py-2 mt-4 text-sm text-gray-500 font-medium leading-5 text-center bg-white hover:text-white hover:bg-indigo-500 border border-transparent rounded-lg active:bg-primary focus:outline-none"
         >
           Add Group
@@ -70,177 +65,90 @@
   </div>
 
   <!-- Show Groups -->
-  <div v-if="groupsWithSubGroups && groupsWithSubGroups.length > 0">
+  <div v-if="showGroupList && showGroupList.length > 0">
     <!-- All Groups -->
-    <template v-if="showSubGroupsIcon">
-      <div>
-        <div class="grid xl:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 gap-4">
-          <AppCard class="bg-white shadow-md w-full" v-for="group in groupsWithSubGroups" :key="group.id">
-            <div class="p-3 w-full">
-              <div class="flex items-start justify-between">
-                <h1
-                  class="text-xl text-left text-gray-600 font-bold cursor-pointer"
-                  @click="openDetailModal(true, group.id)"
-                >
-                  {{ group.name }}
-                </h1>
-                <GroupDropdown
-                  v-if="!group.isSubGroup"
-                  :add-sub-group="toggleModal.bind(this, true, group.id, group.name)"
-                  :close-drop-down="closeDropdown"
-                />
-                <span v-else class="text-gray-400 text-xs text-left mt-2">Is Subgroup </span>
-              </div>
-              <div class="text-gray-500 text-sm font-normal text-left">
-                Creator: <span class="font-bold">{{ group.createdBy }}</span>
-              </div>
-              <div class="border-border border-t my-2"></div>
-              <!-- Show available subGroups -->
-              <template v-if="!group.isSubGroup">
-                <template v-if="group.subGroups !== undefined && group.subGroups.length > 0">
-                  <div class="text-left">
-                    <div>
-                      <span class="text-gray-500 text-sm text-left mt-2">SubGroups</span>
-                    </div>
-                    <!-- Show available subGroup devices-->
-                    <div v-for="subgroup in group.subGroups" :key="subgroup.id" class="pl-3">
-                      {{ subgroup.name }}
-                      <template v-if="subgroup.devices !== undefined && subgroup.devices.length > 0">
-                        <div class="text-left pl-3">
-                          <div>
-                            <span class="text-gray-500 text-sm text-left mt-2">Devices</span>
-                          </div>
-                          <div v-for="device in subgroup.devices" :key="device.id" class="pl-3">
-                            {{ device.name }}
-                          </div>
-                        </div>
-                      </template>
-                      <template v-else>
-                        <div class="text-left pl-3">
-                          <span class="text-gray-500 text-sm text-left mt-2">No devices available</span>
-                        </div>
-                      </template>
-                    </div>
-                  </div>
-                </template>
-                <template v-else>
-                  <div class="text-left">
-                    <span class="text-gray-500 text-sm text-left mt-2">No subGroups available</span>
-                  </div>
-                </template>
-              </template>
-              <!-- Show available devices -->
-              <template v-if="group.devices !== undefined && group.devices.length > 0">
+    <div>
+      <div class="grid xl:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 gap-4">
+        <AppCard class="bg-white shadow-md w-full" v-for="group in showGroupList" :key="group.id">
+          <div class="p-3 w-full">
+            <div class="flex items-start justify-between">
+              <h1
+                class="text-xl text-left text-gray-600 font-bold cursor-pointer"
+                @click="toggleDetailModal(group.id)"
+              >
+                {{ group.name }}
+              </h1>
+              <GroupDropdown v-if="!group.isSubGroup" :group-id="group.id" :group-name="group.name" />
+              <span v-else class="text-gray-400 text-xs text-left mt-2">Is Subgroup </span>
+            </div>
+            <div class="text-gray-500 text-sm font-normal text-left">
+              Creator: <span class="font-bold">{{ group.createdBy }}</span>
+            </div>
+            <div class="border-border border-t my-2"></div>
+            <!-- Show available subGroups -->
+            <template v-if="!group.isSubGroup">
+              <template v-if="group.subGroups !== undefined && group.subGroups.length > 0">
                 <div class="text-left">
                   <div>
-                    <span class="text-gray-500 text-sm text-left mt-2">Devices</span>
+                    <span class="text-gray-500 text-sm text-left mt-2">SubGroups</span>
                   </div>
-                  <div v-for="device in group.devices" :key="device.id" class="pl-3">
-                    {{ device.name }}
+                  <!-- Show available subGroup devices-->
+                  <div v-for="subgroup in group.subGroups" :key="subgroup.id" class="pl-3">
+                    {{ subgroup.name }}
+                    <template v-if="subgroup.devices !== undefined && subgroup.devices.length > 0">
+                      <div class="text-left pl-3">
+                        <div>
+                          <span class="text-gray-500 text-sm text-left mt-2">Devices</span>
+                        </div>
+                        <div v-for="device in subgroup.devices" :key="device.id" class="pl-3">
+                          {{ device.name }}
+                        </div>
+                      </div>
+                    </template>
+                    <template v-else>
+                      <div class="text-left pl-3">
+                        <span class="text-gray-500 text-sm text-left mt-2">No devices available</span>
+                      </div>
+                    </template>
                   </div>
                 </div>
               </template>
               <template v-else>
                 <div class="text-left">
-                  <span class="text-gray-500 text-sm text-left mt-2">No devices available</span>
+                  <span class="text-gray-500 text-sm text-left mt-2">No subGroups available</span>
                 </div>
               </template>
-            </div>
-          </AppCard>
-        </div>
-      </div>
-    </template>
-    <!-- Only Parent Groups  -->
-    <template v-if="!showSubGroupsIcon">
-      <div v-if="onlyParentGroups && onlyParentGroups.length > 0">
-        <div class="grid xl:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 gap-4">
-          <AppCard class="bg-white shadow-md w-full" v-for="group in onlyParentGroups" :key="group.id">
-            <div class="p-3 w-full">
-              <div class="flex items-start justify-between">
-                <h1
-                  class="text-xl text-left text-gray-600 font-bold cursor-pointer"
-                  @click="openDetailModal(true, group.id)"
-                >
-                  {{ group.name }}
-                </h1>
-                <GroupDropdown
-                  v-if="!group.isSubGroup"
-                  :add-sub-group="toggleModal.bind(this, true, group.id, group.name)"
-                  :close-drop-down="closeDropdown"
-                />
-                <span v-else class="text-gray-400 text-xs text-left mt-2">Is Subgroup </span>
+            </template>
+            <!-- Show available devices -->
+            <template v-if="group.devices !== undefined && group.devices.length > 0">
+              <div class="text-left">
+                <div>
+                  <span class="text-gray-500 text-sm text-left mt-2">Devices</span>
+                </div>
+                <div v-for="device in group.devices" :key="device.id" class="pl-3">
+                  {{ device.name }}
+                </div>
               </div>
-              <div class="text-gray-500 text-sm font-normal text-left">
-                Creator: <span class="font-bold">{{ group.createdBy }}</span>
+            </template>
+            <template v-else>
+              <div class="text-left">
+                <span class="text-gray-500 text-sm text-left mt-2">No devices available</span>
               </div>
-              <div class="border-border border-t my-2"></div>
-              <!-- Show available subGroups -->
-              <template v-if="!group.isSubGroup">
-                <template v-if="group.subGroups !== undefined && group.subGroups.length > 0">
-                  <div class="text-left">
-                    <div>
-                      <span class="text-gray-500 text-sm text-left mt-2">SubGroups</span>
-                    </div>
-                    <!-- Show available subGroup devices-->
-                    <div v-for="subgroup in group.subGroups" :key="subgroup.id" class="pl-3">
-                      {{ subgroup.name }}
-                      <template v-if="subgroup.devices !== undefined && subgroup.devices.length > 0">
-                        <div class="text-left pl-3">
-                          <div>
-                            <span class="text-gray-500 text-sm text-left mt-2">Devices</span>
-                          </div>
-                          <div v-for="device in subgroup.devices" :key="device.id" class="pl-3">
-                            {{ device.name }}
-                          </div>
-                        </div>
-                      </template>
-                      <template v-else>
-                        <div class="text-left pl-3">
-                          <span class="text-gray-500 text-sm text-left mt-2">No devices available</span>
-                        </div>
-                      </template>
-                    </div>
-                  </div>
-                </template>
-                <template v-else>
-                  <div class="text-left">
-                    <span class="text-gray-500 text-sm text-left mt-2">No subGroups available</span>
-                  </div>
-                </template>
-              </template>
-              <!-- Show available devices -->
-              <template v-if="group.devices !== undefined && group.devices.length > 0">
-                <div class="text-left">
-                  <div>
-                    <span class="text-gray-500 text-sm text-left mt-2">Devices</span>
-                  </div>
-                  <div v-for="device in group.devices" :key="device.id" class="pl-3">
-                    {{ device.name }}
-                  </div>
-                </div>
-              </template>
-              <template v-else>
-                <div class="text-left">
-                  <span class="text-gray-500 text-sm text-left mt-2">No devices available</span>
-                </div>
-              </template>
-            </div>
-          </AppCard>
-        </div>
+            </template>
+          </div>
+        </AppCard>
       </div>
-    </template>
+    </div>
   </div>
   <div v-else>No Groups available</div>
 </template>
 
 <script lang="ts">
-import { reactive, toRefs, defineComponent, computed } from 'vue';
+import { reactive, toRefs, defineComponent, computed, ref } from 'vue';
 import AppCard from '@/components/widgets/AppCard.vue';
 import { useStore } from 'vuex';
 import GroupCreateModal from '@/components/modals/GroupCreateModal.vue';
 import GroupDetailsModal from '@/components/modals/GroupDetailsModal.vue';
-import { Group } from '@/types/types';
-// import { getByIdGroup } from '@/services/apis/group';
 import GroupDropdown from '@/components/GroupDropdown.vue';
 
 export default defineComponent({
@@ -252,59 +160,46 @@ export default defineComponent({
     GroupDropdown
   },
   setup() {
-    // TODO hier anstatt im template 2mal das selbe zu haben und die liste an groups zu filtern, kann man auch einfach
-    // einen query mit den filtern schicken
-    // dadurch spart man tempalte code !!
     const store = useStore();
     const groupsWithSubGroups = computed(() => store.state.appModule.groups);
     const onlyParentGroups = computed(() => store.getters.getOnlyParentGroups);
+    let showGroupList = ref(groupsWithSubGroups.value);
     const state = reactive({
-      showAddModal: false,
+      showCreateModal: false,
       showDetailModal: false,
       showSubGroupsIcon: false,
       selectedGroupId: '',
-      group: {} as Group | null | undefined,
-      showLoader: false,
-      parentGroupName: '',
-      parentGroupId: '',
+      groupId: '',
       closeDropdown: false
     });
-    const toggleModal = (value: boolean, parentGroupId: string | null, parentGroupName: string | null) => {
-      state.parentGroupId = parentGroupId ?? '';
-      state.parentGroupName = parentGroupName ?? '';
-      state.showAddModal = value;
-      state.closeDropdown = value;
+
+    const toggleCreateModal = () => {
+      state.showCreateModal = !state.showCreateModal;
     };
-    const closeDetailsModal = (value: boolean) => {
-      state.showDetailModal = value;
+
+    const toggleDetailModal = (groupId: string | null) => {
+      state.showDetailModal = !state.showDetailModal;
+      if (state.showDetailModal && groupId !== null) {
+        state.groupId = groupId;
+      } else {
+        state.groupId = '';
+      }
     };
 
     const showSubGroups = () => {
       state.showSubGroupsIcon = !state.showSubGroupsIcon;
-    };
-
-    const openDetailModal = async (value: boolean, groupId: string) => {
-      state.showLoader = true;
-      if (value) {
-        // state.group = await getByIdGroup(groupId)
-        //   .then((response) => {
-        //     if (!response.success) {
-        //       return Promise.reject(response.message);
-        //     }
-        //     return Promise.resolve(response.data as Group);
-        //   })
-        //   .catch((error) => Promise.reject(error));
+      if (state.showSubGroupsIcon) {
+        showGroupList.value = groupsWithSubGroups.value;
+      } else {
+        showGroupList.value = onlyParentGroups.value;
       }
-      state.showLoader = false;
-      state.selectedGroupId = groupId;
-      state.showDetailModal = value;
     };
 
     return {
       ...toRefs(state),
-      toggleModal,
-      openDetailModal,
-      closeDetailsModal,
+      showGroupList,
+      toggleCreateModal,
+      toggleDetailModal,
       showSubGroups,
       onlyParentGroups,
       groupsWithSubGroups

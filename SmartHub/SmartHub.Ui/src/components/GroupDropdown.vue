@@ -1,6 +1,13 @@
 <template>
+  <GroupCreateModal
+    v-if="showSubGroupModal"
+    @close="toggleAddSubGroupModal"
+    :parent-group-id="groupId"
+    :parent-group-name="groupName"
+  />
   <div class="relative inline-block text-left">
-    <div class="relative items-center flex cursor-pointer" @click="setDropDownValue">
+    <!-- Three dots Menu -->
+    <div class="relative items-center flex cursor-pointer" @click="toggleDropDownValue">
       <span
         class="w-7 h-7 p-1 text-black text-center hover:opacity-75 hover:bg-gray-300 inline-flex items-center justify-center rounded-full"
       >
@@ -20,22 +27,21 @@
         </svg>
       </span>
     </div>
+    <!-- Dropdown background invisible close btn  -->
     <button
       v-if="showDropdown"
-      @click="setDropDownValue"
+      @click="toggleDropDownValue"
       tabindex="-1"
       class="fixed inset-0 h-full w-full opacity-0 cursor-default"
     ></button>
+    <!-- Dropdown modal -->
     <div
       v-if="showDropdown"
       class="origin-top-right absolute right-0 mt-1 w-40 rounded-md shadow-lg bg-gray-200 ring-1 ring-black ring-opacity-5"
-      role="menu"
-      aria-orientation="vertical"
-      aria-labelledby="options-menu"
     >
       <div class="py-1">
         <a
-          @click="addSubGroup"
+          @click="toggleAddSubGroupModal"
           class="flex justify-start px-4 py-2 text-gray-700 hover:bg-gray-100 hover:text-gray-900 cursor-pointer active:bg-gray-100"
           role="menuitem"
         >
@@ -60,36 +66,52 @@
   </div>
 </template>
 <script lang="ts">
-import { defineComponent, ref, reactive, toRefs, PropType, watch } from 'vue';
+import { defineComponent, ref, reactive, toRefs, watch } from 'vue';
+import GroupCreateModal from '@/components/modals/GroupCreateModal.vue';
 
 export default defineComponent({
   name: 'GroupDropdown',
+  components: {
+    GroupCreateModal
+  },
   props: {
-    addSubGroup: {
-      type: Function as PropType<() => void>,
+    groupId: {
+      type: String,
       required: true
     },
-    closeDropDown: {
-      type: Boolean
+    groupName: {
+      type: String,
+      required: true
     }
   },
   setup(props) {
     const dropdownPopoverShow = ref<boolean>(false);
     const state = reactive({
-      showDropdown: false
+      showDropdown: false,
+      showSubGroupModal: false
     });
-    const { closeDropDown } = toRefs(props);
-    watch(closeDropDown, (newValue) => {
-      state.showDropdown = newValue;
-    });
-    const setDropDownValue = () => {
+    const { groupId, groupName } = toRefs(props);
+    // watch(closeDropDown, (newValue) => {
+    //   console.log(newValue);
+    //   state.showDropdown = newValue;
+    // });
+    const toggleDropDownValue = () => {
       state.showDropdown = !state.showDropdown;
     };
 
+    const toggleAddSubGroupModal = () => {
+      state.showSubGroupModal = !state.showSubGroupModal;
+      if (!state.showSubGroupModal) {
+        toggleDropDownValue();
+      }
+    }
+
     return {
       ...toRefs(state),
+      ...toRefs(props),
       dropdownPopoverShow,
-      setDropDownValue
+      toggleDropDownValue,
+      toggleAddSubGroupModal
     };
   }
 });
