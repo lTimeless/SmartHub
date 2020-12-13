@@ -134,6 +134,7 @@ export default defineComponent({
           description: group.value.description,
           devices: group.value.devices
         };
+        // TODO hier das via vuex machen, um das zu vergleichen mit dem apollo weg
       }
 
       // await putByIdGroup(updatedGroup)

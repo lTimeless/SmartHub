@@ -64,14 +64,9 @@ namespace SmartHub.Application.UseCases.Entity.Groups
 					new UserError($"Error: Couldn't find group with id {input.Id}.", AppErrorCodes.NotFound));
 			}
 
-			if (!string.IsNullOrEmpty(input.Name))
-			{
-				foundGroup.SetName(input.Name);
-			}
-			if (!string.IsNullOrEmpty(input.Description))
-			{
-				foundGroup.SetDescription(input.Description);
-			}
+			foundGroup.Name = input.Name.HasValue && !string.IsNullOrEmpty(input.Name) ? input.Name : foundGroup.Name;
+			foundGroup.Description = input.Description.HasValue ? input.Description : foundGroup.Description;
+
 			await unitOfWork.SaveAsync();
 			// TODO hier dann über den TopicSender an eine Subscription senden
 			return new GroupPayload(foundGroup, $"Updated group with name {input.Name}");

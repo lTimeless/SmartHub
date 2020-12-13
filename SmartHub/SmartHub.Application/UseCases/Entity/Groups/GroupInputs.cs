@@ -1,4 +1,6 @@
-﻿namespace SmartHub.Application.UseCases.Entity.Groups
+﻿using HotChocolate;
+
+namespace SmartHub.Application.UseCases.Entity.Groups
 {
 	/// <summary>
 	/// Group create input.
@@ -8,5 +10,5 @@
 	/// <summary>
 	/// Group update input.
 	/// </summary>
-	public record UpdateGroupInput(string Id, string? Name, string Description);
+	public record UpdateGroupInput(string Id, Optional<string> Name, Optional<string> Description);
 }

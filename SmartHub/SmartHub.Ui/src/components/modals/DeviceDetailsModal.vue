@@ -25,9 +25,9 @@
             <span class="text-gray-600 dark:text-gray-400">Name</span>
             <input
               type="text"
-              v-model="device.name"
+              v-model="updatedDevice.name"
               class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md"
-              placeholder="Name"
+              :placeholder="device.name"
             />
           </label>
         </div>
@@ -51,9 +51,9 @@
             <span class="text-gray-600 dark:text-gray-400">Description</span>
             <input
               type="text"
-              v-model="device.description"
+              v-model="updatedDevice.description"
               class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md"
-              placeholder="Description (optional)"
+              :placeholder="device.description"
             />
           </label>
         </div>
@@ -62,9 +62,9 @@
             <span class="text-gray-600 dark:text-gray-400">Ipv4</span>
             <input
               type="text"
-              v-model="device.ip.ipv4"
+              v-model="updatedDevice.ipv4"
               class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md"
-              placeholder="Ipv4"
+              :placeholder="device.ip.ipv4"
             />
           </label>
         </div>
@@ -93,7 +93,7 @@
               disabled
               v-model="device.company.name"
               class="mt-1 text-gray-500 focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md"
-              placeholder="Company description"
+              :placeholder="device.company.name"
             />
           </label>
         </div>
@@ -141,13 +141,14 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, watch } from 'vue';
+import { defineComponent, reactive, ref, watch } from 'vue';
 import BaseModal from '@/components/modals/BaseModal.vue';
 import { Device, UpdateDeviceInput } from '@/types/types';
 import { useEnumTypes } from '@/hooks/useEnums';
-import { useQuery } from '@vue/apollo-composable';
+import { useQuery, useMutation } from '@vue/apollo-composable';
 import { GET_DEVICE_BY_ID } from '@/graphql/queries';
 import Loader from '@/components/Loader.vue';
+import { UPDATE_DEVICE } from '@/graphql/mutations';
 
 export default defineComponent({
   name: 'DeviceDetailsModal',
@@ -168,9 +169,14 @@ export default defineComponent({
     const selectedPluginType = ref<number>();
     const selectedPConnType = ref<number>();
     const selectedSConnType = ref<number>();
+    const updatedDevice: UpdateDeviceInput = reactive({
+      id: ''
+    });
+    const { mutate: updateDevice, loading: loadUpdate, error: errUpdate } = useMutation(UPDATE_DEVICE);
     const { result, loading, error } = useQuery(GET_DEVICE_BY_ID, () => ({ id: props.deviceId }), {
       fetchPolicy: 'no-cache'
     });
+
     watch([loading, error], ([newLoad, newError]) => {
       if (!newLoad && !newError) {
         device.value = result.value.devices[0];
@@ -188,36 +194,24 @@ export default defineComponent({
     });
 
     const close = () => {
-      context.emit('close', false);
+      context.emit('close');
     };
 
     const save = async () => {
       if (device.value) {
-        const updatedDevice: UpdateDeviceInput = {
-          id: device.value.id,
-          name: device.value.name,
-          description: device.value.description,
-          primaryConnection: device.value.primaryConnection,
-          secondaryConnection: device.value.secondaryConnection,
-          ipv4: device.value.ip.ipv4
-        };
+        updatedDevice.id = device.value.id;
+        await updateDevice({ input: updatedDevice });
       }
-
-      // await putByIdDevice(updatedGroup)
-      //   .then((response) => {
-      //     if (!response.success) {
-      //       return Promise.reject(response.message);
-      //     }
-      //     return Promise.resolve();
-      //   })
-      //   .catch((error) => Promise.reject(error));
-      context.emit('close', false);
+      context.emit('close');
     };
 
     return {
+      loadUpdate,
+      errUpdate,
       device,
       loading,
       error,
+      updatedDevice,
       selectedPluginType,
       selectedPConnType,
       selectedSConnType,

@@ -118,8 +118,8 @@ export interface UpdateDeviceInput {
   name?: string;
   description?: string;
   ipv4?: string;
-  primaryConnection: ConnectionTypes;
-  secondaryConnection: ConnectionTypes;
+  primaryConnection?: ConnectionTypes;
+  secondaryConnection?: ConnectionTypes;
 }
 
 // Group

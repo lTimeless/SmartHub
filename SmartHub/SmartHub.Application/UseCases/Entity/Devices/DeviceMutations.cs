@@ -3,6 +3,7 @@ using SmartHub.Application.Common.Interfaces.Database;
 using SmartHub.Application.Common.Models;
 using SmartHub.Domain.Common.Enums;
 using SmartHub.Domain.Entities;
+using SmartHub.Domain.Entities.ValueObjects;
 using System.Threading.Tasks;
 
 namespace SmartHub.Application.UseCases.Entity.Devices
@@ -70,19 +71,12 @@ namespace SmartHub.Application.UseCases.Entity.Devices
 				return new DevicePayload(new UserError($"Error: Couldn't find device with id {input.Id}.", AppErrorCodes.NotFound));
 			}
 
-			if (!string.IsNullOrEmpty(input.Name))
-			{
-				foundDevice.SetName(input.Name);
-			}
-			if (!string.IsNullOrEmpty(input.Description))
-			{
-				foundDevice.SetDescription(input.Description);
-			}
-			if (!string.IsNullOrEmpty(input.Ipv4))
-			{
-				foundDevice.SetIp(input.Ipv4);
-			}
-			foundDevice.SetConnectionTypes(input.PrimaryConnection, input.SecondaryConnection);
+			foundDevice.Name = input.Name.HasValue && !string.IsNullOrEmpty(input.Name) ? input.Name : foundDevice.Name;
+			foundDevice.Description = input.Description.HasValue ? input.Description : foundDevice.Description;
+			foundDevice.Ip = input.Ipv4.HasValue && !string.IsNullOrEmpty(input.Ipv4)? new IpAddress(input.Ipv4): foundDevice.Ip ;
+			foundDevice.PrimaryConnection = input.PrimaryConnection.HasValue ? input.PrimaryConnection : foundDevice.PrimaryConnection ;
+			foundDevice.SecondaryConnection = input.SecondaryConnection.HasValue ? input.SecondaryConnection : foundDevice.SecondaryConnection ;
+
 			await unitOfWork.SaveAsync();
 			// TODO hier dann über den TopicSender an eine Subscription senden
 			return new DevicePayload(foundDevice, $"Updated device with name {input.Name}");

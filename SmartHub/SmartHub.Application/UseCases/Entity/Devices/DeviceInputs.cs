@@ -1,5 +1,6 @@
 ﻿// unset
 
+using HotChocolate;
 using SmartHub.Domain.Common.Enums;
 
 namespace SmartHub.Application.UseCases.Entity.Devices
@@ -19,10 +20,10 @@ namespace SmartHub.Application.UseCases.Entity.Devices
 	///Device update input.
 	/// </summary>
 	public record UpdateDeviceInput(string Id,
-		string Name,
-		string? Description,
-		string Ipv4,
-		ConnectionTypes PrimaryConnection,
-		ConnectionTypes SecondaryConnection,
-		string GroupName);
+		Optional<string> Name,
+		Optional<string> Description,
+		Optional<string> Ipv4,
+		Optional<ConnectionTypes> PrimaryConnection,
+		Optional<ConnectionTypes> SecondaryConnection,
+		Optional<string> GroupName);
 }
