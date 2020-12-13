@@ -44,25 +44,26 @@
               <button
                 class="text-red-400 border solid hover:border-red-400 bg-white font-bold uppercase px-6 py-3 text-sm mr-2 rounded"
                 type="button"
-                style="transition: all 0.15s ease"
                 @click="close"
               >
                 {{ closeBtnTitle }}
               </button>
               <button
-                class="` bg-transparent border border-solid font-bold uppercase text-sm px-6 py-3 rounded outline-none focus:outline-none`"
+                class="bg-transparent border border-solid font-bold uppercase text-sm pl-4 pr-6 py-3 rounded outline-none focus:outline-none"
                 type="button"
-                style="transition: all 0.15s ease"
                 @click="save"
                 :class="[
                   `${mainBorderColor}`,
-                  saveBtnActive
+                  saveBtnActive && !loading
                     ? `hover:${mainBgColor} hover:text-white text-gray-600`
                     : 'opacity-50 focus:outline-none cursor-not-allowed'
                 ]"
-                :disabled="!saveBtnActive"
+                :disabled="!saveBtnActive || loading"
               >
-                {{ saveBtnTitle }}
+                <div class="flex">
+                  <Loader v-if="loading" height="h-2" width="w-2" />
+                  <span class="pl-2">{{ saveBtnTitle }}</span>
+                </div>
               </button>
             </div>
           </div>
@@ -74,6 +75,7 @@
 
 <script lang="ts">
 import { defineComponent, PropType, toRefs } from 'vue';
+import Loader from '@/components/Loader.vue';
 
 export default defineComponent({
   name: 'BaseModal',
@@ -113,9 +115,15 @@ export default defineComponent({
     saveBtnColor: {
       type: String,
       default: 'bg-indigo-400'
+    },
+    loading: {
+      type: Boolean,
+      required: true
     }
   },
-  components: {},
+  components: {
+    Loader
+  },
   setup(props) {
     return {
       ...toRefs(props)

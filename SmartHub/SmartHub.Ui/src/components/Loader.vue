@@ -1,12 +1,24 @@
 <template>
-  <div class="loader ease-linear rounded-full border-8 border-t-8 border-gray-200 h-48 w-48"></div>
+  <div
+    :class="`loader ease-linear rounded-full border-8 border-t-8 border-gray-200 ${height} ${width}`"
+  ></div>
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue';
 
 export default defineComponent({
-  name: 'Loader'
+  name: 'Loader',
+  props: {
+    height: {
+      type: Number,
+      required: true
+    },
+    width: {
+      type: Number,
+      required: true
+    }
+  }
 });
 </script>
 

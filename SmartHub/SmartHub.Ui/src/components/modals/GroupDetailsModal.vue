@@ -7,10 +7,11 @@
     :save="save"
     main-border-color="border-red-400"
     main-bg-color="bg-red-400"
+    :loading="false"
   >
     <template v-if="loading">
       <div class="flex items-center justify-center w-full h-full">
-        <Loader />
+        <Loader height="h-48" width="w-48" />
       </div>
     </template>
     <template v-else-if="error">
