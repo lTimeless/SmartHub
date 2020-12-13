@@ -15,15 +15,15 @@
     </ConfirmationModalAsync>
     <!-- Top Navigation Info -->
     <AppCard v-if="!doneRegistration" class="bg-white shadow-md">
-      <div class="h-32 md:h-auto md:w-1/2">
+      <div class="h-108 md:h-auto md:w-1/2">
         <img
           aria-hidden="true"
-          class="object-cover w-full h-full dark:hidden"
+          class="object-fill w-full h-full dark:hidden"
           src="../../assets/images/undraw_smart_home_28oy.svg"
           alt="Office"
         />
       </div>
-      <div class="flex items-center justify-center p-6 sm:p-12 md:w-1/2">
+      <div class="flex items-center justify-center h-108 p-6 sm:p-12 md:w-1/2">
         <div class="w-full">
           <h2 class="mb-4 text-left text-2xl font-semibold text-gray-700 dark:text-gray-200">
             {{ title }}

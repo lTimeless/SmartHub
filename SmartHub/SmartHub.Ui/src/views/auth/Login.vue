@@ -1,98 +1,110 @@
 <template>
   <div class="flex items-center min-h-screen p-6 bg-loginBackground dark:bg-gray-900">
     <AppCard class="bg-white shadow-md">
-      <div class="h-32 md:h-auto md:w-1/2">
-        <img
-          aria-hidden="true"
-          class="object-cover w-full h-full dark:hidden"
-          src="../../assets/images/undraw_smart_home_28oy.svg"
-          alt="Office"
-        />
-      </div>
-      <div class="flex items-center justify-center p-6 sm:p-12 md:w-1/2">
-        <div class="w-full">
-          <h2 class="mb-4 text-left text-2xl font-semibold text-gray-700 dark:text-gray-200">
-            {{ title }}
-          </h2>
-          <label class="text-left block text-sm">
-            <span class="text-gray-600 dark:text-gray-400">Username</span>
-            <input
-              required
-              type="text"
-              v-model="userName"
-              class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md"
-              placeholder="Jane Doe"
-            />
-          </label>
-          <label class="text-left block mt-4 text-sm">
-            <span class="text-gray-600 dark:text-gray-400">Password</span>
-            <input
-              required
-              v-model="password"
-              class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md"
-              placeholder="***************"
-              type="password"
-              @keyup.enter="onLoginClick"
-            />
-          </label>
-
-          <button
-            class="block w-full px-4 py-2 mt-4 text-sm font-medium leading-5 text-center text-white transition-colors duration-150 bg-primary border border-transparent rounded-lg active:bg-primary focus:outline-none focus:shadow-outlineIndigo"
-            :class="
-              signInDisabled ? 'opacity-50 focus:outline-none cursor-not-allowed' : 'hover:bg-primaryHover'
-            "
-            @click="onLoginClick"
-            :disabled="signInDisabled"
-          >
-            Log in
-          </button>
-          <hr class="my-8" />
-          <button
-            disabled
-            class="flex items-center justify-center w-full px-4 py-2 text-sm font-medium leading-5 text-gray-700 transition-colors duration-150 border border-gray-300 rounded-lg dark:text-gray-400 active:bg-transparent focus:border-gray-500 active:text-gray-500 focus:outline-none focus:shadow-outline-gray"
-            :class="true ? 'opacity-50 focus:outline-none cursor-not-allowed' : 'hover:border-gray-500'"
-          >
-            Additional login options....
-          </button>
-          <p class="mt-4 text-left">
-            <router-link
-              class="text-sm font-medium text-primary dark:text-primary hover:underline"
-              to="/forgotpassword"
-            >
-              Forgot your password?
-            </router-link>
-          </p>
-          <p class="mt-1 text-left">
-            <router-link
-              class="text-sm font-medium text-primary dark:text-primary hover:underline"
-              to="/registration"
-            >
-              Create account
-            </router-link>
-          </p>
+      <template v-if="loading">
+        <div class="flex items-center justify-center w-full h-108">
+          <Loader />
         </div>
-      </div>
+      </template>
+      <template v-else-if="error">
+        <div class="flex items-center justify-center w-full h-108">
+          <p>Error: {{ error.name }} {{ error.message }}</p>
+        </div>
+      </template>
+      <template v-else>
+        <div class="h-108 md:h-auto md:w-1/2">
+          <img
+            aria-hidden="true"
+            class="object-fill w-full h-full dark:hidden"
+            src="../../assets/images/undraw_smart_home_28oy.svg"
+            alt="Office"
+          />
+        </div>
+        <div class="flex items-center justify-center h-108 p-6 sm:p-12 md:w-1/2">
+          <div class="w-full">
+            <h2 class="mb-4 text-left text-2xl font-semibold text-gray-700 dark:text-gray-200">
+              {{ title }}
+            </h2>
+            <label class="text-left block text-sm">
+              <span class="text-gray-600 dark:text-gray-400">Username</span>
+              <input
+                required
+                type="text"
+                v-model="userName"
+                class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md"
+                placeholder="Jane Doe"
+              />
+            </label>
+            <label class="text-left block mt-4 text-sm">
+              <span class="text-gray-600 dark:text-gray-400">Password</span>
+              <input
+                required
+                v-model="password"
+                class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md"
+                placeholder="***************"
+                type="password"
+                @keyup.enter="onLoginClick"
+              />
+            </label>
+
+            <button
+              class="block w-full px-4 py-2 mt-4 text-sm font-medium leading-5 text-center text-white transition-colors duration-150 bg-primary border border-transparent rounded-lg active:bg-primary focus:outline-none focus:shadow-outlineIndigo"
+              :class="
+                signInDisabled ? 'opacity-50 focus:outline-none cursor-not-allowed' : 'hover:bg-primaryHover'
+              "
+              @click="onLoginClick"
+              :disabled="signInDisabled"
+            >
+              Log in
+            </button>
+            <hr class="my-8" />
+            <button
+              disabled
+              class="flex items-center justify-center w-full px-4 py-2 text-sm font-medium leading-5 text-gray-700 transition-colors duration-150 border border-gray-300 rounded-lg dark:text-gray-400 active:bg-transparent focus:border-gray-500 active:text-gray-500 focus:outline-none focus:shadow-outline-gray"
+              :class="true ? 'opacity-50 focus:outline-none cursor-not-allowed' : 'hover:border-gray-500'"
+            >
+              Additional login options....
+            </button>
+            <p class="mt-4 text-left">
+              <router-link
+                class="text-sm font-medium text-primary dark:text-primary hover:underline"
+                to="/forgotpassword"
+              >
+                Forgot your password?
+              </router-link>
+            </p>
+            <p class="mt-1 text-left">
+              <router-link
+                class="text-sm font-medium text-primary dark:text-primary hover:underline"
+                to="/registration"
+              >
+                Create account
+              </router-link>
+            </p>
+          </div>
+        </div>
+      </template>
     </AppCard>
   </div>
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, ref, onMounted } from 'vue';
+import { computed, defineComponent, ref, watch } from 'vue';
 import { LoginInput } from '@/types/types';
 import { useRouter } from 'vue-router';
 import { useStore } from 'vuex';
 import { AuthActionTypes } from '@/store/auth/actions';
 import AppCard from '@/components/widgets/AppCard.vue';
-import { useMutation, useQuery } from '@vue/apollo-composable';
-import { ApplicationIsActive, UsersExist } from '@/graphql/queries';
+import { useQuery } from '@vue/apollo-composable';
+import { HOME_AND_USERS_EXIST } from '@/graphql/queries';
 import { Routes } from '@/types/enums';
-// import { login } from '@/graphql/mutations';
-import { AppActionTypes } from '@/store/app/actions';
+import Loader from '@/components/Loader.vue';
 
 export default defineComponent({
   name: 'Login',
   components: {
-    AppCard
+    AppCard,
+    Loader
   },
   props: {},
   setup() {
@@ -103,22 +115,19 @@ export default defineComponent({
     const userName = ref('');
     const isSignInBtnClicked = ref(false);
     const input = ref<LoginInput>();
-    const { refetch } = useQuery(ApplicationIsActive);
-    const { refetch: userRefetch } = useQuery(UsersExist);
+    const { result, loading, error } = useQuery(HOME_AND_USERS_EXIST);
 
-    onMounted(() => {
-      // refetch().then((response) => {
-      //   if (!response.data.applicationIsActive) {
-      //     router.push(Routes.Init);
-      //     return Promise.resolve();
-      //   }
-      //   userRefetch().then((response) => {
-      //     if (!response.data.usersExist) {
-      //       router.push(Routes.Registration);
-      //       return Promise.resolve();
-      //     }
-      //   });
-      // });
+    watch([loading, error], ([newLoad, newError]) => {
+      if (!newLoad && !newError) {
+        if (!result.value.applicationIsActive) {
+          router.push(Routes.Init);
+          return Promise.resolve();
+        }
+        if (!result.value.usersExist) {
+          router.push(Routes.Registration);
+          return Promise.resolve();
+        }
+      }
     });
 
     const onLoginClick = async () => {
@@ -143,6 +152,8 @@ export default defineComponent({
     );
 
     return {
+      error,
+      loading,
       title,
       onLoginClick,
       password,

@@ -9,92 +9,104 @@
       <div class="text-gray-600 mb-8">
         Thank you for using SmartHub.
         <br />If you encounter any problems or have any suggestions, please visit
-        <a class="text-primary" :href="process.env.GITHUB_SMARTHUB">github</a>
+        <a class="text-primary" :href="githubUrl">github</a>
         and create an issue. 🔥👌🚀❤
       </div>
     </ConfirmationModalAsync>
     <AppCard v-if="!doneInit" class="bg-white shadow-md">
-      <div class="h-32 md:h-auto md:w-1/2">
-        <img
-          aria-hidden="true"
-          class="object-cover w-full h-full dark:hidden"
-          src="../assets/images/undraw_at_home_octe.svg"
-          alt="Office"
-        />
-      </div>
-      <div class="flex items-center justify-center p-6 sm:p-12 md:w-1/2">
-        <div class="w-full">
-          <h2 class="mb-4 text-left text-2xl font-semibold text-gray-700 dark:text-gray-200">
-            {{ title }}
-          </h2>
-          <div class="text-gray-700 font-medium mt-3 mb-4 text-left">
-            Please type in a name and/or a description for your smartHub.
-          </div>
-          <label class="flex flex-col text-sm">
-            <span class="text-gray-600 dark:text-gray-400 justify-start text-left">Name</span>
-            <input
-              required
-              class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-primary focus:outline-none focus:shadow-outlineIndigo dark:text-gray-300 dark:focus:shadow-outline form-input"
-              placeholder="SmartHub (default)"
-              type="text"
-              v-model="appConfigCreateRequest.name"
-            />
-          </label>
-          <label class="flex flex-col text-sm mt-4">
-            <span class="text-gray-600 dark:text-gray-400 justify-start text-left">Description</span>
-            <input
-              required
-              class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-primary focus:outline-none focus:shadow-outlineIndigo dark:text-gray-300 dark:focus:shadow-outline form-input"
-              placeholder="This is an awesome description (default)"
-              type="text"
-              v-model="appConfigCreateRequest.description"
-            />
-          </label>
-          <div class="mt-4">
-            <div class="md:flex md:items-center mb-6">
-              <label class="text-gray-500 flex items-center">
-                <input
-                  class="form-checkbox text-primary form-checkbox focus:border-purple-400 focus:outline-none focus:shadow-outlineIndigo dark:focus:shadow-outline-gray"
-                  type="checkbox"
-                  v-model="appConfigCreateRequest.autoDetectAddress"
-                />
-                <span class="ml-2 text-sm"> Automatically detect your home address. </span>
-              </label>
-            </div>
-            <div class="md:flex md:items-center mb-6">
-              <label class="text-gray-500 flex items-center">
-                <input class="form-checkbox text-primary" type="checkbox" v-model="acceptWip" />
-                <span class="ml-2 text-sm"> This project is still under development. </span>
-              </label>
-            </div>
-          </div>
-          <button
-            @click="InitHome"
-            class="block w-full px-4 py-2 mt-4 text-sm font-medium leading-5 text-center text-white transition-colors duration-150 bg-primary border border-transparent rounded-lg active:bg-ui-primary focus:outline-none focus:shadow-outlineIndigo"
-            :class="
-              allDeactive ? 'opacity-50 focus:outline-none cursor-not-allowed' : 'hover:bg-primaryHover'
-            "
-            :disabled="allDeactive"
-          >
-            Complete
-          </button>
-
-          <hr class="my-8" />
-          <button
-            disabled
-            class="flex items-center justify-center w-full px-4 py-2 text-sm font-medium leading-5 text-white text-gray-700 transition-colors duration-150 border border-gray-300 rounded-lg dark:text-gray-400 active:bg-transparent focus:border-gray-500 active:text-gray-500 focus:outline-none focus:shadow-outline-gray"
-            :class="true ? 'opacity-50 focus:outline-none cursor-not-allowed' : 'hover:border-gray-500'"
-          >
-            Additional options....
-          </button>
+      <template v-if="loading">
+        <div class="flex items-center justify-center w-full h-108">
+          <Loader />
         </div>
-      </div>
+      </template>
+      <template v-else-if="error">
+        <div class="flex items-center justify-center w-full h-108">
+          <p>Error: {{ error.name }} {{ error.message }}</p>
+        </div>
+      </template>
+      <template>
+        <div class="h-108 md:h-auto md:w-1/2">
+          <img
+            aria-hidden="true"
+            class="object-fill w-full h-full dark:hidden"
+            src="../assets/images/undraw_at_home_octe.svg"
+            alt="Office"
+          />
+        </div>
+        <div class="flex items-center justify-center h-108 p-6 sm:p-12 md:w-1/2">
+          <div class="w-full">
+            <h2 class="mb-4 text-left text-2xl font-semibold text-gray-700 dark:text-gray-200">
+              {{ title }}
+            </h2>
+            <div class="text-gray-700 font-medium mt-3 mb-4 text-left">
+              Please type in a name and/or a description for your smartHub.
+            </div>
+            <label class="flex flex-col text-sm">
+              <span class="text-gray-600 dark:text-gray-400 justify-start text-left">Name</span>
+              <input
+                required
+                class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-primary focus:outline-none focus:shadow-outlineIndigo dark:text-gray-300 dark:focus:shadow-outline form-input"
+                placeholder="SmartHub (default)"
+                type="text"
+                v-model="appConfigCreateRequest.name"
+              />
+            </label>
+            <label class="flex flex-col text-sm mt-4">
+              <span class="text-gray-600 dark:text-gray-400 justify-start text-left">Description</span>
+              <input
+                required
+                class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-primary focus:outline-none focus:shadow-outlineIndigo dark:text-gray-300 dark:focus:shadow-outline form-input"
+                placeholder="This is an awesome description (default)"
+                type="text"
+                v-model="appConfigCreateRequest.description"
+              />
+            </label>
+            <div class="mt-4">
+              <div class="md:flex md:items-center mb-6">
+                <label class="text-gray-500 flex items-center">
+                  <input
+                    class="form-checkbox text-primary form-checkbox focus:border-purple-400 focus:outline-none focus:shadow-outlineIndigo dark:focus:shadow-outline-gray"
+                    type="checkbox"
+                    v-model="appConfigCreateRequest.autoDetectAddress"
+                  />
+                  <span class="ml-2 text-sm"> Automatically detect your home address. </span>
+                </label>
+              </div>
+              <div class="md:flex md:items-center mb-6">
+                <label class="text-gray-500 flex items-center">
+                  <input class="form-checkbox text-primary" type="checkbox" v-model="acceptWip" />
+                  <span class="ml-2 text-sm"> This project is still under development. </span>
+                </label>
+              </div>
+            </div>
+            <button
+              @click="InitHome"
+              class="block w-full px-4 py-2 mt-4 text-sm font-medium leading-5 text-center text-white transition-colors duration-150 bg-primary border border-transparent rounded-lg active:bg-ui-primary focus:outline-none focus:shadow-outlineIndigo"
+              :class="
+                allDeactive ? 'opacity-50 focus:outline-none cursor-not-allowed' : 'hover:bg-primaryHover'
+              "
+              :disabled="allDeactive"
+            >
+              Complete
+            </button>
+
+            <hr class="my-8" />
+            <button
+              disabled
+              class="flex items-center justify-center w-full px-4 py-2 text-sm font-medium leading-5 text-white text-gray-700 transition-colors duration-150 border border-gray-300 rounded-lg dark:text-gray-400 active:bg-transparent focus:border-gray-500 active:text-gray-500 focus:outline-none focus:shadow-outline-gray"
+              :class="true ? 'opacity-50 focus:outline-none cursor-not-allowed' : 'hover:border-gray-500'"
+            >
+              Additional options....
+            </button>
+          </div>
+        </div>
+      </template>
     </AppCard>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, defineAsyncComponent, reactive, ref, computed, onMounted } from 'vue';
+import { defineComponent, defineAsyncComponent, reactive, ref, computed, watch } from 'vue';
 import { AppConfigInitInput } from '@/types/types';
 import { AppActionTypes } from '@/store/app/actions';
 import { useStore } from 'vuex';
@@ -103,6 +115,7 @@ import AppCard from '@/components/widgets/AppCard.vue';
 import { useQuery } from '@vue/apollo-composable';
 import { ApplicationIsActive } from '@/graphql/queries';
 import { Routes } from '@/types/enums';
+import Loader from '@/components/Loader.vue';
 
 const ConfirmationModalAsync = defineAsyncComponent(
   () => import(/* webpackChunkName: "ConfirmationModal" */ '../components/modals/ConfirmationModal.vue')
@@ -112,6 +125,7 @@ export default defineComponent({
   name: 'Init',
   components: {
     AppCard,
+    Loader,
     ConfirmationModalAsync
   },
   setup() {
@@ -120,21 +134,21 @@ export default defineComponent({
     const title = 'Welcome to SmartHub';
     const acceptWip = ref(false);
     const doneInit = ref(false);
+    const githubUrl = ref(process.env.GITHUB_SMARTHUB);
     const appConfigCreateRequest: AppConfigInitInput = reactive({
       name: '',
       description: '',
       autoDetectAddress: false
     });
 
-    const { refetch } = useQuery(ApplicationIsActive);
-
-    onMounted(() => {
-      refetch().then((response) => {
-        if (response.data.applicationIsActive) {
+    const { result, loading, error } = useQuery(ApplicationIsActive);
+    watch([loading, error], ([newLoad, newError]) => {
+      if (!newLoad && !newError) {
+        if (result.value.applicationIsActive) {
           router.push(Routes.Login);
           return Promise.resolve();
         }
-      });
+      }
     });
 
     const InitHome = () => {
@@ -155,7 +169,10 @@ export default defineComponent({
 
     const allDeactive = computed(() => !appConfigCreateRequest.autoDetectAddress || !acceptWip.value);
     return {
+      loading,
+      error,
       title,
+      githubUrl,
       acceptWip,
       doneInit,
       appConfigCreateRequest,

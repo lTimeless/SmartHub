@@ -33,6 +33,12 @@ export const GET_APP_CONFIG = gql`
     }
   }
 `;
+export const HOME_AND_USERS_EXIST = gql`
+  query HomeAndUsersExist {
+    applicationIsActive
+    usersExist
+  }
+`;
 export const ApplicationIsActive = gql`
   query ApplicationIsActive {
     applicationIsActive
