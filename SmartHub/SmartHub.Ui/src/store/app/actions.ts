@@ -3,7 +3,7 @@ import { RootState, AppState, AuthState } from '@/store/index.types';
 import { AppConfig, AppConfigInitInput, Device, Group } from '@/types/types';
 import { AppMutations, AppMutationTypes } from '@/store/app/mutations';
 import { useQuery, useResult } from '@vue/apollo-composable';
-import { GET_DEVICES, GET_GROUPS, GET_APP_CONFIG } from '@/graphql/queries';
+import { GET_APP_CONFIG } from '@/graphql/queries';
 import { apolloClient } from '@/apollo';
 import { INITIALIZE_APP } from '@/graphql/mutations';
 
@@ -14,10 +14,8 @@ export enum AppActionTypes {
   InitIALIZE_APP = 'CREATE_App',
   UPDATE_APP = 'UPDATE_App',
   // Group
-  GET_GROUPS = 'GET_GROUPS',
   ADD_GROUP = 'ADD_GROUP',
   // Device
-  GET_DEVICES = 'GET_DEVICES',
   ADD_DEVICE = 'ADD_DEVICE',
   // User
   UPDATE_USER = 'UPDATE_USER',
@@ -41,10 +39,8 @@ export type HomeActions = {
   [AppActionTypes.InitIALIZE_APP]({ commit }: ActionAugments, payload: AppConfigInitInput): Promise<void>;
   [AppActionTypes.UPDATE_APP]({ commit }: ActionAugments, payload: AppConfig): Promise<void>;
   // Group
-  [AppActionTypes.GET_GROUPS]({ commit }: ActionAugments): Promise<void>;
   [AppActionTypes.ADD_GROUP]({ commit }: ActionAugments, payload: Group): Promise<void>;
   // Device
-  [AppActionTypes.GET_DEVICES]({ commit }: ActionAugments): Promise<void>;
   [AppActionTypes.ADD_DEVICE]({ commit }: ActionAugments, payload: Device): Promise<void>;
   // UI
   [AppActionTypes.SET_NOTIFICATION_DROPDOWN]({ commit }: ActionAugments, payload: boolean): Promise<void>;
@@ -74,20 +70,10 @@ export const actions: ActionTree<AppState, RootState> = {
     commit(AppMutationTypes.UPDATE_APP, payload);
   },
   // Group
-  async [AppActionTypes.GET_GROUPS]({ commit }): Promise<void> {
-    const { result } = useQuery(GET_GROUPS);
-    const groups = useResult(result, null, (data) => data.groups);
-    commit(AppMutationTypes.SET_GROUPS, groups);
-  },
   async [AppActionTypes.ADD_GROUP]({ commit }, payload): Promise<void> {
-    commit(AppMutationTypes.SET_GROUPS, payload);
+    commit(AppMutationTypes.ADD_GROUP, payload);
   },
   // Device
-  async [AppActionTypes.GET_DEVICES]({ commit }): Promise<void> {
-    const { result } = useQuery(GET_DEVICES);
-    const devices = useResult(result, null, (data) => data.devices);
-    commit(AppMutationTypes.SET_DEVICES, devices);
-  },
   async [AppActionTypes.ADD_DEVICE]({ commit }, payload): Promise<void> {
     commit(AppMutationTypes.ADD_DEVICE, payload);
   },

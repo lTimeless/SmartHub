@@ -147,7 +147,7 @@ import BaseModal from '@/components/modals/BaseModal.vue';
 import { Device, UpdateDeviceInput } from '@/types/types';
 import { useEnumTypes } from '@/hooks/useEnums';
 import { useQuery, useMutation } from '@vue/apollo-composable';
-import { GET_DEVICE_BY_ID } from '@/graphql/queries';
+import { GET_DEVICES, GET_DEVICE_BY_ID } from '@/graphql/queries';
 import Loader from '@/components/Loader.vue';
 import { UPDATE_DEVICE } from '@/graphql/mutations';
 
@@ -201,7 +201,7 @@ export default defineComponent({
     const save = async () => {
       if (device.value) {
         updatedDevice.id = device.value.id;
-        await updateDevice({ input: updatedDevice });
+        await updateDevice({ input: updatedDevice }, { refetchQueries: [{ query: GET_DEVICES }] });
       }
       context.emit('close');
     };

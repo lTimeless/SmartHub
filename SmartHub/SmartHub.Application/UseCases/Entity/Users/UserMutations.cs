@@ -29,13 +29,15 @@ namespace SmartHub.Application.UseCases.Entity.Users
 				return new UserPayload(new UserError($"Couldn't find user with {input.UserName}.", AppErrorCodes.NotFound));
 			}
 
-			userEntity.UserName =  input.UserName.HasValue && !string.IsNullOrEmpty(input.UserName) ? input.UserName : userEntity.UserName;
-			userEntity.PersonInfo = input.PersonInfo.HasValue ? input.PersonInfo: userEntity.PersonInfo;
-			userEntity.PersonName.FirstName = input.FirstName.HasValue ? input.FirstName : userEntity.PersonName.FirstName;
-			userEntity.PersonName.MiddleName = input.MiddleName.HasValue ? input.MiddleName : userEntity.PersonName.MiddleName;
-			userEntity.PersonName.LastName = input.LastName.HasValue ? input.LastName : userEntity.PersonName.LastName;
-			userEntity.Email = input.Email.HasValue ? input.Email : userEntity.Email;
-			userEntity.PhoneNumber = input.PhoneNumber.HasValue ? input.PhoneNumber : userEntity.PhoneNumber;
+			userEntity.UserName = !string.IsNullOrEmpty(input.UserName) && !string.IsNullOrWhiteSpace(input.UserName)
+				? input.UserName
+				: userEntity.UserName;
+			userEntity.PersonInfo = input.PersonInfo ?? userEntity.PersonInfo;
+			userEntity.PersonName.FirstName = input.FirstName ?? userEntity.PersonName.FirstName;
+			userEntity.PersonName.MiddleName = input.MiddleName ?? userEntity.PersonName.MiddleName;
+			userEntity.PersonName.LastName = input.LastName ?? userEntity.PersonName.LastName;
+			userEntity.Email = input.Email ?? userEntity.Email;
+			userEntity.PhoneNumber = input.PhoneNumber ?? userEntity.PhoneNumber;
 
 			var updateUser = await userRepository.UpdateUser(userEntity);
 			if (!updateUser)

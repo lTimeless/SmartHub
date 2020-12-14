@@ -98,6 +98,14 @@ export const GET_DEVICES = gql`
   }
 `;
 
+export const GET_DEVICES_AMOUNT = gql`
+  query GetDevices {
+    devices {
+      id
+    }
+  }
+`;
+
 export const GET_DEVICE_BY_ID = gql`
   query GET_DEVICE_BY_ID($id: String!) {
     devices(where: { id: { eq: $id } }) {
@@ -140,6 +148,13 @@ export const GET_GROUPS = gql`
         pluginName
         pluginName
       }
+    }
+  }
+`;
+export const GET_GROUPS_AMOUNT = gql`
+  query GetGroups {
+    groups {
+      id
     }
   }
 `;

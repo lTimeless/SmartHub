@@ -315,10 +315,10 @@
           </template>
         </div>
         <div v-if="openTab === 1">
-          <AppGroupsOverview />
+          <GroupsOverview />
         </div>
         <div v-if="openTab === 2">
-          <AppDevicesOverview />
+          <DevicesOverview />
         </div>
         <div v-if="openTab === 3">
           Users</div>
@@ -334,8 +334,8 @@
 import { defineComponent, computed, ref, onMounted } from 'vue';
 import AppTabs from '@/components/widgets/AppTabs.vue';
 import AppAutomation from '@/components/AutomationsOverview.vue';
-import AppGroupsOverview from '@/components/AppGroupsOverview.vue';
-import AppDevicesOverview from '@/components/AppDevicesOverview.vue';
+import GroupsOverview from '@/components/GroupsOverview.vue';
+import DevicesOverview from '@/components/DevicesOverview.vue';
 import { useStore } from 'vuex';
 import BarChart from '@/components/charts/BarChart.vue';
 import LineChart from '@/components/charts/LineChart.vue';
@@ -353,8 +353,8 @@ export default defineComponent({
     CardsRow,
     AppTabs,
     AppAutomation,
-    AppGroupsOverview,
-    AppDevicesOverview
+    GroupsOverview,
+    DevicesOverview
   },
   setup() {
     const openTab = ref(0);

@@ -11,11 +11,11 @@ export default defineComponent({
   name: 'Loader',
   props: {
     height: {
-      type: Number,
+      type: String,
       required: true
     },
     width: {
-      type: Number,
+      type: String,
       required: true
     }
   }

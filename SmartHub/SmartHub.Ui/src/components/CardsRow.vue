@@ -191,6 +191,9 @@
 </template>
 
 <script lang="ts">
+import { GET_DEVICES, GET_DEVICES_AMOUNT, GET_GROUPS, GET_GROUPS_AMOUNT } from '@/graphql/queries';
+import { Group } from '@/types/types';
+import { useQuery, useResult } from '@vue/apollo-composable';
 import { defineComponent, PropType, computed } from 'vue';
 import { useStore } from 'vuex';
 
@@ -226,10 +229,15 @@ export default defineComponent({
   },
   setup(props) {
     const dontShowThisTab = computed(() => props.openTab);
-    const store = useStore();
-    const parentGroupsAmount = computed(() => store.getters.getParentGroupsAmount);
-    const subGroupsAmount = computed(() => store.getters.getSubGroupsAmount);
-    const devicesAmount = computed(() => store.getters.getDevicesAmount);
+    const { result } = useQuery(GET_GROUPS_AMOUNT);
+    const { result: devicesResult } = useQuery(GET_DEVICES_AMOUNT);
+
+    const groups = useResult(result, null, (data) => data.groups);
+    const devices = useResult(devicesResult, null, (data) => data.devices);
+
+    const parentGroupsAmount = computed(() => groups.value?.filter((x: Group) => !x.isSubGroup).length);
+    const subGroupsAmount = computed(() => groups.value?.filter((x: Group) => x.isSubGroup).length);
+    const devicesAmount = computed(() => devices.value?.length);
     return {
       dontShowThisTab,
       parentGroupsAmount,

@@ -14,47 +14,59 @@
       </div>
     </div>
   </div>
-  <div v-if="devices">
-    <div class="grid xl:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 gap-4">
-      <AppCard class="bg-white shadow-md w-full" v-for="device in devices" :key="device.id">
-        <div v-if="device" class="p-3 w-full">
-          <h1
-            class="text-xl text-left text-gray-600 font-bold cursor-pointer"
-            @click="toggleDetailModal(device.id)"
-          >
-            {{ device.name }}
-          </h1>
+  <!-- Show Devices -->
+  <template v-if="error">
+    <p>Error: {{ error.name }} - {{ error.message }}</p>
+  </template>
+  <template v-else-if="loading">
+    <Loader height="h-48" width="w-48" />
+  </template>
+  <template v-if="devices">
+    <div v-if="devices.length > 0">
+      <div class="grid xl:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 gap-4">
+        <AppCard class="bg-white shadow-md w-full" v-for="device in devices" :key="device.id">
+          <div v-if="device" class="p-3 w-full">
+            <h1
+              class="text-xl text-left text-gray-600 font-bold cursor-pointer"
+              @click="toggleDetailModal(device.id)"
+            >
+              {{ device.name }}
+            </h1>
 
-          <div class="text-gray-500 text-sm font-normal text-left">
-            Creator: <span class="font-bold">{{ device.createdBy }}</span>
+            <div class="text-gray-500 text-sm font-normal text-left">
+              Creator: <span class="font-bold">{{ device.createdBy }}</span>
+            </div>
+            <div class="border-border border-t my-2"></div>
+            <!-- TODO: Here add the actual controlls or infos for the device -->
           </div>
-          <div class="border-border border-t my-2"></div>
-          <!-- TODO: Here add the actual controlls or infos for the device -->
-        </div>
-        <div v-else>Error loading device ...</div>
-      </AppCard>
+          <div v-else>Error loading device ...</div>
+        </AppCard>
+      </div>
     </div>
-  </div>
-  <div v-else>No devices available</div>
+    <div v-else>No devices available</div>
+  </template>
 </template>
 
 <script lang="ts">
-import { reactive, toRefs, defineComponent, computed } from 'vue';
+import { reactive, toRefs, defineComponent } from 'vue';
 import AppCard from '@/components/widgets/AppCard.vue';
-import { useStore } from 'vuex';
 import DeviceCreateModal from '@/components/modals/DeviceCreateModal.vue';
 import DeviceDetailsModal from '@/components/modals/DeviceDetailsModal.vue';
+import { GET_DEVICES } from '@/graphql/queries';
+import { useQuery, useResult } from '@vue/apollo-composable';
+import Loader from '@/components/Loader.vue';
 
 export default defineComponent({
-  name: 'AppDevicesOverview',
+  name: 'DevicesOverview',
   components: {
     AppCard,
     DeviceCreateModal,
-    DeviceDetailsModal
+    DeviceDetailsModal,
+    Loader
   },
   setup() {
-    const store = useStore();
-    const devices = computed(() => store.state.appModule.devices);
+    const { result, loading, error } = useQuery(GET_DEVICES);
+    const devices = useResult(result, null, (data) => data.devices);
     const state = reactive({
       showCreateModal: false,
       showDetailModal: false,
@@ -76,6 +88,8 @@ export default defineComponent({
 
     return {
       ...toRefs(state),
+      loading,
+      error,
       devices,
       toggleCreateModal,
       toggleDetailModal

@@ -3,7 +3,7 @@
     <AppCard class="bg-white shadow-md">
       <template v-if="loading">
         <div class="flex items-center justify-center w-full h-108">
-          <Loader />
+          <Loader height="h-48" width="h-48" />
         </div>
       </template>
       <template v-else-if="error">

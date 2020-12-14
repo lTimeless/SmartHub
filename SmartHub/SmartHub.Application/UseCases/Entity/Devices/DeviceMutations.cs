@@ -71,11 +71,11 @@ namespace SmartHub.Application.UseCases.Entity.Devices
 				return new DevicePayload(new UserError($"Error: Couldn't find device with id {input.Id}.", AppErrorCodes.NotFound));
 			}
 
-			foundDevice.Name = input.Name.HasValue && !string.IsNullOrEmpty(input.Name) ? input.Name : foundDevice.Name;
-			foundDevice.Description = input.Description.HasValue ? input.Description : foundDevice.Description;
-			foundDevice.Ip = input.Ipv4.HasValue && !string.IsNullOrEmpty(input.Ipv4)? new IpAddress(input.Ipv4): foundDevice.Ip ;
-			foundDevice.PrimaryConnection = input.PrimaryConnection.HasValue ? input.PrimaryConnection : foundDevice.PrimaryConnection ;
-			foundDevice.SecondaryConnection = input.SecondaryConnection.HasValue ? input.SecondaryConnection : foundDevice.SecondaryConnection ;
+			foundDevice.Name = !string.IsNullOrEmpty(input.Name) ? input.Name : foundDevice.Name;
+			foundDevice.Description = !string.IsNullOrEmpty(input.Description) ? input.Description : foundDevice.Description;
+			foundDevice.Ip = !string.IsNullOrEmpty(input.Ipv4)? new IpAddress(input.Ipv4): foundDevice.Ip ;
+			foundDevice.PrimaryConnection = input.PrimaryConnection ?? foundDevice.PrimaryConnection ;
+			foundDevice.SecondaryConnection = input.SecondaryConnection ?? foundDevice.SecondaryConnection ;
 
 			await unitOfWork.SaveAsync();
 			// TODO hier dann über den TopicSender an eine Subscription senden

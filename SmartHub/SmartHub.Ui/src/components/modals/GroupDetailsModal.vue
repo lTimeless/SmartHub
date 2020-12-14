@@ -7,7 +7,7 @@
     :save="save"
     main-border-color="border-red-400"
     main-bg-color="bg-red-400"
-    :loading="false"
+    :loading="loadUpdate"
   >
     <template v-if="loading">
       <div class="flex items-center justify-center w-full h-full">
@@ -24,18 +24,18 @@
         <span class="text-gray-600 dark:text-gray-400">Name</span>
         <input
           type="text"
-          v-model="group.name"
+          v-model="updatedGroup.name"
           class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md"
-          placeholder="Group name"
+          :placeholder="group.name"
         />
       </label>
       <label class="text-left block text-sm mt-3">
         <span class="text-gray-600 dark:text-gray-400">Description</span>
         <input
           type="text"
-          v-model="group.description"
+          v-model="updatedGroup.description"
           class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md"
-          placeholder="Group description"
+          :placeholder="group.description"
         />
       </label>
       <div class="border-border border-t my-2"></div>
@@ -93,12 +93,13 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, watch } from 'vue';
+import { defineComponent, reactive, ref, watch } from 'vue';
 import BaseModal from '@/components/modals/BaseModal.vue';
 import { Group, UpdateGroupInput } from '@/types/types';
-import { useQuery } from '@vue/apollo-composable';
-import { GET_GROUP_BY_ID } from '@/graphql/queries';
+import { useMutation, useQuery } from '@vue/apollo-composable';
+import { GET_GROUPS, GET_GROUP_BY_ID } from '@/graphql/queries';
 import Loader from '@/components/Loader.vue';
+import { UPDATE_GROUP } from '@/graphql/mutations';
 
 export default defineComponent({
   name: 'GroupDetailsModal',
@@ -118,6 +119,10 @@ export default defineComponent({
     const close = () => {
       context.emit('close');
     };
+    const updatedGroup: UpdateGroupInput = reactive({
+      id: ''
+    });
+    const { mutate: updateGroup, loading: loadUpdate, error: errUpdate } = useMutation(UPDATE_GROUP);
     const { result, loading, error } = useQuery(GET_GROUP_BY_ID, () => ({ id: props.groupId }), {
       fetchPolicy: 'no-cache'
     });
@@ -129,32 +134,21 @@ export default defineComponent({
 
     const save = async () => {
       if (group.value) {
-        const updatedGroup: UpdateGroupInput = {
-          id: group.value.id,
-          name: group.value.name,
-          description: group.value.description,
-          devices: group.value.devices
-        };
-        // TODO hier das via vuex machen, um das zu vergleichen mit dem apollo weg
+        updatedGroup.id = group.value.id;
+        await updateGroup({ input: updatedGroup }, { refetchQueries: [{ query: GET_GROUPS }] });
       }
-
-      // await putByIdGroup(updatedGroup)
-      //   .then((response) => {
-      //     if (!response.success) {
-      //       return Promise.reject(response.message);
-      //     }
-      //     return Promise.resolve();
-      //   })
-      //   .catch((error) => Promise.reject(error));
       context.emit('close', false);
     };
 
     return {
       loading,
+      loadUpdate,
+      errUpdate,
       error,
       group,
       close,
-      save
+      save,
+      updatedGroup
     };
   }
 });
