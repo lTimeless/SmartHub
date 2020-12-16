@@ -148,7 +148,7 @@
 </template>
 
 <script lang="ts">
-import { reactive, toRefs, defineComponent, ref, watch, watchEffect } from 'vue';
+import { reactive, toRefs, defineComponent, ref, watch } from 'vue';
 import AppCard from '@/components/widgets/AppCard.vue';
 import GroupCreateModal from '@/components/modals/GroupCreateModal.vue';
 import GroupDetailsModal from '@/components/modals/GroupDetailsModal.vue';
@@ -205,10 +205,11 @@ export default defineComponent({
     const showSubGroups = () => {
       state.showSubGroupsIcon = !state.showSubGroupsIcon;
       if (state.showSubGroupsIcon) {
-        groups.value = groups.value?.filter((x: Group) => !x.isSubGroup);
+        groups.value = groups.value?.filter((x: Group) => x.isSubGroup);
       } else {
         groups.value = tempGroups.value;
       }
+      console.log(groups.value);
     };
 
     return {

@@ -32,6 +32,8 @@ namespace SmartHub.Application.UseCases.Entity.Groups
 
 				var newSubgroup = new Group(input.Name, input.Description, input.IsSubGroup);
 				foundGroup?.AddSubGroup(newSubgroup);
+				await unitOfWork.SaveAsync();
+
 				return new GroupPayload(newSubgroup, $"Created new SubGroup with name {input.Name} for group {foundGroup?.Name}.");
 			}
 

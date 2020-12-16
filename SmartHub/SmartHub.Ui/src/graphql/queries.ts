@@ -146,6 +146,10 @@ export const GET_GROUPS = gql`
         pluginName
         pluginName
       }
+      subGroups {
+        id
+        name
+      }
     }
   }
 `;

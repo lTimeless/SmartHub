@@ -13,7 +13,7 @@ namespace SmartHub.Domain.Entities
 		{
 		}
 
-		public Group(string name, string description, bool isSubGroup = default) : base(name, description)
+		public Group(string name, string? description, bool isSubGroup = default) : base(name, description)
 		{
 			IsSubGroup = isSubGroup;
 		}

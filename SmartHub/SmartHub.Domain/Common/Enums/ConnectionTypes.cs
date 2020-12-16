@@ -7,6 +7,6 @@ namespace SmartHub.Domain.Common.Enums
 	{
 		None = 0,
 		Http = 1,
-		Mqtt = 2,
+		Mqtt = 2
 	}
 }

@@ -37,10 +37,12 @@
             <span class="text-gray-600 dark:text-gray-400">PluginType</span>
             <select
               disabled
-              v-model="selectedPluginType"
+              v-model="device.pluginTypes"
               class="mt-1 text-gray-500 focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md"
             >
-              <option v-for="(item, key) in pluginNames" :key="key" :value="key">{{ item }}</option>
+              <option v-for="(item, key) in pluginNames" :key="key" :value="item.toUpperCase()">
+                {{ item }}
+              </option>
             </select>
           </label>
         </div>
@@ -54,7 +56,7 @@
               type="text"
               v-model="updatedDevice.description"
               class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md"
-              :placeholder="device.description"
+              :placeholder="device.description ?? 'Description'"
             />
           </label>
         </div>
@@ -117,10 +119,12 @@
           <label class="text-left block text-sm">
             <span class="text-gray-600 dark:text-gray-400">Primary connection</span>
             <select
-              v-model="selectedPConnType"
+              v-model="device.primaryConnection"
               class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md"
             >
-              <option v-for="(item, key) in connectionNames" :key="key" :value="key">{{ item }}</option>
+              <option v-for="(item, key) in connectionNames" :key="key" :value="item.toUpperCase()">
+                {{ item }}
+              </option>
             </select>
           </label>
         </div>
@@ -128,10 +132,12 @@
           <label class="text-left block text-sm">
             <span class="text-gray-600 dark:text-gray-400">Secondary connection</span>
             <select
-              v-model="selectedSConnType"
+              v-model="device.secondaryConnection"
               class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md"
             >
-              <option v-for="(item, key) in connectionNames" :key="key" :value="key">{{ item }}</option>
+              <option v-for="(item, key) in connectionNames" :key="key" :value="item.toUpperCase()">
+                {{ item }}
+              </option>
             </select>
           </label>
         </div>
@@ -142,11 +148,11 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, reactive, ref, watch } from 'vue';
+import { defineComponent, reactive, ref } from 'vue';
 import BaseModal from '@/components/modals/BaseModal.vue';
-import { Device, UpdateDeviceInput } from '@/types/types';
+import { UpdateDeviceInput } from '@/types/types';
 import { useEnumTypes } from '@/hooks/useEnums';
-import { useQuery, useMutation } from '@vue/apollo-composable';
+import { useQuery, useMutation, useResult } from '@vue/apollo-composable';
 import { GET_DEVICES, GET_DEVICE_BY_ID } from '@/graphql/queries';
 import Loader from '@/components/Loader.vue';
 import { UPDATE_DEVICE } from '@/graphql/mutations';
@@ -165,8 +171,6 @@ export default defineComponent({
     }
   },
   setup(props, context) {
-    const device = ref<Device | undefined>();
-
     const selectedPluginType = ref<number>();
     const selectedPConnType = ref<number>();
     const selectedSConnType = ref<number>();
@@ -177,22 +181,7 @@ export default defineComponent({
     const { result, loading, error } = useQuery(GET_DEVICE_BY_ID, () => ({ id: props.deviceId }), {
       fetchPolicy: 'no-cache'
     });
-
-    watch([loading, error], ([newLoad, newError]) => {
-      if (!newLoad && !newError) {
-        device.value = result.value.devices[0];
-        if (device.value !== undefined) {
-          // TODO fix -- EnumValue is always -1 so the dropdowns aren't filled correctly
-          selectedPConnType.value = useEnumTypes().connectionTypesValues.value.indexOf(
-            device.value.primaryConnection
-          );
-          selectedSConnType.value = useEnumTypes().connectionTypesValues.value.indexOf(
-            device.value.secondaryConnection
-          );
-          selectedPluginType.value = useEnumTypes().pluginTypesValues.value.indexOf(device.value.pluginTypes);
-        }
-      }
-    });
+    const device = useResult(result, null, (data) => data.devices[0]);
 
     const close = () => {
       context.emit('close');
@@ -201,6 +190,8 @@ export default defineComponent({
     const save = async () => {
       if (device.value) {
         updatedDevice.id = device.value.id;
+        updatedDevice.primaryConnection = device.value?.primaryConnection;
+        updatedDevice.secondaryConnection = device.value?.secondaryConnection;
         await updateDevice({ input: updatedDevice }, { refetchQueries: [{ query: GET_DEVICES }] });
       }
       context.emit('close');

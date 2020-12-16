@@ -35,7 +35,7 @@
           type="text"
           v-model="updatedGroup.description"
           class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md"
-          :placeholder="group.description"
+          :placeholder="group.description ?? 'Description'"
         />
       </label>
       <div class="border-border border-t my-2"></div>

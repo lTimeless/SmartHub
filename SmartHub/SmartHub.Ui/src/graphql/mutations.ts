@@ -16,6 +16,19 @@ export const INITIALIZE_APP = gql`
   }
 `;
 // Group
+export const CREATE_GROUP = gql`
+  mutation CreateGroup($input: CreateGroupInput!) {
+    createGroup(input: $input) {
+      group {
+        id
+      }
+      errors {
+        message
+        code
+      }
+    }
+  }
+`;
 export const UPDATE_GROUP = gql`
   mutation UPDATE_GROUP($input: UpdateGroupInput!) {
     updateGroup(input: $input) {
@@ -28,6 +41,19 @@ export const UPDATE_GROUP = gql`
 `;
 
 // Device
+export const CREATE_DEVICE = gql`
+  mutation CreateDevice($input: CreateDeviceInput!) {
+    createDevice(input: $input) {
+      device {
+        id
+      }
+      errors {
+        message
+        code
+      }
+    }
+  }
+`;
 export const UPDATE_DEVICE = gql`
   mutation UPDATE_DEVICE($input: UpdateDeviceInput!) {
     updateDevice(input: $input) {
@@ -41,6 +67,7 @@ export const UPDATE_DEVICE = gql`
     }
   }
 `;
+
 // User
 export const UPDATE_USER = gql`
   mutation Updateuser($input: UpdateUserInput!) {
@@ -64,6 +91,7 @@ export const UPDATE_USER = gql`
     }
   }
 `;
+
 // Identity
 export const LOGIN = gql`
   mutation Login($input: LoginInput!) {

@@ -8,12 +8,13 @@
     :save-btn-active="saveBtnActive"
     main-border-color="border-red-400"
     main-bg-color="bg-red-400"
+    :loading="loadCreate"
   >
     <label class="text-left block text-sm">
       <span class="text-gray-600 dark:text-gray-400">Name</span>
       <input
         type="text"
-        v-model="groupCreateRequest.name"
+        v-model="groupCreateinput.name"
         class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md"
         placeholder="Group name"
       />
@@ -22,11 +23,16 @@
       <span class="text-gray-600 dark:text-gray-400">Description</span>
       <input
         type="text"
-        v-model="groupCreateRequest.description"
+        v-model="groupCreateinput.description"
         class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md"
         placeholder="Group description"
       />
     </label>
+    <template v-if="errCreate">
+      <div class="flex items-center justify-center w-full h-full">
+        <p>Error: {{ errCreate.name }} {{ errCreate.message }}</p>
+      </div>
+    </template>
   </BaseModal>
 </template>
 
@@ -34,6 +40,9 @@
 import { defineComponent, reactive, computed, toRefs } from 'vue';
 import BaseModal from '@/components/modals/BaseModal.vue';
 import { CreateGroupInput } from '@/types/types';
+import { useMutation } from '@vue/apollo-composable';
+import { CREATE_GROUP } from '@/graphql/mutations';
+import { GET_GROUPS, GET_GROUPS_COUNT } from '@/graphql/queries';
 // import { postGroup } from '@/services/apis/group';
 
 export default defineComponent({
@@ -60,42 +69,39 @@ export default defineComponent({
       groupTitle: 'Create new Group',
       subGroupTitle: 'Create new SubGroup to '
     });
-    const groupCreateRequest: CreateGroupInput = reactive({
+    const groupCreateinput = reactive<CreateGroupInput>({
       name: '',
-      description: '',
-      parentGroupId: '',
       isSubGroup: false
     });
+    const { mutate: createGroup, loading: loadCreate, error: errCreate } = useMutation(CREATE_GROUP);
 
-    if (props.parentGroupId !== '') {
+    if (props.parentGroupId !== undefined) {
       state.title = state.subGroupTitle + props.parentGroupName;
     } else {
       state.title = state.groupTitle;
     }
 
-    const saveBtnActive = computed(() => groupCreateRequest.name !== '');
+    const saveBtnActive = computed(() => groupCreateinput.name !== '');
     const close = () => {
       context.emit('close', false);
     };
     const save = async () => {
-      if (props.parentGroupId !== '') {
-        groupCreateRequest.parentGroupId = props.parentGroupId;
-        groupCreateRequest.isSubGroup = true;
+      if (props.parentGroupId !== undefined) {
+        groupCreateinput.parentGroupId = props.parentGroupId;
+        groupCreateinput.isSubGroup = true;
       }
-      // await postGroup(groupCreateRequest)
-      //   .then((response) => {
-      //     if (!response.success) {
-      //       return Promise.reject(response.message);
-      //     }
-      //     context.emit('close', false);
-      //     return Promise.resolve();
-      //   })
-      //   .catch((error) => Promise.reject(error));
+      await createGroup(
+        { input: groupCreateinput },
+        { refetchQueries: [{ query: GET_GROUPS }, { query: GET_GROUPS_COUNT }] }
+      );
+      close();
     };
     return {
       ...toRefs(state),
-      groupCreateRequest,
+      groupCreateinput,
       saveBtnActive,
+      loadCreate,
+      errCreate,
       close,
       save
     };

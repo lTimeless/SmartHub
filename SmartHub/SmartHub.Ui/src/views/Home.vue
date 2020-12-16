@@ -7,7 +7,7 @@
       <div class="absolute mx-auto w-full pt-0 z-0">
         <TopDoubleWaves />
       </div>
-      <div class="md:pt-28 pt-12 px-4 md:px-10 mx-auto w-full z-10">
+      <div class="md:pt-28 pt-12 pb-4 px-4 md:px-10 mx-auto w-full z-10">
         <Navbar />
         <router-view v-slot="{ Component }">
           <transition name="route" mode="out-in">

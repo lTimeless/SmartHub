@@ -107,9 +107,9 @@ export interface CreateDeviceInput {
   ipv4: string;
   companyName: string;
   pluginName: string;
-  pluginTypes: PluginTypes;
-  primaryConnection: ConnectionTypes;
-  secondaryConnection: ConnectionTypes;
+  pluginTypes: string;
+  primaryConnection: string;
+  secondaryConnection: string;
 }
 
 export interface UpdateDeviceInput {
@@ -131,7 +131,7 @@ export interface Group extends BaseEntity {
 
 export interface CreateGroupInput {
   name: string;
-  description: string;
+  description?: string;
   parentGroupId?: string;
   isSubGroup?: boolean;
 }

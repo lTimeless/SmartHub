@@ -5,7 +5,7 @@ namespace SmartHub.Application.UseCases.Entity.Groups
 	/// <summary>
 	/// Group create input.
 	/// </summary>
-	public record CreateGroupInput(string Name, string Description, bool IsSubGroup, string? ParentGroupId);
+	public record CreateGroupInput(string Name, string? Description, bool IsSubGroup, string? ParentGroupId);
 
 	/// <summary>
 	/// Group update input.
