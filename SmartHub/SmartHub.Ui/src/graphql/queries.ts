@@ -98,11 +98,9 @@ export const GET_DEVICES = gql`
   }
 `;
 
-export const GET_DEVICES_AMOUNT = gql`
-  query GetDevices {
-    devices {
-      id
-    }
+export const GET_DEVICES_COUNT = gql`
+  query GetDevicesCount {
+    devicesCount
   }
 `;
 
@@ -151,11 +149,10 @@ export const GET_GROUPS = gql`
     }
   }
 `;
-export const GET_GROUPS_AMOUNT = gql`
-  query GetGroups {
-    groups {
-      id
-    }
+export const GET_GROUPS_COUNT = gql`
+  query GetGroupsCount {
+    parentGroupsCount
+    subGroupsCount
   }
 `;
 

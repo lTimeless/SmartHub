@@ -23,5 +23,15 @@ namespace SmartHub.Application.UseCases.Entity.Groups
 		{
 			return groupsRepository.GetAllAsQueryable();
 		}
+
+		public int GetParentGroupsCount([Service] IBaseRepositoryAsync<Group> groupsRepository)
+		{
+			return groupsRepository.GetAllAsQueryable().Count();
+		}
+
+		public int GetSubGroupsCount([Service] IBaseRepositoryAsync<Group> groupsRepository)
+		{
+			return groupsRepository.GetAllAsQueryable().Count(x => x.IsSubGroup);
+		}
 	}
 }

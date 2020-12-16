@@ -23,5 +23,10 @@ namespace SmartHub.Application.UseCases.Entity.Devices
 		{
 			return deviceRepository.GetAllAsQueryable();
 		}
+
+		public int GetDevicesCount([Service] IBaseRepositoryAsync<Device> deviceRepository)
+		{
+			return deviceRepository.GetAllAsQueryable().Count();
+		}
 	}
 }

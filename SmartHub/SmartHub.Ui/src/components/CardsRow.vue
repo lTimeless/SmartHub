@@ -38,7 +38,7 @@
           <div class="relative w-full pr-4 max-w-full flex-grow flex-1">
             <h5 class="text-gray-500 uppercase font-bold text-xs">Groups</h5>
             <span class="font-semibold text-xl text-gray-800">
-              {{ parentGroupsAmount + subGroupsAmount }}
+              {{ groupsCount }}
             </span>
           </div>
           <div class="relative w-auto pl-4 flex-initial">
@@ -63,9 +63,9 @@
           </div>
         </div>
         <p class="text-sm text-gray-500 mt-4">
-          <span class="text-gray-400">{{ parentGroupsAmount }} </span>
+          <span class="text-gray-400">{{ parentGroupsCount }} </span>
           <span class="whitespace-no-wrap mr-3"> Groups</span>
-          <span class="text-gray-400">{{ subGroupsAmount }} </span>
+          <span class="text-gray-400">{{ subGroupsCount }} </span>
           <span class="whitespace-no-wrap"> Subgroups</span>
         </p>
       </div>
@@ -80,7 +80,7 @@
         <div class="flex flex-wrap">
           <div class="relative w-full pr-4 max-w-full flex-grow flex-1">
             <h5 class="text-gray-500 uppercase font-bold text-xs">Devices</h5>
-            <span class="font-semibold text-xl text-gray-800"> {{ devicesAmount }} </span>
+            <span class="font-semibold text-xl text-gray-800"> {{ devicesCount }} </span>
           </div>
           <div class="relative w-auto pl-4 flex-initial">
             <div
@@ -191,11 +191,9 @@
 </template>
 
 <script lang="ts">
-import { GET_DEVICES, GET_DEVICES_AMOUNT, GET_GROUPS, GET_GROUPS_AMOUNT } from '@/graphql/queries';
-import { Group } from '@/types/types';
+import { GET_DEVICES_COUNT, GET_GROUPS_COUNT } from '@/graphql/queries';
 import { useQuery, useResult } from '@vue/apollo-composable';
-import { defineComponent, PropType, computed } from 'vue';
-import { useStore } from 'vuex';
+import { defineComponent, PropType, computed, watch, ref } from 'vue';
 
 export default defineComponent({
   name: 'CardsRow',
@@ -229,20 +227,30 @@ export default defineComponent({
   },
   setup(props) {
     const dontShowThisTab = computed(() => props.openTab);
-    const { result } = useQuery(GET_GROUPS_AMOUNT);
-    const { result: devicesResult } = useQuery(GET_DEVICES_AMOUNT);
+    const { result: groupsCountResult } = useQuery(GET_GROUPS_COUNT);
+    const { result: devicesResult } = useQuery(GET_DEVICES_COUNT);
 
-    const groups = useResult(result, null, (data) => data.groups);
-    const devices = useResult(devicesResult, null, (data) => data.devices);
+    const groupsCounts = useResult(groupsCountResult);
+    const subGroupsCount = ref(0);
+    const parentGroupsCount = ref(0);
+    const groupsCount = ref(0);
+    watch(
+      groupsCounts,
+      (newResult) => {
+        parentGroupsCount.value = newResult?.parentGroupsCount;
+        subGroupsCount.value = newResult?.subGroupsCount;
+        groupsCount.value = parentGroupsCount.value + subGroupsCount.value;
+      },
+      { immediate: true }
+    );
+    const devicesCount = useResult(devicesResult, 0, (data) => data.devicesCount);
 
-    const parentGroupsAmount = computed(() => groups.value?.filter((x: Group) => !x.isSubGroup).length);
-    const subGroupsAmount = computed(() => groups.value?.filter((x: Group) => x.isSubGroup).length);
-    const devicesAmount = computed(() => devices.value?.length);
     return {
       dontShowThisTab,
-      parentGroupsAmount,
-      devicesAmount,
-      subGroupsAmount,
+      parentGroupsCount,
+      devicesCount,
+      subGroupsCount,
+      groupsCount,
       ...props
     };
   }
