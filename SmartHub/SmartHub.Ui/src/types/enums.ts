@@ -5,7 +5,7 @@ export enum Routes {
   Login = '/login',
   Registration = '/registration',
   Init = '/init',
-  NotFound = '/:patchMatch(.*)*',
+  NotFound = '/:patchMatch(.*)',
   NotAuthorized = '/notauth',
   Home = '/',
   Dashboard = '',

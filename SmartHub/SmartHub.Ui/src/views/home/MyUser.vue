@@ -1,7 +1,17 @@
 <template>
   <div class="relative flex-1 w-full justify-end">
     <!-- Form -->
-    <div v-if="user">
+    <template v-if="loadUser">
+      <div class="flex items-center justify-center w-full h-full">
+        <Loader height="h-48" width="w-48" />
+      </div>
+    </template>
+    <template v-else-if="errUser">
+      <div class="flex items-center justify-center w-full h-full">
+        <p>Error: {{ errUser.name }} {{ errUser.message }}</p>
+      </div>
+    </template>
+    <template v-if="user">
       <!-- Username -->
       <div class="flex mr-2 justify-between">
         <div class="w-1/3 mr-2">
@@ -94,8 +104,7 @@
       </label>
       <div class="text-gray-500 text-sm text-left mt-10">Last modified by: {{ user.lastModifiedBy }}</div>
       <div class="text-gray-500 text-sm text-left">Last modified at: {{ user.lastModifiedAt }}</div>
-    </div>
-    <div v-else>Something went wrong loading your account data...</div>
+    </template>
     <!-- Save button -->
     <div class="md:w-2/12 mt-3">
       <button
@@ -109,19 +118,21 @@
 </template>
 
 <script lang="ts">
-import { useStore } from 'vuex';
 import { defineComponent, ref, computed, reactive } from 'vue';
 import { getUserRoles, logout } from '@/services/auth/authService';
 import { Roles } from '@/types/enums';
 import { UpdateUserInput } from '@/types/types';
-import { AuthActionTypes } from '@/store/auth/actions';
+import { useMutation, useQuery, useResult } from '@vue/apollo-composable';
+import Loader from '@/components/Loader.vue';
+import { UPDATE_USER } from '@/graphql/mutations';
+import { WHO_AM_I } from '@/graphql/queries';
 
 export default defineComponent({
   name: 'MyUser',
-  components: {},
+  components: {
+    Loader
+  },
   setup() {
-    const store = useStore();
-    const user = computed(() => store.state.authModule.user);
     const userRole = computed(() => getUserRoles());
     const selectedRole = ref(userRole.value);
     const prevRole = selectedRole.value;
@@ -129,6 +140,11 @@ export default defineComponent({
     const updateUserInput: UpdateUserInput = reactive({
       userId: ''
     });
+    const { mutate: updateUser, loading: loadUpdate, error: errUpdate } = useMutation(UPDATE_USER);
+    const { result: resultUser, loading: loadUser, error: errUser } = useQuery(WHO_AM_I, null, {
+      fetchPolicy: 'no-cache'
+    });
+    const user = useResult(resultUser, null, (data) => data.me);
 
     const onSaveClick = async () => {
       if (typeof user.value === 'undefined') {
@@ -136,7 +152,7 @@ export default defineComponent({
       }
       updateUserInput.userId = user.value.id;
       updateUserInput.newRole = selectedRole.value;
-      await store.dispatch(AuthActionTypes.UPDATE_ME, updateUserInput);
+      await updateUser({ input: updateUserInput }, { refetchQueries: [{ query: WHO_AM_I }] });
 
       if (typeof updateUserInput.newRole !== 'undefined' && updateUserInput.newRole !== prevRole) {
         logout();
@@ -144,6 +160,10 @@ export default defineComponent({
     };
     return {
       user,
+      loadUser,
+      errUser,
+      loadUpdate,
+      errUpdate,
       updateUserInput,
       onSaveClick,
       roles,

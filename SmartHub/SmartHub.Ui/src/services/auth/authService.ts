@@ -1,4 +1,3 @@
-import { IdentityPayload } from '@/types/types';
 import { Roles } from '@/types/enums';
 import JwtDecode from 'jwt-decode';
 import router from '@/router';
@@ -11,22 +10,11 @@ type TokenPayload = {
   exp: number;
   iat: number;
 };
-const numberThousand = 1000; // used for tokenpayload exp date conversion
+const numberThousand = 1000; // used for tokenpayload "exp date" conversion
 // Storage keys
 const LOCAL_STORAGE_TOKEN = 'token';
 
-export const getStoreToken = (): string | null => {
-  const storageToken = localStorage.getItem(LOCAL_STORAGE_TOKEN);
-  if (storageToken === null) {
-    return null;
-  }
-  return storageToken;
-};
-
-export const getToken = (): string | null => {
-  const token = getStoreToken();
-  return token === null ? null : token;
-};
+export const getToken = (): string | null => localStorage.getItem(LOCAL_STORAGE_TOKEN);
 
 export const isAuthenticated = (): boolean => getToken() !== null;
 
@@ -78,15 +66,6 @@ export const getUserRoles = (): Roles => {
     return Roles.Guest;
   }
   return Roles.None;
-};
-
-export const getUserName = (): string => {
-  const token = getToken();
-  if (token === null) {
-    return '';
-  }
-  const tokenPayload = JwtDecode(token) as TokenPayload;
-  return tokenPayload.unique_name;
 };
 
 export const logout = (): void => {

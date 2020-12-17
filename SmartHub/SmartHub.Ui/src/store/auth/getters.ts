@@ -1,15 +1,11 @@
 import { GetterTree } from 'vuex';
 import { RootState, AuthState } from '@/store/index.types';
-import { User } from '@/types/types';
 
 // Getter Types
-export type AuthGetters = {
-  getMe(state: AuthState): User | null | undefined;
-};
+//TODO move all auth stuff into one file?
+
+// eslint-disable-next-line @typescript-eslint/ban-types
+export type AuthGetters = {};
 
 // Define Getters
-export const getters: GetterTree<AuthState, RootState> & AuthGetters = {
-  getMe(state) {
-    return state.user;
-  }
-};
+export const getters: GetterTree<AuthState, RootState> & AuthGetters = {};

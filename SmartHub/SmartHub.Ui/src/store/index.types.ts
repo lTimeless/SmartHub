@@ -29,6 +29,5 @@ export interface AppState {
 */
 export interface AuthState {
   token?: string;
-  user?: User;
   // Rolle, userName, refrshToken auch??
 }

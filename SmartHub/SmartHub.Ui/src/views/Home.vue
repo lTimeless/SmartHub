@@ -26,7 +26,6 @@ import Sidebar from '@/components/layout/Sidebar.vue';
 import Navbar from '@/components/layout/Navbar.vue';
 import TopDoubleWaves from '@/components/svgs/TopDoubleWaves.vue';
 import { AppActionTypes } from '@/store/app/actions';
-import { AuthActionTypes } from '@/store/auth/actions';
 
 export default defineComponent({
   name: 'Home',
@@ -37,7 +36,6 @@ export default defineComponent({
   },
   setup() {
     const store = useStore();
-    store.dispatch(AuthActionTypes.ME);
     store.dispatch(AppActionTypes.GET_APP);
 
     return {};
