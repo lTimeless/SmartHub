@@ -2,3 +2,7 @@
     @apply bg-gray-100 bg-opacity-30 border-0 shadow-lg;
     backdrop-filter: blur(10px);
 }
+
+.blur {
+    backdrop-filter: blur(1px);
+}

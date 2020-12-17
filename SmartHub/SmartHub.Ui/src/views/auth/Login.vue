@@ -7,7 +7,7 @@
     </div>
     <!-- Main View -->
     <div class="flex items-center min-h-screen p-6 dark:bg-gray-900">
-      <div class="flex-1 h-full max-w-4xl mx-auto overflow-hidden rounded">
+      <div class="flex-1 h-full max-w-4xl mx-auto overflow-hidden p-2 glassmorphism rounded">
         <div class="flex flex-col overflow-y-auto md:flex-row glassmorphism shadow-lg">
           <template v-if="loading">
             <div class="flex items-center justify-center w-full h-108">

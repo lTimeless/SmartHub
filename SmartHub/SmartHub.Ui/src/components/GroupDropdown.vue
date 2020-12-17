@@ -66,7 +66,7 @@
   </div>
 </template>
 <script lang="ts">
-import { defineComponent, ref, reactive, toRefs, watch } from 'vue';
+import { defineComponent, ref, reactive, toRefs } from 'vue';
 import GroupCreateModal from '@/components/modals/GroupCreateModal.vue';
 
 export default defineComponent({
@@ -90,11 +90,6 @@ export default defineComponent({
       showDropdown: false,
       showSubGroupModal: false
     });
-    const { groupId, groupName } = toRefs(props);
-    // watch(closeDropDown, (newValue) => {
-    //   console.log(newValue);
-    //   state.showDropdown = newValue;
-    // });
     const toggleDropDownValue = () => {
       state.showDropdown = !state.showDropdown;
     };
@@ -104,7 +99,7 @@ export default defineComponent({
       if (!state.showSubGroupModal) {
         toggleDropDownValue();
       }
-    }
+    };
 
     return {
       ...toRefs(state),

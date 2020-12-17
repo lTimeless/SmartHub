@@ -1,15 +1,14 @@
 <template>
   <div>
-    <div class="bg-gray-200 absolute inset-0" />
     <div class="absolute mx-auto w-full">
       <TopDoubleWaves />
     </div>
-    <main>
+    <main class="bg-gray-200">
       <aside>
         <Sidebar />
       </aside>
-      <div class="relative md:ml-64 min-h-screen">
-        <div class="md:pt-28 pt-12 pb-4 px-4 md:px-10 mx-auto w-full z-10">
+      <div class="relative md:ml-64 min-h-screen z-20">
+        <div class="md:pt-28 pt-12 px-4 md:px-10 mx-auto w-full z-10">
           <Navbar />
           <router-view v-slot="{ Component }">
             <transition name="route" mode="out-in">

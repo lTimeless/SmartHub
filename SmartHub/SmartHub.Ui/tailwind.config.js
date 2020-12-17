@@ -26,7 +26,9 @@ module.exports = {
         104: '28rem',
         106: '30rem',
         108: '32rem',
-        110: '34rem'
+        110: '34rem',
+        112: '36rem',
+        114: '38rem'
       },
       screens: {
         xxl: '1400px'

@@ -8,7 +8,7 @@
       <div class="w-full md:w-1/3 xl:w-3/6">
         <button
           @click="toggleCreateModal"
-          class="block w-full px-4 py-2 mt-4 text-sm text-gray-500 font-medium leading-5 text-center bg-white hover:text-white hover:bg-indigo-500 border border-transparent rounded-lg active:bg-primary focus:outline-none"
+          class="block w-full px-4 py-2 mt-4 text-sm text-gray-600 font-medium leading-5 text-center glassmorphism hover:text-white hover:bg-indigo-500 border border-transparent rounded-lg active:bg-primary focus:outline-none"
         >
           Add Group
         </button>
@@ -17,10 +17,10 @@
         <button
           v-if="showSubGroupsIcon"
           @click="showSubGroups()"
-          class="flex justify-center content-center px-2 py-2 mt-4 text-gray-500 bg-transparent border border-transparent rounded-lg focus:outline-none"
+          class="flex justify-center content-center p-2 mt-4 text-gray-600 glassmorphism border border-transparent rounded-lg focus:outline-none hover:bg-gray-100 hover:bg-opacity-50"
         >
           <svg
-            class="h-6 w-6"
+            class="h-5 w-5"
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
             viewBox="0 0 24 24"
@@ -37,10 +37,10 @@
         <button
           v-if="!showSubGroupsIcon"
           @click="showSubGroups()"
-          class="flex justify-center content-center px-2 py-2 mt-4 text-gray-500 bg-transparent border border-transparent rounded-lg focus:outline-none"
+          class="flex justify-center content-center p-2 mt-4 text-gray-600 glassmorphism border border-transparent rounded-lg focus:outline-none hover:bg-gray-100 hover:bg-opacity-50"
         >
           <svg
-            class="h-6 w-6"
+            class="h-5 w-5"
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
             viewBox="0 0 24 24"
@@ -73,77 +73,79 @@
   </template>
   <template v-else-if="groups">
     <!-- All Groups -->
-    <div v-if="groups.length > 0" class="grid xl:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 gap-4">
-      <AppCard class="bg-white shadow-md w-full" v-for="group in groups" :key="group.id">
-        <div class="p-3 w-full">
-          <div class="flex items-start justify-between">
-            <h1
-              class="text-xl text-left text-gray-600 font-bold cursor-pointer"
-              @click="toggleDetailModal(group.id)"
-            >
-              {{ group.name }}
-            </h1>
-            <GroupDropdown v-if="!group.isSubGroup" :group-id="group.id" :group-name="group.name" />
-            <span v-else class="text-gray-400 text-xs text-left mt-2">Is Subgroup </span>
-          </div>
-          <div class="text-gray-500 text-sm font-normal text-left">
-            Creator: <span class="font-bold">{{ group.createdBy }}</span>
-          </div>
-          <div class="border-border border-t my-2"></div>
-          <!-- Show available subGroups -->
-          <template v-if="!group.isSubGroup">
-            <template v-if="group.subGroups !== undefined && group.subGroups.length > 0">
+    <div class="overflow-auto overscroll-contain pr-2 pb-4 h-114 rounded">
+      <div v-if="groups.length > 0" class="grid xl:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 gap-4 glassmorphism p-2 rounded">
+        <AppCard class="shadow-lg glassmorphism w-full" v-for="group in groups" :key="group.id">
+          <div class="p-3 w-full">
+            <div class="flex items-start justify-between">
+              <h1
+                class="text-xl text-left text-gray-600 font-bold cursor-pointer"
+                @click="toggleDetailModal(group.id)"
+              >
+                {{ group.name }}
+              </h1>
+              <GroupDropdown v-if="!group.isSubGroup" :group-id="group.id" :group-name="group.name" />
+              <span v-else class="text-gray-400 text-xs text-left mt-2">Is Subgroup </span>
+            </div>
+            <div class="text-gray-500 text-sm font-normal text-left">
+              Creator: <span class="font-bold">{{ group.createdBy }}</span>
+            </div>
+            <div class="border-border border-t my-2"></div>
+            <!-- Show available subGroups -->
+            <template v-if="!group.isSubGroup">
+              <template v-if="group.subGroups !== undefined && group.subGroups.length > 0">
+                <div class="text-left">
+                  <div>
+                    <span class="text-gray-500 text-sm text-left mt-2">SubGroups</span>
+                  </div>
+                  <!-- Show available subGroup devices-->
+                  <div v-for="subgroup in group.subGroups" :key="subgroup.id" class="pl-3">
+                    {{ subgroup.name }}
+                    <template v-if="subgroup.devices !== undefined && subgroup.devices.length > 0">
+                      <div class="text-left pl-3">
+                        <div>
+                          <span class="text-gray-500 text-sm text-left mt-2">Devices</span>
+                        </div>
+                        <div v-for="device in subgroup.devices" :key="device.id" class="pl-3">
+                          {{ device.name }}
+                        </div>
+                      </div>
+                    </template>
+                    <template v-else>
+                      <div class="text-left pl-3">
+                        <span class="text-gray-500 text-sm text-left mt-2">No devices available</span>
+                      </div>
+                    </template>
+                  </div>
+                </div>
+              </template>
+              <template v-else>
+                <div class="text-left">
+                  <span class="text-gray-500 text-sm text-left mt-2">No subGroups available</span>
+                </div>
+              </template>
+            </template>
+            <!-- Show available devices -->
+            <template v-if="group.devices !== undefined && group.devices.length > 0">
               <div class="text-left">
                 <div>
-                  <span class="text-gray-500 text-sm text-left mt-2">SubGroups</span>
+                  <span class="text-gray-500 text-sm text-left mt-2">Devices</span>
                 </div>
-                <!-- Show available subGroup devices-->
-                <div v-for="subgroup in group.subGroups" :key="subgroup.id" class="pl-3">
-                  {{ subgroup.name }}
-                  <template v-if="subgroup.devices !== undefined && subgroup.devices.length > 0">
-                    <div class="text-left pl-3">
-                      <div>
-                        <span class="text-gray-500 text-sm text-left mt-2">Devices</span>
-                      </div>
-                      <div v-for="device in subgroup.devices" :key="device.id" class="pl-3">
-                        {{ device.name }}
-                      </div>
-                    </div>
-                  </template>
-                  <template v-else>
-                    <div class="text-left pl-3">
-                      <span class="text-gray-500 text-sm text-left mt-2">No devices available</span>
-                    </div>
-                  </template>
+                <div v-for="device in group.devices" :key="device.id" class="pl-3">
+                  {{ device.name }}
                 </div>
               </div>
             </template>
             <template v-else>
               <div class="text-left">
-                <span class="text-gray-500 text-sm text-left mt-2">No subGroups available</span>
+                <span class="text-gray-500 text-sm text-left mt-2">No devices available</span>
               </div>
             </template>
-          </template>
-          <!-- Show available devices -->
-          <template v-if="group.devices !== undefined && group.devices.length > 0">
-            <div class="text-left">
-              <div>
-                <span class="text-gray-500 text-sm text-left mt-2">Devices</span>
-              </div>
-              <div v-for="device in group.devices" :key="device.id" class="pl-3">
-                {{ device.name }}
-              </div>
-            </div>
-          </template>
-          <template v-else>
-            <div class="text-left">
-              <span class="text-gray-500 text-sm text-left mt-2">No devices available</span>
-            </div>
-          </template>
-        </div>
-      </AppCard>
+          </div>
+        </AppCard>
+      </div>
+      <div v-else>No groups available</div>
     </div>
-    <div v-else>No groups available</div>
   </template>
 </template>
 
@@ -209,7 +211,6 @@ export default defineComponent({
       } else {
         groups.value = tempGroups.value;
       }
-      console.log(groups.value);
     };
 
     return {

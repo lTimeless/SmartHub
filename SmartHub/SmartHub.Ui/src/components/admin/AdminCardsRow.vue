@@ -1,6 +1,6 @@
 <template>
   <div class="w-full lg:w-6/12 xl:w-3/12 px-4">
-    <div class="relative flex flex-col min-w-0 break-words glassmorphism hover:bg-gray-100 hover:bg-opacity-40 mb-6 xl:mb-0 shadow-lg">
+    <div class="relative flex flex-col min-w-0 break-words glassmorphism hover:bg-gray-100 hover:bg-opacity-50 mb-6 xl:mb-0 shadow-lg">
       <div class="flex-auto p-4">
         <div class="flex flex-wrap">
           <div class="relative w-full pr-4 max-w-full flex-grow flex-1">
@@ -23,7 +23,7 @@
     </div>
   </div>
   <div class="w-full lg:w-6/12 xl:w-3/12 px-4">
-    <div class="relative flex flex-col min-w-0 break-words glassmorphism hover:bg-gray-100 hover:bg-opacity-40 mb-6 xl:mb-0 shadow-lg">
+    <div class="relative flex flex-col min-w-0 break-words glassmorphism hover:bg-gray-100 hover:bg-opacity-50 mb-6 xl:mb-0 shadow-lg">
       <div class="flex-auto p-4">
         <div class="flex flex-wrap">
           <div class="relative w-full pr-4 max-w-full flex-grow flex-1">
@@ -46,7 +46,7 @@
     </div>
   </div>
   <div class="w-full lg:w-6/12 xl:w-3/12 px-4">
-    <div class="relative flex flex-col min-w-0 break-words glassmorphism hover:bg-gray-100 hover:bg-opacity-40 mb-6 xl:mb-0 shadow-lg">
+    <div class="relative flex flex-col min-w-0 break-words glassmorphism hover:bg-gray-100 hover:bg-opacity-50 mb-6 xl:mb-0 shadow-lg">
       <div class="flex-auto p-4">
         <div class="flex flex-wrap">
           <div class="relative w-full pr-4 max-w-full flex-grow flex-1">
@@ -69,7 +69,7 @@
     </div>
   </div>
   <div class="w-full lg:w-6/12 xl:w-3/12 px-4">
-    <div class="relative flex flex-col min-w-0 break-words glassmorphism hover:bg-gray-100 hover:bg-opacity-40 mb-6 xl:mb-0 shadow-lg">
+    <div class="relative flex flex-col min-w-0 break-words glassmorphism hover:bg-gray-100 hover:bg-opacity-50 mb-6 xl:mb-0 shadow-lg">
       <div class="flex-auto p-4">
         <div class="flex flex-wrap">
           <div class="relative w-full pr-4 max-w-full flex-grow flex-1">

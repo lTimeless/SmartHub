@@ -2,7 +2,7 @@
   <div class="relative inline-block text-left">
     <div class="relative z-20 items-center flex cursor-pointer" @click="setDropDownValue(!showDropdown)">
       <span
-        class="w-10 h-10 text-sm text-gray-100 shadow-lg text-center inline-flex items-center justify-center rounded-full glassmorphism hover:bg-gray-100 hover:bg-opacity-40"
+        class="w-10 h-10 text-sm text-gray-100 shadow-lg text-center inline-flex items-center justify-center rounded-full glassmorphism hover:bg-gray-100 hover:bg-opacity-50"
       >
         <svg
           class="h-6 w-6"

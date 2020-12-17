@@ -22,7 +22,7 @@
       </ConfirmationModalAsync>
       <!-- Top Navigation Info -->
       <!--    <AppCard v-if="!doneRegistration" class="bg-white shadow-md">-->
-      <div class="flex-1 h-full max-w-4xl mx-auto overflow-hidden rounded">
+      <div class="flex-1 h-full max-w-4xl mx-auto overflow-hidden p-2 glassmorphism rounded">
         <div class="flex flex-col overflow-y-auto md:flex-row glassmorphism shadow-lg">
           <div class="h-108 md:h-auto md:w-1/2">
             <img

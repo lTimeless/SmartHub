@@ -1,5 +1,5 @@
 <template>
-  <div v-if="dontShowThisTab !== 0" class="w-full lg:w-6/12 xl:w-3/12 px-4">
+  <div v-if="dontShowThisTab !== 0" class="w-full lg:w-6/12 xl:w-3/12 px-2">
     <div
       @click="callbackZero"
       class="cursor-pointer relative flex flex-col min-w-0 break-words mb-6 xl:mb-0 rounded glassmorphism hover:bg-gray-100 hover:bg-opacity-40"
@@ -28,10 +28,10 @@
       </div>
     </div>
   </div>
-  <div v-if="dontShowThisTab !== 1" class="w-full lg:w-6/12 xl:w-3/12 px-4">
+  <div v-if="dontShowThisTab !== 1" class="w-full lg:w-6/12 xl:w-3/12 px-2">
     <div
       @click="callbackOne"
-      class="cursor-pointer relative flex flex-col min-w-0 break-words mb-6 xl:mb-0 rounded glassmorphism hover:bg-gray-100 hover:bg-opacity-40"
+      class="cursor-pointer relative flex flex-col min-w-0 break-words mb-6 xl:mb-0 rounded glassmorphism hover:bg-gray-100 hover:bg-opacity-50"
     >
       <div class="flex-auto p-4">
         <div class="flex flex-wrap">
@@ -71,10 +71,10 @@
       </div>
     </div>
   </div>
-  <div v-if="dontShowThisTab !== 2" class="w-full lg:w-6/12 xl:w-3/12 px-4">
+  <div v-if="dontShowThisTab !== 2" class="w-full lg:w-6/12 xl:w-3/12 px-2">
     <div
       @click="callbackTwo"
-      class="cursor-pointer relative flex flex-col min-w-0 break-words mb-6 xl:mb-0 rounded glassmorphism hover:bg-gray-100 hover:bg-opacity-40"
+      class="cursor-pointer relative flex flex-col min-w-0 break-words mb-6 xl:mb-0 rounded glassmorphism hover:bg-gray-100 hover:bg-opacity-50"
     >
       <div class="flex-auto p-4">
         <div class="flex flex-wrap">
@@ -110,10 +110,10 @@
       </div>
     </div>
   </div>
-  <div v-if="dontShowThisTab !== 3" class="w-full lg:w-6/12 xl:w-3/12 px-4">
+  <div v-if="dontShowThisTab !== 3" class="w-full lg:w-6/12 xl:w-3/12 px-2">
     <div
       @click="callbackThree"
-      class="cursor-pointer relative flex flex-col min-w-0 break-words mb-6 xl:mb-0 rounded glassmorphism hover:bg-gray-100 hover:bg-opacity-40"
+      class="cursor-pointer relative flex flex-col min-w-0 break-words mb-6 xl:mb-0 rounded glassmorphism hover:bg-gray-100 hover:bg-opacity-50"
     >
       <div class="flex-auto p-4">
         <div class="flex flex-wrap">
@@ -149,10 +149,10 @@
       </div>
     </div>
   </div>
-  <div v-if="dontShowThisTab !== 4" class="w-full lg:w-6/12 xl:w-3/12 px-4">
+  <div v-if="dontShowThisTab !== 4" class="w-full lg:w-6/12 xl:w-3/12 px-2">
     <div
       @click="callbackFour"
-      class="cursor-pointer relative flex flex-col min-w-0 break-words mb-6 xl:mb-0 rounded glassmorphism hover:bg-gray-100 hover:bg-opacity-40"
+      class="cursor-pointer relative flex flex-col min-w-0 break-words mb-6 xl:mb-0 rounded glassmorphism hover:bg-gray-100 hover:bg-opacity-50"
     >
       <div class="flex-auto p-4">
         <div class="flex flex-wrap">

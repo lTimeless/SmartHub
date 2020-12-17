@@ -3,7 +3,7 @@
     <AppTabs>
       <template #header>
         <!-- Cards -->
-        <div class="flex flex-wrap">
+        <div class="flex flex-wrap glassmorphism py-2 rounded">
           <CardsRow
             :callback-zero="toggleTabs.bind(this, 0)"
             :callback-one="toggleTabs.bind(this, 1)"
@@ -44,7 +44,7 @@
         </div>
         <!-- Admin Cards -->
         <template v-if="roleIncluded(adminRole) && expandAdminRow">
-          <div class="flex flex-wrap mb-6">
+          <div class="flex flex-wrap mb-6 glassmorphism py-2 rounded">
             <AdminCardsRow />
           </div>
         </template>
@@ -52,13 +52,13 @@
       <template #content>
         <div v-if="openTab === 0">
           <!-- Graphs -->
-          <div class="flex flex-wrap">
+          <div class="flex flex-wrap glassmorphism py-2 rounded">
             <LineChart></LineChart>
             <BarChart></BarChart>
           </div>
           <!-- Tables -->
           <!-- Expand Arrow -->
-          <div class="px-4 my-2 flex justify-end">
+          <div class="my-2 flex justify-end">
             <div class="cursor-pointer flex" @click="expandTables = !expandTables">
               <span v-if="!expandTables" class="text-sm text-gray-700 pr-1"> Show Tables</span>
               <svg
@@ -321,7 +321,8 @@
           <DevicesOverview />
         </div>
         <div v-if="openTab === 3">
-          Users</div>
+          Users
+        </div>
         <div v-if="openTab === 4">
           <AppAutomation />
         </div>
