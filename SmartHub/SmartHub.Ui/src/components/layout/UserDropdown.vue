@@ -2,7 +2,7 @@
   <div class="relative inline-block text-left">
     <div class="relative z-20 items-center flex cursor-pointer" @click="setDropDownValue(!showDropdown)">
       <span
-        class="w-10 h-10 text-sm md:text-white sm:text-black shadow-lg hover:opacity-75 text-center inline-flex items-center justify-center rounded-full"
+        class="w-10 h-10 text-sm text-gray-100 shadow-lg text-center inline-flex items-center justify-center rounded-full glassmorphism hover:bg-gray-100 hover:bg-opacity-40"
       >
         <svg
           class="h-6 w-6"
@@ -29,7 +29,7 @@
     ></button>
     <div
       v-if="showDropdown"
-      class="origin-top-right z-30 absolute right-0 mt-2 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5"
+      class="origin-top-right z-30 absolute right-0 mt-2 w-56 rounded-md shadow-lg glassmorphism bg-white ring-1 ring-black ring-opacity-5"
       role="menu"
       aria-orientation="vertical"
       aria-labelledby="options-menu"
@@ -39,16 +39,16 @@
           v-for="item in dropDownList"
           :key="item.name"
           @click="dropDownBtnClick(item.name)"
-          class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900 cursor-pointer active:bg-gray-100"
+          class="block px-4 py-2 text-sm text-gray-200 hover:bg-gray-100 hover:bg-opacity-30 hover:text-gray-900 cursor-pointer active:bg-gray-100"
           role="menuitem"
           >{{ item.name }}</a
         >
       </div>
-      <div class="border-t border-solid border-gray-300 mx-4" />
+      <div class="border-t border-solid border-gray-400 mx-4" />
       <div class="py-1">
         <a
           @click="logoutClick"
-          class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900 cursor-pointer active:bg-gray-100"
+          class="block px-4 py-2 text-sm text-gray-200 hover:bg-gray-100 hover:bg-opacity-30 hover:text-gray-900 cursor-pointer active:bg-gray-100"
           role="menuitem"
           >Logout</a
         >

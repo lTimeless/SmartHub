@@ -1,6 +1,7 @@
 <template>
   <nav
-    class="md:left-0 md:block md:fixed md:top-0 md:bottom-0 md:overflow-y-auto md:flex-row md:flex-no-wrap md:overflow-hidden shadow-xl bg-white flex flex-wrap items-center justify-between relative md:w-64 z-10 py-4 px-6"
+    class="md:left-0 md:block md:fixed md:top-0 md:bottom-0 md:overflow-y-auto md:flex-row md:flex-no-wrap md:overflow-hidden
+    shadow-xl flex flex-wrap items-center justify-between md:w-64 z-10 py-4 px-6 glassmorphism"
   >
     <div
       class="md:flex-col md:items-stretch md:min-h-full md:flex-no-wrap px-0 flex flex-wrap items-center justify-between w-full mx-auto"
@@ -76,13 +77,9 @@
         </form>
         <div v-for="page in sidebarLists" :key="page.name" class="mb-2">
           <template v-if="roleIncluded(page.roleNeeded)">
-            <div
-              v-if="page.name === 'Events' || page.name === 'Dashboard'"
-              class="border-border border-t mb-2"
-            ></div>
             <router-link :to="page.path">
               <h2
-                class="flex items-center font-bold text-sm uppercase mt-4"
+                class="flex items-center font-bold text-sm uppercase mt-4 text-gray-600"
                 :class="this.getClassesForAnchor(page.path)"
               >
                 <span
@@ -101,7 +98,7 @@
                 :id="child.path"
                 :key="child.path"
                 :class="this.getClassesForAnchor(child.path)"
-                class="hover:text-primary"
+                class="hover:text-primary text-gray-600"
               >
                 <template v-if="roleIncluded(child.roleNeeded)">
                   <router-link :to="child.path" class="flex items-center">

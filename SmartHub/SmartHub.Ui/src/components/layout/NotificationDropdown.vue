@@ -2,7 +2,7 @@
   <div class="relative inline-block text-left">
     <div class="relative z-20 items-center flex cursor-pointer" @click="setDropDownValue(!showDropdown)">
       <span
-        class="w-10 h-10 text-sm md:text-white sm:text-black text-center md:shadow-lg hover:opacity-75 inline-flex items-center justify-center rounded-full"
+        class="w-10 h-10 text-sm text-gray-100 text-center md:shadow-lg inline-flex items-center justify-center rounded-full glassmorphism hover:bg-gray-100 hover:bg-opacity-40"
       >
         <svg
           class="h-6 w-6"
@@ -29,7 +29,7 @@
     ></button>
     <div
       v-if="showDropdown"
-      class="origin-top-right z-20 absolute right-0 mt-2 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5"
+      class="origin-top-right z-20 absolute right-0 mt-2 w-56 rounded-md shadow-lg glassmorphism ring-1 ring-black ring-opacity-5"
       role="menu"
       aria-orientation="vertical"
       aria-labelledby="options-menu"
@@ -39,7 +39,7 @@
           v-for="item in dropDownList"
           :key="item.name"
           @click="dropDownBtnClick(item.name)"
-          class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900 cursor-pointer active:bg-gray-100"
+          class="block px-4 py-2 text-sm text-gray-200 hover:bg-gray-100 hover:bg-opacity-30 hover:text-gray-900 cursor-pointer active:bg-gray-100"
           role="menuitem"
           >{{ item.name }}</a
         >

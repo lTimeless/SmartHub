@@ -5,7 +5,7 @@
   >
     <div class="w-full mx-auto items-center flex justify-between md:flex-no-wrap flex-wrap md:px-10 px-4">
       <!-- Brand -->
-      <a class="text-white text-lg uppercase lg:inline-block font-semibold">{{ route.name }}</a>
+      <a class="text-gray-100 text-lg uppercase lg:inline-block font-semibold">{{ route.name }}</a>
       <!-- Form -->
       <form class="md:flex hidden flex-row flex-wrap items-center lg:ml-auto mr-3">
         <div class="relative flex w-full flex-wrap items-stretch">
@@ -17,15 +17,15 @@
             <input
               type="text"
               placeholder="Search here..."
-              class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md"
+              class="mt-1 placeholder-gray-100 focus:ring-indigo-500 focus:border-indigo-500 focus:bg-gray-100 focus:bg-opacity-50 block w-full sm:text-sm border-gray-300 rounded-md glassmorphism hover:bg-gray-100 hover:bg-opacity-40"
             />
           </label>
         </div>
       </form>
       <!-- Dropdowns -->
       <ul class="flex-col md:flex-row list-none items-center hidden md:flex">
-        <NotificationDropdown class="mr-2"></NotificationDropdown>
-        <UserDropdown></UserDropdown>
+        <NotificationDropdown class="mr-2" />
+        <UserDropdown />
       </ul>
     </div>
   </nav>

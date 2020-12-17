@@ -1,22 +1,25 @@
 <template>
-  <main>
-    <aside>
-      <Sidebar />
-    </aside>
-    <div class="relative md:ml-64 bg-gray-200 min-h-screen">
-      <div class="absolute mx-auto w-full pt-0 z-0">
-        <TopDoubleWaves />
-      </div>
-      <div class="md:pt-28 pt-12 pb-4 px-4 md:px-10 mx-auto w-full z-10">
-        <Navbar />
-        <router-view v-slot="{ Component }">
-          <transition name="route" mode="out-in">
-            <component :is="Component" />
-          </transition>
-        </router-view>
-      </div>
+  <div>
+    <div class="bg-gray-200 absolute inset-0" />
+    <div class="absolute mx-auto w-full">
+      <TopDoubleWaves />
     </div>
-  </main>
+    <main>
+      <aside>
+        <Sidebar />
+      </aside>
+      <div class="relative md:ml-64 min-h-screen">
+        <div class="md:pt-28 pt-12 pb-4 px-4 md:px-10 mx-auto w-full z-10">
+          <Navbar />
+          <router-view v-slot="{ Component }">
+            <transition name="route" mode="out-in">
+              <component :is="Component" />
+            </transition>
+          </router-view>
+        </div>
+      </div>
+    </main>
+  </div>
 </template>
 
 <script lang="ts">

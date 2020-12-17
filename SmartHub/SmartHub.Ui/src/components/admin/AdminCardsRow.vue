@@ -1,11 +1,11 @@
 <template>
   <div class="w-full lg:w-6/12 xl:w-3/12 px-4">
-    <div class="relative flex flex-col min-w-0 break-words bg-white rounded mb-6 xl:mb-0 shadow-lg">
+    <div class="relative flex flex-col min-w-0 break-words glassmorphism hover:bg-gray-100 hover:bg-opacity-40 mb-6 xl:mb-0 shadow-lg">
       <div class="flex-auto p-4">
         <div class="flex flex-wrap">
           <div class="relative w-full pr-4 max-w-full flex-grow flex-1">
-            <h5 class="text-gray-500 uppercase font-bold text-xs">CPU Performance</h5>
-            <span class="font-semibold text-xl text-gray-800"> 43,35% </span>
+            <h5 class="text-gray-600 uppercase font-bold text-xs">CPU Performance</h5>
+            <span class="font-semibold text-xl text-gray-600"> 43,35% </span>
           </div>
           <div class="relative w-auto pl-4 flex-initial">
             <div
@@ -23,12 +23,12 @@
     </div>
   </div>
   <div class="w-full lg:w-6/12 xl:w-3/12 px-4">
-    <div class="relative flex flex-col min-w-0 break-words bg-white rounded mb-6 xl:mb-0 shadow-lg">
+    <div class="relative flex flex-col min-w-0 break-words glassmorphism hover:bg-gray-100 hover:bg-opacity-40 mb-6 xl:mb-0 shadow-lg">
       <div class="flex-auto p-4">
         <div class="flex flex-wrap">
           <div class="relative w-full pr-4 max-w-full flex-grow flex-1">
-            <h5 class="text-gray-500 uppercase font-bold text-xs">Errors</h5>
-            <span class="font-semibold text-xl text-gray-800"> 6 </span>
+            <h5 class="text-gray-600 uppercase font-bold text-xs">Errors</h5>
+            <span class="font-semibold text-xl text-gray-600"> 6 </span>
           </div>
           <div class="relative w-auto pl-4 flex-initial">
             <div
@@ -46,12 +46,12 @@
     </div>
   </div>
   <div class="w-full lg:w-6/12 xl:w-3/12 px-4">
-    <div class="relative flex flex-col min-w-0 break-words bg-white rounded mb-6 xl:mb-0 shadow-lg">
+    <div class="relative flex flex-col min-w-0 break-words glassmorphism hover:bg-gray-100 hover:bg-opacity-40 mb-6 xl:mb-0 shadow-lg">
       <div class="flex-auto p-4">
         <div class="flex flex-wrap">
           <div class="relative w-full pr-4 max-w-full flex-grow flex-1">
-            <h5 class="text-gray-500 uppercase font-bold text-xs">Activities</h5>
-            <span class="font-semibold text-xl text-gray-800"> 42 </span>
+            <h5 class="text-gray-600 uppercase font-bold text-xs">Activities</h5>
+            <span class="font-semibold text-xl text-gray-600"> 42 </span>
           </div>
           <div class="relative w-auto pl-4 flex-initial">
             <div
@@ -69,12 +69,12 @@
     </div>
   </div>
   <div class="w-full lg:w-6/12 xl:w-3/12 px-4">
-    <div class="relative flex flex-col min-w-0 break-words bg-white rounded mb-6 xl:mb-0 shadow-lg">
+    <div class="relative flex flex-col min-w-0 break-words glassmorphism hover:bg-gray-100 hover:bg-opacity-40 mb-6 xl:mb-0 shadow-lg">
       <div class="flex-auto p-4">
         <div class="flex flex-wrap">
           <div class="relative w-full pr-4 max-w-full flex-grow flex-1">
-            <h5 class="text-gray-500 uppercase font-bold text-xs">Memory Usage</h5>
-            <span class="font-semibold text-xl text-gray-800"> 60% </span>
+            <h5 class="text-gray-600 uppercase font-bold text-xs">Memory Usage</h5>
+            <span class="font-semibold text-xl text-gray-600"> 60% </span>
           </div>
           <div class="relative w-auto pl-4 flex-initial">
             <div
