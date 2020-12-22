@@ -1,5 +1,5 @@
 <template>
-  <div class="relative flex-1 w-full justify-end">
+  <div class="relative flex-1 w-full justify-end bg-white border p-3 rounded">
     <!-- Form -->
     <template v-if="loadUser">
       <div class="flex items-center justify-center w-full h-full">

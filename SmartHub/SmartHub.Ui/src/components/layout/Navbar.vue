@@ -17,7 +17,7 @@
             <input
               type="text"
               placeholder="Search here..."
-              class="mt-1 placeholder-gray-100 focus:ring-indigo-500 focus:border-indigo-500 focus:bg-gray-100 focus:bg-opacity-50 block w-full sm:text-sm border-gray-300 rounded-md glassmorphism hover:bg-gray-100 hover:bg-opacity-50"
+              class="mt-1 placeholder-gray-500 focus:ring-indigo-500 focus:border-indigo-500 focus:bg-gray-100 focus:bg-opacity-50 block w-full sm:text-sm border-gray-300 rounded-md bg-white"
             />
           </label>
         </div>

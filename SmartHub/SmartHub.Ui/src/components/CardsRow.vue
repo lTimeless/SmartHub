@@ -2,13 +2,13 @@
   <div v-if="dontShowThisTab !== 0" class="w-full lg:w-6/12 xl:w-3/12 px-2">
     <div
       @click="callbackZero"
-      class="cursor-pointer relative flex flex-col min-w-0 break-words mb-6 xl:mb-0 rounded glassmorphism hover:bg-gray-100 hover:bg-opacity-40"
+      class="cursor-pointer relative flex flex-col min-w-0 break-words mb-6 xl:mb-0 rounded border hover:border-gray-400"
     >
       <div class="flex-auto p-4">
         <div class="flex flex-wrap">
           <div class="relative w-full pr-4 max-w-full flex-grow flex justify-around items-center">
             <svg
-              class="h-5 w-5 text-gray-100"
+              class="h-5 w-5 text-gray-600"
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
               viewBox="0 0 24 24"
@@ -21,7 +21,7 @@
                 d="M10 19l-7-7m0 0l7-7m-7 7h18"
               />
             </svg>
-            <h5 class="text-gray-100 uppercase font-bold text-xs">Back</h5>
+            <h5 class="text-gray-600 uppercase font-bold text-xs">Back</h5>
             <span class="font-semibold text-xl text-gray-800"></span>
           </div>
         </div>
@@ -31,19 +31,19 @@
   <div v-if="dontShowThisTab !== 1" class="w-full lg:w-6/12 xl:w-3/12 px-2">
     <div
       @click="callbackOne"
-      class="cursor-pointer relative flex flex-col min-w-0 break-words mb-6 xl:mb-0 rounded glassmorphism hover:bg-gray-100 hover:bg-opacity-50"
+      class="cursor-pointer relative flex flex-col min-w-0 break-words mb-6 xl:mb-0 rounded border hover:border-red-400"
     >
       <div class="flex-auto p-4">
         <div class="flex flex-wrap">
           <div class="relative w-full pr-4 max-w-full flex-grow flex-1">
-            <h5 class="text-gray-100 uppercase font-bold text-xs">Groups</h5>
-            <span class="text-xl text-gray-100">
+            <h5 class="text-gray-600 uppercase font-bold text-xs">Groups</h5>
+            <span class="text-xl text-gray-600">
               {{ groupsCount }}
             </span>
           </div>
           <div class="relative w-auto pl-4 flex-initial">
             <div
-              class="text-center inline-flex items-center justify-center w-12 h-12 shadow-lg rounded-full bg-red-400"
+              class="text-center inline-flex items-center justify-center w-12 h-12 rounded-full bg-red-400"
             >
               <svg
                 class="h-5 w-5 text-black"
@@ -63,9 +63,9 @@
           </div>
         </div>
         <p class="text-sm text-gray-500 mt-4">
-          <span class="text-gray-500">{{ parentGroupsCount }} </span>
+          <span>{{ parentGroupsCount }} </span>
           <span class="whitespace-no-wrap mr-3"> Groups</span>
-          <span class="text-gray-500">{{ subGroupsCount }} </span>
+          <span>{{ subGroupsCount }} </span>
           <span class="whitespace-no-wrap"> Subgroups</span>
         </p>
       </div>
@@ -74,17 +74,17 @@
   <div v-if="dontShowThisTab !== 2" class="w-full lg:w-6/12 xl:w-3/12 px-2">
     <div
       @click="callbackTwo"
-      class="cursor-pointer relative flex flex-col min-w-0 break-words mb-6 xl:mb-0 rounded glassmorphism hover:bg-gray-100 hover:bg-opacity-50"
+      class="cursor-pointer relative flex flex-col min-w-0 break-words mb-6 xl:mb-0 rounded border hover:border-yellow-400"
     >
       <div class="flex-auto p-4">
         <div class="flex flex-wrap">
           <div class="relative w-full pr-4 max-w-full flex-grow flex-1">
-            <h5 class="text-gray-100 uppercase font-bold text-xs">Devices</h5>
-            <span class="text-xl text-gray-100"> {{ devicesCount }} </span>
+            <h5 class="text-gray-600 uppercase font-bold text-xs">Devices</h5>
+            <span class="text-xl text-gray-600"> {{ devicesCount }} </span>
           </div>
           <div class="relative w-auto pl-4 flex-initial">
             <div
-              class="text-center inline-flex items-center justify-center w-12 h-12 shadow-lg rounded-full bg-yellow-400"
+              class="text-center inline-flex items-center justify-center w-12 h-12 rounded-full bg-yellow-400"
             >
               <svg
                 class="h-5 w-5 text-black"
@@ -104,8 +104,8 @@
           </div>
         </div>
         <p class="text-sm text-gray-500 mt-4">
-          <span class="text-red-500 mr-2">2 </span>
-          <span class="whitespace-no-wrap"> Since last login </span>
+          <span>2 </span>
+          <span class="whitespace-no-wrap ml-2"> Since last login </span>
         </p>
       </div>
     </div>
@@ -113,17 +113,17 @@
   <div v-if="dontShowThisTab !== 3" class="w-full lg:w-6/12 xl:w-3/12 px-2">
     <div
       @click="callbackThree"
-      class="cursor-pointer relative flex flex-col min-w-0 break-words mb-6 xl:mb-0 rounded glassmorphism hover:bg-gray-100 hover:bg-opacity-50"
+      class="cursor-pointer relative flex flex-col min-w-0 break-words mb-6 xl:mb-0 rounded border hover:border-green-400"
     >
       <div class="flex-auto p-4">
         <div class="flex flex-wrap">
           <div class="relative w-full pr-4 max-w-full flex-grow flex-1">
-            <h5 class="text-gray-100 uppercase font-bold text-xs">Users</h5>
-            <span class="text-xl text-gray-100"> 5 </span>
+            <h5 class="text-gray-600 uppercase font-bold text-xs">Users</h5>
+            <span class="text-xl text-gray-600"> 5 </span>
           </div>
           <div class="relative w-auto pl-4 flex-initial">
             <div
-              class="text-center inline-flex items-center justify-center w-12 h-12 shadow-lg rounded-full bg-green-400"
+              class="text-center inline-flex items-center justify-center w-12 h-12 rounded-full bg-green-400"
             >
               <svg
                 class="h-5 w-5 text-black"
@@ -143,8 +143,8 @@
           </div>
         </div>
         <p class="text-sm text-gray-500 mt-4">
-          <span class="text-orange-500 mr-2">0 </span>
-          <span class="whitespace-no-wrap">Since last month </span>
+          <span>0 </span>
+          <span class="whitespace-no-wrap ml-2">Since last month </span>
         </p>
       </div>
     </div>
@@ -152,17 +152,17 @@
   <div v-if="dontShowThisTab !== 4" class="w-full lg:w-6/12 xl:w-3/12 px-2">
     <div
       @click="callbackFour"
-      class="cursor-pointer relative flex flex-col min-w-0 break-words mb-6 xl:mb-0 rounded glassmorphism hover:bg-gray-100 hover:bg-opacity-50"
+      class="cursor-pointer relative flex flex-col min-w-0 break-words mb-6 xl:mb-0 rounded border hover:border-blue-400"
     >
       <div class="flex-auto p-4">
         <div class="flex flex-wrap">
           <div class="relative w-full pr-4 max-w-full flex-grow flex-1">
-            <h5 class="text-gray-100 uppercase font-bold text-xs">Automations</h5>
-            <span class="text-xl text-gray-100"> 2 </span>
+            <h5 class="text-gray-600 uppercase font-bold text-xs">Automations</h5>
+            <span class="text-xl text-gray-600"> 2 </span>
           </div>
           <div class="relative w-auto pl-4 flex-initial">
             <div
-              class="text-center inline-flex items-center justify-center w-12 h-12 shadow-lg rounded-full bg-blue-400"
+              class="text-center inline-flex items-center justify-center w-12 h-12 rounded-full bg-blue-400"
             >
               <svg
                 class="h-5 w-5 text-black"
@@ -182,8 +182,8 @@
           </div>
         </div>
         <p class="text-sm text-gray-500 mt-4">
-          <span class="text-green-500 mr-2">1 </span>
-          <span class="whitespace-no-wrap">Currently active </span>
+          <span>1 </span>
+          <span class="whitespace-no-wrap ml-2">Currently active </span>
         </p>
       </div>
     </div>

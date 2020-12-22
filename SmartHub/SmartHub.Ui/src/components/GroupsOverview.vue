@@ -2,22 +2,24 @@
   <GroupCreateModal v-if="showCreateModal" @close="toggleCreateModal" />
   <GroupDetailsModal v-if="showDetailModal" @close="toggleDetailModal(null)" :group-id="groupId" />
 
-  <!-- Add Group button -->
+  <!-- Buttons -->
   <div class="w-full">
     <div class="flex justify-start items-center mb-4 xl:w-1/3">
+      <!-- Add button -->
       <div class="w-full md:w-1/3 xl:w-3/6">
         <button
           @click="toggleCreateModal"
-          class="block w-full px-4 py-2 mt-4 text-sm text-gray-600 font-medium leading-5 text-center glassmorphism hover:text-white hover:bg-indigo-500 border border-transparent rounded-lg active:bg-primary focus:outline-none"
+          class="block w-full px-4 py-2 mt-4 text-sm text-gray-600 font-medium leading-5 text-center bg-white hover:text-white hover:bg-indigo-400 border border-transparent rounded-lg active:bg-primary focus:outline-none"
         >
           Add Group
         </button>
       </div>
+      <!-- Filter button -->
       <div class="w-full md:w-1/3 xl:w-2/6 ml-2">
         <button
           v-if="showSubGroupsIcon"
           @click="showSubGroups()"
-          class="flex justify-center content-center p-2 mt-4 text-gray-600 glassmorphism border border-transparent rounded-lg focus:outline-none hover:bg-gray-100 hover:bg-opacity-50"
+          class="flex justify-center content-center p-2 mt-4 hover:bg-indigo-400 text-gray-600 bg-white border border-transparent rounded-lg focus:outline-none"
         >
           <svg
             class="h-5 w-5"
@@ -37,7 +39,7 @@
         <button
           v-if="!showSubGroupsIcon"
           @click="showSubGroups()"
-          class="flex justify-center content-center p-2 mt-4 text-gray-600 glassmorphism border border-transparent rounded-lg focus:outline-none hover:bg-gray-100 hover:bg-opacity-50"
+          class="flex justify-center content-center p-2 mt-4 hover:bg-indigo-400 text-gray-600 bg-white border border-transparent rounded-lg focus:outline-none"
         >
           <svg
             class="h-5 w-5"
@@ -74,8 +76,8 @@
   <template v-else-if="groups">
     <!-- All Groups -->
     <div class="overflow-auto overscroll-contain pr-2 pb-4 h-114 rounded">
-      <div v-if="groups.length > 0" class="grid xl:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 gap-4 glassmorphism p-2 rounded">
-        <AppCard class="shadow-lg glassmorphism w-full" v-for="group in groups" :key="group.id">
+      <div v-if="groups.length > 0" class="grid xl:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 gap-4 rounded">
+        <AppCard class="bg-white border hover:border-indigo-400 w-full" v-for="group in groups" :key="group.id">
           <div class="p-3 w-full">
             <div class="flex items-start justify-between">
               <h1

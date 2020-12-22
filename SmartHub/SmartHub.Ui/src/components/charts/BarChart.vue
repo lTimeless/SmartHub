@@ -1,6 +1,6 @@
 <template>
   <div class="w-full xl:w-4/12 px-2">
-    <div class="relative flex flex-col min-w-0 break-words bg-white w-full glassmorphism">
+    <div class="relative flex flex-col min-w-0 break-words w-full">
       <div class="rounded-t mb-0 px-4 py-3 bg-transparent">
         <div class="flex flex-wrap items-center">
           <div class="relative w-full max-w-full flex-grow flex-1">

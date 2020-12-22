@@ -1,17 +1,19 @@
 <template>
   <div class="w-full lg:w-6/12 xl:w-3/12 px-4">
-    <div class="relative flex flex-col min-w-0 break-words glassmorphism hover:bg-gray-100 hover:bg-opacity-50 mb-6 xl:mb-0 shadow-lg">
+    <div class="relative flex flex-col min-w-0 break-words border rounded hover:border-red-400 mb-6 xl:mb-0">
       <div class="flex-auto p-4">
         <div class="flex flex-wrap">
           <div class="relative w-full pr-4 max-w-full flex-grow flex-1">
-            <h5 class="text-gray-600 uppercase font-bold text-xs">CPU Performance</h5>
+            <h5 class="text-gray-600 uppercase font-bold text-xs">Utilization</h5>
             <span class="font-semibold text-xl text-gray-600"> 43,35% </span>
           </div>
           <div class="relative w-auto pl-4 flex-initial">
             <div
-              class="text-white p-3 text-center inline-flex items-center justify-center w-12 h-12 shadow-lg rounded-full bg-red-500"
+              class="text-white p-3 text-center inline-flex items-center justify-center w-12 h-12 rounded-full bg-red-400"
             >
-              <i class="far fa-chart-bar"></i>
+              <svg class="h-5 w-5 text-black" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
+              </svg>
             </div>
           </div>
         </div>
@@ -23,7 +25,7 @@
     </div>
   </div>
   <div class="w-full lg:w-6/12 xl:w-3/12 px-4">
-    <div class="relative flex flex-col min-w-0 break-words glassmorphism hover:bg-gray-100 hover:bg-opacity-50 mb-6 xl:mb-0 shadow-lg">
+    <div class="relative flex flex-col min-w-0 break-words border rounded hover:border-orange-400 mb-6 xl:mb-0">
       <div class="flex-auto p-4">
         <div class="flex flex-wrap">
           <div class="relative w-full pr-4 max-w-full flex-grow flex-1">
@@ -32,9 +34,11 @@
           </div>
           <div class="relative w-auto pl-4 flex-initial">
             <div
-              class="text-white p-3 text-center inline-flex items-center justify-center w-12 h-12 shadow-lg rounded-full bg-orange-500"
+              class="text-white p-3 text-center inline-flex items-center justify-center w-12 h-12 shadow-lg rounded-full bg-orange-400"
             >
-              <i class="fas fa-chart-pie"></i>
+              <svg class="h-5 w-5 text-black" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
+              </svg>
             </div>
           </div>
         </div>
@@ -46,7 +50,7 @@
     </div>
   </div>
   <div class="w-full lg:w-6/12 xl:w-3/12 px-4">
-    <div class="relative flex flex-col min-w-0 break-words glassmorphism hover:bg-gray-100 hover:bg-opacity-50 mb-6 xl:mb-0 shadow-lg">
+    <div class="relative flex flex-col min-w-0 break-words border rounded hover:border-pink-400 mb-6 xl:mb-0">
       <div class="flex-auto p-4">
         <div class="flex flex-wrap">
           <div class="relative w-full pr-4 max-w-full flex-grow flex-1">
@@ -55,9 +59,11 @@
           </div>
           <div class="relative w-auto pl-4 flex-initial">
             <div
-              class="text-white p-3 text-center inline-flex items-center justify-center w-12 h-12 shadow-lg rounded-full bg-pink-500"
+              class="text-white p-3 text-center inline-flex items-center justify-center w-12 h-12 shadow-lg rounded-full bg-pink-400"
             >
-              <i class="fas fa-users"></i>
+              <svg class="h-5 w-5 text-black" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
+              </svg>
             </div>
           </div>
         </div>
@@ -69,18 +75,20 @@
     </div>
   </div>
   <div class="w-full lg:w-6/12 xl:w-3/12 px-4">
-    <div class="relative flex flex-col min-w-0 break-words glassmorphism hover:bg-gray-100 hover:bg-opacity-50 mb-6 xl:mb-0 shadow-lg">
+    <div class="relative flex flex-col min-w-0 break-words border rounded hover:border-blue-400 mb-6 xl:mb-0">
       <div class="flex-auto p-4">
         <div class="flex flex-wrap">
           <div class="relative w-full pr-4 max-w-full flex-grow flex-1">
-            <h5 class="text-gray-600 uppercase font-bold text-xs">Memory Usage</h5>
+            <h5 class="text-gray-600 uppercase font-bold text-xs">RAM Usage</h5>
             <span class="font-semibold text-xl text-gray-600"> 60% </span>
           </div>
           <div class="relative w-auto pl-4 flex-initial">
             <div
-              class="text-white p-3 text-center inline-flex items-center justify-center w-12 h-12 shadow-lg rounded-full bg-blue-500"
+              class="text-white p-3 text-center inline-flex items-center justify-center w-12 h-12 rounded-full bg-blue-400"
             >
-              <i class="fas fa-percent"></i>
+              <svg class="h-5 w-5 text-black" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
+              </svg>
             </div>
           </div>
         </div>

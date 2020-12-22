@@ -2,12 +2,14 @@
   <DeviceCreateModal v-if="showCreateModal" @close="toggleCreateModal" />
   <DeviceDetailsModal v-if="showDetailModal" @close="toggleDetailModal(null)" :device-id="deviceId" />
 
+  <!-- Buttons -->
   <div class="w-full">
     <div class="flex justify-between items-center mb-4">
+      <!-- Add Button -->
       <div class="flex justify-start w-full md:w-1/3 xl:w-1/6">
         <button
           @click="toggleCreateModal"
-          class="block w-full px-4 py-2 mt-4 text-sm text-gray-500 font-medium leading-5 text-center bg-white hover:text-white transition-colors duration-150 hover:bg-yellow-400 border border-transparent rounded-lg active:bg-primary focus:outline-none focus:shadow-outlineIndigo"
+          class="block w-full px-4 py-2 mt-4 text-sm text-gray-600 font-medium leading-5 text-center bg-white hover:text-white hover:bg-indigo-400 border border-transparent rounded-lg active:bg-primary focus:outline-none"
         >
           Add Device
         </button>
@@ -23,8 +25,8 @@
   </template>
   <template v-if="devices">
     <div v-if="devices.length > 0">
-      <div class="grid xl:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 gap-4">
-        <AppCard class="bg-white shadow-md w-full" v-for="device in devices" :key="device.id">
+      <div class="grid xl:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 gap-4 rounded">
+        <AppCard class="border hover:border-indigo-400 bg-white w-full" v-for="device in devices" :key="device.id">
           <div v-if="device" class="p-3 w-full">
             <h1
               class="text-xl text-left text-gray-600 font-bold cursor-pointer"
