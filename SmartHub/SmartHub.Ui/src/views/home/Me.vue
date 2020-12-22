@@ -123,12 +123,12 @@ import { getUserRoles, logout } from '@/services/auth/authService';
 import { Roles } from '@/types/enums';
 import { UpdateUserInput } from '@/types/types';
 import { useMutation, useQuery, useResult } from '@vue/apollo-composable';
-import Loader from '@/components/Loader.vue';
+import Loader from '@/components/shared/Loader.vue';
 import { UPDATE_USER } from '@/graphql/mutations';
 import { WHO_AM_I } from '@/graphql/queries';
 
 export default defineComponent({
-  name: 'MyUser',
+  name: 'Me',
   components: {
     Loader
   },

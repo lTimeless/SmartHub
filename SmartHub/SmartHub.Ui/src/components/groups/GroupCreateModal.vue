@@ -38,7 +38,7 @@
 
 <script lang="ts">
 import { defineComponent, reactive, computed, toRefs } from 'vue';
-import BaseModal from '@/components/modals/BaseModal.vue';
+import BaseModal from '@/components/shared/modals/BaseModal.vue';
 import { CreateGroupInput } from '@/types/types';
 import { useMutation } from '@vue/apollo-composable';
 import { CREATE_GROUP } from '@/graphql/mutations';

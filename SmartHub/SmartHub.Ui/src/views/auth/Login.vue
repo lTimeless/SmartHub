@@ -108,9 +108,9 @@ import { AuthActionTypes } from '@/store/auth/actions';
 import { useQuery } from '@vue/apollo-composable';
 import { HOME_AND_USERS_EXIST } from '@/graphql/queries';
 import { Routes } from '@/types/enums';
-import Loader from '@/components/Loader.vue';
-import TopDoubleWaves from '@/components/svgs/TopDoubleWaves.vue';
-import AppCard from '@/components/widgets/AppCard.vue';
+import Loader from '@/components/shared/Loader.vue';
+import TopDoubleWaves from '@/components/shared/svgs/TopDoubleWaves.vue';
+import AppCard from '@/components/shared/widgets/AppCard.vue';
 
 export default defineComponent({
   name: 'Login',

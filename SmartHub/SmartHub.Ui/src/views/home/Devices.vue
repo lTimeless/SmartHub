@@ -16,7 +16,7 @@
       </div>
     </div>
   </div>
-  <!-- Show Devices -->
+  <!-- Show devices -->
   <template v-if="error">
     <p>Error: {{ error.name }} - {{ error.message }}</p>
   </template>
@@ -51,15 +51,15 @@
 
 <script lang="ts">
 import { reactive, toRefs, defineComponent } from 'vue';
-import AppCard from '@/components/widgets/AppCard.vue';
-import DeviceCreateModal from '@/components/modals/DeviceCreateModal.vue';
-import DeviceDetailsModal from '@/components/modals/DeviceDetailsModal.vue';
+import AppCard from '@/components/shared/widgets/AppCard.vue';
+import DeviceCreateModal from '@/components/devices/DeviceCreateModal.vue';
+import DeviceDetailsModal from '@/components/devices/DeviceDetailsModal.vue';
 import { GET_DEVICES } from '@/graphql/queries';
 import { useQuery, useResult } from '@vue/apollo-composable';
-import Loader from '@/components/Loader.vue';
+import Loader from '@/components/shared/Loader.vue';
 
 export default defineComponent({
-  name: 'DevicesOverview',
+  name: 'Devices',
   components: {
     AppCard,
     DeviceCreateModal,

@@ -3,7 +3,7 @@
     <AppTabs>
       <template #header>
         <!-- Cards -->
-        <div class="flex flex-wrap bg-white border py-2 rounded">
+        <div class="flex flex-wrap justify-between">
           <CardsRow
             :callback-zero="toggleTabs.bind(this, 0)"
             :callback-one="toggleTabs.bind(this, 1)"
@@ -44,15 +44,15 @@
         </div>
         <!-- Admin Cards -->
         <template v-if="roleIncluded(adminRole) && expandAdminRow">
-          <div class="flex flex-wrap mb-6 bg-white border py-2 rounded">
+          <div class="flex flex-wrap mb-6 rounded">
             <AdminCardsRow />
           </div>
         </template>
       </template>
       <template #content>
-        <div v-if="openTab === 0">
+        <div v-if="openTab === 0" class="pr-2">
           <!-- Graphs -->
-          <div class="flex flex-wrap bg-white border py-2 rounded">
+          <div class="flex flex-wrap bg-white rounded">
             <LineChart></LineChart>
             <BarChart></BarChart>
           </div>
@@ -333,17 +333,17 @@
 
 <script lang="ts">
 import { defineComponent, computed, ref, onMounted } from 'vue';
-import AppTabs from '@/components/widgets/AppTabs.vue';
-import AppAutomation from '@/components/AutomationsOverview.vue';
-import GroupsOverview from '@/components/GroupsOverview.vue';
-import DevicesOverview from '@/components/DevicesOverview.vue';
+import AppTabs from '@/components/shared/widgets/AppTabs.vue';
+import AppAutomation from '@/views/home/Automations.vue';
+import GroupsOverview from '@/views/home/Groups.vue';
+import DevicesOverview from '@/views/home/Devices.vue';
 import { useStore } from 'vuex';
 import BarChart from '@/components/charts/BarChart.vue';
 import LineChart from '@/components/charts/LineChart.vue';
 import { getUserRoles } from '@/services/auth/authService';
 import { Roles } from '@/types/enums';
-import AdminCardsRow from '@/components/admin/AdminCardsRow.vue';
-import CardsRow from '@/components/CardsRow.vue';
+import AdminCardsRow from '@/components/layout/admin/AdminCardsRow.vue';
+import CardsRow from '@/components/dashboard/CardsRow.vue';
 
 export default defineComponent({
   name: 'Dashboard',

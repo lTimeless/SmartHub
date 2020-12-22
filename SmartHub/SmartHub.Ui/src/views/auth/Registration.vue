@@ -179,14 +179,14 @@ import { clearStorage } from '@/services/auth/authService';
 import { useRouter } from 'vue-router';
 import { AuthActionTypes } from '@/store/auth/actions';
 import { useStore } from 'vuex';
-import Loader from '@/components/Loader.vue';
+import Loader from '@/components/shared/Loader.vue';
 import { Routes } from '@/types/enums';
-import TopDoubleWaves from '@/components/svgs/TopDoubleWaves.vue';
-import AppCard from '@/components/widgets/AppCard.vue';
+import TopDoubleWaves from '@/components/shared/svgs/TopDoubleWaves.vue';
+import AppCard from '@/components/shared/widgets/AppCard.vue';
 
 const ConfirmationModalAsync = defineAsyncComponent({
   loader: () =>
-    import(/* webpackChunkName: "ConfirmationModal" */ '../../components/modals/ConfirmationModal.vue'),
+    import(/* webpackChunkName: "ConfirmationModal" */ '../../components/shared/modals/ConfirmationModal.vue'),
   loadingComponent: Loader,
   delay: 200
 });

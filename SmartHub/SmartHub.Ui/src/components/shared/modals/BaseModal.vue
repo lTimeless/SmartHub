@@ -75,7 +75,7 @@
 
 <script lang="ts">
 import { defineComponent, PropType, toRefs } from 'vue';
-import Loader from '@/components/Loader.vue';
+import Loader from '@/components/shared/Loader.vue';
 
 export default defineComponent({
   name: 'BaseModal',

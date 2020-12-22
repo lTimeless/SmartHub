@@ -1,6 +1,6 @@
 <template>
-  <div class="w-full lg:w-6/12 xl:w-3/12 px-4">
-    <div class="relative flex flex-col min-w-0 break-words border rounded hover:border-red-400 mb-6 xl:mb-0">
+  <div class="w-full lg:w-6/12 xl:w-3/12 pr-2">
+    <div class="relative flex flex-col min-w-0 break-words border bg-white rounded hover:border-red-400 mb-6 xl:mb-0">
       <div class="flex-auto p-4">
         <div class="flex flex-wrap">
           <div class="relative w-full pr-4 max-w-full flex-grow flex-1">
@@ -24,8 +24,8 @@
       </div>
     </div>
   </div>
-  <div class="w-full lg:w-6/12 xl:w-3/12 px-4">
-    <div class="relative flex flex-col min-w-0 break-words border rounded hover:border-orange-400 mb-6 xl:mb-0">
+  <div class="w-full lg:w-6/12 xl:w-3/12 pr-2">
+    <div class="relative flex flex-col min-w-0 break-words border bg-white rounded hover:border-orange-400 mb-6 xl:mb-0">
       <div class="flex-auto p-4">
         <div class="flex flex-wrap">
           <div class="relative w-full pr-4 max-w-full flex-grow flex-1">
@@ -49,8 +49,8 @@
       </div>
     </div>
   </div>
-  <div class="w-full lg:w-6/12 xl:w-3/12 px-4">
-    <div class="relative flex flex-col min-w-0 break-words border rounded hover:border-pink-400 mb-6 xl:mb-0">
+  <div class="w-full lg:w-6/12 xl:w-3/12 px-2">
+    <div class="relative flex flex-col min-w-0 break-words border bg-white rounded hover:border-pink-400 mb-6 xl:mb-0">
       <div class="flex-auto p-4">
         <div class="flex flex-wrap">
           <div class="relative w-full pr-4 max-w-full flex-grow flex-1">
@@ -74,8 +74,8 @@
       </div>
     </div>
   </div>
-  <div class="w-full lg:w-6/12 xl:w-3/12 px-4">
-    <div class="relative flex flex-col min-w-0 break-words border rounded hover:border-blue-400 mb-6 xl:mb-0">
+  <div class="w-full lg:w-6/12 xl:w-3/12 pr-2">
+    <div class="relative flex flex-col min-w-0 break-words border bg-white rounded hover:border-blue-400 mb-6 xl:mb-0">
       <div class="flex-auto p-4">
         <div class="flex flex-wrap">
           <div class="relative w-full pr-4 max-w-full flex-grow flex-1">

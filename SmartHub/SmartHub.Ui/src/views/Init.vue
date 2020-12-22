@@ -111,14 +111,14 @@ import { AppConfigInitInput } from '@/types/types';
 import { AppActionTypes } from '@/store/app/actions';
 import { useStore } from 'vuex';
 import { useRouter } from 'vue-router';
-import AppCard from '@/components/widgets/AppCard.vue';
+import AppCard from '@/components/shared/widgets/AppCard.vue';
 import { useQuery } from '@vue/apollo-composable';
 import { ApplicationIsActive } from '@/graphql/queries';
 import { Routes } from '@/types/enums';
-import Loader from '@/components/Loader.vue';
+import Loader from '@/components/shared/Loader.vue';
 
 const ConfirmationModalAsync = defineAsyncComponent(
-  () => import(/* webpackChunkName: "ConfirmationModal" */ '../components/modals/ConfirmationModal.vue')
+  () => import(/* webpackChunkName: "ConfirmationModal" */ '../components/shared/modals/ConfirmationModal.vue')
 );
 
 export default defineComponent({

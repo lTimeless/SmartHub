@@ -66,7 +66,7 @@
     </div>
   </div>
 
-  <!-- Show Groups -->
+  <!-- Show groups -->
   <template v-if="error">
     <p>Error: {{ error.name }} - {{ error.message }}</p>
   </template>
@@ -74,7 +74,7 @@
     <Loader height="h-48" width="w-48" />
   </template>
   <template v-else-if="groups">
-    <!-- All Groups -->
+    <!-- All groups -->
     <div class="overflow-auto overscroll-contain pr-2 pb-4 h-114 rounded">
       <div v-if="groups.length > 0" class="grid xl:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 gap-4 rounded">
         <AppCard class="bg-white border hover:border-indigo-400 w-full" v-for="group in groups" :key="group.id">
@@ -153,17 +153,17 @@
 
 <script lang="ts">
 import { reactive, toRefs, defineComponent, ref, watch } from 'vue';
-import AppCard from '@/components/widgets/AppCard.vue';
-import GroupCreateModal from '@/components/modals/GroupCreateModal.vue';
-import GroupDetailsModal from '@/components/modals/GroupDetailsModal.vue';
-import GroupDropdown from '@/components/GroupDropdown.vue';
+import AppCard from '@/components/shared/widgets/AppCard.vue';
+import GroupCreateModal from '@/components/groups/GroupCreateModal.vue';
+import GroupDetailsModal from '@/components/groups/GroupDetailsModal.vue';
+import GroupDropdown from '@/components/groups/GroupDropdown.vue';
 import { useQuery, useResult } from '@vue/apollo-composable';
 import { GET_GROUPS } from '@/graphql/queries';
 import { Group } from '@/types/types';
-import Loader from '@/components/Loader.vue';
+import Loader from '@/components/shared/Loader.vue';
 
 export default defineComponent({
-  name: 'GroupsOverview',
+  name: 'Groups',
   components: {
     AppCard,
     GroupCreateModal,

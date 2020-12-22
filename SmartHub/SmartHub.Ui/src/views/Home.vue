@@ -26,7 +26,7 @@ import { defineComponent } from 'vue';
 import { useStore } from 'vuex';
 import Sidebar from '@/components/layout/Sidebar.vue';
 import Navbar from '@/components/layout/Navbar.vue';
-import TopDoubleWaves from '@/components/svgs/TopDoubleWaves.vue';
+import TopDoubleWaves from '@/components/shared/svgs/TopDoubleWaves.vue';
 import { AppActionTypes } from '@/store/app/actions';
 
 export default defineComponent({

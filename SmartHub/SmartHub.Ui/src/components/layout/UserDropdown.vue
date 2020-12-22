@@ -76,7 +76,7 @@ export default defineComponent({
     const dropDownList = [
       {
         name: 'Profile',
-        path: Routes.User
+        path: Routes.Me
       }
     ];
 

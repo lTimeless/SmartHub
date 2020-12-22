@@ -57,9 +57,9 @@ const routes: Array<RouteRecordRaw> = [
         }
       },
       {
-        path: Routes.User,
-        name: 'User',
-        component: () => import(/* webpackChunkName: "user" */ '../views/home/MyUser.vue'),
+        path: Routes.Me,
+        name: 'Me',
+        component: () => import(/* webpackChunkName: "user" */ '../views/home/Me.vue'),
         meta: {
           requiresAuth: true,
           isGuest: true
@@ -79,9 +79,9 @@ const routes: Array<RouteRecordRaw> = [
       },
       // User paths #####
       {
-        path: Routes.Settings,
-        name: 'Settings',
-        component: () => import(/* webpackChunkName: "init" */ '../views/home/Settings.vue'),
+        path: Routes.Configuration,
+        name: 'Configuration',
+        component: () => import(/* webpackChunkName: "init" */ '../views/home/Configuration.vue'),
         meta: {
           requiresAuth: true,
           isUser: true

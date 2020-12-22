@@ -77,8 +77,8 @@
         <div v-for="page in sidebarLists" :key="page.name" class="mb-2">
           <template v-if="roleIncluded(page.roleNeeded)">
             <router-link :to="page.path">
-              <h2
-                class="flex items-center font-bold text-sm uppercase mt-4 text-gray-600"
+              <h1
+                class="flex text-lg items-center tracking-wide leading-loose font-bold text-gray-500"
                 :class="this.getClassesForAnchor(page.path)"
               >
                 <span
@@ -88,7 +88,7 @@
                   }"
                 ></span>
                 {{ page.name }}
-              </h2>
+              </h1>
             </router-link>
 
             <ul class="max-w-full pl-4 mb-0">
@@ -124,8 +124,8 @@ import UserDropdown from './UserDropdown.vue';
 import { computed, defineComponent, onMounted, ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { getUserRoles } from '@/services/auth/authService';
-import { Roles } from '@/types/enums';
-import Logo from '@/components/svgs/Logo.vue';
+import { Roles, Routes } from '@/types/enums';
+import Logo from '@/components/shared/svgs/Logo.vue';
 
 export default defineComponent({
   name: 'AppSidebar',
@@ -142,71 +142,102 @@ export default defineComponent({
     const collapseShowBool = ref(false);
 
     const sidebarLists = [
+      // Guest views
       {
         name: 'Dashboard',
         roleNeeded: [Roles.Guest, Roles.User, Roles.Admin],
-        path: '/',
+        path: Routes.Home,
         icon: 'mdi-view-dashboard',
+        children: []
+      },
+      // User views
+      {
+        name: 'Groups',
+        roleNeeded: [Roles.User, Roles.Admin],
+        path: Routes.Groups,
+        icon: 'mdi-chart-arc',
+        children: []
+      },
+      {
+        name: 'Devices',
+        roleNeeded: [Roles.User, Roles.Admin],
+        path: Routes.Devices,
+        icon: 'mdi-chart-arc',
+        children: []
+      },
+      {
+        name: 'Users',
+        roleNeeded: [Roles.User, Roles.Admin],
+        path: Routes.Users,
+        icon: 'mdi-chart-arc',
+        children: []
+      },
+      {
+        name: 'Automations',
+        roleNeeded: [Roles.User, Roles.Admin],
+        path: Routes.Automations,
+        icon: 'mdi-chart-arc',
         children: []
       },
       {
         name: 'Statistics',
         roleNeeded: [Roles.User, Roles.Admin],
-        path: '/statistics',
+        path: Routes.Statistics,
         icon: 'mdi-chart-arc',
         children: []
       },
       {
         name: 'Plugins',
         roleNeeded: [Roles.User, Roles.Admin],
-        path: '/plugins',
+        path: Routes.Plugins,
         icon: 'mdi-chart-arc',
         children: []
       },
       {
         name: 'Configuration',
         roleNeeded: [Roles.User, Roles.Admin],
-        path: '/settings',
+        path: Routes.Configuration,
         icon: 'mdi-cog',
         children: [
           {
             name: 'System',
             roleNeeded: [Roles.Admin],
-            path: '/system',
+            path: Routes.System,
             icon: 'mdi-desktop-classic',
             children: []
           },
           {
             name: 'Health',
             roleNeeded: [Roles.Admin],
-            path: '/health',
+            path: Routes.Health,
             icon: 'mdi-clipboard-pulse',
             children: []
           }
         ]
       },
+      // Admin views
       {
         name: 'Activity',
         roleNeeded: [Roles.Admin],
-        path: '/activity',
+        path: Routes.Activity,
         icon: 'mdi-calendar-alert',
         children: []
       },
       {
         name: 'Logs',
         roleNeeded: [Roles.Admin],
-        path: '/logs',
+        path: Routes.Logs,
         icon: 'mdi-file-document',
         children: []
       },
       {
         name: 'Manager',
         roleNeeded: [Roles.Admin],
-        path: '/manager',
+        path: Routes.Manager,
         icon: 'mdi-monitor-edit',
         children: []
       }
-      // TODO: move to toolbar
+      // TODO: move to toolbar or help icon on the bottom of sidebar
       // {
       //   name: 'About',
       //   roleNeeded: ['Guest', 'User', 'Admin'],
