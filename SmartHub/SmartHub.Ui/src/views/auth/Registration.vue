@@ -7,21 +7,8 @@
     </div>
     <!-- Main View -->
     <div class="flex items-center min-h-screen p-6 bg-loginBackground dark:bg-gray-900">
-      <ConfirmationModalAsync
-        v-if="doneRegistration"
-        title="Registration Success"
-        button-title="Back to home"
-        :callback="registrationComplete"
-      >
-        <div class="text-gray-600 mb-8">
-          Thank you. We have sent you an email to ... . Please click the link in the message to activate your
-          account.
-          <br /><a class="text-orange-500">This feature is not yet implemented.</a>
-        </div>
-        <!--  TODO: Email activation -->
-      </ConfirmationModalAsync>
       <!-- Top Navigation Info -->
-      <AppCard v-if="!doneRegistration" class="bg-white border">
+      <AppCard class="bg-white border">
         <div class="h-108 md:h-auto md:w-1/2">
           <img
             aria-hidden="true"
@@ -133,7 +120,7 @@
               </div>
             </div>
 
-            <div v-if="registrationRequest.password !== confirmPwd" class="flex mt-4 text-sm">
+            <div v-show="registrationRequest.password !== confirmPwd" class="flex mt-4 text-sm">
               <span class="text-red-400">Password is not identical </span>
             </div>
 
@@ -147,7 +134,10 @@
               @click="onRegistrationClick"
               :disabled="registrationDisabled"
             >
-              Create account
+              <span class="flex content-center justify-center">
+                <Loader v-if="loadCreate" height="h-2" width="w-2" />
+                <span class="pl-2">Create account</span>
+              </span>
             </button>
             <hr class="my-8" />
             <button
@@ -173,37 +163,28 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, onMounted, ref, reactive, computed, defineAsyncComponent } from 'vue';
+import { defineComponent, onMounted, ref, reactive, computed } from 'vue';
 import { RegistrationInput } from '@/types/types';
-import { clearStorage } from '@/services/auth/authService';
+import { clearStorage, storeToken } from '@/services/auth/authService';
 import { useRouter } from 'vue-router';
-import { AuthActionTypes } from '@/store/auth/actions';
-import { useStore } from 'vuex';
 import Loader from '@/components/shared/Loader.vue';
 import { Routes } from '@/types/enums';
 import TopDoubleWaves from '@/components/shared/svgs/TopDoubleWaves.vue';
 import AppCard from '@/components/shared/widgets/AppCard.vue';
-
-const ConfirmationModalAsync = defineAsyncComponent({
-  loader: () =>
-    import(/* webpackChunkName: "ConfirmationModal" */ '../../components/shared/modals/ConfirmationModal.vue'),
-  loadingComponent: Loader,
-  delay: 200
-});
+import { useMutation } from '@vue/apollo-composable';
+import { REGISTRATION } from '@/graphql/mutations';
 
 export default defineComponent({
   name: 'Registration',
   components: {
     TopDoubleWaves,
     AppCard,
-    ConfirmationModalAsync
+    Loader
   },
   props: {},
   setup() {
-    const store = useStore();
     const router = useRouter();
     const title = 'Create account';
-    const doneRegistration = ref(false);
     const passwordStrengthText = ref('');
     const togglePassword = ref(false);
     const confirmPwd = ref('');
@@ -216,6 +197,8 @@ export default defineComponent({
     onMounted(() => {
       clearStorage();
     });
+    const { mutate: createAccount, loading: loadCreate, error: errCreate } = useMutation(REGISTRATION);
+
     const passwordStrength = computed(() => passwordStrengthText.value !== 'Too weak');
     const checkPwd = computed(
       () => registrationRequest.password === '' || registrationRequest.password !== confirmPwd.value
@@ -240,32 +223,26 @@ export default defineComponent({
     };
 
     const onRegistrationClick = async () => {
-      await store
-        .dispatch(AuthActionTypes.REGISTRATION, registrationRequest)
-        .then(() => {
-          doneRegistration.value = true;
-        })
-        .catch((err: unknown) => {
-          console.log(err);
-          doneRegistration.value = false;
-        });
-    };
-
-    const registrationComplete = () => {
-      router.push(Routes.Home);
+      await createAccount({ input: registrationRequest }).then((res) => {
+        if (res.data.registration.token != null) {
+          storeToken(res.data.registration.token);
+          router.push(Routes.Home);
+          return Promise.resolve();
+        }
+      });
     };
 
     return {
+      loadCreate,
+      errCreate,
       registrationRequest,
       togglePassword,
       title,
-      doneRegistration,
       confirmPwd,
       checkPasswordStrength,
       passwordStrengthText,
       registrationDisabled,
-      onRegistrationClick,
-      registrationComplete
+      onRegistrationClick
     };
   }
 });

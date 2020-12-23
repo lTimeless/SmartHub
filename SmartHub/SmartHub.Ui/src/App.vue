@@ -1,10 +1,10 @@
 <template>
   <div id="app">
-    <router-view v-slot="{ Component }">
-      <transition name="route" mode="out-in">
-        <component :is="Component" />
-      </transition>
-    </router-view>
+    <router-view></router-view>
+<!--      <transition name="route" mode="out-in">-->
+<!--        <component :is="Component" />-->
+<!--      </transition>-->
+
   </div>
 </template>
 

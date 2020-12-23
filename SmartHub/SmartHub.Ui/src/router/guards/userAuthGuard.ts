@@ -1,5 +1,5 @@
 import { NavigationGuardNext, RouteLocationNormalized } from 'vue-router';
-import { getUserRoles, isAuthenticated, logout } from '@/services/auth/authService';
+import { clearStorage, getUserRoles, isAuthenticated } from '@/services/auth/authService';
 import { Roles } from '@/types/enums';
 
 const validateUserRoleToRoute = (to: RouteLocationNormalized, roles: Roles, next: NavigationGuardNext) => {
@@ -19,7 +19,7 @@ const validateUserRoleToRoute = (to: RouteLocationNormalized, roles: Roles, next
     if (roles === Roles.Admin || roles === Roles.User || roles === Roles.Guest) {
       next();
     } else {
-      logout();
+      clearStorage();
       next({ name: 'Login' });
     }
   }

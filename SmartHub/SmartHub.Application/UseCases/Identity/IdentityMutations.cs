@@ -18,11 +18,13 @@ namespace SmartHub.Application.UseCases.Identity
 		/// </summary>
 		/// <param name="userManager"></param>
 		/// <param name="identityService"></param>
+		/// <param name="unitOfWork">The unit of work.</param>
 		/// <param name="configService"></param>
 		/// <param name="input"></param>
 		/// <returns>The payload with requested data.</returns>
 		public async Task<IdentityPayload> Login([Service] UserManager<User> userManager,
 			[Service] IdentityService identityService,
+			[Service] IUnitOfWork unitOfWork,
 			[Service] IAppConfigService configService,
 			LoginInput input)
 		{
@@ -37,14 +39,21 @@ namespace SmartHub.Application.UseCases.Identity
 				return new IdentityPayload(new UserError("You are not authorized.", AppErrorCodes.Exists));
 			}
 			var result = await identityService.LoginAsync(input, foundUser);
-
 			if (!result)
 			{
 				return new IdentityPayload(
 					new UserError($"Error: Couldn't sign in user with username {input.UserName}", AppErrorCodes.Exists));
 			}
 			var rolesToUser = await userManager.GetRolesAsync(foundUser);
+			if (foundUser.IsFirstLogin is false)
+			{
+				return identityService.CreateAuthResponse(foundUser, rolesToUser.ToList());
+			}
+
+			foundUser.IsFirstLogin = false;
+			await unitOfWork.SaveAsync();
 			return identityService.CreateAuthResponse(foundUser, rolesToUser.ToList());
+
 		}
 
 		/// <summary>
@@ -52,6 +61,7 @@ namespace SmartHub.Application.UseCases.Identity
 		/// </summary>
 		/// <param name="identityService">The identity service.</param>
 		/// <param name="userRepository">The user repository.</param>
+		/// <param name="unitOfWork">The unit of work.</param>
 		/// <param name="input">The input the user does.</param>
 		/// <returns>The payload with requested data.</returns>
 		public async Task<IdentityPayload> Registration([Service] IdentityService identityService,

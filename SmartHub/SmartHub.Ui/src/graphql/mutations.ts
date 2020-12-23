@@ -100,6 +100,7 @@ export const LOGIN = gql`
       user {
         id
         userName
+        isFirstLogin
       }
       errors {
         message

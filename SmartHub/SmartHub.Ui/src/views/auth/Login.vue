@@ -38,7 +38,7 @@
                   required
                   type="text"
                   v-model="userName"
-                  class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded"
+                  class="mt-1 focus:ring-primary focus:border-primary block w-full sm:text-sm border-gray-300 rounded"
                   placeholder="Jane Doe"
                 />
               </label>
@@ -47,7 +47,7 @@
                 <input
                   required
                   v-model="password"
-                  class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded"
+                  class="mt-1 focus:ring-primary focus:border-primary block w-full sm:text-sm border-gray-300 rounded"
                   placeholder="***************"
                   type="password"
                   @keyup.enter="onLoginClick"
@@ -55,7 +55,7 @@
               </label>
 
               <button
-                class="block w-full px-4 py-2 mt-4 text-sm font-medium leading-5 text-center text-white transition-colors duration-150 bg-primary border border-transparent rounded active:bg-primary focus:outline-none focus:shadow-outlineIndigo"
+                class="block w-full px-4 py-2 mt-4 text-sm font-medium leading-5 text-center text-white transition-colors duration-150 bg-primary border border-transparent rounded active:bg-primary"
                 :class="
                   signInDisabled
                     ? 'opacity-50 focus:outline-none cursor-not-allowed'
@@ -64,7 +64,10 @@
                 @click="onLoginClick"
                 :disabled="signInDisabled"
               >
-                Log in
+                <span class="flex content-center justify-center">
+                  <Loader v-if="loadLogin" height="h-2" width="w-2" />
+                  <span class="pl-2">Log in</span>
+                </span>
               </button>
               <hr class="my-8" />
               <button
@@ -100,17 +103,17 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, ref, watch } from 'vue';
+import { computed, defineComponent, reactive, ref, watch } from 'vue';
 import { LoginInput } from '@/types/types';
 import { useRouter } from 'vue-router';
-import { useStore } from 'vuex';
-import { AuthActionTypes } from '@/store/auth/actions';
-import { useQuery } from '@vue/apollo-composable';
+import { useMutation, useQuery, useResult } from '@vue/apollo-composable';
 import { HOME_AND_USERS_EXIST } from '@/graphql/queries';
 import { Routes } from '@/types/enums';
 import Loader from '@/components/shared/Loader.vue';
 import TopDoubleWaves from '@/components/shared/svgs/TopDoubleWaves.vue';
 import AppCard from '@/components/shared/widgets/AppCard.vue';
+import { LOGIN } from '@/graphql/mutations';
+import { storeToken } from '@/services/auth/authService';
 
 export default defineComponent({
   name: 'Login',
@@ -121,50 +124,45 @@ export default defineComponent({
   },
   props: {},
   setup() {
-    const store = useStore();
     const router = useRouter();
     const title = 'Login';
     const password = ref('');
     const userName = ref('');
-    const isSignInBtnClicked = ref(false);
-    const input = ref<LoginInput>();
-    const { result, loading, error } = useQuery(HOME_AND_USERS_EXIST);
+    const loginInput: LoginInput = reactive({
+      userName: '',
+      password: ''
+    });
+    const { mutate: login, loading: loadLogin, error: errLogin } = useMutation(LOGIN);
 
-    watch([loading, error], ([newLoad, newError]) => {
-      if (!newLoad && !newError) {
-        if (!result.value.applicationIsActive) {
-          router.push(Routes.Init);
-          return Promise.resolve();
-        }
-        if (!result.value.usersExist) {
-          router.push(Routes.Registration);
-          return Promise.resolve();
-        }
+    const { result, loading, error } = useQuery(HOME_AND_USERS_EXIST);
+    const data = useResult(result, null, (data) => data);
+    watch(data, (newData) => {
+      if (!newData.applicationIsActive) {
+        router.push(Routes.Init);
+        return Promise.resolve();
+      }
+      if (!newData.usersExist) {
+        router.push(Routes.Registration);
+        return Promise.resolve();
       }
     });
 
     const onLoginClick = async () => {
-      isSignInBtnClicked.value = true;
-      input.value = {
-        userName: userName.value,
-        password: password.value
-      };
-      store
-        .dispatch(AuthActionTypes.LOGIN, input.value)
-        .then(() => {
-          isSignInBtnClicked.value = false;
-          router.push(Routes.Home);
-        })
-        .catch(() => {
-          isSignInBtnClicked.value = false;
-        });
+      loginInput.userName = userName.value;
+      loginInput.password = password.value;
+      await login({ input: loginInput }).then((res) => {
+        storeToken(res.data.login.token);
+        router.push(Routes.Home);
+      });
     };
 
     const signInDisabled = computed(
-      () => userName.value.length === 0 || password.value.length < 4 || isSignInBtnClicked.value
+      () => userName.value.length === 0 || password.value.length < 4
     );
 
     return {
+      loadLogin,
+      errLogin,
       error,
       loading,
       title,

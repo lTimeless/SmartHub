@@ -1,6 +1,5 @@
 import { Roles } from '@/types/enums';
 import JwtDecode from 'jwt-decode';
-import router from '@/router';
 
 type TokenPayload = {
   unique_name: string;
@@ -66,11 +65,4 @@ export const getUserRoles = (): Roles => {
     return Roles.Guest;
   }
   return Roles.None;
-};
-
-export const logout = (): void => {
-  // const store = useStore();
-  // store.dispatch(A_LOGOUT);
-  clearStorage();
-  router.push('/login');
 };

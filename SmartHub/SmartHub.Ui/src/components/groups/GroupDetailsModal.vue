@@ -96,7 +96,7 @@
 import { defineComponent, reactive, ref, watch } from 'vue';
 import BaseModal from '@/components/shared/modals/BaseModal.vue';
 import { Group, UpdateGroupInput } from '@/types/types';
-import { useMutation, useQuery } from '@vue/apollo-composable';
+import { useMutation, useQuery, useResult } from "@vue/apollo-composable";
 import { GET_GROUPS, GET_GROUP_BY_ID } from '@/graphql/queries';
 import Loader from '@/components/shared/Loader.vue';
 import { UPDATE_GROUP } from '@/graphql/mutations';
@@ -115,7 +115,6 @@ export default defineComponent({
     }
   },
   setup(props, context) {
-    const group = ref<Group | undefined>();
     const close = () => {
       context.emit('close');
     };
@@ -126,11 +125,7 @@ export default defineComponent({
     const { result, loading, error } = useQuery(GET_GROUP_BY_ID, () => ({ id: props.groupId }), {
       fetchPolicy: 'no-cache'
     });
-    watch([loading, error], ([newLoad, newError]) => {
-      if (!newLoad && !newError) {
-        group.value = result.value.groups[0];
-      }
-    });
+    const group = useResult(result, null, (data) => data.groups[0]);
 
     const save = async () => {
       if (group.value) {

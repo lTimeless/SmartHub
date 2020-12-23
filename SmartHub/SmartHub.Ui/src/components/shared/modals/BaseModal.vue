@@ -60,10 +60,10 @@
                 ]"
                 :disabled="!saveBtnActive || loading"
               >
-                <div class="flex">
+                <span class="flex">
                   <Loader v-if="loading" height="h-2" width="w-2" />
                   <span class="pl-2">{{ saveBtnTitle }}</span>
-                </div>
+                </span>
               </button>
             </div>
           </div>

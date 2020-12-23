@@ -16,8 +16,8 @@ module.exports = {
         loginBackground: colors.gray['300'],
         sidebar: colors.gray['200'],
         typo: colors.gray['700'],
-        primary: colors.indigo['600'],
-        primaryHover: colors.indigo['700'],
+        primary: colors.indigo['400'],
+        primaryHover: colors.indigo['600'],
         border: colors.gray['300']
       },
       spacing: {

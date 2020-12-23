@@ -13,7 +13,7 @@ export enum Routes {
   Me = '/me',
   // Home
   Home = '/',
-  Dashboard = '',
+  Dashboard = '/dashboard',
   Groups = '/groups',
   Devices = '/devices',
   Users = '/users',

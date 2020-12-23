@@ -48,7 +48,6 @@
                 class="cursor-pointer text-black opacity-50 md:hidden px-1 py-1 text-xl leading-none bg-transparent rounded border border-solid border-transparent"
                 @click="toggleCollapseShow('hidden')"
               >
-                <i class="fas fa-times"></i>
                 X
               </button>
             </div>
@@ -74,65 +73,35 @@
             </label>
           </div>
         </form>
-        <div v-for="page in sidebarLists" :key="page.name" class="mb-2">
-          <template v-if="roleIncluded(page.roleNeeded)">
-            <router-link :to="page.path">
-              <h1
-                class="flex text-lg items-center tracking-wide leading-loose font-bold text-gray-500"
-                :class="this.getClassesForAnchor(page.path)"
-              >
-                <span
-                  class="mr-2 w-2 h-2 rounded-full opacity-0 bg-primary transition transform scale-1"
-                  :class="{
-                    'opacity-100 scale-100': this.currentPath === page.path
-                  }"
-                ></span>
-                {{ page.name }}
-              </h1>
-            </router-link>
-
-            <ul class="max-w-full pl-4 mb-0">
-              <li
-                v-for="child in page.children"
-                :id="child.path"
-                :key="child.path"
-                :class="this.getClassesForAnchor(child.path)"
-                class="hover:text-primary text-gray-600"
-              >
-                <template v-if="roleIncluded(child.roleNeeded)">
-                  <router-link :to="child.path" class="flex items-center">
-                    <span
-                      class="flex mr-2 w-2 h-2 rounded-full opacity-0 bg-primary transition transform scale-0 origin-center"
-                      :class="{
-                        'opacity-100 scale-100': this.currentPath === child.path
-                      }"
-                    ></span>
-                    {{ child.name }}
-                  </router-link>
-                </template>
-              </li>
-            </ul>
-          </template>
+        <div v-for="view in sidebarLists" :key="view.label" class="mb-2">
+          <NavigationItem
+            v-if="roleIncluded(view.rolesRequired)"
+            :icon="view.icon"
+            :label="view.label"
+            :route="view.route"
+          />
         </div>
       </div>
     </div>
   </nav>
 </template>
 <script lang="ts">
-import NotificationDropdown from './NotificationDropdown.vue';
-import UserDropdown from './UserDropdown.vue';
+import NotificationDropdown from '../NotificationDropdown.vue';
+import UserDropdown from '../UserDropdown.vue';
 import { computed, defineComponent, onMounted, ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { getUserRoles } from '@/services/auth/authService';
 import { Roles, Routes } from '@/types/enums';
 import Logo from '@/components/shared/svgs/Logo.vue';
+import NavigationItem from '@/components/layout/AppSidebar/NavigationItem.vue';
 
 export default defineComponent({
   name: 'AppSidebar',
   components: {
     Logo,
     NotificationDropdown,
-    UserDropdown
+    UserDropdown,
+    NavigationItem
   },
   props: {},
   setup() {
@@ -144,99 +113,92 @@ export default defineComponent({
     const sidebarLists = [
       // Guest views
       {
-        name: 'Dashboard',
-        roleNeeded: [Roles.Guest, Roles.User, Roles.Admin],
-        path: Routes.Home,
-        icon: 'mdi-view-dashboard',
+        label: 'Dashboard',
+        rolesRequired: [Roles.Guest, Roles.User, Roles.Admin],
+        route: Routes.Home,
+        icon: 'home',
         children: []
       },
       // User views
       {
-        name: 'Groups',
-        roleNeeded: [Roles.User, Roles.Admin],
-        path: Routes.Groups,
-        icon: 'mdi-chart-arc',
+        label: 'Groups',
+        rolesRequired: [Roles.User, Roles.Admin],
+        route: Routes.Groups,
+        icon: 'folder',
         children: []
       },
       {
-        name: 'Devices',
-        roleNeeded: [Roles.User, Roles.Admin],
-        path: Routes.Devices,
-        icon: 'mdi-chart-arc',
+        label: 'Devices',
+        rolesRequired: [Roles.User, Roles.Admin],
+        route: Routes.Devices,
+        icon: 'server',
         children: []
       },
       {
-        name: 'Users',
-        roleNeeded: [Roles.User, Roles.Admin],
-        path: Routes.Users,
-        icon: 'mdi-chart-arc',
+        label: 'Users',
+        rolesRequired: [Roles.User, Roles.Admin],
+        route: Routes.Users,
+        icon: 'users',
         children: []
       },
       {
-        name: 'Automations',
-        roleNeeded: [Roles.User, Roles.Admin],
-        path: Routes.Automations,
-        icon: 'mdi-chart-arc',
+        label: 'Automations',
+        rolesRequired: [Roles.User, Roles.Admin],
+        route: Routes.Automations,
+        icon: 'repeat',
         children: []
       },
       {
-        name: 'Statistics',
-        roleNeeded: [Roles.User, Roles.Admin],
-        path: Routes.Statistics,
-        icon: 'mdi-chart-arc',
+        label: 'Statistics',
+        rolesRequired: [Roles.User, Roles.Admin],
+        route: Routes.Statistics,
+        icon: 'pie-chart',
         children: []
       },
       {
-        name: 'Plugins',
-        roleNeeded: [Roles.User, Roles.Admin],
-        path: Routes.Plugins,
-        icon: 'mdi-chart-arc',
+        label: 'Plugins',
+        rolesRequired: [Roles.User, Roles.Admin],
+        route: Routes.Plugins,
+        icon: 'plugin',
         children: []
       },
       {
-        name: 'Configuration',
-        roleNeeded: [Roles.User, Roles.Admin],
-        path: Routes.Configuration,
-        icon: 'mdi-cog',
-        children: [
-          {
-            name: 'System',
-            roleNeeded: [Roles.Admin],
-            path: Routes.System,
-            icon: 'mdi-desktop-classic',
-            children: []
-          },
-          {
-            name: 'Health',
-            roleNeeded: [Roles.Admin],
-            path: Routes.Health,
-            icon: 'mdi-clipboard-pulse',
-            children: []
-          }
-        ]
-      },
-      // Admin views
-      {
-        name: 'Activity',
-        roleNeeded: [Roles.Admin],
-        path: Routes.Activity,
-        icon: 'mdi-calendar-alert',
-        children: []
-      },
-      {
-        name: 'Logs',
-        roleNeeded: [Roles.Admin],
-        path: Routes.Logs,
-        icon: 'mdi-file-document',
-        children: []
-      },
-      {
-        name: 'Manager',
-        roleNeeded: [Roles.Admin],
-        path: Routes.Manager,
-        icon: 'mdi-monitor-edit',
+        label: 'Configuration',
+        rolesRequired: [Roles.User, Roles.Admin],
+        route: Routes.Configuration,
+        icon: 'settings',
         children: []
       }
+      // Admin views
+      // TODO werden zu tabs oder mini-sidebar in der config view von der Admin view
+      // {
+      //   name: 'System',
+      //   roleNeeded: [Roles.Admin],
+      //   path: Routes.System,
+      //   icon: 'mdi-desktop-classic',
+      //   children: []
+      // },
+      // {
+      //   name: 'Health',
+      //   roleNeeded: [Roles.Admin],
+      //   path: Routes.Health,
+      //   icon: 'mdi-clipboard-pulse',
+      //   children: []
+      // }
+      // {
+      //   name: 'Activity',
+      //   roleNeeded: [Roles.Admin],
+      //   path: Routes.Activity,
+      //   icon: 'mdi-calendar-alert',
+      //   children: []
+      // },
+      // {
+      //   name: 'Logs',
+      //   roleNeeded: [Roles.Admin],
+      //   path: Routes.Logs,
+      //   icon: 'mdi-file-document',
+      //   children: []
+      // }
       // TODO: move to toolbar or help icon on the bottom of sidebar
       // {
       //   name: 'About',

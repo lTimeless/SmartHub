@@ -10,12 +10,12 @@ import Activity from '@/views/home/admin/Activity.vue';
 import Logs from '@/views/home/admin/Logs.vue';
 import System from '@/views/home/admin/System.vue';
 import Health from '@/views/home/admin/Health.vue';
-import Manager from '@/views/home/admin/Manager.vue';
 import { Routes } from '@/types/enums';
+import Home from '@/views/Home.vue';
 
 const routes: Array<RouteRecordRaw> = [
   {
-    path: Routes.Login,
+    path: '/login',
     name: 'Login',
     component: Login,
     meta: {
@@ -23,7 +23,7 @@ const routes: Array<RouteRecordRaw> = [
     }
   },
   {
-    path: Routes.Registration,
+    path: '/registration',
     name: 'Registration',
     component: Registration,
     meta: {
@@ -31,7 +31,7 @@ const routes: Array<RouteRecordRaw> = [
     }
   },
   {
-    path: Routes.Init,
+    path: '/init',
     name: 'init',
     component: Init,
     meta: {
@@ -39,8 +39,8 @@ const routes: Array<RouteRecordRaw> = [
     }
   },
   {
-    path: Routes.Home,
-    component: () => import(/* webpackChunkName: "home" */ '../views/Home.vue'),
+    path: '/',
+    component: Home,
     meta: {
       requiresAuth: true,
       isGuest: true
@@ -48,7 +48,7 @@ const routes: Array<RouteRecordRaw> = [
     children: [
       // Guest paths #####
       {
-        path: Routes.Dashboard,
+        path: '',
         name: 'Dashboard',
         component: () => import(/* webpackChunkName: "dashboard" */ '../views/home/Dashboard.vue'),
         meta: {
@@ -57,7 +57,7 @@ const routes: Array<RouteRecordRaw> = [
         }
       },
       {
-        path: Routes.Me,
+        path: '/me',
         name: 'Me',
         component: () => import(/* webpackChunkName: "user" */ '../views/home/Me.vue'),
         meta: {
@@ -66,17 +66,53 @@ const routes: Array<RouteRecordRaw> = [
         }
       },
       {
-        path: Routes.About,
-        name: 'About',
-        // route level code-splitting
-        // this generates a separate chunk (about.[hash].js) for this route
-        // which is lazy-loaded when the route is visited.
-        component: () => import(/* webpackChunkName: "about" */ '../views/home/About.vue'),
+        path: '/groups',
+        name: 'Groups',
+        component: () => import(/* webpackChunkName: "init" */ '../views/home/Groups.vue'),
         meta: {
           requiresAuth: true,
-          isGuest: true
+          isUser: true
         }
       },
+      {
+        path: Routes.Devices,
+        name: 'Devices',
+        component: () => import(/* webpackChunkName: "init" */ '../views/home/Devices.vue'),
+        meta: {
+          requiresAuth: true,
+          isUser: true
+        }
+      },
+      {
+        path: Routes.Users,
+        name: 'Users',
+        component: () => import(/* webpackChunkName: "init" */ '../views/home/Users.vue'),
+        meta: {
+          requiresAuth: true,
+          isUser: true
+        }
+      },
+      {
+        path: Routes.Automations,
+        name: 'Automations',
+        component: () => import(/* webpackChunkName: "init" */ '../views/home/Automations.vue'),
+        meta: {
+          requiresAuth: true,
+          isUser: true
+        }
+      },
+      // {
+      //   path: Routes.About,
+      //   name: 'About',
+      //   // route level code-splitting
+      //   // this generates a separate chunk (about.[hash].js) for this route
+      //   // which is lazy-loaded when the route is visited.
+      //   component: () => import(/* webpackChunkName: "about" */ '../views/home/About.vue'),
+      //   meta: {
+      //     requiresAuth: true,
+      //     isGuest: true
+      //   }
+      // },
       // User paths #####
       {
         path: Routes.Configuration,
@@ -138,15 +174,6 @@ const routes: Array<RouteRecordRaw> = [
         path: Routes.Health,
         name: 'Health',
         component: Health,
-        meta: {
-          requiresAuth: true,
-          isAdmin: true
-        }
-      },
-      {
-        path: Routes.Manager,
-        name: 'Manager',
-        component: Manager,
         meta: {
           requiresAuth: true,
           isAdmin: true

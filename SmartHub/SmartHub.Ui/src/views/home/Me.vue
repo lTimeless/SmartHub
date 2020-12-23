@@ -119,13 +119,14 @@
 
 <script lang="ts">
 import { defineComponent, ref, computed, reactive } from 'vue';
-import { getUserRoles, logout } from '@/services/auth/authService';
-import { Roles } from '@/types/enums';
+import { clearStorage, getUserRoles } from '@/services/auth/authService';
+import { Roles, Routes } from '@/types/enums';
 import { UpdateUserInput } from '@/types/types';
 import { useMutation, useQuery, useResult } from '@vue/apollo-composable';
 import Loader from '@/components/shared/Loader.vue';
 import { UPDATE_USER } from '@/graphql/mutations';
 import { WHO_AM_I } from '@/graphql/queries';
+import { useRouter } from 'vue-router';
 
 export default defineComponent({
   name: 'Me',
@@ -155,7 +156,9 @@ export default defineComponent({
       await updateUser({ input: updateUserInput }, { refetchQueries: [{ query: WHO_AM_I }] });
 
       if (typeof updateUserInput.newRole !== 'undefined' && updateUserInput.newRole !== prevRole) {
-        logout();
+        await clearStorage();
+        const router = useRouter();
+        await router.replace(Routes.Login);
       }
     };
     return {

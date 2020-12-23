@@ -59,7 +59,7 @@
 <script lang="ts">
 import { computed, defineComponent, ref } from 'vue';
 import { useStore } from 'vuex';
-import { logout } from '@/services/auth/authService';
+import { clearStorage } from '@/services/auth/authService';
 import { useRouter } from 'vue-router';
 import { Routes } from '@/types/enums';
 import { AppActionTypes } from '@/store/app/actions';
@@ -98,10 +98,11 @@ export default defineComponent({
       });
     };
 
-    const logoutClick = () => {
-      logout();
-      store.dispatch(AppActionTypes.SET_NOTIFICATION_DROPDOWN, false);
-      store.dispatch(AppActionTypes.SET_USER_DROPDOWN, false);
+    const logoutClick = async () => {
+      await clearStorage();
+      await router.push(Routes.Login);
+      await store.dispatch(AppActionTypes.SET_NOTIFICATION_DROPDOWN, false);
+      await store.dispatch(AppActionTypes.SET_USER_DROPDOWN, false);
     };
 
     return {
