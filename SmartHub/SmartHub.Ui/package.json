@@ -24,6 +24,7 @@
   },
   "devDependencies": {
     "@tailwindcss/forms": "^0.2.1",
+    "@types/feather-icons": "^4.7.0",
     "@typescript-eslint/eslint-plugin": "^4.9.0",
     "@typescript-eslint/parser": "^4.9.0",
     "@vue/cli-plugin-babel": "^4.5.9",

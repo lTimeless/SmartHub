@@ -1,6 +1,6 @@
 <template>
   <nav
-    class="md:left-0 md:block md:fixed md:top-0 md:bottom-0 md:overflow-y-auto md:flex-row md:flex-no-wrap md:overflow-hidden flex flex-wrap items-center justify-between md:w-64 z-10 py-4 px-6 bg-white border"
+    class="md:left-0 md:block md:fixed md:top-0 md:bottom-0 md:overflow-y-auto md:flex-row md:flex-no-wrap md:overflow-hidden flex flex-wrap items-center justify-between md:w-64 z-10 py-4 px-6 bg-white"
   >
     <div
       class="md:flex-col md:items-stretch md:min-h-full md:flex-no-wrap px-0 flex flex-wrap items-center justify-between w-full mx-auto"
@@ -109,7 +109,6 @@ export default defineComponent({
     const isRole = ref('');
     const collapseShow = ref<string>('hidden');
     const collapseShowBool = ref(false);
-
     const sidebarLists = [
       // Guest views
       {
@@ -236,3 +235,19 @@ export default defineComponent({
   }
 });
 </script>
+<style lang="scss" scoped>
+.sidebar {
+  overflow: auto;
+  @apply fixed bg-background px-4 inset-x-0 bottom-0 w-full border-r border-border transition-all z-40;
+  transform: translateX(-100%);
+
+  &.open {
+    transform: translateX(0);
+  }
+
+  @screen md {
+    @apply w-1/4 px-0 bg-transparent top-0 bottom-auto inset-x-auto sticky z-0;
+    transform: translateX(0);
+  }
+}
+</style>

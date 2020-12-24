@@ -24,7 +24,11 @@
       <div class="relative md:ml-64 min-h-screen z-20">
         <div class="md:pt-28 pt-12 px-4 md:px-10 mx-auto w-full z-10">
           <Navbar />
-          <router-view></router-view>
+          <router-view v-slot="{ Component }">
+            <transition appear name="route" mode="out-in">
+              <component :is="Component" />
+            </transition>
+          </router-view>
         </div>
       </div>
     </main>
@@ -54,3 +58,22 @@ export default defineComponent({
   }
 });
 </script>
+<style lang="scss" scoped>
+/* Router view transitions */
+.route-enter-from,
+.route-leave-to {
+  opacity: 0;
+  transform: translateY(-30px);
+}
+
+.route-enter-active,
+.route-leave-active {
+  transition: all 0.2s ease;
+}
+
+.route-enter-to,
+.route-leave-from {
+  opacity: 1;
+  transform: translateY(0);
+}
+</style>
