@@ -76,7 +76,7 @@
         <div v-for="view in sidebarLists" :key="view.label" class="mb-2">
           <NavigationItem
             v-if="roleIncluded(view.rolesRequired)"
-            :icon="view.icon"
+            :icon-name="view.iconName"
             :label="view.label"
             :route="view.route"
           />
@@ -115,7 +115,7 @@ export default defineComponent({
         label: 'Dashboard',
         rolesRequired: [Roles.Guest, Roles.User, Roles.Admin],
         route: Routes.Home,
-        icon: 'home',
+        iconName: 'Home',
         children: []
       },
       // User views
@@ -123,49 +123,49 @@ export default defineComponent({
         label: 'Groups',
         rolesRequired: [Roles.User, Roles.Admin],
         route: Routes.Groups,
-        icon: 'folder',
+        iconName: 'Folder',
         children: []
       },
       {
         label: 'Devices',
         rolesRequired: [Roles.User, Roles.Admin],
         route: Routes.Devices,
-        icon: 'server',
+        iconName: 'Server',
         children: []
       },
       {
         label: 'Users',
         rolesRequired: [Roles.User, Roles.Admin],
         route: Routes.Users,
-        icon: 'users',
+        iconName: 'Users',
         children: []
       },
       {
         label: 'Automations',
         rolesRequired: [Roles.User, Roles.Admin],
         route: Routes.Automations,
-        icon: 'repeat',
+        iconName: 'Repeat',
         children: []
       },
       {
         label: 'Statistics',
         rolesRequired: [Roles.User, Roles.Admin],
         route: Routes.Statistics,
-        icon: 'pie-chart',
+        iconName: 'Pie-chart',
         children: []
       },
       {
         label: 'Plugins',
         rolesRequired: [Roles.User, Roles.Admin],
         route: Routes.Plugins,
-        icon: 'plugin',
+        iconName: 'Plugin',
         children: []
       },
       {
         label: 'Configuration',
         rolesRequired: [Roles.User, Roles.Admin],
         route: Routes.Configuration,
-        icon: 'settings',
+        iconName: 'Settings',
         children: []
       }
       // Admin views
