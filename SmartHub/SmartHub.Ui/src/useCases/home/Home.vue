@@ -4,14 +4,7 @@
       <template #header>
         <!-- Cards -->
         <div class="flex flex-wrap justify-between">
-          <CardsRow
-            :callback-zero="toggleTabs.bind(this, 0)"
-            :callback-one="toggleTabs.bind(this, 1)"
-            :callback-two="toggleTabs.bind(this, 2)"
-            :callback-three="toggleTabs.bind(this, 3)"
-            :callback-four="toggleTabs.bind(this, 4)"
-            :open-tab="openTab"
-          />
+          <CardsRow />
         </div>
         <!-- Expand Arrow -->
         <div v-if="openTab === 0" class="px-4 my-2 flex justify-end cursor-pointer">
@@ -333,17 +326,17 @@
 
 <script lang="ts">
 import { defineComponent, computed, ref, onMounted } from 'vue';
-import AppTabs from '@/components/shared/widgets/AppTabs.vue';
-import AppAutomation from '@/views/home/Automations.vue';
+import AppTabs from '@/components/ui/AppTabs.vue';
+import AppAutomation from '@/useCases/automations/Automations.vue';
 import GroupsOverview from '@/useCases/groups/Groups.vue';
-import DevicesOverview from '@/views/home/Devices.vue';
+import DevicesOverview from '@/useCases/devices/Devices.vue';
 import { useStore } from 'vuex';
 import BarChart from '@/components/charts/BarChart.vue';
 import LineChart from '@/components/charts/LineChart.vue';
 import { getUserRoles } from '@/services/auth/authService';
 import { Roles } from '@/types/enums';
-import AdminCardsRow from '@/components/layout/admin/AdminCardsRow.vue';
-import CardsRow from '@/components/dashboard/CardsRow.vue';
+import AdminCardsRow from '@/useCases/home/components/AdminCardsRow.vue';
+import CardsRow from '@/useCases/home/components/CardsRow.vue';
 
 export default defineComponent({
   name: 'Home',

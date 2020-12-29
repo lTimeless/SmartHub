@@ -76,8 +76,8 @@
 <script lang="ts">
 import { defineComponent, onUnmounted, ref, reactive, watch } from 'vue';
 import { ServerActivity } from '@/types/types';
-import Search from '@/components/shared/widgets/AppSearch.vue';
-import Table from '@/components/shared/widgets/AppTable.vue';
+import Search from '@/components/ui/AppSearch.vue';
+import Table from '@/components/ui/AppTable.vue';
 import { useSignalRHub } from '@/hooks/useSignalR';
 
 export default defineComponent({

@@ -149,12 +149,12 @@
 
 <script lang="ts">
 import { defineComponent, reactive, ref } from 'vue';
-import BaseModal from '@/components/shared/modals/BaseModal.vue';
+import BaseModal from '@/components/ui/modals/BaseModal.vue';
 import { UpdateDeviceInput } from '@/types/types';
 import { useEnumTypes } from '@/hooks/useEnums';
 import { useQuery, useMutation, useResult } from '@vue/apollo-composable';
 import { GET_DEVICES, GET_DEVICE_BY_ID } from '@/graphql/queries';
-import Loader from '@/components/shared/Loader.vue';
+import Loader from '@/components/ui/AppSpinner.vue';
 import { UPDATE_DEVICE } from '@/graphql/mutations';
 
 export default defineComponent({

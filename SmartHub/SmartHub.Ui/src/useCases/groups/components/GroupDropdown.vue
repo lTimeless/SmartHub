@@ -67,7 +67,7 @@
 </template>
 <script lang="ts">
 import { defineComponent, ref, reactive, toRefs } from 'vue';
-import GroupCreateModal from '@/components/groups/GroupCreateModal.vue';
+import GroupCreateModal from '@/useCases/groups/components/GroupCreateModal.vue';
 
 export default defineComponent({
   name: 'GroupDropdown',

@@ -23,7 +23,7 @@
             <img
               aria-hidden="true"
               class="object-fill w-full h-full dark:hidden"
-              src="../../assets/images/undraw_smart_home_28oy.svg"
+              src="../../../assets/images/undraw_smart_home_28oy.svg"
               alt="Office"
             />
           </div>
@@ -109,11 +109,11 @@ import { useRouter } from 'vue-router';
 import { useMutation, useQuery, useResult } from '@vue/apollo-composable';
 import { HOME_AND_USERS_EXIST } from '@/graphql/queries';
 import { Routes } from '@/types/enums';
-import Loader from '@/components/shared/Loader.vue';
-import TopDoubleWaves from '@/components/shared/svgs/TopDoubleWaves.vue';
-import AppCard from '@/components/shared/widgets/AppCard.vue';
-import { LOGIN } from '@/graphql/mutations';
+import Loader from '@/components/ui/AppSpinner.vue';
+import TopDoubleWaves from '@/components/ui/svgs/TopDoubleWaves.vue';
+import AppCard from '@/components/ui/AppCard/AppCard.vue';
 import { storeToken } from '@/services/auth/authService';
+import { LOGIN } from '@/useCases/identity/login/LoginMutation';
 
 export default defineComponent({
   name: 'Login',

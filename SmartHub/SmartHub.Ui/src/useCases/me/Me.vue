@@ -123,7 +123,7 @@ import { clearStorage, getUserRoles } from '@/services/auth/authService';
 import { Roles, Routes } from '@/types/enums';
 import { UpdateUserInput } from '@/types/types';
 import { useMutation, useQuery, useResult } from '@vue/apollo-composable';
-import Loader from '@/components/shared/Loader.vue';
+import Loader from '@/components/ui/AppSpinner.vue';
 import { UPDATE_USER } from '@/graphql/mutations';
 import { WHO_AM_I } from '@/graphql/queries';
 import { useRouter } from 'vue-router';

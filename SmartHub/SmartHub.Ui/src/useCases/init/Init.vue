@@ -23,7 +23,7 @@
             <img
               aria-hidden="true"
               class="object-fill w-full h-full dark:hidden"
-              src="../assets/images/undraw_at_home_octe.svg"
+              src="../../assets/images/undraw_at_home_octe.svg"
               alt="Office"
             />
           </div>
@@ -103,13 +103,13 @@
 import { defineComponent, reactive, ref, watch } from 'vue';
 import { AppConfigInitInput } from '@/types/types';
 import { useRouter } from 'vue-router';
-import AppCard from '@/components/shared/widgets/AppCard.vue';
+import AppCard from '@/components/ui/AppCard/AppCard.vue';
 import { useMutation, useQuery, useResult } from '@vue/apollo-composable';
 import { ApplicationIsActive } from '@/graphql/queries';
 import { Routes } from '@/types/enums';
-import TopDoubleWaves from '@/components/shared/svgs/TopDoubleWaves.vue';
-import Loader from '@/components/shared/Loader.vue';
-import { INITIALIZE_APP } from '@/graphql/mutations';
+import TopDoubleWaves from '@/components/ui/svgs/TopDoubleWaves.vue';
+import Loader from '@/components/ui/AppSpinner.vue';
+import { INITIALIZE_APP } from '@/useCases/init/InitMutation';
 
 export default defineComponent({
   name: 'Init',

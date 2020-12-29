@@ -13,7 +13,7 @@
           <img
             aria-hidden="true"
             class="object-fill w-full h-full dark:hidden"
-            src="../../assets/images/undraw_smart_home_28oy.svg"
+            src="../../../assets/images/undraw_smart_home_28oy.svg"
             alt="Office"
           />
         </div>
@@ -167,12 +167,12 @@ import { defineComponent, onMounted, ref, reactive, computed } from 'vue';
 import { RegistrationInput } from '@/types/types';
 import { clearStorage, storeToken } from '@/services/auth/authService';
 import { useRouter } from 'vue-router';
-import Loader from '@/components/shared/Loader.vue';
+import Loader from '@/components/ui/AppSpinner.vue';
 import { Routes } from '@/types/enums';
-import TopDoubleWaves from '@/components/shared/svgs/TopDoubleWaves.vue';
-import AppCard from '@/components/shared/widgets/AppCard.vue';
+import TopDoubleWaves from '@/components/ui/svgs/TopDoubleWaves.vue';
+import AppCard from '@/components/ui/AppCard/AppCard.vue';
 import { useMutation } from '@vue/apollo-composable';
-import { REGISTRATION } from '@/graphql/mutations';
+import { REGISTRATION } from '@/useCases/identity/registration/RegistrationMutation';
 
 export default defineComponent({
   name: 'Registration',

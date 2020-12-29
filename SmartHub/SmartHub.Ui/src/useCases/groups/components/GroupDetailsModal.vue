@@ -94,11 +94,11 @@
 
 <script lang="ts">
 import { defineComponent, reactive, ref, watch } from 'vue';
-import BaseModal from '@/components/shared/modals/BaseModal.vue';
+import BaseModal from '@/components/ui/modals/BaseModal.vue';
 import { Group, UpdateGroupInput } from '@/types/types';
 import { useMutation, useQuery, useResult } from "@vue/apollo-composable";
 import { GET_GROUPS, GET_GROUP_BY_ID } from '@/graphql/queries';
-import Loader from '@/components/shared/Loader.vue';
+import Loader from '@/components/ui/AppSpinner.vue';
 import { UPDATE_GROUP } from '@/graphql/mutations';
 
 export default defineComponent({

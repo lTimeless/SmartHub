@@ -132,7 +132,7 @@
 
 <script lang="ts">
 import { defineComponent, reactive, computed } from 'vue';
-import BaseModal from '@/components/shared/modals/BaseModal.vue';
+import BaseModal from '@/components/ui/modals/BaseModal.vue';
 import { CreateDeviceInput } from '@/types/types';
 import { ConnectionTypes, PluginTypes } from '@/types/enums';
 import { useEnumTypes } from '@/hooks/useEnums.ts';
