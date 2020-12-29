@@ -37,7 +37,8 @@ const routes: Array<RouteRecordRaw> = [
       {
         path: Routes.Configuration,
         name: 'Configuration',
-        component: () => import(/* webpackChunkName: "config" */ '../useCases/configurations/Configuration.vue'),
+        component: () =>
+          import(/* webpackChunkName: "config" */ '../useCases/configurations/Configuration.vue'),
         meta: {
           requiresAuth: true,
           isUser: true

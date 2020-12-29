@@ -156,9 +156,7 @@ export default defineComponent({
       });
     };
 
-    const signInDisabled = computed(
-      () => userName.value.length === 0 || password.value.length < 4
-    );
+    const signInDisabled = computed(() => userName.value.length === 0 || password.value.length < 4);
 
     return {
       loadLogin,

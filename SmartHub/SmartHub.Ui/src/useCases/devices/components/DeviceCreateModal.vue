@@ -28,7 +28,9 @@
             v-model="deviceCreateinput.pluginTypes"
             class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md"
           >
-            <option v-for="(item, key) in pluginNames" :key="key" :value="item.toUpperCase()">{{ item }}</option>
+            <option v-for="(item, key) in pluginNames" :key="key" :value="item.toUpperCase()">
+              {{ item }}
+            </option>
           </select>
         </label>
       </div>
@@ -106,7 +108,9 @@
             v-model="deviceCreateinput.primaryConnection"
             class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md"
           >
-            <option v-for="(item, key) in connectionNames" :key="key" :value="item.toUpperCase()">{{ item }}</option>
+            <option v-for="(item, key) in connectionNames" :key="key" :value="item.toUpperCase()">
+              {{ item }}
+            </option>
           </select>
         </label>
       </div>
@@ -117,7 +121,9 @@
             v-model="deviceCreateinput.secondaryConnection"
             class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md"
           >
-            <option v-for="(item, key) in connectionNames" :key="key" :value="item.toUpperCase()">{{ item }}</option>
+            <option v-for="(item, key) in connectionNames" :key="key" :value="item.toUpperCase()">
+              {{ item }}
+            </option>
           </select>
         </label>
       </div>

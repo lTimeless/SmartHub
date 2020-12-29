@@ -18,4 +18,4 @@ export const identityRoutes: Array<RouteRecordRaw> = [
       requiresAuth: false
     }
   }
-]
+];

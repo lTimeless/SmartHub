@@ -42,4 +42,4 @@ export const adminRoutes: Array<RouteRecordRaw> = [
       isAdmin: true
     }
   }
-]
+];
