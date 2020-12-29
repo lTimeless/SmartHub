@@ -76,9 +76,7 @@
           <span class="text-xl text-gray-600"> 2 </span>
         </div>
         <div class="relative w-auto pl-4 flex-initial">
-          <div
-            class="text-center inline-flex items-center justify-center w-12 h-12 rounded-full bg-blue-400"
-          >
+          <div class="text-center inline-flex items-center justify-center w-12 h-12 rounded-full bg-blue-400">
             <AppIcon icon-name="repeat" />
           </div>
         </div>

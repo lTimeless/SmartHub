@@ -52,7 +52,7 @@ import TopDoubleWaves from '@/components/ui/svgs/TopDoubleWaves.vue';
 import { AppActionTypes } from '@/store/app/actions';
 
 export default defineComponent({
-  name: 'Layout' + '',
+  name: 'Layout',
   components: {
     Navbar,
     Sidebar,

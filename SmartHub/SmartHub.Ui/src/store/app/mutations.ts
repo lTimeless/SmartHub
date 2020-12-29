@@ -1,5 +1,5 @@
 import { MutationTree } from 'vuex';
-import { Group, Device, AppConfig, User } from '@/types/types';
+import { Group, Device, AppConfig } from '@/types/types';
 import { AppState } from '@/store/index.types';
 
 // Keys
