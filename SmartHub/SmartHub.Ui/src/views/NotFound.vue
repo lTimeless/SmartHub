@@ -11,7 +11,7 @@
 </template>
 
 <script lang="ts">
-import NotFoundLogo from '@/components/shared/svgs/NotFoundLogo.vue';
+import NotFoundLogo from '@/components/ui/svgs/NotFoundLogo.vue';
 import { defineComponent } from 'vue';
 
 export default defineComponent({

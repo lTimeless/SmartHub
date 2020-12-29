@@ -1,5 +1,5 @@
 import { ActionContext, ActionTree } from 'vuex';
-import { RootState, AppState, AuthState } from '@/store/index.types';
+import { RootState, AppState } from '@/store/index.types';
 import { Device, Group } from '@/types/types';
 import { AppMutations, AppMutationTypes } from '@/store/app/mutations';
 import { useQuery, useResult } from '@vue/apollo-composable';
@@ -19,7 +19,7 @@ export enum AppActionTypes {
 }
 
 // actions context type
-type ActionAugments = Omit<ActionContext<AuthState, RootState>, 'commit'> & {
+type ActionAugments = Omit<ActionContext<AppState, RootState>, 'commit'> & {
   commit<K extends keyof AppMutations>(
     key: K,
     payload: Parameters<AppMutations[K]>[1]

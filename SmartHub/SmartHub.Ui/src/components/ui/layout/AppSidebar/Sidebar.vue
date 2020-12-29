@@ -92,8 +92,8 @@ import { computed, defineComponent, onMounted, ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { getUserRoles } from '@/services/auth/authService';
 import { Roles, Routes } from '@/types/enums';
-import Logo from '@/components/shared/svgs/Logo.vue';
-import NavigationItem from '@/components/layout/AppSidebar/NavigationItem.vue';
+import Logo from '@/components/ui/svgs/Logo.vue';
+import NavigationItem from '@/components/ui/layout/AppSidebar/NavigationItem.vue';
 
 export default defineComponent({
   name: 'AppSidebar',
@@ -112,7 +112,7 @@ export default defineComponent({
     const sidebarLists = [
       // Guest views
       {
-        label: 'Dashboard',
+        label: 'Home',
         rolesRequired: [Roles.Guest, Roles.User, Roles.Admin],
         route: Routes.Home,
         iconName: 'Home',

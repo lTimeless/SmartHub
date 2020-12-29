@@ -25,7 +25,7 @@ const cache = new InMemoryCache({ addTypename: true });
 export const apolloClient = new ApolloClient({
   link: authLink.concat(httpLink),
   cache,
-  connectToDevTools: true,
+  connectToDevTools: process.env.NODE_ENV === 'development',
   defaultOptions: {
     query: {
       // fetchPolicy: 'no-cache',

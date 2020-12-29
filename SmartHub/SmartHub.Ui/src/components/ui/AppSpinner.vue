@@ -8,7 +8,7 @@
 import { defineComponent } from 'vue';
 
 export default defineComponent({
-  name: 'Loader',
+  name: 'AppSpinner',
   props: {
     height: {
       type: String,

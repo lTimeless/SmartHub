@@ -34,9 +34,9 @@
 </template>
 <script lang="ts">
 import { defineComponent } from 'vue';
-import UserDropdown from '@/components/layout/UserDropdown.vue';
+import UserDropdown from '@/components/ui/layout/UserDropdown.vue';
 import { useRoute } from 'vue-router';
-import NotificationDropdown from '@/components/layout/NotificationDropdown.vue';
+import NotificationDropdown from '@/components/ui/layout/NotificationDropdown.vue';
 // TODO add back button icon in einer reihe unter dem routeName
 export default defineComponent({
   name: 'Navbar',

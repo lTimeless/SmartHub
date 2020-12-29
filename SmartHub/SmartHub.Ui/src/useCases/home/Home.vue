@@ -335,7 +335,7 @@
 import { defineComponent, computed, ref, onMounted } from 'vue';
 import AppTabs from '@/components/shared/widgets/AppTabs.vue';
 import AppAutomation from '@/views/home/Automations.vue';
-import GroupsOverview from '@/views/home/Groups.vue';
+import GroupsOverview from '@/useCases/groups/Groups.vue';
 import DevicesOverview from '@/views/home/Devices.vue';
 import { useStore } from 'vuex';
 import BarChart from '@/components/charts/BarChart.vue';
@@ -346,7 +346,7 @@ import AdminCardsRow from '@/components/layout/admin/AdminCardsRow.vue';
 import CardsRow from '@/components/dashboard/CardsRow.vue';
 
 export default defineComponent({
-  name: 'Dashboard',
+  name: 'Home',
   components: {
     AdminCardsRow,
     BarChart,

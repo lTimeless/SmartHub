@@ -12,8 +12,8 @@ export enum Routes {
   // Me
   Me = '/me',
   // Home
-  Home = '/',
-  Dashboard = '/dashboard',
+  Layout = '/',
+  Home = '/home',
   Groups = '/groups',
   Devices = '/devices',
   Users = '/users',

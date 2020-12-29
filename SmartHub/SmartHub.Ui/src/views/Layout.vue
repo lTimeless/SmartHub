@@ -46,13 +46,14 @@
 <script lang="ts">
 import { defineComponent } from 'vue';
 import { useStore } from 'vuex';
-import Sidebar from '@/components/layout/AppSidebar/Sidebar.vue';
-import Navbar from '@/components/layout/Navbar.vue';
-import TopDoubleWaves from '@/components/shared/svgs/TopDoubleWaves.vue';
+import Sidebar from '@/components/ui/layout/AppSidebar/Sidebar.vue';
+import Navbar from '@/components/ui/layout/Navbar.vue';
+import TopDoubleWaves from '@/components/ui/svgs/TopDoubleWaves.vue';
 import { AppActionTypes } from '@/store/app/actions';
 
 export default defineComponent({
-  name: 'Home',
+  name: 'Layout' +
+      '',
   components: {
     Navbar,
     Sidebar,
