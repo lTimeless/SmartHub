@@ -1,4 +1,5 @@
 <template>
+  <!-- Groups -->
   <div class="w-full lg:w-6/12 xl:w-3/12 pr-2">
     <AppCardRouterLink border-hover-color="hover:border-red-400" :route="routes.Groups">
       <template #title>
@@ -22,80 +23,71 @@
       </template>
     </AppCardRouterLink>
   </div>
+  <!-- Devices -->
   <div class="w-full lg:w-6/12 xl:w-3/12 pr-2">
-    <div
-      class="cursor-pointer relative bg-white flex flex-col min-w-0 break-words mb-6 xl:mb-0 rounded border hover:border-yellow-400"
-    >
-      <div class="flex-auto p-4">
-        <div class="flex flex-wrap">
-          <div class="relative w-full pr-4 max-w-full flex-grow flex-1">
-            <h5 class="text-gray-600 uppercase font-bold text-xs">Devices</h5>
-            <span class="text-xl text-gray-600"> {{ devicesCount }} </span>
-          </div>
-          <div class="relative w-auto pl-4 flex-initial">
-            <div
-              class="text-center inline-flex items-center justify-center w-12 h-12 rounded-full bg-yellow-400"
-            >
-              <AppIcon icon-name="device" />
-            </div>
+    <AppCardRouterLink border-hover-color="hover:border-yellow-400" :route="routes.Devices">
+      <template #title>
+        <div class="relative w-full pr-4 max-w-full flex-grow flex-1">
+          <h5 class="text-gray-600 uppercase font-bold text-xs">Devices</h5>
+          <span class="text-xl text-gray-600"> {{ devicesCount }} </span>
+        </div>
+        <div class="relative w-auto pl-4 flex-initial">
+          <div
+            class="text-center inline-flex items-center justify-center w-12 h-12 rounded-full bg-yellow-400"
+          >
+            <AppIcon icon-name="device" />
           </div>
         </div>
-        <p class="text-sm text-gray-500 mt-4">
-          <span>2 </span>
-          <span class="whitespace-no-wrap ml-2"> Since last login </span>
-        </p>
-      </div>
-    </div>
+      </template>
+      <template #subTitle>
+        <span>2 </span>
+        <span class="whitespace-no-wrap ml-2"> Since last login </span>
+      </template>
+    </AppCardRouterLink>
   </div>
+  <!-- Users -->
   <div class="w-full lg:w-6/12 xl:w-3/12 pr-2">
-    <div
-      class="cursor-pointer relative bg-white flex flex-col min-w-0 break-words mb-6 xl:mb-0 rounded border hover:border-green-400"
-    >
-      <div class="flex-auto p-4">
-        <div class="flex flex-wrap">
-          <div class="relative w-full pr-4 max-w-full flex-grow flex-1">
-            <h5 class="text-gray-600 uppercase font-bold text-xs">Users</h5>
-            <span class="text-xl text-gray-600"> 5 </span>
-          </div>
-          <div class="relative w-auto pl-4 flex-initial">
-            <div
-              class="text-center inline-flex items-center justify-center w-12 h-12 rounded-full bg-green-400"
-            >
-              <AppIcon icon-name="users" />
-            </div>
+    <AppCardRouterLink border-hover-color="hover:border-yellow-400" :route="routes.Users">
+      <template #title>
+        <div class="relative w-full pr-4 max-w-full flex-grow flex-1">
+          <h5 class="text-gray-600 uppercase font-bold text-xs">Users</h5>
+          <span class="text-xl text-gray-600"> 5 </span>
+        </div>
+        <div class="relative w-auto pl-4 flex-initial">
+          <div
+            class="text-center inline-flex items-center justify-center w-12 h-12 rounded-full bg-green-400"
+          >
+            <AppIcon icon-name="users" />
           </div>
         </div>
-        <p class="text-sm text-gray-500 mt-4">
-          <span>0 </span>
-          <span class="whitespace-no-wrap ml-2">Since last month </span>
-        </p>
-      </div>
-    </div>
+      </template>
+      <template #subTitle>
+        <span>0 </span>
+        <span class="whitespace-no-wrap ml-2">Since last month </span>
+      </template>
+    </AppCardRouterLink>
   </div>
+  <!-- Automations -->
   <div class="w-full lg:w-6/12 xl:w-3/12 pr-2">
-    <div
-      class="cursor-pointer relative bg-white flex flex-col min-w-0 break-words mb-6 xl:mb-0 rounded border hover:border-blue-400"
-    >
-      <div class="flex-auto p-4">
-        <div class="flex flex-wrap">
-          <div class="relative w-full pr-4 max-w-full flex-grow flex-1">
-            <h5 class="text-gray-600 uppercase font-bold text-xs">Automations</h5>
-            <span class="text-xl text-gray-600"> 2 </span>
-          </div>
-          <div class="relative w-auto pl-4 flex-initial">
-            <div
-              class="text-center inline-flex items-center justify-center w-12 h-12 rounded-full bg-blue-400"
-            >
-              <AppIcon icon-name="repeat" />
-            </div>
+    <AppCardRouterLink border-hover-color="hover:border-yellow-400" :route="routes.Automations">
+      <template #title>
+        <div class="relative w-full pr-4 max-w-full flex-grow flex-1">
+          <h5 class="text-gray-600 uppercase font-bold text-xs">Automations</h5>
+          <span class="text-xl text-gray-600"> 2 </span>
+        </div>
+        <div class="relative w-auto pl-4 flex-initial">
+          <div
+            class="text-center inline-flex items-center justify-center w-12 h-12 rounded-full bg-blue-400"
+          >
+            <AppIcon icon-name="repeat" />
           </div>
         </div>
-        <p class="text-sm text-gray-500 mt-4">
-          <span>1 </span>
-          <span class="whitespace-no-wrap ml-2">Currently active </span>
-        </p>
-      </div>
-    </div>
+      </template>
+      <template #subTitle>
+        <span>1 </span>
+        <span class="whitespace-no-wrap ml-2">Currently active </span>
+      </template>
+    </AppCardRouterLink>
   </div>
 </template>
 

@@ -1,34 +1,29 @@
 <template>
   <nav
-    class="md:left-0 md:block md:fixed md:top-0 md:bottom-0 md:overflow-y-auto md:flex-row md:flex-no-wrap md:overflow-hidden flex flex-wrap items-center justify-between md:w-64 z-10 py-4 px-6 bg-white"
+    class="relative md:left-0 md:block md:fixed md:top-0 md:bottom-0 md:overflow-y-auto md:flex-row md:flex-no-wrap md:overflow-hidden flex flex-wrap items-center justify-between md:w-64 z-10 py-4 px-6 md:bg-white bg-gray-100"
   >
     <div
-      class="md:flex-col md:items-stretch md:min-h-full md:flex-no-wrap px-0 flex flex-wrap items-center justify-between w-full mx-auto"
+      class="md:flex-col md:items-stretch md:min-h-full md:flex-no-wrap flex flex-wrap items-center justify-between w-full mx-auto"
     >
-      <!-- Toggler -->
+      <!-- Toggle btn -->
       <button
         class="cursor-pointer text-black opacity-50 md:hidden px-3 py-1 text-xl leading-none bg-transparent rounded border border-solid border-transparent"
         type="button"
-        @click="toggleCollapseShow('bg-white m-2 py-3 px-6')"
+        @click="toggleCollapseShow('bg-gray-100 m-2 py-3 px-6')"
       >
-        <i class="fas fa-bars"></i>
         X
       </button>
       <!-- Brand -->
-      <router-link to="/" class="flex items-center text-primary" title="Home">
+      <router-link :to="routes.Home" class="flex items-center text-primary" title="Home">
         <Logo :width="40" class="text-primary" />
         <span class="hidden ml-2 text-xl font-black tracking-tighter uppercase sm:block"> SmartHub </span>
       </router-link>
-      <!-- User -->
-      <ul class="md:hidden items-center flex flex-wrap list-none">
-        <li class="inline-block relative mr-2">
-          <NotificationDropdown />
-        </li>
-        <li class="inline-block relative">
-          <UserDropdown />
-        </li>
-      </ul>
-      <!-- Collapse -->
+      <!-- Dropdowns -->
+      <div class="md:hidden items-center flex flex-wrap list-none">
+        <!-- <NotificationDropdown />-->
+        <UserDropdown />
+      </div>
+      <!-- Collapse btn, dark bg -->
       <button
         tabindex="-1"
         v-if="collapseShowBool"
@@ -40,7 +35,7 @@
         :class="collapseShow"
       >
         <!-- Collapse header -->
-        <div class="md:min-w-full md:hidden block pb-4 mb-4 border-b border-solid border-gray-300">
+        <div class="md:min-w-full md:hidden block pb-4 mb-4">
           <div class="flex flex-wrap">
             <div class="w-4/12 flex">
               <button
@@ -52,7 +47,7 @@
               </button>
             </div>
             <div class="w-8/12">
-              <router-link to="/" class="flex items-center text-primary" title="Home">
+              <router-link :to="routes.Home" class="flex items-center text-primary" title="Home">
                 <Logo :width="40" class="text-primary" />
                 <span class="hidden ml-2 text-xl font-black tracking-tighter uppercase sm:block">
                   SmartHub
@@ -73,6 +68,7 @@
             </label>
           </div>
         </form>
+        <!-- Sidebar List -->
         <div v-for="view in sidebarLists" :key="view.label" class="mb-2">
           <NavigationItem
             v-if="roleIncluded(view.rolesRequired)"
@@ -86,7 +82,6 @@
   </nav>
 </template>
 <script lang="ts">
-import NotificationDropdown from '../NotificationDropdown.vue';
 import UserDropdown from '../UserDropdown.vue';
 import { computed, defineComponent, onMounted, ref } from 'vue';
 import { useRouter } from 'vue-router';
@@ -99,7 +94,6 @@ export default defineComponent({
   name: 'AppSidebar',
   components: {
     Logo,
-    NotificationDropdown,
     UserDropdown,
     NavigationItem
   },
@@ -230,7 +224,8 @@ export default defineComponent({
       getClassesForAnchor,
       toggleCollapseShow,
       collapseShow,
-      collapseShowBool
+      collapseShowBool,
+      routes: Routes
     };
   }
 });
@@ -238,7 +233,7 @@ export default defineComponent({
 <style lang="scss" scoped>
 .sidebar {
   overflow: auto;
-  @apply fixed bg-background px-4 inset-x-0 bottom-0 w-full border-r border-border transition-all z-40;
+  @apply bg-background inset-x-0 bottom-0 w-full border-r border-border transition-all;
   transform: translateX(-100%);
 
   &.open {
@@ -246,7 +241,7 @@ export default defineComponent({
   }
 
   @screen md {
-    @apply w-1/4 px-0 bg-transparent top-0 bottom-auto inset-x-auto sticky z-0;
+    @apply w-1/4 px-0 bg-transparent top-0 bottom-auto inset-x-auto sticky;
     transform: translateX(0);
   }
 }

@@ -26,7 +26,7 @@ namespace SmartHub.Application.UseCases.Entity.Groups
 
 		public int GetParentGroupsCount([Service] IBaseRepositoryAsync<Group> groupsRepository)
 		{
-			return groupsRepository.GetAllAsQueryable().Count();
+			return groupsRepository.GetAllAsQueryable().Count(x => !x.IsSubGroup);
 		}
 
 		public int GetSubGroupsCount([Service] IBaseRepositoryAsync<Group> groupsRepository)

@@ -21,8 +21,8 @@
       <aside>
         <Sidebar />
       </aside>
-      <div class="relative md:ml-64 min-h-screen z-20">
-        <div class="md:pt-28 pt-12 px-4 md:px-10 mx-auto w-full z-10">
+      <div class="relative md:ml-64 min-h-screen">
+        <div class="container mx-auto w-full h-full py-3">
           <Navbar />
           <router-view v-slot="{ Component }">
             <transition

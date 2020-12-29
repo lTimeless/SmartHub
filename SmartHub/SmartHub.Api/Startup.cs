@@ -40,8 +40,6 @@ namespace SmartHub.Api
             {
                 app.UseDeveloperExceptionPage();
                 app.UseMigrationsEndPoint();
-                // Swagger
-                app.ConfigureSwagger();
             }
             else
             {
@@ -56,25 +54,20 @@ namespace SmartHub.Api
 
             // Response Compression
             app.UseResponseCompression();
-
             // Serilog
             app.UseSerilogRequestLogging();
-
             // CustomExceptionMiddleware
             app.ConfigureCustomExceptionMiddleware();
-
+			// Spa/ StaticFiles
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseSpaStaticFiles();
-
             // Routing
             app.UseRouting();
-
             // Auth
             app.UseCors("CorsPolicy");
             app.UseAuthentication();
             app.UseAuthorization();
-
             // Endpoints
             app.UseEndpoints(endpoints =>
             {
@@ -95,7 +88,7 @@ namespace SmartHub.Api
                 endpoints.MapHub<LogHub>("/api/hub/logs");
                 endpoints.MapHub<HomeHub>("/api/hub/home");
             });
-
+			// Spa
             app.UseSpa(spa =>
             {
                 // To learn more about options for serving an Angular SPA from ASP.NET Core,
@@ -106,7 +99,6 @@ namespace SmartHub.Api
                 {
                     return;
                 }
-
                 Log.ForContext(typeof(Startup)).Warning("You need to start separate FE server.. listening to http://localhost:8080");
                 // Start separate FE server and Server listens to it
                 spa.UseProxyToSpaDevelopmentServer("http://localhost:8080");

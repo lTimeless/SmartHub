@@ -13,6 +13,7 @@ import ServerIcon from '@/components/icons/ServerIcon.vue';
 import SettingsIcon from '@/components/icons/SettingsIcon.vue';
 import UserIcon from '@/components/icons/UserIcon.vue';
 import UsersIcon from '@/components/icons/UsersIcon.vue';
+import BellIcon from '@/components/icons/BellIcon.vue';
 
 export default {
   install(app: any): any {
@@ -31,5 +32,6 @@ export default {
     app.component('SettingsIcon', SettingsIcon);
     app.component('UserIcon', UserIcon);
     app.component('UsersIcon', UsersIcon);
+    app.component('BellIcon', BellIcon);
   }
 };

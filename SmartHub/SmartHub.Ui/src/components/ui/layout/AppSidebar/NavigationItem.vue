@@ -1,5 +1,9 @@
 <template>
-  <router-link :to="route" class="flex items-center" :class="[getActiveClass(route), route === routes.Statistics ? 'border-t border-gray-200': '']">
+  <router-link
+    :to="route"
+    class="flex items-center"
+    :class="[getActiveClass(route), route === routes.Statistics ? 'border-t border-gray-300' : '']"
+  >
     <div v-show="isCurrentRoute">
       <AppIcon icon-name="ChevronRight"></AppIcon>
     </div>

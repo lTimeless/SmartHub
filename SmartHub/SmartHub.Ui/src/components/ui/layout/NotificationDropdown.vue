@@ -1,23 +1,10 @@
 <template>
-  <div class="relative inline-block text-left">
-    <div class="relative z-20 items-center flex cursor-pointer" @click="setDropDownValue(!showDropdown)">
+  <div class="relative z-30 inline-block text-left">
+    <div class="relative z-30 items-center flex cursor-pointer" @click="setDropDownValue(!showDropdown)">
       <span
         class="w-10 h-10 text-sm text-gray-600 text-center inline-flex items-center justify-center rounded-full bg-white border hover:border-indigo-500"
       >
-        <svg
-          class="h-6 w-6"
-          xmlns="http://www.w3.org/2000/svg"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke="currentColor"
-        >
-          <path
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            stroke-width="2"
-            d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"
-          />
-        </svg>
+        <AppIcon icon-name="Bell" />
       </span>
     </div>
     <button
@@ -29,7 +16,7 @@
     ></button>
     <div
       v-if="showDropdown"
-      class="origin-top-right z-20 absolute right-0 mt-2 w-56 rounded-md shadow-lg bg-white border ring-1 ring-black ring-opacity-5"
+      class="origin-top-right z-30 absolute right-0 mt-2 w-56 rounded-md bg-white border ring-1 ring-black ring-opacity-5"
       role="menu"
       aria-orientation="vertical"
       aria-labelledby="options-menu"
@@ -51,9 +38,13 @@
 import { computed, defineComponent, ref } from 'vue';
 import { useStore } from 'vuex';
 import { AppActionTypes } from '@/store/app/actions';
+import AppIcon from '@/components/icons/AppIcon.vue';
 
 export default defineComponent({
   name: 'NotificationDropdown',
+  components: {
+    AppIcon
+  },
   props: {},
   setup() {
     const store = useStore();
