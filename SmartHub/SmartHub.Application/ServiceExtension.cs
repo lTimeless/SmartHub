@@ -1,8 +1,6 @@
 ﻿using System.Reflection;
 using AutoMapper;
-using MediatR;
 using Microsoft.Extensions.DependencyInjection;
-using SmartHub.Application.Common.Behaviours;
 using SmartHub.Application.Common.Models;
 using SmartHub.Application.UseCases.AppFolder;
 using SmartHub.Application.UseCases.AppFolder.AppConfigParser;
@@ -21,7 +19,6 @@ namespace SmartHub.Application
         public static IServiceCollection AddApplicationLayer(this IServiceCollection services)
         {
             services.AddAutomapper();
-            services.AddMediatr();
             services.AddServices();
             return services;
         }
@@ -49,13 +46,6 @@ namespace SmartHub.Application
             services.AddScoped<IPluginHostService, PluginHostService>();
             // SignalR services
             services.AddTransient<ISendOverSignalR, SendOverSignalR>();
-        }
-
-        private static void AddMediatr(this IServiceCollection services)
-        {
-            // The Pre/Postprocessors are loaded automatically into DI-container
-            services.AddMediatR(Assembly.Load("SmartHub.Application"));
-            services.AddTransient(typeof(IPipelineBehavior<,>), typeof(RequestLoggerBehaviour<,>));
         }
     }
 }

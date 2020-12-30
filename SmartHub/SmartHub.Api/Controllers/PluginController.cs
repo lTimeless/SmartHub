@@ -27,49 +27,5 @@ namespace SmartHub.Api.Controllers
 		{
 			return Ok(await _pluginHostService.GetPluginByNameAsync<IPlugin>(pluginName));
 		}
-
-		/// <summary>
-		/// Finds all available plugins in the plugin folder (on hdd not db)
-		/// </summary>
-		/// <returns>A Response with a Dictionary of "string, FoundPluginDto"</returns>
-		[HttpGet("findAll")]
-		[Obsolete("This will be later implemented with the downloadFromServer function")]
-		public IActionResult FindAll()
-		{
-			return Ok("This is not implemented");
-		}
-
-		/// <summary>
-		/// Find all new plugins in the plugin folder (on hdd not db)
-		/// </summary>
-		/// <returns>A Response with a Dictionary of "string, FoundPluginDto"</returns>
-		[HttpGet("findNew")]
-		[Obsolete("This will be later implemented with the downloadFromServer function")]
-		public IActionResult FindNew()
-		{
-			return Ok("This is not implemented");
-		}
-
-		/// <summary>
-		/// Loads only new Plugins from the plugin folder
-		/// </summary>
-		/// <returns>A Response containing a message</returns>
-		[HttpGet("loadAllNew")]
-		[Obsolete("This will be later implemented with the downloadFromServer function")]
-		public IActionResult LoadAllNew()
-		{
-			return Ok("This is not implemented");
-		}
-
-		/// <summary>
-		/// Loads only new Plugins by the given path
-		/// </summary>
-		/// <returns>A Response containing a message</returns>
-		[HttpGet("loadNewBypath")]
-		[Obsolete("This will be later implemented with the downloadFromServer function")]
-		public IActionResult LoadNewByPath([FromQuery]string pluginPath)
-		{
-			return Ok("This is not implemented");
-		}
 	}
 }

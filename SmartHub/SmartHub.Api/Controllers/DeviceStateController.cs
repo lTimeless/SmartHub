@@ -22,7 +22,8 @@ namespace SmartHub.Api.Controllers
                 ToggleLight = toggleLight,
                 DeviceId = deviceId
             };
-            return Ok(await Mediator.Send(new DeviceLightStateQuery(deviceLightState)));
+            // TODO ann service schicken und dann aufrüumen
+            return Ok();
         }
     }
 }

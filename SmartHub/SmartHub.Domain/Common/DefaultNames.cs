@@ -2,7 +2,10 @@
 {
     public static class DefaultNames
     {
-        public const string DefaultGroup = "DEFAULT_GROUP";
-        public const string DefaultSetting = "DEFAULT_SETTING";
+	    public const string AppName = "SmartHub";
+	    public const string AppDescription = "This is an awesome description.";
+
+        public const string Group = "DEFAULT_GROUP";
+        public const string Setting = "DEFAULT_SETTING";
     }
 }

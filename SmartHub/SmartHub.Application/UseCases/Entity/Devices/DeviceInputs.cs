@@ -10,8 +10,9 @@ namespace SmartHub.Application.UseCases.Entity.Devices
 		string Ipv4,
 		string CompanyName,
 		string PluginName,
+		string? GroupName,
 		PluginTypes PluginTypes,
-		ConnectionTypes PrimaryConnection, ConnectionTypes SecondaryConnection, string GroupName);
+		ConnectionTypes PrimaryConnection, ConnectionTypes SecondaryConnection);
 
 	/// <summary>
 	///Device update input.
@@ -20,7 +21,7 @@ namespace SmartHub.Application.UseCases.Entity.Devices
 		string? Name,
 		string? Description,
 		string? Ipv4,
+		string? GroupName,
 		ConnectionTypes? PrimaryConnection,
-		ConnectionTypes? SecondaryConnection,
-		string? GroupName);
+		ConnectionTypes? SecondaryConnection);
 }

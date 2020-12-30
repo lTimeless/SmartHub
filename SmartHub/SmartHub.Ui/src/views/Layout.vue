@@ -27,8 +27,8 @@
           <router-view v-slot="{ Component }">
             <transition
               mode="out-in"
-              enter-active-class="transition duration-300 ease-out-in"
-              leave-active-class="transition duration-300 ease-out-in"
+              enter-active-class="transition duration-200 ease-out-in"
+              leave-active-class="transition duration-200 ease-out-in"
               enter-from-class="opacity-0 transform translate-y-3"
               enter-to-class="opacity-100 translate-y-0"
               leave-from-class="opacity-100 translate-y-0"
@@ -45,11 +45,9 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
-import { useStore } from 'vuex';
 import Sidebar from '@/components/ui/layout/AppSidebar/Sidebar.vue';
 import Navbar from '@/components/ui/layout/Navbar.vue';
 import TopDoubleWaves from '@/components/ui/svgs/TopDoubleWaves.vue';
-import { AppActionTypes } from '@/store/app/actions';
 
 export default defineComponent({
   name: 'Layout',
@@ -59,9 +57,6 @@ export default defineComponent({
     TopDoubleWaves
   },
   setup() {
-    const store = useStore();
-    store.dispatch(AppActionTypes.GET_APP);
-
     return {};
   }
 });

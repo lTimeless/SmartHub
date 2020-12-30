@@ -1,6 +1,6 @@
 <template>
   <nav
-    class="relative md:left-0 md:block md:fixed md:top-0 md:bottom-0 md:overflow-y-auto md:flex-row md:flex-no-wrap md:overflow-hidden flex flex-wrap items-center justify-between md:w-64 z-10 py-4 px-6 md:bg-white bg-gray-100"
+    class="relative md:left-0 md:block md:fixed md:top-0 md:bottom-0 md:overflow-y-auto md:flex-row md:flex-no-wrap md:overflow-hidden flex flex-wrap items-center justify-between md:w-64 z-10 py-2 md:py-4 px-6 md:bg-white bg-gray-100"
   >
     <div
       class="md:flex-col md:items-stretch md:min-h-full md:flex-no-wrap flex flex-wrap items-center justify-between w-full mx-auto"
@@ -11,13 +11,10 @@
         type="button"
         @click="toggleCollapseShow('bg-gray-100 m-2 py-3 px-6')"
       >
-        X
+        <AppIcon width="h-6" height="h-6" icon-name="Menu" icon-color="text-gray-600" />
       </button>
       <!-- Brand -->
-      <router-link :to="routes.Home" class="flex items-center text-primary" title="Home">
-        <Logo :width="40" class="text-primary" />
-        <span class="hidden ml-2 text-xl font-black tracking-tighter uppercase sm:block"> SmartHub </span>
-      </router-link>
+      <AppBrand />
       <!-- Dropdowns -->
       <div class="md:hidden items-center flex flex-wrap list-none">
         <!-- <NotificationDropdown />-->
@@ -35,29 +32,21 @@
         :class="collapseShow"
       >
         <!-- Collapse header -->
-        <div class="md:min-w-full md:hidden block pb-4 mb-4">
+        <div class="md:min-w-full md:hidden block mb-2">
           <div class="flex flex-wrap">
-            <div class="w-4/12 flex">
+            <div class="flex">
               <button
                 type="button"
-                class="cursor-pointer text-black opacity-50 md:hidden px-1 py-1 text-xl leading-none bg-transparent rounded border border-solid border-transparent"
+                class="cursor-pointer text-black opacity-50 md:hidden bg-transparent rounded border border-solid border-transparent"
                 @click="toggleCollapseShow('hidden')"
               >
-                X
+                <AppIcon width="h-6" height="h-6" icon-name="Close" icon-color="text-gray-600" />
               </button>
-            </div>
-            <div class="w-8/12">
-              <router-link :to="routes.Home" class="flex items-center text-primary" title="Home">
-                <Logo :width="40" class="text-primary" />
-                <span class="hidden ml-2 text-xl font-black tracking-tighter uppercase sm:block">
-                  SmartHub
-                </span>
-              </router-link>
             </div>
           </div>
         </div>
         <!-- Form Search -->
-        <form class="mt-6 mb-4 md:hidden">
+        <form class="mb-4 md:hidden px-6">
           <div class="mb-3 pt-0">
             <label>
               <input
@@ -81,21 +70,24 @@
     </div>
   </nav>
 </template>
+
 <script lang="ts">
 import UserDropdown from '../UserDropdown.vue';
 import { computed, defineComponent, onMounted, ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { getUserRoles } from '@/services/auth/authService';
 import { Roles, Routes } from '@/types/enums';
-import Logo from '@/components/ui/svgs/Logo.vue';
 import NavigationItem from '@/components/ui/layout/AppSidebar/NavigationItem.vue';
+import AppIcon from '@/components/icons/AppIcon.vue';
+import AppBrand from '@/components/ui/layout/AppSidebar/AppBrand.vue';
 
 export default defineComponent({
   name: 'AppSidebar',
   components: {
-    Logo,
     UserDropdown,
-    NavigationItem
+    NavigationItem,
+    AppIcon,
+    AppBrand
   },
   props: {},
   setup() {

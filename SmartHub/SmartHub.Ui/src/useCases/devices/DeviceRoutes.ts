@@ -1,7 +1,7 @@
 import { RouteRecordRaw } from 'vue-router';
 import { Routes } from '@/types/enums';
 
-export const devicesRoutes: Array<RouteRecordRaw> = [
+export const deviceRoutes: Array<RouteRecordRaw> = [
   {
     path: Routes.Devices,
     name: 'Devices',

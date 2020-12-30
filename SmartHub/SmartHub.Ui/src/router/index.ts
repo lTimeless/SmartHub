@@ -10,8 +10,8 @@ import { initRoutes } from '@/useCases/init/InitRoutes';
 import { homeRoutes } from '@/useCases/home/HomeRoutes';
 import { usersRoutes } from '@/useCases/users/UsersRoutes';
 import { meRoutes } from '@/useCases/me/MeRoutes';
-import { devicesRoutes } from '@/useCases/devices/DevicesRoutes';
-import { groupsRoutes } from '@/useCases/groups/GroupsRoutes';
+import { deviceRoutes } from '@/useCases/devices/DeviceRoutes';
+import { groupRoutes } from '@/useCases/groups/GroupRoutes';
 import { automationsRoutes } from '@/useCases/automations/AutomationsRoutes';
 import { adminRoutes } from '@/useCases/admin/AdminRoutes';
 
@@ -21,6 +21,7 @@ const routes: Array<RouteRecordRaw> = [
   {
     path: Routes.Layout,
     component: Layout,
+    redirect: Routes.Home,
     meta: {
       requiresAuth: true,
       isGuest: true
@@ -29,8 +30,8 @@ const routes: Array<RouteRecordRaw> = [
       // Guest routes
       ...homeRoutes,
       ...meRoutes,
-      ...groupsRoutes,
-      ...devicesRoutes,
+      ...groupRoutes,
+      ...deviceRoutes,
       ...usersRoutes,
       ...automationsRoutes,
       // User routes

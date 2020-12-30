@@ -1,6 +1,7 @@
-﻿using System.Linq;
-using SmartHub.Domain.Common.Enums;
+﻿using SmartHub.Domain.Common.Enums;
+using SmartHub.Domain.Common.Extensions;
 using SmartHub.Domain.Entities;
+using System.Linq;
 using Xunit;
 
 namespace SmartHub.Domain.Tests.Entities

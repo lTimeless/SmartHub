@@ -21,7 +21,7 @@ namespace SmartHub.Api.Extensions
 {
 	public static class ServiceExtension
 	{
-		public static IServiceCollection AddApiLayer(this IServiceCollection services, IConfiguration configuration, IHostEnvironment appEnvironment)
+		public static IServiceCollection AddApiLayer(this IServiceCollection services, IConfiguration configuration)
 		{
 			// Server configuration
 			services.AddServerConfiguration(configuration);

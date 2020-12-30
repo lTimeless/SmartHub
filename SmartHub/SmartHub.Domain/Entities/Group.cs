@@ -18,20 +18,5 @@ namespace SmartHub.Domain.Entities
 			IsSubGroup = isSubGroup;
 		}
 
-		#region Methods
-
-		public Group AddDevice(Device newDevice)
-		{
-			Devices.Add(newDevice);
-			return this;
-		}
-
-		public Group AddSubGroup(Group newSubGroup)
-		{
-			SubGroups.Add(newSubGroup);
-			return this;
-		}
-		#endregion
-
 	}
 }

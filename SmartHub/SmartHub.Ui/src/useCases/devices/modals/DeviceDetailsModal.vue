@@ -153,9 +153,9 @@ import BaseModal from '@/components/ui/modals/BaseModal.vue';
 import { UpdateDeviceInput } from '@/types/types';
 import { useEnumTypes } from '@/hooks/useEnums';
 import { useQuery, useMutation, useResult } from '@vue/apollo-composable';
-import { GET_DEVICES, GET_DEVICE_BY_ID } from '@/graphql/queries';
 import Loader from '@/components/ui/AppSpinner.vue';
-import { UPDATE_DEVICE } from '@/graphql/mutations';
+import { UPDATE_DEVICE } from '@/useCases/devices/DeviceMutations';
+import { GET_DEVICE_BY_ID, GET_DEVICES } from '@/useCases/devices/DeviceQueries';
 
 export default defineComponent({
   name: 'DeviceDetailsModal',

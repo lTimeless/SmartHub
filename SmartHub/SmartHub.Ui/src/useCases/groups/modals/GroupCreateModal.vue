@@ -41,9 +41,9 @@ import { defineComponent, reactive, computed, toRefs } from 'vue';
 import BaseModal from '@/components/ui/modals/BaseModal.vue';
 import { CreateGroupInput } from '@/types/types';
 import { useMutation } from '@vue/apollo-composable';
-import { CREATE_GROUP } from '@/graphql/mutations';
-import { GET_GROUPS, GET_GROUPS_COUNT } from '@/graphql/queries';
-// import { postGroup } from '@/services/apis/group';
+import { CREATE_GROUP } from '@/useCases/groups/GroupMutations';
+import { GET_GROUPS } from '@/useCases/groups/GroupQueries';
+import { GET_GROUPS_COUNT } from "@/useCases/home/HomeQueries";
 
 export default defineComponent({
   name: 'GroupCreateModal',

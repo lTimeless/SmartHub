@@ -123,8 +123,6 @@ export default defineComponent({
     const title = 'Create your new SmartHub';
     const githubUrl = ref(process.env.GITHUB_SMARTHUB);
     const appConfigCreateRequest: AppConfigInitInput = reactive({
-      name: '',
-      description: '',
       autoDetectAddress: false
     });
     const { mutate: initApp, loading: loadInit, error: errInit } = useMutation(INITIALIZE_APP);
@@ -139,12 +137,6 @@ export default defineComponent({
     });
 
     const InitHome = async () => {
-      if (appConfigCreateRequest.name === '') {
-        appConfigCreateRequest.name = 'SmartHub';
-      }
-      if (appConfigCreateRequest.description === '') {
-        appConfigCreateRequest.description = 'This is an awesome description';
-      }
       await initApp({ input: appConfigCreateRequest }).then(() => {
         router.push(Routes.Registration);
       });

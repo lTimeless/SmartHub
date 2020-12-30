@@ -21,7 +21,7 @@ namespace SmartHub.Application.UseCases.Init
 			if (appConfig.IsActive)
 			{
 				return new InitPayload(
-					new UserError("There is already a home.", AppErrorCodes.Exists));
+					new UserError("There is already an active home.", AppErrorCodes.Exists));
 			}
 
 			if (input.AutoDetectAddress)
@@ -36,11 +36,11 @@ namespace SmartHub.Application.UseCases.Init
 						locationDto.ZipCode ?? string.Empty);
 				}
 			}
+
+			appConfig.ApplicationName = !string.IsNullOrWhiteSpace(input.Name) ? input.Name : DefaultNames.AppName;
+			appConfig.Description = !string.IsNullOrWhiteSpace(input.Description) ? input.Description : DefaultNames.AppDescription;
+
 			appConfig.IsActive = true;
-			if (input.Description.HasValue)
-			{
-				appConfig.Description = input.Description.Value;
-			}
 			await appConfigService.UpdateConfig(appConfig);
 			logger.Information("SmartHub successfully created.");
 			return new InitPayload(appConfig, "SmartHub successfully created.");

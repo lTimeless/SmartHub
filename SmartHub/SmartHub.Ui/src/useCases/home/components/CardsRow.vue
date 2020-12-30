@@ -47,7 +47,7 @@
   </div>
   <!-- Users -->
   <div class="w-full lg:w-6/12 xl:w-3/12 pr-2">
-    <AppCardRouterLink border-hover-color="hover:border-yellow-400" :route="routes.Users">
+    <AppCardRouterLink border-hover-color="hover:border-green-400" :route="routes.Users">
       <template #title>
         <div class="relative w-full pr-4 max-w-full flex-grow flex-1">
           <h5 class="text-gray-600 uppercase font-bold text-xs">Users</h5>
@@ -69,7 +69,7 @@
   </div>
   <!-- Automations -->
   <div class="w-full lg:w-6/12 xl:w-3/12 pr-2">
-    <AppCardRouterLink border-hover-color="hover:border-yellow-400" :route="routes.Automations">
+    <AppCardRouterLink border-hover-color="hover:border-blue-400" :route="routes.Automations">
       <template #title>
         <div class="relative w-full pr-4 max-w-full flex-grow flex-1">
           <h5 class="text-gray-600 uppercase font-bold text-xs">Automations</h5>
@@ -90,12 +90,12 @@
 </template>
 
 <script lang="ts">
-import { GET_DEVICES_COUNT, GET_GROUPS_COUNT } from '@/graphql/queries';
 import { useQuery, useResult } from '@vue/apollo-composable';
 import { defineComponent, watch, ref } from 'vue';
 import AppIcon from '@/components/icons/AppIcon.vue';
 import AppCardRouterLink from '@/components/ui/AppCard/AppCardRouterLink.vue';
 import { Routes } from '@/types/enums';
+import { GET_DEVICES_COUNT, GET_GROUPS_COUNT } from "@/useCases/home/HomeQueries";
 
 export default defineComponent({
   name: 'CardsRow',

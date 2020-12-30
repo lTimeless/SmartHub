@@ -8,6 +8,7 @@
     :save-btn-active="saveBtnActive"
     main-bg-color="bg-yellow-400"
     main-border-color="border-yellow-400"
+    :loading="loadCreate"
   >
     <div class="flex justify-between">
       <div class="w-full mr-2">
@@ -15,7 +16,7 @@
           <span class="text-gray-600 dark:text-gray-400">Name</span>
           <input
             type="text"
-            v-model="deviceCreateinput.name"
+            v-model="deviceCreateInput.name"
             class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md"
             placeholder="Name"
           />
@@ -25,7 +26,7 @@
         <label class="text-left block text-sm">
           <span class="text-gray-600 dark:text-gray-400">PluginType</span>
           <select
-            v-model="deviceCreateinput.pluginTypes"
+            v-model="deviceCreateInput.pluginTypes"
             class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md"
           >
             <option v-for="(item, key) in pluginNames" :key="key" :value="item.toUpperCase()">
@@ -42,7 +43,7 @@
           <span class="text-gray-600 dark:text-gray-400">Description</span>
           <input
             type="text"
-            v-model="deviceCreateinput.description"
+            v-model="deviceCreateInput.description"
             class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md"
             placeholder="Description (optional)"
           />
@@ -53,21 +54,21 @@
           <span class="text-gray-600 dark:text-gray-400">Ipv4</span>
           <input
             type="text"
-            v-model="deviceCreateinput.ipv4"
+            v-model="deviceCreateInput.ipv4"
             class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md"
             placeholder="Ipv4"
           />
         </label>
       </div>
     </div>
-    <!-- Groupname -->
+    <!-- GroupName -->
     <div class="flex justify-between mt-3">
       <div class="w-full mr-2">
         <label class="text-left block text-sm">
           <span class="text-gray-600 dark:text-gray-400">Groupname</span>
           <input
             type="text"
-            v-model="deviceCreateinput.groupName"
+            v-model="deviceCreateInput.groupName"
             class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md"
             placeholder="Group name (optional)"
           />
@@ -81,7 +82,7 @@
           <span class="text-gray-600 dark:text-gray-400">Companyname</span>
           <input
             type="text"
-            v-model="deviceCreateinput.companyName"
+            v-model="deviceCreateInput.companyName"
             class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md"
             placeholder="Company description"
           />
@@ -92,7 +93,7 @@
           <span class="text-gray-600 dark:text-gray-400">Pluginname</span>
           <input
             type="text"
-            v-model="deviceCreateinput.pluginName"
+            v-model="deviceCreateInput.pluginName"
             class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md"
             placeholder="Plugin name"
           />
@@ -105,7 +106,7 @@
         <label class="text-left block text-sm">
           <span class="text-gray-600 dark:text-gray-400">Primary connection</span>
           <select
-            v-model="deviceCreateinput.primaryConnection"
+            v-model="deviceCreateInput.primaryConnection"
             class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md"
           >
             <option v-for="(item, key) in connectionNames" :key="key" :value="item.toUpperCase()">
@@ -118,7 +119,7 @@
         <label class="text-left block text-sm">
           <span class="text-gray-600 dark:text-gray-400">Secondary connection</span>
           <select
-            v-model="deviceCreateinput.secondaryConnection"
+            v-model="deviceCreateInput.secondaryConnection"
             class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md"
           >
             <option v-for="(item, key) in connectionNames" :key="key" :value="item.toUpperCase()">
@@ -142,9 +143,10 @@ import BaseModal from '@/components/ui/modals/BaseModal.vue';
 import { CreateDeviceInput } from '@/types/types';
 import { ConnectionTypes, PluginTypes } from '@/types/enums';
 import { useEnumTypes } from '@/hooks/useEnums.ts';
-import { CREATE_DEVICE } from '@/graphql/mutations';
 import { useMutation } from '@vue/apollo-composable';
-import { GET_DEVICES, GET_DEVICES_COUNT } from '@/graphql/queries';
+import { CREATE_DEVICE } from '@/useCases/devices/DeviceMutations';
+import { GET_DEVICES } from '@/useCases/devices/DeviceQueries';
+import { GET_DEVICES_COUNT } from "@/useCases/home/HomeQueries";
 
 export default defineComponent({
   name: 'DeviceCreateModal',
@@ -153,7 +155,7 @@ export default defineComponent({
     BaseModal
   },
   setup(props, context) {
-    const deviceCreateinput = reactive<CreateDeviceInput>({
+    const deviceCreateInput = reactive<CreateDeviceInput>({
       name: '',
       groupName: '',
       ipv4: '',
@@ -164,21 +166,19 @@ export default defineComponent({
       secondaryConnection: ConnectionTypes.None.toString()
     });
     const { mutate: createDevice, loading: loadCreate, error: errCreate } = useMutation(CREATE_DEVICE);
-    const saveBtnActive = computed(() => deviceCreateinput.name !== '' && deviceCreateinput.ipv4 !== '');
+    const saveBtnActive = computed(() => deviceCreateInput.name !== '' && deviceCreateInput.ipv4 !== '');
     const close = () => {
       context.emit('close', false);
     };
     const save = async () => {
-      console.log(deviceCreateinput);
-
       await createDevice(
-        { input: deviceCreateinput },
+        { input: deviceCreateInput },
         { refetchQueries: [{ query: GET_DEVICES }, { query: GET_DEVICES_COUNT }] }
       );
       context.emit('close', false);
     };
     return {
-      deviceCreateinput,
+      deviceCreateInput,
       ConnectionTypes,
       saveBtnActive,
       close,

@@ -65,7 +65,7 @@ namespace SmartHub.Application.UseCases.NetworkScanner
 				var hostName = await NetworkScannerUtils.GetHostnameAsync(ip);
 				var macAddress = await NetworkScannerUtils.GetMacAddressAsync(ip);
 				var newFoundDevice = new NetworkDevice(
-					NetworkScannerUtils.MakeNameFromHostname(hostName),
+					NetworkScannerUtils.MakeName(hostName, macAddress),
 					null, ip,
 					reply.Address.MapToIPv6().ToString(),
 					hostName,

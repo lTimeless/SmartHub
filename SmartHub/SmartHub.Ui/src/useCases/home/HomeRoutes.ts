@@ -5,7 +5,7 @@ export const homeRoutes: Array<RouteRecordRaw> = [
   {
     path: Routes.Home,
     name: 'Home',
-    component: () => import(/* webpackChunkName: "dashboard" */ './Home.vue'),
+    component: () => import(/* webpackChunkName: "home" */ './Home.vue'),
     meta: {
       requiresAuth: true,
       isGuest: true

@@ -2,6 +2,7 @@
 using SmartHub.Application.Common.Interfaces.Database;
 using SmartHub.Application.Common.Models;
 using SmartHub.Domain.Common.Enums;
+using SmartHub.Domain.Common.Extensions;
 using SmartHub.Domain.Entities;
 using System.Threading.Tasks;
 
@@ -22,10 +23,15 @@ namespace SmartHub.Application.UseCases.Entity.Groups
 		public async Task<GroupPayload> CreateGroup([Service] IBaseRepositoryAsync<Group> groupRepository,
 			[Service] IUnitOfWork unitOfWork, CreateGroupInput input)
 		{
-			if (input.IsSubGroup && !string.IsNullOrEmpty(input.ParentGroupId))
+			if (string.IsNullOrWhiteSpace(input.Name))
+			{
+				return new GroupPayload(new UserError($"Group name can't be empty, null or whitespace: {input.Name}", AppErrorCodes.IsEmpty));
+			}
+
+			if (input.IsSubGroup && !string.IsNullOrWhiteSpace(input.ParentGroupId))
 			{
 				var foundGroup = await groupRepository.FindByAsync(x => x.Id == input.ParentGroupId);
-				if (foundGroup is not null && foundGroup.IsSubGroup)
+				if (foundGroup != null && foundGroup.IsSubGroup)
 				{
 					return new GroupPayload(new UserError("You can not create a subgroup of a subgroup.", AppErrorCodes.IsSubGroup));
 				}
@@ -55,18 +61,18 @@ namespace SmartHub.Application.UseCases.Entity.Groups
 		/// <param name="unitOfWork">The unit-of-work.</param>
 		/// <param name="input"></param>
 		/// <returns></returns>
-		public async Task<GroupPayload> updateGroup([Service] IBaseRepositoryAsync<Group> groupRepository,
+		public async Task<GroupPayload> UpdateGroup([Service] IBaseRepositoryAsync<Group> groupRepository,
 			[Service] IUnitOfWork unitOfWork,
 			UpdateGroupInput input)
 		{
 			var foundGroup = await groupRepository.FindByAsync(x => x.Id == input.Id);
-			if (foundGroup is null)
+			if (foundGroup == null)
 			{
 				return new GroupPayload(
 					new UserError($"Error: Couldn't find group with id {input.Id}.", AppErrorCodes.NotFound));
 			}
 
-			foundGroup.Name = !string.IsNullOrEmpty(input.Name) ? input.Name : foundGroup.Name;
+			foundGroup.Name = string.IsNullOrWhiteSpace(input.Name) ? foundGroup.Name : input.Name ;
 			foundGroup.Description = input.Description ?? foundGroup.Description;
 
 			await unitOfWork.SaveAsync();

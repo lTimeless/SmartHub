@@ -160,13 +160,13 @@
 <script lang="ts">
 import { reactive, toRefs, defineComponent, ref, watch } from 'vue';
 import AppCard from '@/components/ui/AppCard/AppCard.vue';
-import GroupCreateModal from '@/useCases/groups/components/GroupCreateModal.vue';
-import GroupDetailsModal from '@/useCases/groups/components/GroupDetailsModal.vue';
+import GroupCreateModal from '@/useCases/groups/modals/GroupCreateModal.vue';
+import GroupDetailsModal from '@/useCases/groups/modals/GroupDetailsModal.vue';
 import GroupDropdown from '@/useCases/groups/components/GroupDropdown.vue';
 import { useQuery, useResult } from '@vue/apollo-composable';
-import { GET_GROUPS } from '@/graphql/queries';
 import { Group } from '@/types/types';
 import Loader from '@/components/ui/AppSpinner.vue';
+import { GET_GROUPS } from '@/useCases/groups/GroupQueries';
 
 export default defineComponent({
   name: 'Groups',

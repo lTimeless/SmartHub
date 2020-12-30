@@ -2,14 +2,14 @@
   <router-link
     :to="route"
     class="flex items-center"
-    :class="[getActiveClass(route), route === routes.Statistics ? 'border-t border-gray-300' : '']"
+    :class="[getActiveClass(route), route === routes.Statistics ? 'border-t border-gray-300' : 'text-gray-600']"
   >
     <div v-show="isCurrentRoute">
       <AppIcon icon-name="ChevronRight"></AppIcon>
     </div>
     <div v-show="!isCurrentRoute" class="w-6" />
     <div class="mr-5">
-      <AppIcon :icon-name="iconName"></AppIcon>
+      <AppIcon :icon-name="iconName" />
     </div>
     <div class="tracking-wide text-lg leading-loose">
       {{ label }}
@@ -45,11 +45,11 @@ export default defineComponent({
   setup(props) {
     const router = useRouter();
     const routes = Routes;
-    const isCurrentRoute = computed(() => useRoute().path === props.route);
-    const getActiveClass = (path: string) => ({
-      'text-primary': router.currentRoute.value.path === path,
-      'text-gray-600': router.currentRoute.value.path !== path,
-      'transition transform hover:translate-x-1 hover:text-primary': router.currentRoute.value.path !== path
+    const isCurrentRoute = computed(() => useRoute().fullPath === props.route);
+    const getActiveClass = (route: string) => ({
+      'text-primary': router.currentRoute.value.path === route,
+      'text-gray-600': router.currentRoute.value.path !== route,
+      'transition transform hover:translate-x-1 hover:text-primary': router.currentRoute.value.path !== route
     });
     return {
       isCurrentRoute,

@@ -176,7 +176,7 @@ interface Address {
 }
 
 export interface AppConfigInitInput {
-  name: string;
-  description: string | null;
+  name?: string;
+  description?: string;
   autoDetectAddress: boolean;
 }

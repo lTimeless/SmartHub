@@ -58,11 +58,11 @@
 <script lang="ts">
 import { reactive, toRefs, defineComponent } from 'vue';
 import AppCard from '@/components/ui/AppCard/AppCard.vue';
-import DeviceCreateModal from '@/useCases/devices/components/DeviceCreateModal.vue';
-import DeviceDetailsModal from '@/useCases/devices/components/DeviceDetailsModal.vue';
-import { GET_DEVICES } from '@/graphql/queries';
+import DeviceCreateModal from '@/useCases/devices/modals/DeviceCreateModal.vue';
+import DeviceDetailsModal from '@/useCases/devices/modals/DeviceDetailsModal.vue';
 import { useQuery, useResult } from '@vue/apollo-composable';
 import Loader from '@/components/ui/AppSpinner.vue';
+import { GET_DEVICES } from '@/useCases/devices/DeviceQueries';
 
 export default defineComponent({
   name: 'Devices',

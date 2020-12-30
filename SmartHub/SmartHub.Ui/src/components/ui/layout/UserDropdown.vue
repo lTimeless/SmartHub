@@ -73,7 +73,7 @@ export default defineComponent({
 
     const setDropDownValue = (value: boolean) => {
       if (value) {
-        store.dispatch(AppActionTypes.SET_NOTIFICATION_DROPDOWN, false);
+        // store.dispatch(AppActionTypes.SET_NOTIFICATION_DROPDOWN, false);
       }
       store.dispatch(AppActionTypes.SET_USER_DROPDOWN, value);
     };

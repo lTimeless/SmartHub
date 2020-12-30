@@ -16,31 +16,32 @@ namespace SmartHub.Application.UseCases.NetworkScanner
 	    /// <summary>
 	    /// Creates a readable name from the given hostname.
 	    /// </summary>
-	    /// <param name="hostname">the hostname to transform.</param>
+	    /// <param name="hostname">The hostname to transform.</param>
+	    /// <param name="macAddress">The hostname, used to check if string contains <see cref="NetworkConstants.OwnMachine"/> </param>
 	    /// <returns>A more readable hostname.</returns>
-        public static string MakeNameFromHostname(string? hostname)
+	    public static string MakeName(string? hostname, string? macAddress = default)
         {
             if (hostname == null)
             {
-                return "Not available";
+                return NetworkConstants.NotAvailable;
             }
-
-            if (hostname == "fritz.box" || hostname == "speedport.ip")
+            if (macAddress == NetworkConstants.Dash)
+            {
+	            return NetworkConstants.OwnMachine;
+            }
+            if (hostname == NetworkConstants.FritzBox || hostname == NetworkConstants.SpeedPortIp)
             {
                 return hostname;
             }
-
-            if (hostname.Contains(".fritz.box"))
+            if (hostname.Contains(NetworkConstants.DotFritzBox))
             {
-                return hostname.Split(new[] {".fritz.box"}, StringSplitOptions.None)[0];
+                return hostname.Split(new[] {NetworkConstants.DotFritzBox}, StringSplitOptions.None)[0];
             }
-
-            if (hostname.Contains(".speedport.ip"))
+            if (hostname.Contains(NetworkConstants.DotSpeedPortIp))
             {
-                return hostname.Split(new[] {".speedport.ip"}, StringSplitOptions.None)[0];
+                return hostname.Split(new[] {NetworkConstants.DotSpeedPortIp}, StringSplitOptions.None)[0];
             }
-
-            return "Not available";
+            return NetworkConstants.NotAvailable;
         }
 
 	    /// <summary>
@@ -53,7 +54,7 @@ namespace SmartHub.Application.UseCases.NetworkScanner
             return host
                 .AddressList
                 .FirstOrDefault(ip => ip.AddressFamily == AddressFamily.InterNetwork && ip.ToString().StartsWith("192"))?
-                .ToString() ?? string.Empty;
+                .ToString() ?? NetworkConstants.NotAvailable;
         }
 
 	    /// <summary>
@@ -72,8 +73,7 @@ namespace SmartHub.Application.UseCases.NetworkScanner
             {
                 Log.ForContext(typeof(NetworkScannerUtils)).Information($"{e.Message}");
             }
-
-            return res?.HostName ?? string.Empty;
+            return res?.HostName ?? NetworkConstants.NotAvailable;
         }
 
 	    /// <summary>
@@ -98,15 +98,15 @@ namespace SmartHub.Application.UseCases.NetworkScanner
                 process.StartInfo.UseShellExecute = false;
                 process.Start();
                 var strOutput = await process.StandardOutput.ReadToEndAsync();
-                var substrings = strOutput.Split('-');
+                var substrings = strOutput.Split(NetworkConstants.Dash);
                 if (substrings.Length < 8)
                 {
-                    return "OWN Machine";
+                    return NetworkConstants.Dash;
                 }
 
                 var macAddress = substrings[3].Substring(Math.Max(0, substrings[3].Length - 2))
-                                 + "-" + substrings[4] + "-" + substrings[5] + "-" + substrings[6]
-                                 + "-" + substrings[7] + "-"
+                                 + "-" + substrings[4] + NetworkConstants.Dash + substrings[5] + NetworkConstants.Dash + substrings[6]
+                                 + "-" + substrings[7] + NetworkConstants.Dash
                                  + substrings[8].Substring(0, 2);
                 return macAddress;
             }
@@ -114,8 +114,7 @@ namespace SmartHub.Application.UseCases.NetworkScanner
             {
                 Log.ForContext(typeof(NetworkScannerUtils)).Warning($"Error {e.Message}");
             }
-
-            return string.Empty;
+            return NetworkConstants.NotAvailable;
         }
     }
 }
