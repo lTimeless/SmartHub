@@ -15,7 +15,7 @@ namespace SmartHub.Api.Controllers
         /// <returns></returns>
         [HttpGet("light/{deviceId}")]
         [AllowAnonymous]
-        public async Task<IActionResult> LightOnOff(string deviceId, [FromQuery]bool toggleLight)
+        public IActionResult LightOnOff(string deviceId, [FromQuery]bool toggleLight)
         {
             var deviceLightState = new DeviceLightStateRequestDto
             {
