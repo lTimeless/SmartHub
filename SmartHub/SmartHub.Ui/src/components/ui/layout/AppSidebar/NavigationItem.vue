@@ -1,19 +1,21 @@
 <template>
   <router-link
     :to="route"
-    class="flex items-center"
-    :class="[getActiveClass(route), route === routes.Statistics ? 'border-t border-gray-300' : 'text-gray-600']"
+    class="block relative h-16 w-16 flex justify-center items-center hover:bg-indigo-200"
+    :class="[
+      isCurrentRoute ? 'bg-gray-300' : '',
+    ]"
   >
-    <div v-show="isCurrentRoute">
-      <AppIcon icon-name="ChevronRight"></AppIcon>
-    </div>
-    <div v-show="!isCurrentRoute" class="w-6" />
-    <div class="mr-5">
-      <AppIcon :icon-name="iconName" />
-    </div>
-    <div class="tracking-wide text-lg leading-loose">
-      {{ label }}
-    </div>
+    <!--    <div v-show="isCurrentRoute">-->
+    <!--      <AppIcon icon-name="ChevronRight"></AppIcon>-->
+    <!--    </div>-->
+    <!--    <div v-show="!isCurrentRoute" class="w-6" />-->
+    <!--    <div class="mr-5">-->
+    <AppIcon :icon-name="iconName" height="h-7" width="w-7" />
+    <!--    </div>-->
+    <!--    <div class="tracking-wide text-lg leading-loose">-->
+    <!--      {{ label }}-->
+    <!--    </div>-->
   </router-link>
 </template>
 

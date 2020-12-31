@@ -1,5 +1,5 @@
 <template>
-  <div class="relative">
+  <div>
     <!-- Cards -->
     <div class="flex flex-wrap justify-between">
       <CardsRow />

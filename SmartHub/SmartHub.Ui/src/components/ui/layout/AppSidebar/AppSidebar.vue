@@ -1,74 +1,92 @@
 <template>
-  <nav
-    class="relative md:left-0 md:block md:fixed md:top-0 md:bottom-0 md:overflow-y-auto md:flex-row md:flex-no-wrap md:overflow-hidden flex flex-wrap items-center justify-between md:w-64 z-10 py-2 md:py-4 px-6 md:bg-white bg-gray-100"
-  >
-    <div
-      class="md:flex-col md:items-stretch md:min-h-full md:flex-no-wrap flex flex-wrap items-center justify-between w-full mx-auto"
-    >
-      <!-- Toggle btn -->
-      <button
-        class="cursor-pointer text-black opacity-50 md:hidden px-3 py-1 text-xl leading-none bg-transparent rounded border border-solid border-transparent"
-        type="button"
-        @click="toggleCollapseShow('bg-gray-100 m-2 py-3 px-6')"
-      >
-        <AppIcon width="h-6" height="h-6" icon-name="Menu" icon-color="text-gray-600" />
-      </button>
-      <!-- Brand -->
-      <AppBrand />
-      <!-- Dropdowns -->
-      <div class="md:hidden items-center flex flex-wrap list-none">
-        <!-- <NotificationDropdown />-->
-        <UserDropdown />
-      </div>
-      <!-- Collapse btn, dark bg -->
-      <button
-        tabindex="-1"
-        v-if="collapseShowBool"
-        @click="toggleCollapseShow('hidden')"
-        class="fixed inset-0 h-full w-full bg-black opacity-20 cursor-default"
-      ></button>
-      <div
-        class="md:flex md:flex-col md:items-stretch md:opacity-100 md:relative md:mt-4 md:shadow-none shadow absolute top-0 left-0 right-0 z-40 overflow-y-auto overflow-x-hidden h-auto items-center flex-1 rounded"
-        :class="collapseShow"
-      >
-        <!-- Collapse header -->
-        <div class="md:min-w-full md:hidden block mb-2">
-          <div class="flex flex-wrap">
-            <div class="flex">
-              <button
-                type="button"
-                class="cursor-pointer text-black opacity-50 md:hidden bg-transparent rounded border border-solid border-transparent"
-                @click="toggleCollapseShow('hidden')"
-              >
-                <AppIcon width="h-6" height="h-6" icon-name="Close" icon-color="text-gray-600" />
-              </button>
-            </div>
-          </div>
-        </div>
-        <!-- Form Search -->
-        <form class="mb-4 md:hidden px-6">
-          <div class="mb-3 pt-0">
-            <label>
-              <input
-                type="text"
-                placeholder="Search"
-                class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md"
-              />
-            </label>
-          </div>
-        </form>
-        <!-- Sidebar List -->
-        <div v-for="view in sidebarLists" :key="view.label" class="mb-2">
-          <NavigationItem
-            v-if="roleIncluded(view.rolesRequired)"
-            :icon-name="view.iconName"
-            :label="view.label"
-            :route="view.route"
-          />
-        </div>
+  <div class="flex flex-col justify-between items-center flex-none w-16 bg-gray-100">
+    <div class="flex flex-col space-y w-full items-center">
+      <!--  TODO Logo    -->
+      <AppIcon class="mt-5" width="h-10" height="h-10" icon-name="Home" icon-color="text-gray-200" />
+      <div v-for="view in sidebarLists" :key="view.label">
+        <NavigationItem
+          v-if="roleIncluded(view.rolesRequired)"
+          :icon-name="view.iconName"
+          label=" "
+          :route="view.route"
+        />
       </div>
     </div>
-  </nav>
+    <div class="flex flex-col space-y-4 pb-5">
+      <a><div class="rounded-full bg-gray-400 w-8 h-8"></div></a>
+      <a><div class="rounded-full bg-gray-400 w-8 h-8"></div></a>
+    </div>
+  </div>
+  <!--  <nav-->
+  <!--    class="relative md:left-0 md:block md:fixed md:top-0 md:bottom-0 md:overflow-y-auto md:flex-row md:flex-no-wrap md:overflow-hidden flex flex-wrap items-center justify-between md:w-64 z-10 py-2 md:py-4 px-6 md:bg-white bg-gray-100"-->
+  <!--  >-->
+  <!--    <div-->
+  <!--      class="md:flex-col md:items-stretch md:min-h-full md:flex-no-wrap flex flex-wrap items-center justify-between w-full mx-auto"-->
+  <!--    >-->
+  <!--      &lt;!&ndash; Toggle btn &ndash;&gt;-->
+  <!--      <button-->
+  <!--        class="cursor-pointer text-black opacity-50 md:hidden px-3 py-1 text-xl leading-none bg-transparent rounded border border-solid border-transparent"-->
+  <!--        type="button"-->
+  <!--        @click="toggleCollapseShow('bg-gray-100 m-2 py-3 px-6')"-->
+  <!--      >-->
+  <!--        <AppIcon width="h-6" height="h-6" icon-name="Menu" icon-color="text-gray-600" />-->
+  <!--      </button>-->
+  <!--      &lt;!&ndash; Brand &ndash;&gt;-->
+  <!--      <AppBrand />-->
+  <!--      &lt;!&ndash; Dropdowns &ndash;&gt;-->
+  <!--      <div class="md:hidden items-center flex flex-wrap list-none">-->
+  <!--        &lt;!&ndash; <NotificationDropdown />&ndash;&gt;-->
+  <!--        <UserDropdown />-->
+  <!--      </div>-->
+  <!--      &lt;!&ndash; Collapse btn, dark bg &ndash;&gt;-->
+  <!--      <button-->
+  <!--        tabindex="-1"-->
+  <!--        v-if="collapseShowBool"-->
+  <!--        @click="toggleCollapseShow('hidden')"-->
+  <!--        class="fixed inset-0 h-full w-full bg-black opacity-20 cursor-default"-->
+  <!--      ></button>-->
+  <!--      <div-->
+  <!--        class="md:flex md:flex-col md:items-stretch md:opacity-100 md:relative md:mt-4 md:shadow-none shadow absolute top-0 left-0 right-0 z-40 overflow-y-auto overflow-x-hidden h-auto items-center flex-1 rounded"-->
+  <!--        :class="collapseShow"-->
+  <!--      >-->
+  <!--        &lt;!&ndash; Collapse header &ndash;&gt;-->
+  <!--        <div class="md:min-w-full md:hidden block mb-2">-->
+  <!--          <div class="flex flex-wrap">-->
+  <!--            <div class="flex">-->
+  <!--              <button-->
+  <!--                type="button"-->
+  <!--                class="cursor-pointer text-black opacity-50 md:hidden bg-transparent rounded border border-solid border-transparent"-->
+  <!--                @click="toggleCollapseShow('hidden')"-->
+  <!--              >-->
+  <!--                <AppIcon width="h-6" height="h-6" icon-name="Close" icon-color="text-gray-600" />-->
+  <!--              </button>-->
+  <!--            </div>-->
+  <!--          </div>-->
+  <!--        </div>-->
+  <!--        &lt;!&ndash; Form Search &ndash;&gt;-->
+  <!--        <form class="mb-4 md:hidden px-6">-->
+  <!--          <div class="mb-3 pt-0">-->
+  <!--            <label>-->
+  <!--              <input-->
+  <!--                type="text"-->
+  <!--                placeholder="Search"-->
+  <!--                class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md"-->
+  <!--              />-->
+  <!--            </label>-->
+  <!--          </div>-->
+  <!--        </form>-->
+  <!--        &lt;!&ndash; Sidebar List &ndash;&gt;-->
+  <!--        <div v-for="view in sidebarLists" :key="view.label" class="mb-2">-->
+  <!--          <NavigationItem-->
+  <!--            v-if="roleIncluded(view.rolesRequired)"-->
+  <!--            :icon-name="view.iconName"-->
+  <!--            :label="view.label"-->
+  <!--            :route="view.route"-->
+  <!--          />-->
+  <!--        </div>-->
+  <!--      </div>-->
+  <!--    </div>-->
+  <!--  </nav>-->
 </template>
 
 <script lang="ts">
@@ -84,10 +102,10 @@ import AppBrand from '@/components/ui/layout/AppSidebar/AppBrand.vue';
 export default defineComponent({
   name: 'AppSidebar',
   components: {
-    UserDropdown,
+    // UserDropdown,
     NavigationItem,
-    AppIcon,
-    AppBrand
+    AppIcon
+    // AppBrand
   },
   props: {},
   setup() {
