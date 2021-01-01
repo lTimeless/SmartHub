@@ -16,6 +16,7 @@ import UsersIcon from '@/components/icons/UsersIcon.vue';
 import BellIcon from '@/components/icons/BellIcon.vue';
 import MenuIcon from '@/components/icons/MenuIcon.vue';
 import CloseIcon from '@/components/icons/CloseIcon.vue';
+import InboxIcon from '@/components/icons/InboxIcon.vue';
 
 export default {
   install(app: any): any {
@@ -37,5 +38,6 @@ export default {
     app.component('BellIcon', BellIcon);
     app.component('MenuIcon', MenuIcon);
     app.component('CloseIcon', CloseIcon);
+    app.component('InboxIcon', InboxIcon);
   }
 };

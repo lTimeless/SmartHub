@@ -1,48 +1,45 @@
 <template>
   <!-- Navbar -->
-  <nav
-    class="relative w-full bg-transparent md:flex-row md:flex-no-wrap md:justify-start flex items-center mb-4 pr-2"
-  >
-    <div class="w-full mx-auto items-center flex justify-between md:flex-no-wrap flex-wrap">
-      <!-- Route -->
-      <a class="text-gray-100 text-lg uppercase lg:inline-block font-semibold">{{ route.name }}</a>
-      <!-- Form -->
-      <form class="md:flex hidden flex-row flex-wrap items-center lg:ml-auto mr-3">
-        <div class="relative flex w-full flex-wrap items-stretch">
-          <label>
-            <input
-              type="text"
-              placeholder="Search here..."
-              class="mt-1 placeholder-gray-500 focus:ring-indigo-500 focus:border-indigo-500 focus:bg-gray-100 focus:bg-opacity-50 block w-full sm:text-sm border-gray-300 rounded-md bg-white"
-            />
-          </label>
-        </div>
-      </form>
-      <!-- Dropdowns -->
-      <div class="flex-col md:flex-row list-none items-center hidden md:flex">
-        <!-- <NotificationDropdown />-->
-        <UserDropdown />
-      </div>
+  <div class="flex flex-row justify-between items-center">
+    <!-- Route -->
+    <div class="flex flex-row w-1/2">
+      <a class="text-gray-600 text-lg p-2 uppercase font-semibold">{{ route.name }}</a>
     </div>
-  </nav>
-
-  <!-- End Navbar -->
+    <!-- back btn -->
+    <div class="flex-row hidden md:flex md:justify-end w-1/2">
+      <button
+        v-if="route.path !== routes.Home"
+        class="rounded p-2 hover:bg-indigo-200"
+        type="button"
+        @click="goBack"
+      >
+        <AppIcon icon-name="ArrowLeft" />
+      </button>
+    </div>
+  </div>
 </template>
+
 <script lang="ts">
 import { defineComponent } from 'vue';
-import UserDropdown from '@/components/ui/layout/UserDropdown.vue';
-import { useRoute } from 'vue-router';
-// TODO add back button icon in einer reihe unter dem routeName
+import { useRoute, useRouter } from 'vue-router';
+import AppIcon from '@/components/icons/AppIcon.vue';
+import { Routes } from '@/types/enums';
+
 export default defineComponent({
   name: 'Navbar',
   components: {
-    UserDropdown
+    AppIcon
   },
   setup() {
     const route = useRoute();
-
+    const router = useRouter();
+    const goBack = () => {
+      router.back();
+    };
     return {
-      route
+      route,
+      goBack,
+      routes: Routes
     };
   }
 });

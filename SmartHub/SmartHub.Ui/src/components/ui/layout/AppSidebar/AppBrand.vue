@@ -1,14 +1,19 @@
 <template>
-  <router-link :to="routes.Home" class="flex items-end mx-auto pr-3" title="Home">
+  <router-link
+    :to="routes.Home"
+    class="flex items-end mx-auto"
+    :class="[onlyIcon ? 'pr-3' : '']"
+    title="Home"
+  >
     <Logo :width="35" />
-    <span class="ml-2 hidden text-2xl font-bold sm:block text-primary">
+    <span v-if="onlyIcon" class="ml-2 hidden text-2xl font-bold sm:block text-primary">
       {{ appConfig.applicationName }}
     </span>
   </router-link>
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
+import { defineComponent, toRefs } from 'vue';
 import Logo from '@/components/ui/svgs/Logo.vue';
 import { Routes } from '@/types/enums';
 import { useQuery, useResult } from '@vue/apollo-composable';
@@ -27,12 +32,20 @@ export default defineComponent({
   components: {
     Logo
   },
-  setup() {
+  props: {
+    onlyIcon: {
+      type: Boolean,
+      required: false,
+      default: false
+    }
+  },
+  setup(props) {
     const { result } = useQuery(GET_APP_CONFIG_NAME);
     const appConfig = useResult(result, 'SmartHub', (data) => data.appConfig);
     return {
       appConfig,
-      routes: Routes
+      routes: Routes,
+      ...toRefs(props)
     };
   }
 });

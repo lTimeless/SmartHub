@@ -1,11 +1,10 @@
 <template>
-  <div class="relative z-30 inline-block text-left">
-    <div class="relative z-30 items-center flex cursor-pointer" @click="setDropDownValue(!showDropdown)">
-      <span
-        class="w-10 h-10 text-sm text-gray-600 text-center inline-flex items-center justify-center rounded-full bg-white border hover:border-indigo-500"
-      >
-        <AppIcon icon-name="User" />
-      </span>
+  <div class="relative z-30 inline-block text-left cursor-pointer">
+    <div
+      class="block relative z-30 h-16 w-16 flex justify-center items-center hover:bg-indigo-200 rounded-l"
+      @click="setDropDownValue(!showDropdown)"
+    >
+      <AppIcon icon-name="User" />
     </div>
     <button
       v-if="showDropdown"
@@ -16,7 +15,7 @@
     ></button>
     <div
       v-if="showDropdown"
-      class="origin-top-right z-30 absolute right-0 mt-2 w-56 rounded-md border bg-white ring-1 ring-black ring-opacity-5"
+      class="absolute md:inset-x-0 md:bottom-2 md:left-16 origin-top-right right-0 mt-2 mr-2 md:mr-0 z-30 w-40 rounded border bg-white ring-1 ring-black ring-opacity-5"
       role="menu"
       aria-orientation="vertical"
       aria-labelledby="options-menu"

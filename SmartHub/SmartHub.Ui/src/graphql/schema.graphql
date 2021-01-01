@@ -35,7 +35,7 @@ type AppConfig {
     unitSystem: String
 }
 
-"All mutations for the identity services."
+"All mutations for the users entity."
 type AppMutations {
     createDevice(input: CreateDeviceInput!): DevicePayload!
     createGroup(input: CreateGroupInput!): GroupPayload!
@@ -44,6 +44,7 @@ type AppMutations {
     registration(input: RegistrationInput!): IdentityPayload!
     updateDevice(input: UpdateDeviceInput!): DevicePayload!
     updateGroup(input: UpdateGroupInput!): GroupPayload!
+    updateUser(input: UpdateUserInput!): UserPayload!
 }
 
 "All queries for the me services."
@@ -51,9 +52,12 @@ type AppQueries {
     appConfig: AppConfig!
     applicationIsActive: Boolean!
     devices(order: [DeviceSortInput!], where: DeviceFilterInput): [Device!]!
+    devicesCount: Int!
     groups(order: [GroupSortInput!], where: GroupFilterInput): [Group!]!
     me: User
+    parentGroupsCount: Int!
     scanNetworkDevices(order: [NetworkDeviceSortInput!], where: NetworkDeviceFilterInput): [NetworkDevice!]!
+    subGroupsCount: Int!
     usersExist: Boolean!
 }
 
@@ -89,9 +93,7 @@ type Device {
     pluginTypes: PluginTypes!
     primaryConnection: ConnectionTypes!
     secondaryConnection: ConnectionTypes!
-    setConnectionTypes(primary: ConnectionTypes!, secondary: ConnectionTypes!): Device!
     setDescription(description: String!): BaseEntity!
-    setIp(ip: String!): Device!
     setName(name: String!): BaseEntity!
 }
 
@@ -102,8 +104,6 @@ type DevicePayload {
 }
 
 type Group {
-    addDevice(newDevice: DeviceInput!): Group!
-    addSubGroup: Group!
     createdAt: DateTime!
     createdBy: String!
     description: String
@@ -164,6 +164,7 @@ type User {
     email: String
     emailConfirmed: Boolean!
     id: String
+    isFirstLogin: Boolean!
     lastModifiedAt: DateTime!
     lastModifiedBy: String!
     lockoutEnabled: Boolean!
@@ -183,6 +184,12 @@ type User {
 type UserError {
     code: AppErrorCodes!
     message: String!
+}
+
+type UserPayload {
+    errors: [UserError!]
+    message: String
+    user: User!
 }
 
 enum AppErrorCodes {
@@ -219,8 +226,8 @@ enum SortEnumType {
 
 input AppConfigInitInput {
     autoDetectAddress: Boolean!
-    description: String!
-    name: String!
+    description: String
+    name: String
 }
 
 input BooleanOperationFilterInput {
@@ -233,11 +240,6 @@ input CompanyFilterInput {
     name: StringOperationFilterInput
     or: [CompanyFilterInput!]
     shortName: StringOperationFilterInput
-}
-
-input CompanyInput {
-    name: String!
-    shortName: String!
 }
 
 input CompanySortInput {
@@ -270,7 +272,7 @@ input ConnectionTypesOperationFilterInput {
 input CreateDeviceInput {
     companyName: String!
     description: String
-    groupName: String!
+    groupName: String
     ipv4: String!
     name: String!
     pluginName: String!
@@ -280,7 +282,7 @@ input CreateDeviceInput {
 }
 
 input CreateGroupInput {
-    description: String!
+    description: String
     isSubGroup: Boolean!
     name: String!
     parentGroupId: String
@@ -303,23 +305,6 @@ input DeviceFilterInput {
     pluginTypes: PluginTypesOperationFilterInput
     primaryConnection: ConnectionTypesOperationFilterInput
     secondaryConnection: ConnectionTypesOperationFilterInput
-}
-
-input DeviceInput {
-    company: CompanyInput!
-    createdAt: DateTime!
-    createdBy: String!
-    description: String
-    groups: [GroupInput!]!
-    id: String!
-    ip: IpAddressInput!
-    lastModifiedAt: DateTime!
-    lastModifiedBy: String!
-    name: String!
-    pluginName: String!
-    pluginTypes: PluginTypes!
-    primaryConnection: ConnectionTypes!
-    secondaryConnection: ConnectionTypes!
 }
 
 input DeviceSortInput {
@@ -353,19 +338,6 @@ input GroupFilterInput {
     subGroups: ListFilterInputTypeOfGroupFilterInput
 }
 
-input GroupInput {
-    createdAt: DateTime!
-    createdBy: String!
-    description: String
-    devices: [DeviceInput!]!
-    id: String!
-    isSubGroup: Boolean!
-    lastModifiedAt: DateTime!
-    lastModifiedBy: String!
-    name: String!
-    subGroups: [GroupInput!]!
-}
-
 input GroupSortInput {
     createdAt: SortEnumType
     createdBy: SortEnumType
@@ -381,10 +353,6 @@ input IpAddressFilterInput {
     and: [IpAddressFilterInput!]
     ipv4: StringOperationFilterInput
     or: [IpAddressFilterInput!]
-}
-
-input IpAddressInput {
-    ipv4: String!
 }
 
 input IpAddressSortInput {
@@ -460,18 +428,30 @@ input StringOperationFilterInput {
 
 input UpdateDeviceInput {
     description: String
-    groupName: String!
+    groupName: String
     id: String!
-    ipv4: String!
-    name: String!
-    primaryConnection: ConnectionTypes!
-    secondaryConnection: ConnectionTypes!
+    ipv4: String
+    name: String
+    primaryConnection: ConnectionTypes
+    secondaryConnection: ConnectionTypes
 }
 
 input UpdateGroupInput {
-    description: String!
+    description: String
     id: String!
     name: String
+}
+
+input UpdateUserInput {
+    email: String
+    firstName: String
+    lastName: String
+    middleName: String
+    newRole: String
+    personInfo: String
+    phoneNumber: String
+    userId: String!
+    userName: String
 }
 
 

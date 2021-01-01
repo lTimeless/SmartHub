@@ -5,7 +5,16 @@ export const deviceRoutes: Array<RouteRecordRaw> = [
   {
     path: Routes.Devices,
     name: 'Devices',
-    component: () => import(/* webpackChunkName: "home" */ './Devices.vue'),
+    component: () => import(/* webpackChunkName: "devices" */ './Devices.vue'),
+    meta: {
+      requiresAuth: true,
+      isUser: true
+    }
+  },
+  {
+    path: Routes.DeviceDetails,
+    name: 'DeviceDetails',
+    component: () => import(/* webpackChunkName: "devices" */ './DeviceDetails.vue'),
     meta: {
       requiresAuth: true,
       isUser: true

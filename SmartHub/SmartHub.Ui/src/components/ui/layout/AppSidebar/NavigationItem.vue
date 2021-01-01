@@ -1,21 +1,26 @@
 <template>
   <router-link
     :to="route"
-    class="block relative h-16 w-16 flex justify-center items-center hover:bg-indigo-200"
+    class="block relative h-16 w-16 flex justify-center items-center hover:bg-indigo-200 rounded-l"
     :class="[
-      isCurrentRoute ? 'bg-gray-300' : '',
+      isCurrentRoute ? 'bg-gray-200' : '',
+      route === routes.Statistics ? ' border-t border-gray-300' : ''
     ]"
   >
-    <!--    <div v-show="isCurrentRoute">-->
-    <!--      <AppIcon icon-name="ChevronRight"></AppIcon>-->
-    <!--    </div>-->
-    <!--    <div v-show="!isCurrentRoute" class="w-6" />-->
-    <!--    <div class="mr-5">-->
-    <AppIcon :icon-name="iconName" height="h-7" width="w-7" />
-    <!--    </div>-->
-    <!--    <div class="tracking-wide text-lg leading-loose">-->
-    <!--      {{ label }}-->
-    <!--    </div>-->
+    <div v-if="onlyIcon">
+      <AppIcon :icon-name="iconName" height="h-7" width="w-7" />
+    </div>
+    <div v-else>
+      <div v-show="isCurrentRoute">
+        <AppIcon icon-name="ChevronRight"></AppIcon>
+      </div>
+      <div v-show="!isCurrentRoute" class="w-6" />
+      <div class="mr-5"></div>
+      <div class="tracking-wide text-lg leading-loose">
+        {{ label }}
+      </div>
+    </div>
+
   </router-link>
 </template>
 
@@ -41,13 +46,18 @@ export default defineComponent({
     },
     label: {
       type: String,
-      required: true
+      required: false,
+      default: ''
+    },
+    onlyIcon: {
+      type: Boolean,
+      required: false,
+      default: true
     }
   },
   setup(props) {
     const router = useRouter();
-    const routes = Routes;
-    const isCurrentRoute = computed(() => useRoute().fullPath === props.route);
+    const isCurrentRoute = computed(() => useRoute().fullPath.includes(props.route));
     const getActiveClass = (route: string) => ({
       'text-primary': router.currentRoute.value.path === route,
       'text-gray-600': router.currentRoute.value.path !== route,
@@ -55,7 +65,7 @@ export default defineComponent({
     });
     return {
       isCurrentRoute,
-      routes,
+      routes: Routes,
       getActiveClass,
       ...props
     };

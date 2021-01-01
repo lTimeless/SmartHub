@@ -1,7 +1,6 @@
 <template>
   <div>
     <DeviceCreateModal v-if="showCreateModal" @close="toggleCreateModal" />
-    <DeviceDetailsModal v-if="showDetailModal" @close="toggleDetailModal(null)" :device-id="deviceId" />
 
     <!-- Buttons -->
     <div class="w-full">
@@ -35,7 +34,7 @@
             <div v-if="device" class="p-3 w-full">
               <h1
                 class="text-xl text-left text-gray-600 font-bold cursor-pointer"
-                @click="toggleDetailModal(device.id)"
+                @click="goToDetail(device.id)"
               >
                 {{ device.name }}
               </h1>
@@ -59,20 +58,20 @@
 import { reactive, toRefs, defineComponent } from 'vue';
 import AppCard from '@/components/ui/AppCard/AppCard.vue';
 import DeviceCreateModal from '@/useCases/devices/modals/DeviceCreateModal.vue';
-import DeviceDetailsModal from '@/useCases/devices/modals/DeviceDetailsModal.vue';
 import { useQuery, useResult } from '@vue/apollo-composable';
 import Loader from '@/components/ui/AppSpinner.vue';
 import { GET_DEVICES } from '@/useCases/devices/DeviceQueries';
+import { useRouter } from 'vue-router';
 
 export default defineComponent({
   name: 'Devices',
   components: {
     AppCard,
     DeviceCreateModal,
-    DeviceDetailsModal,
     Loader
   },
   setup() {
+    const router = useRouter();
     const { result, loading, error } = useQuery(GET_DEVICES);
     const devices = useResult(result, null, (data) => data.devices);
     const state = reactive({
@@ -85,13 +84,8 @@ export default defineComponent({
       state.showCreateModal = !state.showCreateModal;
     };
 
-    const toggleDetailModal = (deviceId: string | null) => {
-      state.showDetailModal = !state.showDetailModal;
-      if (state.showDetailModal && deviceId !== null) {
-        state.deviceId = deviceId;
-      } else {
-        state.deviceId = '';
-      }
+    const goToDetail = (id: string) => {
+      router.push({ name: 'DeviceDetails', params: { id: id } });
     };
 
     return {
@@ -100,7 +94,7 @@ export default defineComponent({
       error,
       devices,
       toggleCreateModal,
-      toggleDetailModal
+      goToDetail
     };
   }
 });

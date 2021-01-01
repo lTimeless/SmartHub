@@ -10,5 +10,14 @@ export const groupRoutes: Array<RouteRecordRaw> = [
       requiresAuth: true,
       isUser: true
     }
+  },
+  {
+    path: Routes.GroupDetails,
+    name: 'GroupDetail',
+    component: () => import(/* webpackChunkName: "groups" */ './GroupDetails.vue'),
+    meta: {
+      requiresAuth: true,
+      isUser: true
+    }
   }
 ];

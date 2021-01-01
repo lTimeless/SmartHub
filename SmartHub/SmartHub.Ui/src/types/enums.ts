@@ -15,19 +15,19 @@ export enum Routes {
   Layout = '/',
   Home = '/home',
   Groups = '/groups',
+  GroupDetails = '/groups/:id',
   Devices = '/devices',
+  DeviceDetails = '/devices/:id',
   Users = '/users',
   Automations = '/automations',
-  About = '/about', //  TODO Remove?
-  Configuration = '/configuration', // TODO Configurations
+  Configuration = '/configuration',
   Plugins = '/plugins',
   Statistics = '/statistics',
   // Admin
   Activity = '/activity',
   Logs = '/logs',
   System = '/system',
-  Health = '/health',
-  Manager = '/manager' // TODO Remove??
+  Health = '/health'
 }
 
 /*

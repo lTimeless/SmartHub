@@ -1,7 +1,7 @@
 <template>
   <router-link :to="route">
     <div
-      class="relative bg-white flex flex-col min-w-0 break-words mb-6 xl:mb-0 rounded border"
+      class="bg-white flex flex-col min-w-0 break-words mb-6 xl:mb-0 rounded border"
       :class="borderHoverColor"
     >
       <div class="flex-auto p-4">

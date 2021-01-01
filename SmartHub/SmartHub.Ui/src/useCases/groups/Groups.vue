@@ -1,7 +1,6 @@
 <template>
   <div>
     <GroupCreateModal v-if="showCreateModal" @close="toggleCreateModal" />
-    <GroupDetailsModal v-if="showDetailModal" @close="toggleDetailModal(null)" :group-id="groupId" />
 
     <!-- Buttons -->
     <div class="w-full">
@@ -76,7 +75,7 @@
     </template>
     <template v-else-if="groups">
       <!-- All groups -->
-      <div class="overflow-auto overscroll-contain pr-2 pb-4 h-114 rounded">
+      <div class="pb-4 h-114 rounded">
         <div v-if="groups.length > 0" class="grid xl:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 gap-4 rounded">
           <AppCard
             class="bg-white border hover:border-indigo-400 w-full"
@@ -87,7 +86,7 @@
               <div class="flex items-start justify-between">
                 <h1
                   class="text-xl text-left text-gray-600 font-bold cursor-pointer"
-                  @click="toggleDetailModal(group.id)"
+                  @click="goToDetail(group.id)"
                 >
                   {{ group.name }}
                 </h1>
@@ -161,23 +160,23 @@
 import { reactive, toRefs, defineComponent, ref, watch } from 'vue';
 import AppCard from '@/components/ui/AppCard/AppCard.vue';
 import GroupCreateModal from '@/useCases/groups/modals/GroupCreateModal.vue';
-import GroupDetailsModal from '@/useCases/groups/modals/GroupDetailsModal.vue';
 import GroupDropdown from '@/useCases/groups/components/GroupDropdown.vue';
 import { useQuery, useResult } from '@vue/apollo-composable';
 import { Group } from '@/types/types';
 import Loader from '@/components/ui/AppSpinner.vue';
 import { GET_GROUPS } from '@/useCases/groups/GroupQueries';
+import { useRouter } from 'vue-router';
 
 export default defineComponent({
   name: 'Groups',
   components: {
     AppCard,
     GroupCreateModal,
-    GroupDetailsModal,
     GroupDropdown,
     Loader
   },
   setup() {
+    const router = useRouter();
     const { result, loading, error } = useQuery(GET_GROUPS);
     const groupsResult = useResult(result, null, (data) => data.groups);
     const tempGroups = ref();
@@ -203,15 +202,6 @@ export default defineComponent({
       state.showCreateModal = !state.showCreateModal;
     };
 
-    const toggleDetailModal = (groupId: string | null) => {
-      state.showDetailModal = !state.showDetailModal;
-      if (state.showDetailModal && groupId !== null) {
-        state.groupId = groupId;
-      } else {
-        state.groupId = '';
-      }
-    };
-
     const showSubGroups = () => {
       state.showSubGroupsIcon = !state.showSubGroupsIcon;
       if (state.showSubGroupsIcon) {
@@ -221,12 +211,16 @@ export default defineComponent({
       }
     };
 
+    const goToDetail = (id: string) => {
+      router.push({ name: 'GroupDetail', params: { id: id } });
+    };
+
     return {
       loading,
       error,
       ...toRefs(state),
       toggleCreateModal,
-      toggleDetailModal,
+      goToDetail,
       showSubGroups,
       groups
     };

@@ -1,14 +1,5 @@
 <template>
-  <BaseModal
-    title="Device details"
-    save-btn-title="Save"
-    close-btn-title="Cancel"
-    :close="close"
-    :save="save"
-    main-bg-color="bg-yellow-400"
-    main-border-color="border-yellow-400"
-    :loading="loadUpdate"
-  >
+  <div class="relative flex-col w-full justify-end bg-white border p-3 rounded">
     <template v-if="loading">
       <div class="flex items-center justify-center w-full h-full">
         <Loader height="h-48" width="w-48" />
@@ -143,34 +134,46 @@
         </div>
       </div>
       <div class="text-gray-500 text-sm text-left mt-10">Creator: {{ device.createdBy }}</div>
+      <!-- Save btn -->
+      <div class="flex items-center justify-start mt-4">
+        <button
+          class="bg-transparent border-indigo-400 border border-solid font-bold uppercase text-sm pl-4 pr-6 py-3 rounded outline-none focus:outline-none"
+          type="button"
+          @click="save"
+          :class="[
+            !loadUpdate
+              ? `hover:bg-indigo-400 hover:text-white text-gray-600`
+              : 'opacity-50 focus:outline-none cursor-not-allowed'
+          ]"
+          :disabled="loadUpdate"
+        >
+          <span class="flex">
+            <Loader v-if="loadUpdate" height="h-2" width="w-2" />
+            <span class="pl-2">Save</span>
+          </span>
+        </button>
+      </div>
     </template>
-  </BaseModal>
+  </div>
 </template>
 
 <script lang="ts">
 import { defineComponent, reactive, ref } from 'vue';
-import BaseModal from '@/components/ui/modals/BaseModal.vue';
-import { UpdateDeviceInput } from '@/types/types';
-import { useEnumTypes } from '@/hooks/useEnums';
-import { useQuery, useMutation, useResult } from '@vue/apollo-composable';
 import Loader from '@/components/ui/AppSpinner.vue';
+import { UpdateDeviceInput } from '@/types/types';
+import { useMutation, useQuery, useResult } from '@vue/apollo-composable';
 import { UPDATE_DEVICE } from '@/useCases/devices/DeviceMutations';
 import { GET_DEVICE_BY_ID, GET_DEVICES } from '@/useCases/devices/DeviceQueries';
+import { useEnumTypes } from '@/hooks/useEnums';
+import { useRoute } from 'vue-router';
 
 export default defineComponent({
-  name: 'DeviceDetailsModal',
-  emits: ['close'],
+  name: 'DeviceDetails',
   components: {
-    BaseModal,
     Loader
   },
-  props: {
-    deviceId: {
-      type: String,
-      required: true
-    }
-  },
-  setup(props, context) {
+  setup() {
+    const route = useRoute();
     const selectedPluginType = ref<number>();
     const selectedPConnType = ref<number>();
     const selectedSConnType = ref<number>();
@@ -178,14 +181,10 @@ export default defineComponent({
       id: ''
     });
     const { mutate: updateDevice, loading: loadUpdate, error: errUpdate } = useMutation(UPDATE_DEVICE);
-    const { result, loading, error } = useQuery(GET_DEVICE_BY_ID, () => ({ id: props.deviceId }), {
+    const { result, loading, error } = useQuery(GET_DEVICE_BY_ID, () => ({ id: route.params.id }), {
       fetchPolicy: 'no-cache'
     });
     const device = useResult(result, null, (data) => data.devices[0]);
-
-    const close = () => {
-      context.emit('close');
-    };
 
     const save = async () => {
       if (device.value) {
@@ -194,7 +193,6 @@ export default defineComponent({
         updatedDevice.secondaryConnection = device.value?.secondaryConnection;
         await updateDevice({ input: updatedDevice }, { refetchQueries: [{ query: GET_DEVICES }] });
       }
-      context.emit('close');
     };
 
     return {
@@ -207,7 +205,6 @@ export default defineComponent({
       selectedPluginType,
       selectedPConnType,
       selectedSConnType,
-      close,
       save,
       ...useEnumTypes()
     };
