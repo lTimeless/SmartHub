@@ -1,7 +1,5 @@
-import { AuthResponse } from '@/types/types';
 import { Roles } from '@/types/enums';
-import JwtDecode from 'jwt-decode';
-import router from '@/router';
+import jwtDecode from 'jwt-decode';
 
 type TokenPayload = {
   unique_name: string;
@@ -11,22 +9,11 @@ type TokenPayload = {
   exp: number;
   iat: number;
 };
-const numberThousand = 1000; // uesed for tokenpayload exp date conversion
+const numberThousand = 1000; // used for tokenpayload "exp date" conversion
 // Storage keys
-const LOCAL_STORAGE_AUTH_RESPONSE = 'authResponse';
+const LOCAL_STORAGE_TOKEN = 'token';
 
-export const getAuthResponse = (): AuthResponse | null => {
-  const storage = localStorage.getItem(LOCAL_STORAGE_AUTH_RESPONSE);
-  if (storage === null) {
-    return null;
-  }
-  return JSON.parse(storage) as AuthResponse;
-};
-
-export const getToken = (): string | null => {
-  const auth = getAuthResponse();
-  return auth === null ? null : auth.token;
-};
+export const getToken = (): string | null => localStorage.getItem(LOCAL_STORAGE_TOKEN);
 
 export const isAuthenticated = (): boolean => getToken() !== null;
 
@@ -47,22 +34,22 @@ export const isAuthenticated = (): boolean => getToken() !== null;
 //   });
 // }
 
-export const storeAuthResponse = (response: AuthResponse): void => {
-  localStorage.setItem(LOCAL_STORAGE_AUTH_RESPONSE, JSON.stringify(response));
+export const storeToken = (token: string): void => {
+  localStorage.setItem(LOCAL_STORAGE_TOKEN, token);
 };
 
 export const clearStorage = (): void => {
-  localStorage.removeItem(LOCAL_STORAGE_AUTH_RESPONSE);
+  localStorage.removeItem(LOCAL_STORAGE_TOKEN);
 };
 
 // export const getRefreshToken = (): string | null => localStorage.getItem(LOCAL_STORAGE_REFRESH_TOKEN);
 
 export const getUserRoles = (): Roles => {
-  const authResponse = getAuthResponse();
-  if (authResponse == null) {
+  const token = getToken();
+  if (token == null) {
     return Roles.None;
   }
-  const tokenPayload = JwtDecode(authResponse.token) as TokenPayload;
+  const tokenPayload = jwtDecode(token) as TokenPayload;
   if (Date.now() >= tokenPayload.exp * numberThousand) {
     console.log(tokenPayload.exp * numberThousand, Date.now());
     return Roles.None;
@@ -78,20 +65,4 @@ export const getUserRoles = (): Roles => {
     return Roles.Guest;
   }
   return Roles.None;
-};
-
-export const getUserName = (): string => {
-  const authResponse = getAuthResponse();
-  if (authResponse === null) {
-    return '';
-  }
-  const tokenPayload = JwtDecode(authResponse.token) as TokenPayload;
-  return tokenPayload.unique_name;
-};
-
-export const logout = (): void => {
-  // const store = useStore();
-  // store.dispatch(A_LOGOUT);
-  clearStorage();
-  router.push('/login');
 };

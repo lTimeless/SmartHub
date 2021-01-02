@@ -7,6 +7,7 @@ using System.Text.Json;
 using System.Threading.Tasks;
 using SmartHub.Application.Common.Interfaces.Database;
 using SmartHub.Application.Common.Models;
+using SmartHub.Domain.Common.Enums;
 
 namespace SmartHub.Api.Middleware
 {
@@ -67,8 +68,7 @@ namespace SmartHub.Api.Middleware
 			if (errors != null)
 			{
 				var result = JsonSerializer.Serialize(
-					Response.Fail("Server Error", errors)
-				);
+					new ExceptionPayload(new UserError($"{errors}", AppErrorCodes.ServerError)));
 				await httpContext.Response.WriteAsync(result);
 			}
 		}

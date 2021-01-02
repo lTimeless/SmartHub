@@ -2,23 +2,32 @@
   Enum for the application routes
 */
 export enum Routes {
+  // Identity
   Login = '/login',
   Registration = '/registration',
   Init = '/init',
-  NotFound = '/:patchMatch(.*)*',
+  // Error
+  NotFound = '/:patchMatch(.*)',
   NotAuthorized = '/notauth',
-  Home = '/',
-  Dashboard = '',
-  User = '/user',
-  About = '/about',
-  Settings = '/settings',
+  // Me
+  Me = '/me',
+  // Home
+  Layout = '/',
+  Home = '/home',
+  Groups = '/groups',
+  GroupDetails = '/groups/:id',
+  Devices = '/devices',
+  DeviceDetails = '/devices/:id',
+  Users = '/users',
+  Automations = '/automations',
+  Configuration = '/configuration',
   Plugins = '/plugins',
   Statistics = '/statistics',
+  // Admin
   Activity = '/activity',
   Logs = '/logs',
   System = '/system',
-  Health = '/health',
-  Manager = '/manager'
+  Health = '/health'
 }
 
 /*

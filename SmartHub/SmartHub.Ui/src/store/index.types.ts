@@ -1,16 +1,7 @@
-import { AppConfig, AuthResponse, Device, Group, User } from '@/types/types';
+import { AppConfig, Device, Group } from '@/types/types';
 
 export interface RootState {
-  authModule: AuthState;
   appModule: AppState;
-  userModule: UserState;
-}
-
-/*
-  State for all users without myself
-*/
-export interface UserState {
-  user?: User;
 }
 
 /*
@@ -22,12 +13,4 @@ export interface AppState {
   appConfig?: AppConfig;
   userDropDownOpen: boolean;
   notificationDropdownOpen: boolean;
-}
-
-/*
-  State for all identity information with my own user data
-*/
-export interface AuthState {
-  authResponse?: AuthResponse;
-  Me?: User;
 }

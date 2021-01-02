@@ -12,9 +12,9 @@ namespace SmartHub.Domain.Entities
 
 	public abstract class BaseEntity : IEntity
 	{
-		public string Id { get; }
-		public string Name { get; protected set; }
-		public string? Description { get; protected set; }
+		public string Id { get; set; }
+		public string Name { get; set; }
+		public string? Description { get; set; }
 		public DateTimeOffset CreatedAt { get; set; }
 		public DateTimeOffset LastModifiedAt { get; set; }
 		public string CreatedBy { get; set; }

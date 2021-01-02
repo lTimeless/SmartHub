@@ -10,19 +10,6 @@ namespace SmartHub.Api.Extensions
 {
 	public static class AppExtension
 	{
-		public static void ConfigureSwagger(this IApplicationBuilder app)
-		{
-			// Enable middleware to serve generated Swagger as a JSON endpoint.
-			app.UseSwagger();
-
-			// Enable middleware to serve swagger-ui (HTML, JS, CSS, etc.),
-			// specifying the Swagger JSON endpoint.
-			app.UseSwaggerUI(c =>
-			{
-				c.SwaggerEndpoint("/swagger/v1/swagger.json", "SmartHub API V0.5");
-			});
-		}
-
 		public static void ConfigureCustomExceptionMiddleware(this IApplicationBuilder app)
 		{
 			app.UseMiddleware<ExceptionMiddleware>();

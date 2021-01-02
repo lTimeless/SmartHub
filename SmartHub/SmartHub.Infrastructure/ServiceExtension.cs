@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 using SmartHub.Application.Common.Interfaces;
 using SmartHub.Application.Common.Interfaces.Database;
@@ -43,9 +44,12 @@ namespace SmartHub.Infrastructure
             services.AddDbContext<AppDbContext>(builder =>
                 {
                     builder.UseLazyLoadingProxies();
+                    // Change to LogLevel.Information or lower wo see the generated sql statements
+                    builder.LogTo(Console.WriteLine, LogLevel.Error);
                     builder.UseNpgsql(connectionString,
                         options =>
                         {
+	                        options.UseQuerySplittingBehavior(QuerySplittingBehavior.SingleQuery);
                             options.MigrationsAssembly(typeof(AppDbContext).Assembly.FullName);
                         });
                 })
@@ -115,7 +119,7 @@ namespace SmartHub.Infrastructure
             services.AddScoped<IDbSeeder, DbSeeder>();
         }
 
-        public static void AddBackgroundServices(this IServiceCollection services)
+        private static void AddBackgroundServices(this IServiceCollection services)
         {
             services.AddHostedService<InitializationService>();
         }

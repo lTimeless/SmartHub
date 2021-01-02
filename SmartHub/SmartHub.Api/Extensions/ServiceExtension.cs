@@ -1,8 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using System;
-using System.IO;
 using System.IO.Compression;
-using System.Reflection;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Mvc;
@@ -13,10 +11,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
-using Microsoft.OpenApi.Models;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Serialization;
 using Polly;
+using SmartHub.Api.GraphQl;
 using SmartHub.Api.Validators;
 using SmartHub.Domain.Common.Settings;
 using SmartHub.Domain;
@@ -25,12 +21,12 @@ namespace SmartHub.Api.Extensions
 {
 	public static class ServiceExtension
 	{
-		public static IServiceCollection AddApiLayer(this IServiceCollection services, IConfiguration configuration, IHostEnvironment appEnvironment)
+		public static IServiceCollection AddApiLayer(this IServiceCollection services, IConfiguration configuration)
 		{
 			// Server configuration
-			services.AddServerConfiguration(configuration, appEnvironment);
-			// Swagger
-			services.AddSwagger();
+			services.AddServerConfiguration(configuration);
+			// GraphQl
+			services.AddGraphQl();
 			// Controllers
 			services.AddControllers();
 			// Spa
@@ -45,7 +41,7 @@ namespace SmartHub.Api.Extensions
 			return services;
 		}
 
-		private static void AddServerConfiguration(this IServiceCollection services, IConfiguration configuration, IHostEnvironment appEnvironment)
+		private static void AddServerConfiguration(this IServiceCollection services, IConfiguration configuration)
 		{
 			services.Configure<KestrelServerOptions>(options => options.AllowSynchronousIO = true);
 
@@ -65,54 +61,17 @@ namespace SmartHub.Api.Extensions
 			});
 		}
 
-		private static void AddSwagger(this IServiceCollection services)
+		private static void AddGraphQl(this IServiceCollection services)
 		{
-			services.AddSwaggerGen(c =>
-			{
-				// Set the comments path for the Swagger JSON and UI.
-				c.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, $"{Assembly.GetExecutingAssembly().GetName().Name}.xml"));
-				c.SwaggerDoc("v1", new OpenApiInfo
-				{
-					Version = "v1",
-					Title = "SmartHub Api",
-					Description = "This Api will be responsible for all data distribution and authorization.",
-					Contact = new OpenApiContact
-					{
-						Name = "Maximilian Stümpfl",
-						Email = string.Empty,
-						Url = new Uri("https://github.com/lTimeless"),
-					},
-					License = new OpenApiLicense
-					{
-						Name = "Use under MIT",
-						Url = new Uri("https://example.com/license"),
-					}
-				});
-
-				var securityScheme = new OpenApiSecurityScheme
-				{
-					In = ParameterLocation.Header,
-					Description = "Please insert JWT",
-					Name = "Authorization",
-					Type = SecuritySchemeType.Http,
-					Scheme = "bearer",
-					BearerFormat = "JWT",
-					Reference = new OpenApiReference
-					{
-						Type = ReferenceType.SecurityScheme,
-						Id = "Bearer"
-					}
-				};
-
-				c.AddSecurityDefinition("Bearer", securityScheme);
-
-				c.AddSecurityRequirement(new OpenApiSecurityRequirement
-				{
-					{ securityScheme, new[] { "Bearer" } }
-				});
-
-			});
-			services.AddSwaggerGenNewtonsoftSupport();
+			services.AddGraphQLServer()
+				.AddQueryType<RootQueryType>()
+				.AddMutationType<RootMutationType>()
+				.AddAuthorization()
+				.AddTypes()
+				.AddProjections()
+				.AddFiltering()
+				.AddSorting()
+				;
 		}
 
 		private static void AddControllers(this IServiceCollection service)
@@ -121,14 +80,6 @@ namespace SmartHub.Api.Extensions
 				{
 					var policy = new AuthorizationPolicyBuilder().RequireAuthenticatedUser().Build();
 					opt.Filters.Add(new AuthorizeFilter(policy));
-				}).AddNewtonsoftJson(options =>
-				{
-					var settings = options.SerializerSettings;
-
-					settings.DateParseHandling = DateParseHandling.None;
-					settings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
-					settings.DateFormatHandling = DateFormatHandling.IsoDateFormat;
-					settings.ContractResolver = new CamelCasePropertyNamesContractResolver();
 				})
 				.SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
 		}
@@ -146,8 +97,8 @@ namespace SmartHub.Api.Extensions
 			});
 			services.AddResponseCompression(options =>
 			{
-				options.Providers.Add<BrotliCompressionProvider>();
 				options.Providers.Add<GzipCompressionProvider>();
+				options.Providers.Add<BrotliCompressionProvider>();
 				options.EnableForHttps = true;
 				options.MimeTypes = new[]
 				{

@@ -1,11 +1,18 @@
+/* eslint-disable prettier/prettier */
 import { createApp } from 'vue';
 import App from './App.vue';
 import router from './router';
 import { store } from './store';
-import './assets/tailwind.css';
+import '@/assets/styles/tailwind.css';
+import { DefaultApolloClient } from '@vue/apollo-composable';
+import { apolloClient } from './apollo';
+import IconPlugin from '@/plugins/IconPlugin';
 
-const app = createApp(App).use(router).use(store);
-
+const app = createApp(App)
+  .provide(DefaultApolloClient, apolloClient)
+  .use(router)
+  .use(store)
+  .use(IconPlugin);
 // app.config.errorHandler((err, vueInstance, vueInfo) => {
 //   // send to Sentry e.g
 // });

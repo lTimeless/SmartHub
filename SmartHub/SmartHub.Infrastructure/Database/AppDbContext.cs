@@ -14,17 +14,15 @@ namespace SmartHub.Infrastructure.Database
 	{
 		private readonly IUserAccessor _userAccessor;
 
-#pragma warning disable CS8618 // Non-nullable field is uninitialized. Consider declaring as nullable.
 		public AppDbContext(DbContextOptions options, IUserAccessor userAccessor) : base(options)
-#pragma warning restore CS8618 // Non-nullable field is uninitialized. Consider declaring as nullable.
 		{
 			_userAccessor = userAccessor;
 		}
 
-		public DbSet<Group> Groups { get; set; }
-		public DbSet<Device> Devices { get; set; }
-		public DbSet<Plugin> Plugins { get; set; }
-		public DbSet<Activity> Activities { get; set; }
+		public DbSet<Group> Groups { get; set; } = default!;
+		public DbSet<Device> Devices { get; set; } = default!;
+		public DbSet<Plugin> Plugins { get; set; } = default!;
+		public DbSet<Activity> Activities { get; set; } = default!;
 
 
 		protected override void OnModelCreating(ModelBuilder builder)

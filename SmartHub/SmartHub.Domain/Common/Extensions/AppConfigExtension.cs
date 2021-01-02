@@ -3,7 +3,7 @@
 namespace SmartHub.Domain.Common.Extensions
 {
 	/// <summary>
-	/// This extension class contains methos for the AppConfig class.
+	/// Extension methods for <see cref="AppConfig"/> entity.
 	/// </summary>
 	public static class AppConfigExtension
     {

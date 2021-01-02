@@ -1,3 +1,4 @@
+using HotChocolate.AspNetCore;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -6,7 +7,6 @@ using Microsoft.Extensions.Hosting;
 using Serilog;
 using SmartHub.Api.Extensions;
 using SmartHub.Application;
-using SmartHub.Application.UseCases.SignalR;
 using SmartHub.Infrastructure;
 using SmartHub.Shared;
 
@@ -30,7 +30,7 @@ namespace SmartHub.Api
                 .AddInfrastructurePersistence(Configuration)
                 .AddShared()
                 .AddApplicationLayer()
-                .AddApiLayer(Configuration, HostEnvironment);
+                .AddApiLayer(Configuration);
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -39,8 +39,6 @@ namespace SmartHub.Api
             {
                 app.UseDeveloperExceptionPage();
                 app.UseMigrationsEndPoint();
-                // Swagger
-                app.ConfigureSwagger();
             }
             else
             {
@@ -55,37 +53,36 @@ namespace SmartHub.Api
 
             // Response Compression
             app.UseResponseCompression();
-
             // Serilog
             app.UseSerilogRequestLogging();
-
             // CustomExceptionMiddleware
             app.ConfigureCustomExceptionMiddleware();
-
+			// Spa/ StaticFiles
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseSpaStaticFiles();
-
             // Routing
             app.UseRouting();
-
             // Auth
             app.UseCors("CorsPolicy");
             app.UseAuthentication();
             app.UseAuthorization();
-
             // Endpoints
             app.UseEndpoints(endpoints =>
             {
+	            // Controllers
                 endpoints.MapControllerRoute(
                     "default",
                     "{controller}/{action=Index}/{id?}");
 
-                endpoints.MapHub<ActivityHub>("/api/hub/activity");
-                endpoints.MapHub<LogHub>("/api/hub/logs");
-                endpoints.MapHub<HomeHub>("/api/hub/home");
+                // GraphQl
+                endpoints.MapGraphQL().WithOptions(
+	                new GraphQLServerOptions
+	                {
+		                Tool = { Enable = false }
+	                });
             });
-
+			// Spa
             app.UseSpa(spa =>
             {
                 // To learn more about options for serving an Angular SPA from ASP.NET Core,
@@ -96,7 +93,6 @@ namespace SmartHub.Api
                 {
                     return;
                 }
-
                 Log.ForContext(typeof(Startup)).Warning("You need to start separate FE server.. listening to http://localhost:8080");
                 // Start separate FE server and Server listens to it
                 spa.UseProxyToSpaDevelopmentServer("http://localhost:8080");

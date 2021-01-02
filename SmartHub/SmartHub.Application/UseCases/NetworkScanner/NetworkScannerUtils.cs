@@ -8,42 +8,60 @@ using Serilog;
 
 namespace SmartHub.Application.UseCases.NetworkScanner
 {
+	/// <summary>
+	/// Utility methods for the network scanner service.
+	/// </summary>
     public static class NetworkScannerUtils
     {
-        public static string MakeNameFromHostname(string? hostname)
+	    /// <summary>
+	    /// Creates a readable name from the given hostname.
+	    /// </summary>
+	    /// <param name="hostname">The hostname to transform.</param>
+	    /// <param name="macAddress">The hostname, used to check if string contains <see cref="NetworkConstants.OwnMachine"/> </param>
+	    /// <returns>A more readable hostname.</returns>
+	    public static string MakeName(string? hostname, string? macAddress = default)
         {
             if (hostname == null)
             {
-                return "Not available";
+                return NetworkConstants.NotAvailable;
             }
-
-            if (hostname == "fritz.box" || hostname == "speedport.ip")
+            if (macAddress == NetworkConstants.Dash)
+            {
+	            return NetworkConstants.OwnMachine;
+            }
+            if (hostname == NetworkConstants.FritzBox || hostname == NetworkConstants.SpeedPortIp)
             {
                 return hostname;
             }
-
-            if (hostname.Contains(".fritz.box"))
+            if (hostname.Contains(NetworkConstants.DotFritzBox))
             {
-                return hostname.Split(new[] {".fritz.box"}, StringSplitOptions.None)[0];
+                return hostname.Split(new[] {NetworkConstants.DotFritzBox}, StringSplitOptions.None)[0];
             }
-
-            if (hostname.Contains(".speedport.ip"))
+            if (hostname.Contains(NetworkConstants.DotSpeedPortIp))
             {
-                return hostname.Split(new[] {".speedport.ip"}, StringSplitOptions.None)[0];
+                return hostname.Split(new[] {NetworkConstants.DotSpeedPortIp}, StringSplitOptions.None)[0];
             }
-
-            return "Not available";
+            return NetworkConstants.NotAvailable;
         }
 
+	    /// <summary>
+	    /// Looks for system gateway.
+	    /// </summary>
+	    /// <returns>The gateway address or an empty string.</returns>
         public static string FindMyNetworkGateway()
         {
             var host = Dns.GetHostEntry(Dns.GetHostName());
             return host
                 .AddressList
-                .FirstOrDefault(ip => ip.AddressFamily == AddressFamily.InterNetwork)?
-                .ToString() ?? "";
+                .FirstOrDefault(ip => ip.AddressFamily == AddressFamily.InterNetwork && ip.ToString().StartsWith("192"))?
+                .ToString() ?? NetworkConstants.NotAvailable;
         }
 
+	    /// <summary>
+	    /// Retrieves the hostname to the given ip.
+	    /// </summary>
+	    /// <param name="ip">The ip.</param>
+	    /// <returns>The found hostname or empty string.</returns>
         public static async Task<string> GetHostnameAsync(string ip)
         {
             IPHostEntry? res = null;
@@ -55,10 +73,14 @@ namespace SmartHub.Application.UseCases.NetworkScanner
             {
                 Log.ForContext(typeof(NetworkScannerUtils)).Information($"{e.Message}");
             }
-
-            return res?.HostName ?? "";
+            return res?.HostName ?? NetworkConstants.NotAvailable;
         }
 
+	    /// <summary>
+	    /// Retrieves th mac address to the given ip.
+	    /// </summary>
+	    /// <param name="ipAddress">The ip.</param>
+	    /// <returns>Returns found mac address or an empty string.</returns>
         public static async Task<string> GetMacAddressAsync(string ipAddress)
         {
             try
@@ -76,15 +98,15 @@ namespace SmartHub.Application.UseCases.NetworkScanner
                 process.StartInfo.UseShellExecute = false;
                 process.Start();
                 var strOutput = await process.StandardOutput.ReadToEndAsync();
-                var substrings = strOutput.Split('-');
+                var substrings = strOutput.Split(NetworkConstants.Dash);
                 if (substrings.Length < 8)
                 {
-                    return "OWN Machine";
+                    return NetworkConstants.Dash;
                 }
 
                 var macAddress = substrings[3].Substring(Math.Max(0, substrings[3].Length - 2))
-                                 + "-" + substrings[4] + "-" + substrings[5] + "-" + substrings[6]
-                                 + "-" + substrings[7] + "-"
+                                 + "-" + substrings[4] + NetworkConstants.Dash + substrings[5] + NetworkConstants.Dash + substrings[6]
+                                 + "-" + substrings[7] + NetworkConstants.Dash
                                  + substrings[8].Substring(0, 2);
                 return macAddress;
             }
@@ -92,8 +114,7 @@ namespace SmartHub.Application.UseCases.NetworkScanner
             {
                 Log.ForContext(typeof(NetworkScannerUtils)).Warning($"Error {e.Message}");
             }
-
-            return string.Empty;
+            return NetworkConstants.NotAvailable;
         }
     }
 }

@@ -3,6 +3,9 @@ module.exports = {
     proxy: {
       '^/api': {
         target: 'https://localhost:5001'
+      },
+      '^/graphql': {
+        target: 'https://localhost:5001'
       }
     }
   },

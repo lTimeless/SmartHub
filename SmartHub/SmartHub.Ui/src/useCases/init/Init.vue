@@ -1,0 +1,177 @@
+<template>
+  <div>
+    <!-- Background -->
+    <div class="bg-gray-200 absolute inset-0" />
+    <div class="absolute mx-auto w-full">
+      <TopDoubleWaves />
+    </div>
+    <!-- Main View -->
+    <div class="flex items-center min-h-screen p-6 bg-loginBackground dark:bg-gray-900 login">
+      <AppCard class="bg-white border">
+        <template v-if="loading">
+          <div class="flex items-center justify-center w-full h-108">
+            <Loader height="h-48" width="w-48" />
+          </div>
+        </template>
+        <template v-else-if="error">
+          <div class="flex items-center justify-center w-full h-108">
+            <p>Error: {{ error.name }} {{ error.message }}</p>
+          </div>
+        </template>
+        <template v-else>
+          <div class="h-108 md:h-auto md:w-1/2">
+            <img
+              aria-hidden="true"
+              class="object-fill w-full h-full dark:hidden"
+              src="../../assets/images/undraw_at_home_octe.svg"
+              alt="Office"
+            />
+          </div>
+          <div class="flex items-center justify-center h-108 sm:p-12 md:w-1/2">
+            <div class="w-full">
+              <h2 class="mb-4 text-left text-2xl font-semibold text-gray-700 dark:text-gray-200">
+                {{ title }}
+              </h2>
+              <div class="text-gray-400 text-sm font-medium mt-3 mb-4 text-left">
+                Please type in a name and/or a description for your application.
+              </div>
+              <label class="flex flex-col text-sm">
+                <span class="text-gray-600 dark:text-gray-400 justify-start text-left">Name</span>
+                <input
+                  required
+                  class="mt-1 focus:ring-primary focus:border-primary block w-full sm:text-sm border-gray-300 rounded"
+                  placeholder="SmartHub (default)"
+                  type="text"
+                  v-model="appConfigCreateRequest.name"
+                />
+              </label>
+              <label class="flex flex-col text-sm mt-4">
+                <span class="text-gray-600 dark:text-gray-400 justify-start text-left">Description</span>
+                <input
+                  required
+                  class="mt-1 focus:ring-primary focus:border-primary block w-full sm:text-sm border-gray-300 rounded"
+                  placeholder="This is an awesome description (default)"
+                  type="text"
+                  v-model="appConfigCreateRequest.description"
+                />
+              </label>
+              <div class="mt-4">
+                <div class="md:flex md:items-center mb-6">
+                  <label class="text-gray-500 flex items-center">
+                    <input
+                      class="mt-1 focus:ring-primary focus:border-primary sm:text-sm text-primary border-gray-300 rounded"
+                      type="checkbox"
+                      v-model="appConfigCreateRequest.autoDetectAddress"
+                    />
+                    <span class="ml-2 text-sm"> Automatically detect your home address. </span>
+                  </label>
+                </div>
+              </div>
+              <button
+                @click="InitHome"
+                class="block w-full px-4 py-2 mt-4 text-sm font-medium leading-5 text-center text-white transition-colors duration-150 bg-primary border border-transparent rounded-lg active:bg-ui-primary focus:outline-none focus:shadow-outlineIndigo"
+                :class="
+                  !appConfigCreateRequest.autoDetectAddress
+                    ? 'opacity-50 focus:outline-none cursor-not-allowed'
+                    : 'hover:bg-primaryHover'
+                "
+                :disabled="!appConfigCreateRequest.autoDetectAddress"
+              >
+                <span class="flex content-center justify-center">
+                  <Loader v-if="loadInit" height="h-2" width="w-2" />
+                  <span class="pl-2">Complete</span>
+                </span>
+              </button>
+
+              <hr class="my-8" />
+              <button
+                disabled
+                class="flex items-center justify-center w-full px-4 py-2 text-sm font-medium leading-5 text-gray-700 transition-colors duration-150 border border-gray-300 rounded-lg dark:text-gray-400 active:bg-transparent focus:border-gray-500 active:text-gray-500 focus:outline-none focus:shadow-outline-gray"
+                :class="true ? 'opacity-50 focus:outline-none cursor-not-allowed' : 'hover:border-gray-500'"
+              >
+                Additional options....
+              </button>
+            </div>
+          </div>
+        </template>
+      </AppCard>
+    </div>
+  </div>
+</template>
+
+<script lang="ts">
+import { defineComponent, reactive, ref, watch } from 'vue';
+import { AppConfigInitInput } from '@/types/types';
+import { useRouter } from 'vue-router';
+import AppCard from '@/components/ui/AppCard/AppCard.vue';
+import { useMutation, useQuery, useResult } from '@vue/apollo-composable';
+import { ApplicationIsActive } from '@/graphql/queries';
+import { Routes } from '@/types/enums';
+import TopDoubleWaves from '@/components/ui/svgs/TopDoubleWaves.vue';
+import Loader from '@/components/ui/AppSpinner.vue';
+import { INITIALIZE_APP } from '@/useCases/init/InitMutation';
+
+export default defineComponent({
+  name: 'Init',
+  components: {
+    AppCard,
+    Loader,
+    TopDoubleWaves
+  },
+  setup() {
+    const router = useRouter();
+    const title = 'Create your new SmartHub';
+    const githubUrl = ref(process.env.GITHUB_SMARTHUB);
+    const appConfigCreateRequest: AppConfigInitInput = reactive({
+      autoDetectAddress: false
+    });
+    const { mutate: initApp, loading: loadInit, error: errInit } = useMutation(INITIALIZE_APP);
+
+    const { result, loading, error } = useQuery(ApplicationIsActive);
+    const applicationIsActive = useResult(result, null, (data) => data.applicationIsActive);
+    watch(applicationIsActive, (newApplicationIsActive) => {
+      if (newApplicationIsActive) {
+        router.push(Routes.Login);
+        return Promise.resolve();
+      }
+    });
+
+    const InitHome = async () => {
+      await initApp({ input: appConfigCreateRequest }).then(() => {
+        router.push(Routes.Registration);
+      });
+    };
+
+    return {
+      loadInit,
+      errInit,
+      loading,
+      error,
+      title,
+      githubUrl,
+      appConfigCreateRequest,
+      InitHome
+    };
+  }
+});
+</script>
+
+<style scoped lang="scss">
+.registration {
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  background-color: var(--color-login-background);
+  .fully-centered {
+    align-self: center;
+    height: 80%;
+
+    .img {
+      max-width: 90%;
+      display: flex;
+      justify-items: center;
+      margin: auto;
+    }
+  }
+}
+</style>

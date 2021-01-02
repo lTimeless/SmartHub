@@ -2,86 +2,44 @@ import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router';
 import { useRouteAuthGuard } from '@/router/guards/userAuthGuard';
 import NotFound from '@/views/NotFound.vue';
 import NotAuthorized from '@/views/NotAuthorized.vue';
-import Login from '@/views/auth/Login.vue';
-import Registration from '@/views/auth/Registration.vue';
-import Init from '@/views/Init.vue';
-import Statistics from '@/views/home/Statistics.vue';
-import Activity from '@/views/home/admin/Activity.vue';
-import Logs from '@/views/home/admin/Logs.vue';
-import System from '@/views/home/admin/System.vue';
-import Health from '@/views/home/admin/Health.vue';
-import Manager from '@/views/home/admin/Manager.vue';
+import Statistics from '@/useCases/statistics/Statistics.vue';
 import { Routes } from '@/types/enums';
+import Layout from '@/views/Layout.vue';
+import { identityRoutes } from '@/useCases/identity/IdentityRoutes';
+import { initRoutes } from '@/useCases/init/InitRoutes';
+import { homeRoutes } from '@/useCases/home/HomeRoutes';
+import { usersRoutes } from '@/useCases/users/UsersRoutes';
+import { meRoutes } from '@/useCases/me/MeRoutes';
+import { deviceRoutes } from '@/useCases/devices/DeviceRoutes';
+import { groupRoutes } from '@/useCases/groups/GroupRoutes';
+import { automationsRoutes } from '@/useCases/automations/AutomationsRoutes';
+import { adminRoutes } from '@/useCases/admin/AdminRoutes';
 
 const routes: Array<RouteRecordRaw> = [
+  ...identityRoutes,
+  ...initRoutes,
   {
-    path: Routes.Login,
-    name: 'Login',
-    component: Login,
-    meta: {
-      requiresAuth: false
-    }
-  },
-  {
-    path: Routes.Registration,
-    name: 'Registration',
-    component: Registration,
-    meta: {
-      requiresAuth: false
-    }
-  },
-  {
-    path: Routes.Init,
-    name: 'init',
-    component: Init,
-    meta: {
-      requiresAuth: false
-    }
-  },
-  {
-    path: Routes.Home,
-    component: () => import(/* webpackChunkName: "home" */ '../views/Home.vue'),
+    path: Routes.Layout,
+    component: Layout,
+    redirect: Routes.Home,
     meta: {
       requiresAuth: true,
       isGuest: true
     },
     children: [
-      // Guest paths #####
+      // Guest routes
+      ...homeRoutes,
+      ...meRoutes,
+      ...groupRoutes,
+      ...deviceRoutes,
+      ...usersRoutes,
+      ...automationsRoutes,
+      // User routes
       {
-        path: Routes.Dashboard,
-        name: 'Dashboard',
-        component: () => import(/* webpackChunkName: "dashboard" */ '../views/home/Dashboard.vue'),
-        meta: {
-          requiresAuth: true,
-          isGuest: true
-        }
-      },
-      {
-        path: Routes.User,
-        name: 'User',
-        component: () => import(/* webpackChunkName: "user" */ '../views/home/MyUser.vue'),
-        meta: {
-          requiresAuth: true,
-          isGuest: true
-        }
-      },
-      {
-        path: Routes.About,
-        name: 'About',
-        // route level code-splitting
-        // this generates a separate chunk (about.[hash].js) for this route
-        // which is lazy-loaded when the route is visited.
-        component: () => import(/* webpackChunkName: "about" */ '../views/home/About.vue'),
-        meta: {
-          requiresAuth: true,
-          isGuest: true
-        }
-      },
-      // User paths #####
-      {
-        path: Routes.Settings,
-        name: 'Settings',
-        component: () => import(/* webpackChunkName: "init" */ '../views/home/Settings.vue'),
+        path: Routes.Configuration,
+        name: 'Configuration',
+        component: () =>
+          import(/* webpackChunkName: "config" */ '../useCases/configurations/Configuration.vue'),
         meta: {
           requiresAuth: true,
           isUser: true
@@ -90,7 +48,7 @@ const routes: Array<RouteRecordRaw> = [
       {
         path: Routes.Plugins,
         name: 'Plugins',
-        component: () => import(/* webpackChunkName: "plugins" */ '../views/home/Plugins.vue'),
+        component: () => import(/* webpackChunkName: "plugins" */ '../useCases/plugins/Plugins.vue'),
 
         meta: {
           requiresAuth: true,
@@ -106,52 +64,9 @@ const routes: Array<RouteRecordRaw> = [
           isUser: true
         }
       },
-      // Admin paths #####
-      {
-        path: Routes.Activity,
-        name: 'activity',
-        component: Activity,
-        meta: {
-          requiresAuth: true,
-          isAdmin: true
-        }
-      },
-      {
-        path: Routes.Logs,
-        name: 'Logs',
-        component: Logs,
-        meta: {
-          requiresAuth: true,
-          isAdmin: true
-        }
-      },
-      {
-        path: Routes.System,
-        name: 'System',
-        component: System,
-        meta: {
-          requiresAuth: true,
-          isAdmin: true
-        }
-      },
-      {
-        path: Routes.Health,
-        name: 'Health',
-        component: Health,
-        meta: {
-          requiresAuth: true,
-          isAdmin: true
-        }
-      },
-      {
-        path: Routes.Manager,
-        name: 'Manager',
-        component: Manager,
-        meta: {
-          requiresAuth: true,
-          isAdmin: true
-        }
-      },
+      // Admin routes
+      ...adminRoutes,
+      // Error routes
       {
         path: Routes.NotAuthorized,
         name: 'NotAuthorized',

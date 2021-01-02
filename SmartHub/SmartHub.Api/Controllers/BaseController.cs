@@ -1,5 +1,4 @@
-﻿using MediatR;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace SmartHub.Api.Controllers
@@ -8,6 +7,5 @@ namespace SmartHub.Api.Controllers
 	[ApiController]
 	public abstract class BaseController : ControllerBase
 	{
-		protected IMediator Mediator => HttpContext.RequestServices.GetService<IMediator>()!;
 	}
 }

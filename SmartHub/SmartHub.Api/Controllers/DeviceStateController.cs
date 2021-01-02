@@ -15,14 +15,15 @@ namespace SmartHub.Api.Controllers
         /// <returns></returns>
         [HttpGet("light/{deviceId}")]
         [AllowAnonymous]
-        public async Task<IActionResult> LightOnOff(string deviceId, [FromQuery]bool toggleLight)
+        public IActionResult LightOnOff(string deviceId, [FromQuery]bool toggleLight)
         {
             var deviceLightState = new DeviceLightStateRequestDto
             {
                 ToggleLight = toggleLight,
                 DeviceId = deviceId
             };
-            return Ok(await Mediator.Send(new DeviceLightStateQuery(deviceLightState)));
+            // TODO ann service schicken und dann aufrüumen
+            return Ok();
         }
     }
 }
