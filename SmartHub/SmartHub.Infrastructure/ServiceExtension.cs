@@ -44,8 +44,8 @@ namespace SmartHub.Infrastructure
             services.AddDbContext<AppDbContext>(builder =>
                 {
                     builder.UseLazyLoadingProxies();
-                    // Uncomment this line if oyu want to see the generated sql statements
-                    // builder.LogTo(Console.WriteLine, LogLevel.Information);
+                    // Change to LogLevel.Information or lower wo see the generated sql statements
+                    builder.LogTo(Console.WriteLine, LogLevel.Error);
                     builder.UseNpgsql(connectionString,
                         options =>
                         {

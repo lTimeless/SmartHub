@@ -15,7 +15,7 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, toRefs } from "vue";
+import { computed, defineComponent } from 'vue';
 
 export default defineComponent({
   name: 'AppIcon',

@@ -20,7 +20,6 @@
         {{ label }}
       </div>
     </div>
-
   </router-link>
 </template>
 

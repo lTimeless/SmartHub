@@ -43,7 +43,7 @@ import { CreateGroupInput } from '@/types/types';
 import { useMutation } from '@vue/apollo-composable';
 import { CREATE_GROUP } from '@/useCases/groups/GroupMutations';
 import { GET_GROUPS } from '@/useCases/groups/GroupQueries';
-import { GET_GROUPS_COUNT } from "@/useCases/home/HomeQueries";
+import { GET_GROUPS_COUNT } from '@/useCases/home/HomeQueries';
 
 export default defineComponent({
   name: 'GroupCreateModal',
@@ -69,7 +69,7 @@ export default defineComponent({
       groupTitle: 'Create new Group',
       subGroupTitle: 'Create new SubGroup to '
     });
-    const groupCreateinput = reactive<CreateGroupInput>({
+    const groupCreateInput = reactive<CreateGroupInput>({
       name: '',
       isSubGroup: false
     });
@@ -81,24 +81,24 @@ export default defineComponent({
       state.title = state.groupTitle;
     }
 
-    const saveBtnActive = computed(() => groupCreateinput.name !== '');
+    const saveBtnActive = computed(() => groupCreateInput.name !== '');
     const close = () => {
       context.emit('close', false);
     };
     const save = async () => {
-      if (props.parentGroupId !== undefined) {
-        groupCreateinput.parentGroupId = props.parentGroupId;
-        groupCreateinput.isSubGroup = true;
+      if (typeof props.parentGroupId !== 'undefined') {
+        groupCreateInput.parentGroupId = props.parentGroupId;
+        groupCreateInput.isSubGroup = true;
       }
       await createGroup(
-        { input: groupCreateinput },
+        { input: groupCreateInput },
         { refetchQueries: [{ query: GET_GROUPS }, { query: GET_GROUPS_COUNT }] }
       );
       close();
     };
     return {
       ...toRefs(state),
-      groupCreateinput,
+      groupCreateinput: groupCreateInput,
       saveBtnActive,
       loadCreate,
       errCreate,

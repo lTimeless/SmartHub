@@ -10,7 +10,6 @@ using SmartHub.Application.UseCases.NetworkScanner;
 using SmartHub.Application.UseCases.PluginAdapter.Creator;
 using SmartHub.Application.UseCases.PluginAdapter.Host;
 using SmartHub.Application.UseCases.PluginAdapter.Loader;
-using SmartHub.Application.UseCases.SignalR.Services;
 
 namespace SmartHub.Application
 {
@@ -44,8 +43,6 @@ namespace SmartHub.Application
             services.AddScoped<IPluginLoadService, PluginLoadService>();
             services.AddScoped<IPluginCreatorService, PluginCreatorService>();
             services.AddScoped<IPluginHostService, PluginHostService>();
-            // SignalR services
-            services.AddTransient<ISendOverSignalR, SendOverSignalR>();
         }
     }
 }

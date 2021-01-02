@@ -8,12 +8,6 @@ namespace SmartHub.Application.Common.Models
 		// TODO brauch man MEssage???
 		public string? Message { get; }
 
-		protected Payload(string? message = null, IReadOnlyList<UserError>? errors = null)
-		{
-			Message = message;
-			Errors = errors;
-		}
-
 		protected Payload(IReadOnlyList<UserError>? errors = null)
 		{
 			Message = default;

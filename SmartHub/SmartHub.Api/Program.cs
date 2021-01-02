@@ -11,7 +11,6 @@ using Serilog.Sinks.AspNetCore.SignalR.Extensions;
 using Serilog.Sinks.Elasticsearch;
 using SmartHub.Api.Extensions;
 using SmartHub.Api.Serilog;
-using SmartHub.Application.UseCases.SignalR;
 
 
 namespace SmartHub.Api
@@ -68,31 +67,26 @@ namespace SmartHub.Api
 				{
 					loggerConfig
 						.ReadFrom.Configuration(context.Configuration)
-						.Enrich.WithProperty("Environment",context.HostingEnvironment.EnvironmentName)
+						.Enrich.WithProperty("Environment", context.HostingEnvironment.EnvironmentName)
 						.Enrich.With(new LogFilePathEnricher(service))
 						.WriteTo.Map(LogFilePathEnricher.LogFilePathPropertyName,
 							(logFilePath, configuration) =>
 							{
-								if (context.Configuration.GetValue<bool>("LogToFile") || context.HostingEnvironment.IsProduction())
+								if (context.Configuration.GetValue<bool>("LogToFile") ||
+								    context.HostingEnvironment.IsProduction())
 								{
 									configuration.File($"{logFilePath}");
 								}
-							},1)
-						.WriteTo.Elasticsearch(new ElasticsearchSinkOptions(new Uri(context.Configuration["ElasticConfiguration:Uri"]))
-						{
-							AutoRegisterTemplate = true,
-							NumberOfShards = 2,
-							NumberOfReplicas = 1,
-							IndexFormat = $"{context.Configuration["SmartHub:ApplicationName"]}-logs-{context.HostingEnvironment.EnvironmentName?.ToLower().Replace(".","-")}-{DateTime.UtcNow:yyyy-MM}"
-						})
-						.WriteTo.SignalRSink<LogHub, IServerHubClient>(
-							LogEventLevel.Information,
-							service,
-							null,
-                            Array.Empty<string>(),
-                            Array.Empty<string>(),
-                            Array.Empty<string>()
-                            );
+							}, 1)
+						.WriteTo.Elasticsearch(
+							new ElasticsearchSinkOptions(new Uri(context.Configuration["ElasticConfiguration:Uri"]))
+							{
+								AutoRegisterTemplate = true,
+								NumberOfShards = 2,
+								NumberOfReplicas = 1,
+								IndexFormat =
+									$"{context.Configuration["SmartHub:ApplicationName"]}-logs-{context.HostingEnvironment.EnvironmentName?.ToLower().Replace(".", "-")}-{DateTime.UtcNow:yyyy-MM}"
+							});
 				})
 				.ConfigureLogging((_, config) => config.ClearProviders())
 				.ConfigureWebHostDefaults(webBuilder =>

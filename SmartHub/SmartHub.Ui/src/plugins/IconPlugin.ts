@@ -17,9 +17,11 @@ import BellIcon from '@/components/icons/BellIcon.vue';
 import MenuIcon from '@/components/icons/MenuIcon.vue';
 import CloseIcon from '@/components/icons/CloseIcon.vue';
 import InboxIcon from '@/components/icons/InboxIcon.vue';
+import { App } from '@vue/runtime-core';
 
 export default {
-  install(app: any): any {
+  // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
+  install(app: App) {
     app.component('ArrowLeftIcon', ArrowLeftIcon);
     app.component('ChevronRightIcon', ChevronRightIcon);
     app.component('DeviceIcon', DeviceIcon);

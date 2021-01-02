@@ -1,5 +1,5 @@
 import { Roles } from '@/types/enums';
-import JwtDecode from 'jwt-decode';
+import jwtDecode from 'jwt-decode';
 
 type TokenPayload = {
   unique_name: string;
@@ -49,7 +49,7 @@ export const getUserRoles = (): Roles => {
   if (token == null) {
     return Roles.None;
   }
-  const tokenPayload = JwtDecode(token) as TokenPayload;
+  const tokenPayload = jwtDecode(token) as TokenPayload;
   if (Date.now() >= tokenPayload.exp * numberThousand) {
     console.log(tokenPayload.exp * numberThousand, Date.now());
     return Roles.None;

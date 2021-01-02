@@ -7,7 +7,6 @@ using Microsoft.Extensions.Hosting;
 using Serilog;
 using SmartHub.Api.Extensions;
 using SmartHub.Application;
-using SmartHub.Application.UseCases.SignalR;
 using SmartHub.Infrastructure;
 using SmartHub.Shared;
 
@@ -82,11 +81,6 @@ namespace SmartHub.Api
 	                {
 		                Tool = { Enable = false }
 	                });
-
-                // SignalR
-                endpoints.MapHub<ActivityHub>("/api/hub/activity");
-                endpoints.MapHub<LogHub>("/api/hub/logs");
-                endpoints.MapHub<HomeHub>("/api/hub/home");
             });
 			// Spa
             app.UseSpa(spa =>

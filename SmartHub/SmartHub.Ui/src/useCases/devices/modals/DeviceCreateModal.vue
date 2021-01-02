@@ -146,7 +146,7 @@ import { useEnumTypes } from '@/hooks/useEnums.ts';
 import { useMutation } from '@vue/apollo-composable';
 import { CREATE_DEVICE } from '@/useCases/devices/DeviceMutations';
 import { GET_DEVICES } from '@/useCases/devices/DeviceQueries';
-import { GET_DEVICES_COUNT } from "@/useCases/home/HomeQueries";
+import { GET_DEVICES_COUNT } from '@/useCases/home/HomeQueries';
 
 export default defineComponent({
   name: 'DeviceCreateModal',
