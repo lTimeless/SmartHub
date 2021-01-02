@@ -1,4 +1,5 @@
 ﻿using HotChocolate;
+using HotChocolate.AspNetCore.Authorization;
 using SmartHub.Application.Common.Interfaces.Database;
 using SmartHub.Application.Common.Models;
 using SmartHub.Domain.Common.Enums;
@@ -6,12 +7,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace SmartHub.Application.UseCases.Entity.Users
+namespace SmartHub.Application.UseCases.Entity.Users.Mutations
 {
 	/// <summary>
-	/// Endpoint for all user mutations.
+	/// Endpoint for update user.
 	/// </summary>
-	public class UserMutations
+	[Authorize]
+	[GraphQLDescription("Endpoint for update user.")]
+	public class UpdateUserMutations
 	{
 		/// <summary>
 		/// Updates the user with the given input data.

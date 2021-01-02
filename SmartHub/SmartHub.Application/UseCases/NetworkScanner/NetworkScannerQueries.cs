@@ -1,7 +1,9 @@
 ﻿// unset
 
 using HotChocolate;
+using HotChocolate.AspNetCore.Authorization;
 using HotChocolate.Data;
+using HotChocolate.Types;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -10,6 +12,9 @@ namespace SmartHub.Application.UseCases.NetworkScanner
 	/// <summary>
 	/// Endpoint for all network scanner queries.
 	/// </summary>
+	[Authorize]
+	[ExtendObjectType(Name = "RootQueries")]
+	[GraphQLDescription("All queries for network scanning operations.")]
 	public class NetworkScannerQueries
 	{
 		/// <summary>

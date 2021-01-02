@@ -1,6 +1,6 @@
-﻿// unset
-
-using HotChocolate;
+﻿using HotChocolate;
+using HotChocolate.AspNetCore.Authorization;
+using HotChocolate.Types;
 using SmartHub.Application.Common.Extensions;
 using SmartHub.Application.Common.Interfaces.Database;
 using SmartHub.Application.Common.Models;
@@ -8,8 +8,11 @@ using SmartHub.Domain.Entities;
 using System;
 using System.Threading.Tasks;
 
-namespace SmartHub.Application.UseCases.Identity
+namespace SmartHub.Application.UseCases.Identity.Queries
 {
+	[Authorize]
+	[ExtendObjectType(Name = "RootQueries")]
+	[GraphQLDescription("All queries for the me services.")]
 	public class IdentityQueries
 	{
 		/// <summary>

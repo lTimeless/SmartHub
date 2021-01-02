@@ -1,14 +1,14 @@
 ﻿using HotChocolate.Types;
-using SmartHub.Application.UseCases.Entity.Devices;
-using SmartHub.Application.UseCases.Entity.Groups;
-using SmartHub.Application.UseCases.Entity.Users;
-using SmartHub.Application.UseCases.Identity;
+using SmartHub.Application.UseCases.Entity.Devices.Mutations;
+using SmartHub.Application.UseCases.Entity.Groups.Mutations;
+using SmartHub.Application.UseCases.Entity.Users.Mutations;
+using SmartHub.Application.UseCases.Identity.Mutations;
 using SmartHub.Application.UseCases.Init;
 
 namespace SmartHub.Api.GraphQl
 {
 	/// <summary>
-	/// Root GraphQL Mutations Endpoint.
+	/// Root mutation type.
 	/// </summary>
 	public class RootMutationType : ObjectType
 	{
@@ -17,24 +17,20 @@ namespace SmartHub.Api.GraphQl
 			descriptor.Name("AppMutations");
 			descriptor.Description("Main entrypoint for all mutations.");
 
-			// Group
-			descriptor.Include<GroupMutations>()
-				.Authorize()
-				.Description("All mutations for group entity.");
-			// Device
-			descriptor.Include<DeviceMutations>()
-				.Authorize()
-				.Description("All mutations for device entity.");
-			// Initialization
-			descriptor.Include<InitMutations>()
-				.Description("All mutations for the initialization services.");
 			// Identity
-			descriptor.Include<IdentityMutations>()
-				.Description("All mutations for the identity services.");
+			descriptor.Include<LoginIdentityMutation>();
+			descriptor.Include<RegistrationIdentityMutation>();
+			// Initialization
+			descriptor.Include<InitMutations>();
+			// Group
+			descriptor.Include<CreateGroupMutation>();
+			descriptor.Include<UpdateGroupMutation>();
+			// Device
+			descriptor.Include<CreateDeviceMutation>();
+			descriptor.Include<UpdateDeviceMutation>();
 			// User
-			descriptor.Include<UserMutations>()
-				.Authorize()
-				.Description("All mutations for the users entity.");
+			descriptor.Include<UpdateUserMutations>();
+
 		}
 	}
 }

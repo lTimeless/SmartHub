@@ -10,6 +10,10 @@ using System.Threading.Tasks;
 
 namespace SmartHub.Application.UseCases.Init
 {
+	/// <summary>
+	/// Endpoint for initialization.
+	/// </summary>
+	[GraphQLDescription("Entrypoint for initialization services.")]
 	public class InitMutations
 	{
 		public async Task<InitPayload> InitializeApp(AppConfigInitInput input,

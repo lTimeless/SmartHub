@@ -1,4 +1,5 @@
 ﻿using HotChocolate;
+using HotChocolate.AspNetCore.Authorization;
 using SmartHub.Application.Common.Interfaces.Database;
 using SmartHub.Application.Common.Models;
 using SmartHub.Domain.Common.Enums;
@@ -6,15 +7,17 @@ using SmartHub.Domain.Common.Extensions;
 using SmartHub.Domain.Entities;
 using System.Threading.Tasks;
 
-namespace SmartHub.Application.UseCases.Entity.Groups
+namespace SmartHub.Application.UseCases.Entity.Groups.Mutations
 {
 	/// <summary>
-	/// Endpoint for all group mutations.
+	/// Endpoint for create group.
 	/// </summary>
-	public class GroupMutations
+	[Authorize]
+	[GraphQLDescription("Endpoint for create group.")]
+	public class CreateGroupMutation
 	{
 		/// <summary>
-		/// Method to Create a new group.
+		/// Create a new group.
 		/// </summary>
 		/// <param name="groupRepository">The group repository.</param>
 		/// <param name="unitOfWork">The unit-of-work.</param>
@@ -52,32 +55,6 @@ namespace SmartHub.Application.UseCases.Entity.Groups
 				return new GroupPayload(newGroup, $"Created new Group with name {input.Name}.");
 			}
 			return new GroupPayload(new UserError($" Couldn't create new Group with name {input.Name}", AppErrorCodes.NotCreated));
-		}
-
-		/// <summary>
-		///
-		/// </summary>
-		/// <param name="groupRepository"></param>
-		/// <param name="unitOfWork">The unit-of-work.</param>
-		/// <param name="input"></param>
-		/// <returns></returns>
-		public async Task<GroupPayload> UpdateGroup([Service] IBaseRepositoryAsync<Group> groupRepository,
-			[Service] IUnitOfWork unitOfWork,
-			UpdateGroupInput input)
-		{
-			var foundGroup = await groupRepository.FindByAsync(x => x.Id == input.Id);
-			if (foundGroup == null)
-			{
-				return new GroupPayload(
-					new UserError($"Error: Couldn't find group with id {input.Id}.", AppErrorCodes.NotFound));
-			}
-
-			foundGroup.Name = string.IsNullOrWhiteSpace(input.Name) ? foundGroup.Name : input.Name ;
-			foundGroup.Description = input.Description ?? foundGroup.Description;
-
-			await unitOfWork.SaveAsync();
-			// TODO hier dann über den TopicSender an eine Subscription senden
-			return new GroupPayload(foundGroup, $"Updated group with name {input.Name}");
 		}
 	}
 }

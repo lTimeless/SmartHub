@@ -1,14 +1,14 @@
 ﻿using HotChocolate.Types;
-using SmartHub.Application.UseCases.Entity.Devices;
-using SmartHub.Application.UseCases.Entity.Groups;
-using SmartHub.Application.UseCases.Identity;
+using SmartHub.Application.UseCases.Entity.Devices.Queries;
+using SmartHub.Application.UseCases.Entity.Groups.Queries;
+using SmartHub.Application.UseCases.Identity.Queries;
 using SmartHub.Application.UseCases.Init;
 using SmartHub.Application.UseCases.NetworkScanner;
 
 namespace SmartHub.Api.GraphQl
 {
 	/// <summary>
-	/// Root GraphQL Queries Endpoint.
+	/// Root query type.
 	/// </summary>
 	public class RootQueryType : ObjectType
 	{
@@ -16,29 +16,16 @@ namespace SmartHub.Api.GraphQl
 		{
 			descriptor.Name("AppQueries");
 			descriptor.Description("Main entrypoint for all queries.");
-
 			// Group
-			descriptor.Include<GroupQueries>()
-				.Authorize()
-				.Description("All queries for the GroupEntity.");
+			descriptor.Include<GroupQueries>();
 			// Device
-			descriptor.Include<DeviceQueries>()
-				.Authorize()
-				.Description("All queries for the DeviceEntity.");
-			// NetworkScanner
-			descriptor.Include<NetworkScannerQueries>()
-				.Authorize()
-				.Description("All queries for network scanning operations");
-			// Initialization
-			descriptor.Include<InitQueries>()
-				.Authorize()
-				.Description("All queries for the initialization service.");
+			descriptor.Include<DeviceQueries>();
 			// Identity
-			descriptor.Include<IdentityQueries>()
-				.Authorize()
-				.Description("All queries for the me services.");
-			// User
-			// coming soon
+			descriptor.Include<IdentityQueries>();
+			// Initialization
+			descriptor.Include<InitQueries>();
+			// NetworkScanner
+			descriptor.Include<NetworkScannerQueries>();
 		}
 	}
 }

@@ -1,14 +1,19 @@
 ﻿using HotChocolate;
+using HotChocolate.AspNetCore.Authorization;
 using HotChocolate.Data;
+using HotChocolate.Types;
 using SmartHub.Application.Common.Interfaces.Database;
 using SmartHub.Domain.Entities;
 using System.Linq;
 
-namespace SmartHub.Application.UseCases.Entity.Devices
+namespace SmartHub.Application.UseCases.Entity.Devices.Queries
 {
 	/// <summary>
 	/// Endpoint for all device queries.
 	/// </summary>
+	[Authorize]
+	[ExtendObjectType(Name = "RootQueries")]
+	[GraphQLDescription("All queries for the DeviceEntity.")]
 	public class DeviceQueries
 	{
 		/// <summary>

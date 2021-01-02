@@ -1,14 +1,19 @@
 ﻿using HotChocolate;
+using HotChocolate.AspNetCore.Authorization;
 using HotChocolate.Data;
+using HotChocolate.Types;
 using SmartHub.Application.Common.Interfaces.Database;
 using SmartHub.Domain.Entities;
 using System.Linq;
 
-namespace SmartHub.Application.UseCases.Entity.Groups
+namespace SmartHub.Application.UseCases.Entity.Groups.Queries
 {
 	/// <summary>
 	/// Endpoint for all group queries.
 	/// </summary>
+	[Authorize]
+	[ExtendObjectType(Name = "RootQueries")]
+	[GraphQLDescription("All queries for the GroupEntity.")]
 	public class GroupQueries
 	{
 		/// <summary>

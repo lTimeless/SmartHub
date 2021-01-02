@@ -1,4 +1,6 @@
 ﻿using HotChocolate;
+using HotChocolate.AspNetCore.Authorization;
+using HotChocolate.Types;
 using SmartHub.Application.Common.Interfaces.Database;
 using SmartHub.Application.UseCases.AppFolder.AppConfigParser;
 using SmartHub.Domain;
@@ -9,6 +11,8 @@ namespace SmartHub.Application.UseCases.Init
 	/// <summary>
 	/// Endpoint for initialize queries.
 	/// </summary>
+	[ExtendObjectType(Name = "RootQueries")]
+	[GraphQLDescription("All queries for the initialization service.")]
 	public class InitQueries
 	{
 		// TODO move to separate query file damit das besser gesplitter ist?
@@ -17,6 +21,7 @@ namespace SmartHub.Application.UseCases.Init
 		/// </summary>
 		/// <param name="appConfigService">The AppConfigService.</param>
 		/// <returns>The AppConfig.</returns>
+		[Authorize]
 		public AppConfig GetAppConfig([Service] IAppConfigService appConfigService)
 		{
 			return appConfigService.GetConfig();
