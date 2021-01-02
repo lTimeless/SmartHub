@@ -19,22 +19,26 @@ namespace SmartHub.Api.GraphQl
 
 			// Group
 			descriptor.Include<GroupQueries>()
+				.Authorize()
 				.Description("All queries for the GroupEntity.");
 			// Device
 			descriptor.Include<DeviceQueries>()
+				.Authorize()
 				.Description("All queries for the DeviceEntity.");
 			// NetworkScanner
 			descriptor.Include<NetworkScannerQueries>()
+				.Authorize()
 				.Description("All queries for network scanning operations");
 			// Initialization
 			descriptor.Include<InitQueries>()
+				.Authorize()
 				.Description("All queries for the initialization service.");
 			// Identity
 			descriptor.Include<IdentityQueries>()
+				.Authorize()
 				.Description("All queries for the me services.");
 			// User
-			// descriptor.Include<UserQueries>()
-			// 	.Description("All queries for the me services.");
+			// coming soon
 		}
 	}
 }

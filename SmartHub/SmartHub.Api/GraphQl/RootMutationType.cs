@@ -19,9 +19,11 @@ namespace SmartHub.Api.GraphQl
 
 			// Group
 			descriptor.Include<GroupMutations>()
+				.Authorize()
 				.Description("All mutations for group entity.");
 			// Device
 			descriptor.Include<DeviceMutations>()
+				.Authorize()
 				.Description("All mutations for device entity.");
 			// Initialization
 			descriptor.Include<InitMutations>()
@@ -31,6 +33,7 @@ namespace SmartHub.Api.GraphQl
 				.Description("All mutations for the identity services.");
 			// User
 			descriptor.Include<UserMutations>()
+				.Authorize()
 				.Description("All mutations for the users entity.");
 		}
 	}

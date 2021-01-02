@@ -66,6 +66,7 @@ namespace SmartHub.Api.Extensions
 			services.AddGraphQLServer()
 				.AddQueryType<RootQueryType>()
 				.AddMutationType<RootMutationType>()
+				.AddAuthorization()
 				.AddTypes()
 				.AddProjections()
 				.AddFiltering()
