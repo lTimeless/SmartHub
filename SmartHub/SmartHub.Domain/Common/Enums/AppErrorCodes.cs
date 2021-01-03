@@ -10,6 +10,9 @@ namespace SmartHub.Domain.Common.Enums
 		NotCreated,
 		NotUpdated,
 		Exists,
+		NoHome,
+		// Identity
+		NotAuthorized,
 		// Input
 		IsEmpty,
 		// Group

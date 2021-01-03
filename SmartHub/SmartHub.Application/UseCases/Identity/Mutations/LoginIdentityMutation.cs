@@ -33,13 +33,13 @@ namespace SmartHub.Application.UseCases.Identity.Mutations
 		{
 			if (configService.GetConfig().IsActive is false)
 			{
-				return new IdentityPayload(new UserError("There is no home created yet.", AppErrorCodes.Exists));
+				return new IdentityPayload(new UserError("There is no home created yet.", AppErrorCodes.NoHome));
 			}
 
 			var foundUser = await userManager.FindByNameAsync(input.UserName);
 			if (foundUser == null)
 			{
-				return new IdentityPayload(new UserError("You are not authorized.", AppErrorCodes.Exists));
+				return new IdentityPayload(new UserError("You are not authorized.", AppErrorCodes.NotAuthorized));
 			}
 			var result = await identityService.LoginAsync(input, foundUser);
 			if (!result)

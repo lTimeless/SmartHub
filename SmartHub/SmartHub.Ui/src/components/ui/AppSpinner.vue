@@ -1,11 +1,13 @@
 <template>
   <div
+    v-if="ready"
     :class="`loader ease-linear rounded-full border-8 border-t-8 border-gray-200 ${height} ${width}`"
   ></div>
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue';
+import { useTimeout } from '@vueuse/core';
 
 export default defineComponent({
   name: 'AppSpinner',
@@ -18,6 +20,12 @@ export default defineComponent({
       type: String,
       required: true
     }
+  },
+  setup() {
+    const { ready } = useTimeout(300, true);
+    return {
+      ready
+    };
   }
 });
 </script>

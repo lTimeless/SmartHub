@@ -34,6 +34,7 @@ export const useRouteAuthGuard = (
     // TODO: BE call machen wenn Token noch im storage ist, wenn der noch gültig ist dann weiter zum dashboard wenn nicht dann einen neuen beantragen
     // Refreshtoken!!!!
     if (!isAuthenticated()) {
+      // TODO: create toast with error message "Not authorized"
       next({ path: Routes.Login });
     } else {
       //  anstatt den authresponse zu nehmen um die rollen zu prüfen

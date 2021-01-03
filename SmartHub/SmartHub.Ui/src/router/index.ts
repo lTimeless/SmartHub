@@ -74,13 +74,10 @@ const routes: Array<RouteRecordRaw> = [
       },
       {
         path: Routes.NotFound,
+        name: 'NotFound',
         component: NotFound
       }
     ]
-  },
-  {
-    path: Routes.NotFound,
-    component: NotFound
   }
 ];
 

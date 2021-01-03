@@ -12,6 +12,7 @@
     "@microsoft/signalr": "^5.0.0",
     "@types/jwt-decode": "^3.1.0",
     "@vue/apollo-composable": "^4.0.0-alpha.12",
+    "@vueuse/core": "^4.0.2",
     "chart.js": "^2.9.4",
     "core-js": "^3.8.1",
     "fuse.js": "^6.4.3",

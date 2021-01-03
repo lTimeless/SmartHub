@@ -163,6 +163,4 @@ namespace SmartHub.Infrastructure
         }
         #endregion
     }
-
-
 }

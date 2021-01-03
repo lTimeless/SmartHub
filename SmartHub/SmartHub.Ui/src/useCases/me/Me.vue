@@ -134,6 +134,7 @@ export default defineComponent({
     Loader
   },
   setup() {
+    const router = useRouter();
     const userRole = computed(() => getUserRoles());
     const selectedRole = ref(userRole.value);
     const prevRole = selectedRole.value;
@@ -157,8 +158,7 @@ export default defineComponent({
 
       if (typeof updateUserInput.newRole !== 'undefined' && updateUserInput.newRole !== prevRole) {
         await clearStorage();
-        const router = useRouter();
-        await router.replace(Routes.Login);
+        await router.push({ path: Routes.Login, replace: true });
       }
     };
     return {

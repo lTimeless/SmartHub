@@ -8,7 +8,7 @@ export enum Routes {
   Init = '/init',
   // Error
   NotFound = '/:patchMatch(.*)',
-  NotAuthorized = '/notauth',
+  NotAuthorized = '/notAuth',
   // Me
   Me = '/me',
   // Home

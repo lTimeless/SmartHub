@@ -69,6 +69,9 @@
                   <span class="pl-2">Log in</span>
                 </span>
               </button>
+              <div v-if="errLogin" class="flex mt-4 text-sm">
+                <span class="text-red-400">{{ errLogin.name }}: {{ errLogin.message }}</span>
+              </div>
               <hr class="my-8" />
               <button
                 disabled
@@ -151,8 +154,12 @@ export default defineComponent({
       loginInput.userName = userName.value;
       loginInput.password = password.value;
       await login({ input: loginInput }).then((res) => {
-        storeToken(res.data.login.token);
-        router.push(Routes.Home);
+        if (res.data.login.token !== null) {
+          storeToken(res.data.login.token);
+          router.push(Routes.Home);
+        } else {
+          errLogin.value = { name: res.data.login.errors[0].code, message: res.data.login.errors[0].message };
+        }
       });
     };
 

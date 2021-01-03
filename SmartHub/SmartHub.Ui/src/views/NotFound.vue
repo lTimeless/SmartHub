@@ -7,7 +7,7 @@
       <h1 class="text-center font-bold text-4xl text-primary">Oh no! There is nothing here.</h1>
     </div>
     <div class="mb-10 flex items-center justify-center">
-      <router-link to="/" class="font-bold border-b border-primary text-xl">Go back</router-link>.
+      <router-link to="/" class="font-bold border-b border-primary text-xl">Go back</router-link>
     </div>
   </div>
 </template>
