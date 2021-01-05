@@ -119,7 +119,6 @@
 
 <script lang="ts">
 import { defineComponent, ref, computed, reactive } from 'vue';
-import { clearStorage, getUserRoles } from '@/services/auth/authService';
 import { Roles, Routes } from '@/types/enums';
 import { UpdateUserInput } from '@/types/types';
 import { useMutation, useQuery, useResult } from '@vue/apollo-composable';
@@ -127,6 +126,7 @@ import Loader from '@/components/ui/AppSpinner.vue';
 import { useRouter } from 'vue-router';
 import { WHO_AM_I } from '@/useCases/me/MeQueries';
 import { UPDATE_USER } from '@/useCases/me/MeMutations';
+import { useIdentity } from '@/hooks/useIdentity';
 
 export default defineComponent({
   name: 'Me',
@@ -135,7 +135,8 @@ export default defineComponent({
   },
   setup() {
     const router = useRouter();
-    const userRole = computed(() => getUserRoles());
+    const { isRole, clearStorage } = useIdentity();
+    const userRole = computed(() => isRole());
     const selectedRole = ref(userRole.value);
     const prevRole = selectedRole.value;
     const roles = Roles;
@@ -157,7 +158,7 @@ export default defineComponent({
       await updateUser({ input: updateUserInput }, { refetchQueries: [{ query: WHO_AM_I }] });
 
       if (typeof updateUserInput.newRole !== 'undefined' && updateUserInput.newRole !== prevRole) {
-        await clearStorage();
+        clearStorage();
         await router.push({ path: Routes.Login, replace: true });
       }
     };

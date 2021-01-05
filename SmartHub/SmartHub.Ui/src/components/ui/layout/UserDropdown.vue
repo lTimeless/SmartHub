@@ -45,11 +45,11 @@
 <script lang="ts">
 import { computed, defineComponent, ref } from 'vue';
 import { useStore } from 'vuex';
-import { clearStorage } from '@/services/auth/authService';
 import { useRouter } from 'vue-router';
 import { Routes } from '@/types/enums';
 import { AppActionTypes } from '@/store/app/actions';
 import AppIcon from '@/components/icons/AppIcon.vue';
+import { useIdentity } from '@/hooks/useIdentity';
 
 export default defineComponent({
   name: 'UserDropdown',
@@ -59,6 +59,7 @@ export default defineComponent({
   props: {},
   setup() {
     const store = useStore();
+    const { clearStorage } = useIdentity();
     const router = useRouter();
     const dropdownPopoverShow = ref<boolean>(false);
     const showDropdown = computed(() => store.state.appModule.userDropDownOpen);

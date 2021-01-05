@@ -115,8 +115,8 @@ import { Routes } from '@/types/enums';
 import Loader from '@/components/ui/AppSpinner.vue';
 import TopDoubleWaves from '@/components/ui/svgs/TopDoubleWaves.vue';
 import AppCard from '@/components/ui/AppCard/AppCard.vue';
-import { storeToken } from '@/services/auth/authService';
 import { LOGIN } from '@/useCases/identity/login/LoginMutation';
+import { useIdentity } from '@/hooks/useIdentity';
 
 export default defineComponent({
   name: 'Login',
@@ -128,6 +128,7 @@ export default defineComponent({
   props: {},
   setup() {
     const router = useRouter();
+    const { token } = useIdentity();
     const title = 'Login';
     const password = ref('');
     const userName = ref('');
@@ -155,7 +156,7 @@ export default defineComponent({
       loginInput.password = password.value;
       await login({ input: loginInput }).then((res) => {
         if (res.data.login.token !== null) {
-          storeToken(res.data.login.token);
+          token.value = res.data.login.token;
           router.push(Routes.Home);
         } else {
           errLogin.value = { name: res.data.login.errors[0].code, message: res.data.login.errors[0].message };

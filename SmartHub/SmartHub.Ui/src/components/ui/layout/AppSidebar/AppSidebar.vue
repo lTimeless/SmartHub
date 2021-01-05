@@ -17,9 +17,13 @@
       </div>
     </div>
     <div class="flex flex-col space-y">
-      <a class="block relative w-full h-16 w-16 flex justify-center items-center">
+      <a class="block relative w-full h-16 md:w-16 md:flex justify-center items-center">
         <NavigationItem icon-name="Inbox" route="/inbox" class="cursor-not-allowed" />
-        <div class="absolute top-0 right-0 mr-3 mt-3 bg-red-500 w-4 h-4 text-xs text-white rounded-full text-center">5</div>
+        <div
+          class="absolute top-0 right-0 mr-3 mt-3 bg-red-500 w-4 h-4 text-xs text-white rounded-full text-center"
+        >
+          5
+        </div>
       </a>
       <UserDropdown />
     </div>
@@ -28,13 +32,13 @@
 
 <script lang="ts">
 import UserDropdown from '../UserDropdown.vue';
-import { computed, defineComponent, onMounted, ref } from 'vue';
+import { computed, defineComponent, ref } from 'vue';
 import { useRouter } from 'vue-router';
-import { getUserRoles } from '@/services/auth/authService';
 import { Roles, Routes } from '@/types/enums';
 import NavigationItem from '@/components/ui/layout/AppSidebar/NavigationItem.vue';
 import AppIcon from '@/components/icons/AppIcon.vue';
 import AppBrand from '@/components/ui/layout/AppSidebar/AppBrand.vue';
+import { useIdentity } from '@/hooks/useIdentity';
 
 export default defineComponent({
   name: 'AppSidebar',
@@ -47,7 +51,8 @@ export default defineComponent({
   props: {},
   setup() {
     const router = useRouter();
-    const isRole = ref('');
+    const { isRole } = useIdentity();
+    const role = ref(isRole());
     const sidebarLists = [
       // Guest views
       {
@@ -146,11 +151,7 @@ export default defineComponent({
       // }
     ];
     const currentPath = computed(() => router.currentRoute.value.path);
-    const roleIncluded = (rolesNeeded: string[]) => rolesNeeded.includes(isRole.value);
-
-    onMounted(() => {
-      isRole.value = getUserRoles();
-    });
+    const roleIncluded = (rolesNeeded: string[]) => rolesNeeded.includes(role.value);
 
     return {
       currentPath,

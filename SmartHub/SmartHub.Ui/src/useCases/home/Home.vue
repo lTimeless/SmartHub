@@ -34,7 +34,7 @@
       </div>
     </div>
     <!-- Admin Cards -->
-    <template v-if="roleIncluded(adminRole) && expandAdminRow">
+    <template v-if="isRole() === adminRole && expandAdminRow">
       <div class="flex flex-wrap mb-6 rounded">
         <AdminCardsRow />
       </div>
@@ -301,14 +301,14 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, computed, ref, onMounted } from 'vue';
+import { defineComponent, computed, ref } from 'vue';
 import { useStore } from 'vuex';
 import BarChart from '@/components/charts/BarChart.vue';
 import LineChart from '@/components/charts/LineChart.vue';
-import { getUserRoles } from '@/services/auth/authService';
 import { Roles } from '@/types/enums';
 import AdminCardsRow from '@/useCases/home/components/AdminCardsRow.vue';
 import CardsRow from '@/useCases/home/components/CardsRow.vue';
+import { useIdentity } from '@/hooks/useIdentity';
 
 export default defineComponent({
   name: 'Home',
@@ -321,28 +321,24 @@ export default defineComponent({
   setup() {
     const openTab = ref(0);
     const store = useStore();
+    const { isRole } = useIdentity();
     const appConfig = computed(() => store.state.appModule.appConfig);
     const groups = computed(() => store.state.appModule.groups);
     const devices = computed(() => store.state.appModule.devices);
-    const isRole = ref('');
-    const adminRole = [Roles.Admin];
+    const adminRole = Roles.Admin;
     const expandAdminRow = ref(false);
     const expandTables = ref(false);
     const toggleTabs = (tabNumber: number) => {
       openTab.value = tabNumber;
     };
-    const roleIncluded = (rolesNeeded: string[]) => rolesNeeded.includes(isRole.value);
 
-    onMounted(() => {
-      isRole.value = getUserRoles();
-    });
     return {
       openTab,
       toggleTabs,
       appConfig,
       groups,
+      isRole,
       devices,
-      roleIncluded,
       adminRole,
       expandAdminRow,
       expandTables

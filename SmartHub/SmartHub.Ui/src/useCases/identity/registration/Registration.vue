@@ -165,7 +165,6 @@
 <script lang="ts">
 import { defineComponent, onMounted, ref, reactive, computed } from 'vue';
 import { RegistrationInput } from '@/types/types';
-import { clearStorage, storeToken } from '@/services/auth/authService';
 import { useRouter } from 'vue-router';
 import Loader from '@/components/ui/AppSpinner.vue';
 import { Routes } from '@/types/enums';
@@ -173,6 +172,7 @@ import TopDoubleWaves from '@/components/ui/svgs/TopDoubleWaves.vue';
 import AppCard from '@/components/ui/AppCard/AppCard.vue';
 import { useMutation } from '@vue/apollo-composable';
 import { REGISTRATION } from '@/useCases/identity/registration/RegistrationMutation';
+import { useIdentity } from '@/hooks/useIdentity';
 
 export default defineComponent({
   name: 'Registration',
@@ -184,6 +184,7 @@ export default defineComponent({
   props: {},
   setup() {
     const router = useRouter();
+    const { token, clearStorage } = useIdentity();
     const title = 'Create account';
     const passwordStrengthText = ref('');
     const togglePassword = ref(false);
@@ -225,7 +226,7 @@ export default defineComponent({
     const onRegistrationClick = async () => {
       await createAccount({ input: registrationRequest }).then((res) => {
         if (res.data.registration.token != null) {
-          storeToken(res.data.registration.token);
+          token.value = res.data.registration.token;
           router.push(Routes.Home);
           return Promise.resolve();
         }
