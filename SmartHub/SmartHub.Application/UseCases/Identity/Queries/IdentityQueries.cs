@@ -1,7 +1,7 @@
 ﻿using HotChocolate;
 using HotChocolate.AspNetCore.Authorization;
 using HotChocolate.Types;
-using SmartHub.Application.Common.Extensions;
+using SmartHub.Application.Common.Attributes;
 using SmartHub.Application.Common.Interfaces.Database;
 using SmartHub.Application.Common.Models;
 using SmartHub.Domain.Entities;

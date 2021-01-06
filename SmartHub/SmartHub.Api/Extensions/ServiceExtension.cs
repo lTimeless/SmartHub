@@ -71,6 +71,7 @@ namespace SmartHub.Api.Extensions
 				.AddProjections()
 				.AddFiltering()
 				.AddSorting()
+				.AddApolloTracing() // onDemand: add "GraphQl-tracing": 1 to http Header
 				;
 		}
 

@@ -1,25 +1,15 @@
 ﻿using HotChocolate.Types;
-using HotChocolate.Types.Descriptors;
 using SmartHub.Application.Common.Interfaces;
 using SmartHub.Application.Common.Interfaces.Database;
 using SmartHub.Application.Common.Models;
-using System.Reflection;
 
 namespace SmartHub.Application.Common.Extensions
 {
-	public class UseCurrentUserAttribute : ObjectFieldDescriptorAttribute
+	public static class ObjectFieldDescriptorExtension
 	{
-		public override void OnConfigure(IDescriptorContext context, IObjectFieldDescriptor descriptor, MemberInfo member)
-		{
-			descriptor.UseCurrentUser();
-		}
-	}
-
-	/// <summary>
-	/// Extension for ObjectFieldDescriptor to get the user from the jwt.
-	/// </summary>
-	public static class ObjectFieldDescriptorExtensions
-	{
+		/// <summary>
+		/// Extension for ObjectFieldDescriptor to get the user from the jwt.
+		/// </summary>
 		public static IObjectFieldDescriptor UseCurrentUser(this IObjectFieldDescriptor descriptor)
 		{
 			return descriptor.Use(next => async context =>
