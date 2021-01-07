@@ -3,7 +3,7 @@
   <div class="flex flex-row justify-between items-center">
     <!-- Route -->
     <div class="flex flex-row w-1/2">
-      <a class="text-gray-600 text-lg p-2 uppercase font-semibold">{{ route.name }}</a>
+      <a class="text-gray-600 text-xl p-2 text-blueGray-100 uppercase">{{ route.name }}</a>
     </div>
     <!-- back btn -->
     <div class="flex-row hidden md:flex md:justify-end w-1/2">

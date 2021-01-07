@@ -3,8 +3,11 @@
     <!-- Sidebar-->
     <AppSidebar />
     <!-- Main View-->
-    <div class="flex flex-auto h-screen bg-gray-200 overflow-y-auto">
-      <div class="flex flex-col w-full m-5 px-3">
+    <div class="flex flex-auto h-screen bg-gray-200 overflow-x-hidden">
+      <div class="absolute mx-auto w-full z-0">
+        <TopDoubleWaves />
+      </div>
+      <div class="flex flex-col w-full m-5 px-3 z-10">
         <Navbar />
         <router-view v-slot="{ Component }">
           <transition
@@ -33,6 +36,7 @@ import TopDoubleWaves from '@/components/ui/svgs/TopDoubleWaves.vue';
 export default defineComponent({
   name: 'Layout',
   components: {
+    TopDoubleWaves,
     AppSidebar,
     Navbar
   },
