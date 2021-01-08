@@ -1,12 +1,12 @@
 <template>
   <div class="flex flex-row justify-center w-full text-left">
     <div class="flex flex-col space-y-10">
-      <h3 class="text-center text-7xl text-charcoalBlue-300">
+      <h3 class="text-left md:text-center text-8xl text-charcoalBlue-300 mt-5">
         {{ currentTime }}
       </h3>
       <div>
-        <h1 class="text-left text-6xl text-charcoalBlue-300">Good {{ timeOfDay }}</h1>
-        <h2 class="text-left text-6xl text-primaryYellow">{{ capitalize(userName) }}</h2>
+        <h1 class="text-left text-3xl md:text-6xl text-charcoalBlue-300">Good {{ timeOfDay }}</h1>
+        <h2 class="text-left text-4xl md:text-6xl text-primaryYellow">{{ capitalize(userName) }}</h2>
       </div>
     </div>
   </div>

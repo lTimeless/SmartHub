@@ -1,9 +1,4 @@
 <template>
-  <div class="md:hidden flex flex-row justify-start items-center w-14 w-full rounded">
-    <button class="p-2 absolute right-8 sm:right-10 top-2 z-20" type="button">
-      <AppIcon width="h-6" height="h-6" icon-name="Menu" icon-color="text-primaryBlueHover" />
-    </button>
-  </div>
   <div class="sidebar">
     <div class="flex flex-col space-y w-full items-center">
       <AppBrand class="my-3" />
@@ -36,7 +31,6 @@ import { computed, defineComponent, ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { Roles, Routes } from '@/types/enums';
 import NavigationItem from '@/components/ui/layout/AppSidebar/NavigationItem.vue';
-import AppIcon from '@/components/icons/AppIcon.vue';
 import AppBrand from '@/components/ui/layout/AppSidebar/AppBrand.vue';
 import { useIdentity } from '@/hooks/useIdentity';
 
@@ -45,7 +39,6 @@ export default defineComponent({
   components: {
     UserDropdown,
     NavigationItem,
-    AppIcon,
     AppBrand
   },
   props: {},

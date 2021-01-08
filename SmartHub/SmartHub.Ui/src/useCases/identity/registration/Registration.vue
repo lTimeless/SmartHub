@@ -13,7 +13,7 @@
       </div>
       <div class="flex items-center justify-center h-108 p-6 sm:p-12 md:w-1/2">
         <div class="w-full">
-          <h2 class="mb-4 text-left text-2xl font-semibold text-gray-700 dark:text-gray-200">
+          <h2 class="mb-4 text-left text-2xl font-semibold text-primarySienna">
             {{ title }}
           </h2>
           <label class="text-left block text-sm">
@@ -141,10 +141,7 @@
             Additional options....
           </button>
           <p class="mt-4 text-left">
-            <router-link
-              class="text-sm font-medium text-primary dark:text-primary hover:underline"
-              to="/login"
-            >
+            <router-link class="text-sm font-medium text-primarySienna hover:underline" to="/login">
               Already have an account? Login
             </router-link>
           </p>

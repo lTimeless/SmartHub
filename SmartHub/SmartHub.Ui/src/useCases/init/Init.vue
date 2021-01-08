@@ -1,6 +1,6 @@
 <template>
   <!-- Main View -->
-  <div class="flex items-center min-h-screen p-6 bg-loginBackground background">
+  <div class="flex items-center min-h-screen p-6 background">
     <AppCard class="bg-white border">
       <template v-if="loading">
         <div class="flex items-center justify-center w-full h-108">
@@ -16,14 +16,14 @@
         <div class="h-108 md:h-auto md:w-1/2">
           <img
             aria-hidden="true"
-            class="object-fill w-full h-full dark:hidden"
+            class="object-fill w-full h-full"
             src="../../assets/images/undraw_at_home_octe.svg"
             alt="Office"
           />
         </div>
         <div class="flex items-center justify-center h-108 sm:p-12 md:w-1/2">
           <div class="w-full">
-            <h2 class="mb-4 text-left text-2xl font-semibold text-gray-700 dark:text-gray-200">
+            <h2 class="mb-4 text-left text-2xl font-semibold text-primarySienna">
               {{ title }}
             </h2>
             <div class="text-gray-400 text-sm font-medium mt-3 mb-4 text-left">
@@ -98,10 +98,16 @@ import { AppConfigInitInput } from '@/types/types';
 import { useRouter } from 'vue-router';
 import AppCard from '@/components/ui/AppCard/AppCard.vue';
 import { useMutation, useQuery, useResult } from '@vue/apollo-composable';
-import { ApplicationIsActive } from '@/graphql/queries';
 import { Routes } from '@/types/enums';
 import Loader from '@/components/ui/AppSpinner.vue';
 import { INITIALIZE_APP } from '@/useCases/init/InitMutation';
+import gql from 'graphql-tag';
+
+const ApplicationIsActive = gql`
+  query ApplicationIsActive {
+    applicationIsActive
+  }
+`;
 
 export default defineComponent({
   name: 'Init',

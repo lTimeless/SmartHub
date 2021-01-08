@@ -1,9 +1,9 @@
 <template>
-  <div class="flex flex-col justify-around h-full">
+  <div class="flex flex-col justify-around h-full mt-4">
     <div class="h-1/2">
       <Welcome />
     </div>
-    <div class="relative h-1/2 z-0">
+    <div class="h-1/2">
       <!-- Cards -->
       <div class="flex flex-wrap justify-between">
         <CardsRow />

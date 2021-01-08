@@ -1,7 +1,7 @@
 <template>
   <!-- Main View -->
   <div class="flex items-center min-h-screen p-6 background">
-    <AppCard class="bg-white border">
+    <AppCard class="bg-white">
       <template v-if="loading">
         <div class="flex items-center justify-center w-full h-108">
           <Loader height="h-48" width="w-48" />
@@ -23,7 +23,7 @@
         </div>
         <div class="flex items-center justify-center h-108 p-6 sm:p-12 md:w-1/2">
           <div class="w-full">
-            <h2 class="mb-4 text-left text-2xl font-semibold text-gray-700 dark:text-gray-200">
+            <h2 class="mb-4 text-left text-2xl font-semibold text-primarySienna">
               {{ title }}
             </h2>
             <label class="text-left block text-sm">
@@ -75,17 +75,14 @@
             </button>
             <p class="mt-4 text-left">
               <router-link
-                class="text-sm font-medium text-primary dark:text-primary hover:underline"
+                class="text-sm font-medium text-primarySienna hover:underline"
                 to="/forgotpassword"
               >
                 Forgot your password?
               </router-link>
             </p>
             <p class="mt-1 text-left">
-              <router-link
-                class="text-sm font-medium text-primary dark:text-primary hover:underline"
-                to="/registration"
-              >
+              <router-link class="text-sm font-medium text-primarySienna hover:underline" to="/registration">
                 Create account
               </router-link>
             </p>
@@ -101,12 +98,19 @@ import { computed, defineComponent, reactive, ref, watch } from 'vue';
 import { LoginInput } from '@/types/types';
 import { useRouter } from 'vue-router';
 import { useMutation, useQuery, useResult } from '@vue/apollo-composable';
-import { HOME_AND_USERS_EXIST } from '@/graphql/queries';
 import { Routes } from '@/types/enums';
 import Loader from '@/components/ui/AppSpinner.vue';
 import AppCard from '@/components/ui/AppCard/AppCard.vue';
 import { LOGIN } from '@/useCases/identity/login/LoginMutation';
 import { useIdentity } from '@/hooks/useIdentity';
+import gql from 'graphql-tag';
+
+const HOME_AND_USERS_EXIST = gql`
+  query HomeAndUsersExist {
+    applicationIsActive
+    usersExist
+  }
+`;
 
 export default defineComponent({
   name: 'Login',

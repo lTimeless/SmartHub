@@ -3,14 +3,14 @@
     :to="route"
     class="block relative h-14 w-14 flex justify-center items-center hover:bg-primaryBlueHover rounded-l"
     :class="[
-      isCurrentRoute ? 'bg-primaryBlue' : '',
+      isRoute ? 'bg-primaryBlue' : '',
       route === routes.Statistics ? ' border-t border-primaryBlueHover' : ''
     ]"
   >
     <div v-if="onlyIcon">
       <AppIcon
         :icon-name="iconName"
-        :icon-color="isCurrentRoute ? 'text-white' : 'text-primaryBlue'"
+        :icon-color="isRoute ? 'text-white' : 'text-primaryBlue'"
         height="h-7"
         width="w-7"
       />
@@ -28,6 +28,7 @@ import { computed, defineComponent } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import AppIcon from '@/components/icons/AppIcon.vue';
 import { Routes } from '@/types/enums';
+import { useCurrentRoute } from "@/hooks/useCurrentRoute";
 
 export default defineComponent({
   name: 'NavigationItem',
@@ -56,14 +57,14 @@ export default defineComponent({
   },
   setup(props) {
     const router = useRouter();
-    const isCurrentRoute = computed(() => useRoute().fullPath.includes(props.route));
+    const { isRoute } = useCurrentRoute(props.route);
     const getActiveClass = (route: string) => ({
       'text-primary': router.currentRoute.value.path === route,
       'text-gray-600': router.currentRoute.value.path !== route,
       'transition transform hover:translate-x-1 hover:text-primary': router.currentRoute.value.path !== route
     });
     return {
-      isCurrentRoute,
+      isRoute,
       routes: Routes,
       getActiveClass,
       ...props

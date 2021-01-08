@@ -2,12 +2,12 @@
   <div class="relative z-30 inline-block text-left cursor-pointer">
     <div
       class="block relative z-30 h-14 w-14 flex justify-center items-center hover:bg-charcoalBlue-200 rounded-l"
-      :class="[isCurrentRoute ? 'bg-primaryBlue' : '']"
+      :class="[isRoute ? 'bg-primaryBlue md:bg-charcoalBlue-500' : '']"
       @click="setDropDownValue(!showDropdown)"
     >
       <AppIcon
         icon-name="User"
-        :icon-color="isCurrentRoute ? 'text-white' : 'text-primaryBlue'"
+        :icon-color="isRoute ? 'text-white' : 'text-primaryBlue'"
         height="h-7"
         width="w-7"
       />
@@ -51,11 +51,12 @@
 <script lang="ts">
 import { computed, defineComponent, ref } from 'vue';
 import { useStore } from 'vuex';
-import { useRoute, useRouter } from 'vue-router';
+import { useRouter } from 'vue-router';
 import { Routes } from '@/types/enums';
 import { AppActionTypes } from '@/store/app/actions';
 import AppIcon from '@/components/icons/AppIcon.vue';
 import { useIdentity } from '@/hooks/useIdentity';
+import { useCurrentRoute } from '@/hooks/useCurrentRoute';
 
 export default defineComponent({
   name: 'UserDropdown',
@@ -69,7 +70,6 @@ export default defineComponent({
     const router = useRouter();
     const dropdownPopoverShow = ref<boolean>(false);
     const showDropdown = computed(() => store.state.appModule.userDropDownOpen);
-    const isCurrentRoute = computed(() => useRoute().fullPath.includes(Routes.Me));
     const dropDownList = [
       {
         name: 'Profile',
@@ -106,7 +106,7 @@ export default defineComponent({
       dropdownPopoverShow,
       showDropdown,
       dropDownList,
-      isCurrentRoute,
+      ...useCurrentRoute(Routes.Me),
       escapeDropdown,
       dropDownBtnClick,
       logoutClick,
