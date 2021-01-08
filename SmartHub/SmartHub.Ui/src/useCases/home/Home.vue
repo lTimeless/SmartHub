@@ -3,7 +3,7 @@
     <div class="h-1/2">
       <Welcome />
     </div>
-    <div class="h-1/2">
+    <div class="relative h-1/2 z-0">
       <!-- Cards -->
       <div class="flex flex-wrap justify-between">
         <CardsRow />
@@ -11,7 +11,7 @@
       <!-- Expand Arrow -->
       <div class="px-4 my-2 flex justify-end cursor-pointer">
         <div class="cursor-pointer flex" @click="expandAdminRow = !expandAdminRow">
-          <span v-if="!expandAdminRow" class="text-sm text-gray-700 pr-1">More</span>
+          <span v-if="!expandAdminRow" class="text-sm text-primaryGreenHover pr-1">More</span>
           <svg
             v-if="!expandAdminRow"
             class="-mr-1 h-5 w-5"
@@ -24,7 +24,7 @@
           </svg>
         </div>
         <div class="cursor-pointer flex" @click="expandAdminRow = !expandAdminRow">
-          <span v-if="expandAdminRow" class="text-sm text-gray-700 pr-1">Hide</span>
+          <span v-if="expandAdminRow" class="text-sm text-primaryGreenHover pr-1">Hide</span>
           <svg
             v-if="expandAdminRow"
             class="-mr-1 h-5 w-5"

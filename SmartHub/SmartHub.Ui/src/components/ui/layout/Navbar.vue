@@ -3,17 +3,17 @@
   <div class="flex flex-row justify-between items-center">
     <!-- Route -->
     <div class="flex flex-row w-1/2">
-      <a class="text-gray-600 text-xl p-2 text-blueGray-100 uppercase">{{ route.name }}</a>
+      <a class="text-gray-600 text-xl p-2 text-primaryBlueHover uppercase">{{ route.name }}</a>
     </div>
     <!-- back btn -->
     <div class="flex-row hidden md:flex md:justify-end w-1/2">
       <button
         v-if="route.path !== routes.Home"
-        class="rounded p-2 hover:bg-indigo-200"
+        class="rounded p-2 hover:bg-primaryBlueHover"
         type="button"
         @click="goBack"
       >
-        <AppIcon icon-name="ArrowLeft" />
+        <AppIcon icon-name="ArrowLeft" icon-color="text-primaryBlueHover" />
       </button>
     </div>
   </div>
@@ -24,7 +24,7 @@ import { defineComponent } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import AppIcon from '@/components/icons/AppIcon.vue';
 import { Routes } from '@/types/enums';
-
+// TODO hier dann über vuex die sidebar via btn steuern
 export default defineComponent({
   name: 'Navbar',
   components: {

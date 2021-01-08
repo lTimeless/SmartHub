@@ -1,21 +1,21 @@
 <template>
   <router-link
     :to="route"
-    class="block relative h-16 w-16 flex justify-center items-center hover:bg-indigo-200 rounded-l"
+    class="block relative h-14 w-14 flex justify-center items-center hover:bg-primaryBlueHover rounded-l"
     :class="[
-      isCurrentRoute ? 'bg-gray-200' : '',
-      route === routes.Statistics ? ' border-t border-gray-300' : ''
+      isCurrentRoute ? 'bg-primaryBlue' : '',
+      route === routes.Statistics ? ' border-t border-primaryBlueHover' : ''
     ]"
   >
     <div v-if="onlyIcon">
-      <AppIcon :icon-name="iconName" height="h-7" width="w-7" />
+      <AppIcon
+        :icon-name="iconName"
+        :icon-color="isCurrentRoute ? 'text-white' : 'text-primaryBlue'"
+        height="h-7"
+        width="w-7"
+      />
     </div>
     <div v-else>
-      <div v-show="isCurrentRoute">
-        <AppIcon icon-name="ChevronRight"></AppIcon>
-      </div>
-      <div v-show="!isCurrentRoute" class="w-6" />
-      <div class="mr-5"></div>
       <div class="tracking-wide text-lg leading-loose">
         {{ label }}
       </div>

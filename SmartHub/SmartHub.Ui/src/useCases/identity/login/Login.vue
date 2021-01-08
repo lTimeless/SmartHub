@@ -1,107 +1,98 @@
 <template>
-  <div>
-    <!-- Background -->
-    <div class="bg-gray-200 absolute inset-0" />
-    <div class="absolute mx-auto w-full">
-      <TopDoubleWaves />
-    </div>
-    <!-- Main View -->
-    <div class="flex items-center min-h-screen p-6">
-      <AppCard class="bg-white border">
-        <template v-if="loading">
-          <div class="flex items-center justify-center w-full h-108">
-            <Loader height="h-48" width="w-48" />
-          </div>
-        </template>
-        <template v-else-if="error">
-          <div class="flex items-center justify-center w-full h-108">
-            <p>Error: {{ error.name }} {{ error.message }}</p>
-          </div>
-        </template>
-        <template v-else>
-          <div class="h-108 md:h-auto md:w-1/2">
-            <img
-              aria-hidden="true"
-              class="object-fill w-full h-full dark:hidden"
-              src="../../../assets/images/undraw_smart_home_28oy.svg"
-              alt="Office"
-            />
-          </div>
-          <div class="flex items-center justify-center h-108 p-6 sm:p-12 md:w-1/2">
-            <div class="w-full">
-              <h2 class="mb-4 text-left text-2xl font-semibold text-gray-700 dark:text-gray-200">
-                {{ title }}
-              </h2>
-              <label class="text-left block text-sm">
-                <span class="text-gray-600 dark:text-gray-400">Username</span>
-                <input
-                  required
-                  type="text"
-                  v-model="userName"
-                  class="mt-1 focus:ring-primary focus:border-primary block w-full sm:text-sm border-gray-300 rounded"
-                  placeholder="Jane Doe"
-                />
-              </label>
-              <label class="text-left block mt-4 text-sm">
-                <span class="text-gray-600 dark:text-gray-400">Password</span>
-                <input
-                  required
-                  v-model="password"
-                  class="mt-1 focus:ring-primary focus:border-primary block w-full sm:text-sm border-gray-300 rounded"
-                  placeholder="***************"
-                  type="password"
-                  @keyup.enter="onLoginClick"
-                />
-              </label>
+  <!-- Main View -->
+  <div class="flex items-center min-h-screen p-6 background">
+    <AppCard class="bg-white border">
+      <template v-if="loading">
+        <div class="flex items-center justify-center w-full h-108">
+          <Loader height="h-48" width="w-48" />
+        </div>
+      </template>
+      <template v-else-if="error">
+        <div class="flex items-center justify-center w-full h-108">
+          <p>Error: {{ error.name }} {{ error.message }}</p>
+        </div>
+      </template>
+      <template v-else>
+        <div class="h-108 md:h-auto md:w-1/2">
+          <img
+            aria-hidden="true"
+            class="object-fill w-full h-full dark:hidden"
+            src="../../../assets/images/undraw_smart_home_28oy.svg"
+            alt="Office"
+          />
+        </div>
+        <div class="flex items-center justify-center h-108 p-6 sm:p-12 md:w-1/2">
+          <div class="w-full">
+            <h2 class="mb-4 text-left text-2xl font-semibold text-gray-700 dark:text-gray-200">
+              {{ title }}
+            </h2>
+            <label class="text-left block text-sm">
+              <span class="text-gray-600 dark:text-gray-400">Username</span>
+              <input
+                required
+                type="text"
+                v-model="userName"
+                class="mt-1 focus:ring-primary focus:border-primary block w-full sm:text-sm border-gray-300 rounded"
+                placeholder="Jane Doe"
+              />
+            </label>
+            <label class="text-left block mt-4 text-sm">
+              <span class="text-gray-600 dark:text-gray-400">Password</span>
+              <input
+                required
+                v-model="password"
+                class="mt-1 focus:ring-primary focus:border-primary block w-full sm:text-sm border-gray-300 rounded"
+                placeholder="***************"
+                type="password"
+                @keyup.enter="onLoginClick"
+              />
+            </label>
 
-              <button
-                class="block w-full px-4 py-2 mt-4 text-sm font-medium leading-5 text-center text-white transition-colors duration-150 bg-primary border border-transparent rounded active:bg-primary"
-                :class="
-                  signInDisabled
-                    ? 'opacity-50 focus:outline-none cursor-not-allowed'
-                    : 'hover:bg-primaryHover'
-                "
-                @click="onLoginClick"
-                :disabled="signInDisabled"
-              >
-                <span class="flex content-center justify-center">
-                  <Loader v-if="loadLogin" height="h-2" width="w-2" />
-                  <span class="pl-2">Log in</span>
-                </span>
-              </button>
-              <div v-if="errLogin" class="flex mt-4 text-sm">
-                <span class="text-red-400">{{ errLogin.name }}: {{ errLogin.message }}</span>
-              </div>
-              <hr class="my-8" />
-              <button
-                disabled
-                class="flex items-center justify-center w-full px-4 py-2 text-sm font-medium leading-5 text-gray-700 transition-colors duration-150 border border-gray-300 rounded-lg active:bg-transparent focus:border-gray-500 active:text-gray-500 focus:outline-none focus:shadow-outline-gray"
-                :class="true ? 'opacity-50 focus:outline-none cursor-not-allowed' : 'hover:border-gray-500'"
-              >
-                <!-- TODO dynamic class-->
-                Additional login options....
-              </button>
-              <p class="mt-4 text-left">
-                <router-link
-                  class="text-sm font-medium text-primary dark:text-primary hover:underline"
-                  to="/forgotpassword"
-                >
-                  Forgot your password?
-                </router-link>
-              </p>
-              <p class="mt-1 text-left">
-                <router-link
-                  class="text-sm font-medium text-primary dark:text-primary hover:underline"
-                  to="/registration"
-                >
-                  Create account
-                </router-link>
-              </p>
+            <button
+              class="block w-full px-4 py-2 mt-4 text-sm font-medium leading-5 text-center text-white transition-colors duration-150 bg-primary border border-transparent rounded active:bg-primary"
+              :class="
+                signInDisabled ? 'opacity-50 focus:outline-none cursor-not-allowed' : 'hover:bg-primaryHover'
+              "
+              @click="onLoginClick"
+              :disabled="signInDisabled"
+            >
+              <span class="flex content-center justify-center">
+                <Loader v-if="loadLogin" height="h-2" width="w-2" />
+                <span class="pl-2">Log in</span>
+              </span>
+            </button>
+            <div v-if="errLogin" class="flex mt-4 text-sm">
+              <span class="text-red-400">{{ errLogin.name }}: {{ errLogin.message }}</span>
             </div>
+            <hr class="my-8" />
+            <button
+              disabled
+              class="flex items-center justify-center w-full px-4 py-2 text-sm font-medium leading-5 text-gray-700 transition-colors duration-150 border border-gray-300 rounded-lg active:bg-transparent focus:border-gray-500 active:text-gray-500 focus:outline-none focus:shadow-outline-gray"
+              :class="true ? 'opacity-50 focus:outline-none cursor-not-allowed' : 'hover:border-gray-500'"
+            >
+              <!-- TODO dynamic class-->
+              Additional login options....
+            </button>
+            <p class="mt-4 text-left">
+              <router-link
+                class="text-sm font-medium text-primary dark:text-primary hover:underline"
+                to="/forgotpassword"
+              >
+                Forgot your password?
+              </router-link>
+            </p>
+            <p class="mt-1 text-left">
+              <router-link
+                class="text-sm font-medium text-primary dark:text-primary hover:underline"
+                to="/registration"
+              >
+                Create account
+              </router-link>
+            </p>
           </div>
-        </template>
-      </AppCard>
-    </div>
+        </div>
+      </template>
+    </AppCard>
   </div>
 </template>
 
@@ -113,7 +104,6 @@ import { useMutation, useQuery, useResult } from '@vue/apollo-composable';
 import { HOME_AND_USERS_EXIST } from '@/graphql/queries';
 import { Routes } from '@/types/enums';
 import Loader from '@/components/ui/AppSpinner.vue';
-import TopDoubleWaves from '@/components/ui/svgs/TopDoubleWaves.vue';
 import AppCard from '@/components/ui/AppCard/AppCard.vue';
 import { LOGIN } from '@/useCases/identity/login/LoginMutation';
 import { useIdentity } from '@/hooks/useIdentity';
@@ -122,8 +112,7 @@ export default defineComponent({
   name: 'Login',
   components: {
     Loader,
-    AppCard,
-    TopDoubleWaves
+    AppCard
   },
   props: {},
   setup() {
