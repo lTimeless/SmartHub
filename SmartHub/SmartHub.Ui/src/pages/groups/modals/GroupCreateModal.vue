@@ -1,5 +1,5 @@
 <template>
-  <BaseModal
+  <AppModal
     :title="title"
     save-btn-title="Create"
     close-btn-title="Cancel"
@@ -33,17 +33,17 @@
         <p>Error: {{ errCreate.name }} {{ errCreate.message }}</p>
       </div>
     </template>
-  </BaseModal>
+  </AppModal>
 </template>
 
 <script lang="ts">
 import { defineComponent, reactive, computed, toRefs } from 'vue';
-import BaseModal from '@/components/ui/modals/BaseModal.vue';
+import AppModal from '@/components/ui/modals/AppModal.vue';
 import { CreateGroupInput } from '@/types/types';
 import { useMutation } from '@vue/apollo-composable';
-import { CREATE_GROUP } from '@/useCases/groups/GroupMutations';
-import { GET_GROUPS } from '@/useCases/groups/GroupQueries';
-import { GET_GROUPS_COUNT } from '@/useCases/home/HomeQueries';
+import { CREATE_GROUP } from '../GroupMutations';
+import { GET_GROUPS } from '../GroupQueries';
+import { GET_GROUPS_COUNT } from '@/pages/home/HomeQueries';
 
 export default defineComponent({
   name: 'GroupCreateModal',
@@ -61,7 +61,7 @@ export default defineComponent({
     }
   },
   components: {
-    BaseModal
+    AppModal
   },
   setup(props, context) {
     const state = reactive({

@@ -93,9 +93,9 @@
 import { useQuery, useResult } from '@vue/apollo-composable';
 import { defineComponent, watch, ref } from 'vue';
 import AppIcon from '@/components/icons/AppIcon.vue';
-import AppCardRouterLink from '@/components/ui/AppCard/AppCardRouterLink.vue';
+import AppCardRouterLink from '@/components/ui/cards/AppCardRouterLink.vue';
 import { Routes } from '@/types/enums';
-import { GET_DEVICES_COUNT, GET_GROUPS_COUNT } from '@/useCases/home/HomeQueries';
+import { GET_DEVICES_COUNT, GET_GROUPS_COUNT } from '../HomeQueries';
 
 export default defineComponent({
   name: 'CardsRow',

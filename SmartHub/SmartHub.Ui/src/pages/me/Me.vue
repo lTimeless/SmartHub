@@ -124,8 +124,8 @@ import { UpdateUserInput } from '@/types/types';
 import { useMutation, useQuery, useResult } from '@vue/apollo-composable';
 import Loader from '@/components/ui/AppSpinner.vue';
 import { useRouter } from 'vue-router';
-import { WHO_AM_I } from '@/useCases/me/MeQueries';
-import { UPDATE_USER } from '@/useCases/me/MeMutations';
+import { WHO_AM_I } from '../me/MeQueries';
+import { UPDATE_USER } from '../me/MeMutations';
 import { useIdentity } from '@/hooks/useIdentity';
 
 export default defineComponent({

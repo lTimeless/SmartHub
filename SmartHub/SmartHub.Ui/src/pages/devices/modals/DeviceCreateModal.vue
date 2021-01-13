@@ -1,5 +1,5 @@
 <template>
-  <BaseModal
+  <AppModal
     title="Create new Device"
     save-btn-title="Create"
     close-btn-title="Cancel"
@@ -134,25 +134,25 @@
         <p>Error: {{ errCreate.name }} {{ errCreate.message }}</p>
       </div>
     </template>
-  </BaseModal>
+  </AppModal>
 </template>
 
 <script lang="ts">
 import { defineComponent, reactive, computed } from 'vue';
-import BaseModal from '@/components/ui/modals/BaseModal.vue';
+import AppModal from '@/components/ui/modals/AppModal.vue';
 import { CreateDeviceInput } from '@/types/types';
 import { ConnectionTypes, PluginTypes } from '@/types/enums';
 import { useEnumTypes } from '@/hooks/useEnums.ts';
 import { useMutation } from '@vue/apollo-composable';
-import { CREATE_DEVICE } from '@/useCases/devices/DeviceMutations';
-import { GET_DEVICES } from '@/useCases/devices/DeviceQueries';
-import { GET_DEVICES_COUNT } from '@/useCases/home/HomeQueries';
+import { CREATE_DEVICE } from '../DeviceMutations';
+import { GET_DEVICES } from '../DeviceQueries';
+import { GET_DEVICES_COUNT } from '@/pages/home/HomeQueries';
 
 export default defineComponent({
   name: 'DeviceCreateModal',
   emits: ['close'],
   components: {
-    BaseModal
+    AppModal
   },
   setup(props, context) {
     const deviceCreateInput = reactive<CreateDeviceInput>({

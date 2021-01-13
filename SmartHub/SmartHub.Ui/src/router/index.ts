@@ -1,10 +1,10 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router';
 import { useRouteAuthGuard } from '@/router/guards/userAuthGuard';
-import NotFound from '@/views/NotFound.vue';
-import NotAuthorized from '@/views/NotAuthorized.vue';
-import Statistics from '@/useCases/statistics/Statistics.vue';
+import NotFound from '@/pages/NotFound.vue';
+import NotAuthorized from '@/pages/NotAuthorized.vue';
+import Statistics from '@/pages/statistics/Statistics.vue';
 import { Routes } from '@/types/enums';
-import Layout from '@/views/Layout.vue';
+import Layout from '@/pages/Layout.vue';
 import { identityRoutes } from '@/pages/identity/IdentityRoutes';
 import { initRoutes } from '@/pages/init/InitRoutes';
 import { homeRoutes } from '@/pages/home/HomeRoutes';
@@ -38,8 +38,7 @@ const routes: Array<RouteRecordRaw> = [
       {
         path: Routes.Configuration,
         name: 'Configuration',
-        component: () =>
-          import(/* webpackChunkName: "config" */ '../useCases/configurations/Configuration.vue'),
+        component: () => import(/* webpackChunkName: "config" */ '../pages/configurations/Configuration.vue'),
         meta: {
           requiresAuth: true,
           isUser: true
@@ -48,8 +47,7 @@ const routes: Array<RouteRecordRaw> = [
       {
         path: Routes.Plugins,
         name: 'Plugins',
-        component: () => import(/* webpackChunkName: "plugins" */ '../useCases/plugins/Plugins.vue'),
-
+        component: () => import(/* webpackChunkName: "plugins" */ '../pages/plugins/Plugins.vue'),
         meta: {
           requiresAuth: true,
           isUser: true

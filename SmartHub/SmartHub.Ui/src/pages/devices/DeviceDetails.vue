@@ -162,8 +162,8 @@ import { defineComponent, reactive, ref } from 'vue';
 import Loader from '@/components/ui/AppSpinner.vue';
 import { UpdateDeviceInput } from '@/types/types';
 import { useMutation, useQuery, useResult } from '@vue/apollo-composable';
-import { UPDATE_DEVICE } from '@/useCases/devices/DeviceMutations';
-import { GET_DEVICE_BY_ID, GET_DEVICES } from '@/useCases/devices/DeviceQueries';
+import { UPDATE_DEVICE } from './DeviceMutations';
+import { GET_DEVICE_BY_ID, GET_DEVICES } from './DeviceQueries';
 import { useEnumTypes } from '@/hooks/useEnums';
 import { useRoute } from 'vue-router';
 

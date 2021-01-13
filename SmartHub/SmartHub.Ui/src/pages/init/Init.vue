@@ -96,11 +96,11 @@
 import { defineComponent, reactive, ref, watch } from 'vue';
 import { AppConfigInitInput } from '@/types/types';
 import { useRouter } from 'vue-router';
-import AppCard from '@/components/ui/AppCard/AppCard.vue';
+import AppCard from '@/components/ui/cards/AppCard.vue';
 import { useMutation, useQuery, useResult } from '@vue/apollo-composable';
 import { Routes } from '@/types/enums';
 import Loader from '@/components/ui/AppSpinner.vue';
-import { INITIALIZE_APP } from '@/useCases/init/InitMutation';
+import { INITIALIZE_APP } from '../init/InitMutation';
 import gql from 'graphql-tag';
 
 const ApplicationIsActive = gql`

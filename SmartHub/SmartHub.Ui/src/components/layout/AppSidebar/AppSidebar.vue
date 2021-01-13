@@ -20,24 +20,24 @@
           5
         </div>
       </a>
-      <UserDropdown />
+      <AppUserDropdown />
     </div>
   </div>
 </template>
 
 <script lang="ts">
-import UserDropdown from '../UserDropdown.vue';
+import AppUserDropdown from '../AppUserDropdown.vue';
 import { computed, defineComponent, ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { Roles, Routes } from '@/types/enums';
-import NavigationItem from '@/components/ui/layout/AppSidebar/NavigationItem.vue';
-import AppBrand from '@/components/ui/layout/AppSidebar/AppBrand.vue';
+import NavigationItem from '@/components/layout/AppSidebar/NavigationItem.vue';
+import AppBrand from '@/components/layout/AppSidebar/AppBrand.vue';
 import { useIdentity } from '@/hooks/useIdentity';
 
 export default defineComponent({
   name: 'AppSidebar',
   components: {
-    UserDropdown,
+    AppUserDropdown,
     NavigationItem,
     AppBrand
   },

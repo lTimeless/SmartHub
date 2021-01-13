@@ -50,10 +50,10 @@
 <script lang="ts">
 import { defineComponent, ref } from 'vue';
 import { Roles } from '@/types/enums';
-import AdminCardsRow from '@/useCases/home/components/AdminCardsRow.vue';
-import CardsRow from '@/useCases/home/components/CardsRow.vue';
+import AdminCardsRow from './components/AdminCardsRow.vue';
+import CardsRow from './components/CardsRow.vue';
 import { useIdentity } from '@/hooks/useIdentity';
-import Welcome from '@/useCases/home/components/Welcome.vue';
+import Welcome from './components/Welcome.vue';
 
 export default defineComponent({
   name: 'Home',

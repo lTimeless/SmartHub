@@ -157,9 +157,9 @@ import { RegistrationInput } from '@/types/types';
 import { useRouter } from 'vue-router';
 import Loader from '@/components/ui/AppSpinner.vue';
 import { Routes } from '@/types/enums';
-import AppCard from '@/components/ui/AppCard/AppCard.vue';
+import AppCard from '@/components/ui/cards/AppCard.vue';
 import { useMutation } from '@vue/apollo-composable';
-import { REGISTRATION } from '@/useCases/identity/registration/RegistrationMutation';
+import { REGISTRATION } from '../registration/RegistrationMutation';
 import { useIdentity } from '@/hooks/useIdentity';
 
 export default defineComponent({

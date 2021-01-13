@@ -113,8 +113,8 @@ import Loader from '@/components/ui/AppSpinner.vue';
 import { UpdateGroupInput } from '@/types/types';
 import { defineComponent, reactive } from 'vue';
 import { useMutation, useQuery, useResult } from '@vue/apollo-composable';
-import { UPDATE_GROUP } from '@/useCases/groups/GroupMutations';
-import { GET_GROUP_BY_ID, GET_GROUPS } from '@/useCases/groups/GroupQueries';
+import { UPDATE_GROUP } from './GroupMutations';
+import { GET_GROUP_BY_ID, GET_GROUPS } from './GroupQueries';
 import { useRoute } from 'vue-router';
 
 export default defineComponent({

@@ -14,7 +14,7 @@
 
 <script lang="ts">
 import { defineComponent, toRefs } from 'vue';
-import Logo from '@/components/ui/svgs/Logo.vue';
+import Logo from '@/components/common/svgs/Logo.vue';
 import { Routes } from '@/types/enums';
 import { useQuery, useResult } from '@vue/apollo-composable';
 import gql from 'graphql-tag';

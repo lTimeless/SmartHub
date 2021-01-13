@@ -100,8 +100,8 @@ import { useRouter } from 'vue-router';
 import { useMutation, useQuery, useResult } from '@vue/apollo-composable';
 import { Routes } from '@/types/enums';
 import Loader from '@/components/ui/AppSpinner.vue';
-import AppCard from '@/components/ui/AppCard/AppCard.vue';
-import { LOGIN } from '@/useCases/identity/login/LoginMutation';
+import AppCard from '@/components/ui/cards/AppCard.vue';
+import { LOGIN } from '../login/LoginMutation';
 import { useIdentity } from '@/hooks/useIdentity';
 import gql from 'graphql-tag';
 
