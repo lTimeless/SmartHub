@@ -6,7 +6,7 @@
       </h3>
       <div>
         <h1 class="text-left text-3xl md:text-6xl text-charcoalBlue-300">Good {{ timeOfDay }}</h1>
-        <h2 class="text-left text-4xl md:text-6xl text-primaryYellow">{{ capitalize(userName) }}</h2>
+        <h2 class="text-left text-4xl md:text-6xl text-primarySienna">{{ capitalize(userName) }}</h2>
       </div>
     </div>
   </div>

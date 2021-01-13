@@ -10,7 +10,7 @@ type State = {
   connectionTypesValues: number[];
 };
 
-export function useEnumTypes(): ToRefs<State> {
+export const useEnumTypes = (): ToRefs<State> => {
   const state = reactive<State>({
     pluginTypesValues: [] as number[],
     pluginNames: [] as string[],

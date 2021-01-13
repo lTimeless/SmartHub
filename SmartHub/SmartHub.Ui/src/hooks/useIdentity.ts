@@ -22,7 +22,7 @@ type IdentityState = {
 const numberThousand = 1000; // used for tokenpayload "exp date" conversion
 const LOCAL_STORAGE_TOKEN = 'token';
 
-export function useIdentity(): IdentityState {
+export const useIdentity = (): IdentityState => {
   const token = useStorage(LOCAL_STORAGE_TOKEN, '');
   const isAuthenticated = () => token.value !== '';
   const clearStorage = () => {

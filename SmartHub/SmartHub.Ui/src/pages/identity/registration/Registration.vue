@@ -118,11 +118,11 @@
           </div>
 
           <button
-            class="block w-full px-4 py-2 mt-2 text-sm font-medium leading-5 text-center text-white transition-colors duration-150 bg-primary border border-transparent rounded-lg active:bg-primary focus:outline-none focus:shadow-outlineIndigo"
+            class="block w-full px-4 py-2 mt-4 text-sm font-medium leading-5 text-center text-white bg-primarySienna rounded"
             :class="
               registrationDisabled
                 ? 'opacity-50 focus:outline-none cursor-not-allowed'
-                : 'hover:bg-primaryHover'
+                : 'hover:bg-primarySiennaHover'
             "
             @click="onRegistrationClick"
             :disabled="registrationDisabled"

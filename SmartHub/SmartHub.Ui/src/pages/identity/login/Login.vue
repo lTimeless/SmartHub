@@ -49,9 +49,11 @@
             </label>
 
             <button
-              class="block w-full px-4 py-2 mt-4 text-sm font-medium leading-5 text-center text-white transition-colors duration-150 bg-primary border border-transparent rounded active:bg-primary"
+              class="block w-full px-4 py-2 mt-4 text-sm font-medium leading-5 text-center text-white bg-primarySienna rounded"
               :class="
-                signInDisabled ? 'opacity-50 focus:outline-none cursor-not-allowed' : 'hover:bg-primaryHover'
+                signInDisabled
+                  ? 'opacity-50 focus:outline-none cursor-not-allowed'
+                  : 'hover:bg-primarySiennaHover'
               "
               @click="onLoginClick"
               :disabled="signInDisabled"
