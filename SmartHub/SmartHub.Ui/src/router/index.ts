@@ -5,15 +5,15 @@ import NotAuthorized from '@/views/NotAuthorized.vue';
 import Statistics from '@/useCases/statistics/Statistics.vue';
 import { Routes } from '@/types/enums';
 import Layout from '@/views/Layout.vue';
-import { identityRoutes } from '@/useCases/identity/IdentityRoutes';
-import { initRoutes } from '@/useCases/init/InitRoutes';
-import { homeRoutes } from '@/useCases/home/HomeRoutes';
-import { usersRoutes } from '@/useCases/users/UsersRoutes';
-import { meRoutes } from '@/useCases/me/MeRoutes';
-import { deviceRoutes } from '@/useCases/devices/DeviceRoutes';
-import { groupRoutes } from '@/useCases/groups/GroupRoutes';
-import { automationsRoutes } from '@/useCases/automations/AutomationsRoutes';
-import { adminRoutes } from '@/useCases/admin/AdminRoutes';
+import { identityRoutes } from '@/pages/identity/IdentityRoutes';
+import { initRoutes } from '@/pages/init/InitRoutes';
+import { homeRoutes } from '@/pages/home/HomeRoutes';
+import { usersRoutes } from '@/pages/users/UsersRoutes';
+import { meRoutes } from '@/pages/me/MeRoutes';
+import { deviceRoutes } from '@/pages/devices/DeviceRoutes';
+import { groupRoutes } from '@/pages/groups/GroupRoutes';
+import { automationsRoutes } from '@/pages/automations/AutomationsRoutes';
+import { adminRoutes } from '@/pages/admin/AdminRoutes';
 
 const routes: Array<RouteRecordRaw> = [
   ...identityRoutes,

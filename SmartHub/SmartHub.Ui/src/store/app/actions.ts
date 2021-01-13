@@ -5,8 +5,7 @@ import { AppMutations, AppMutationTypes } from '@/store/app/mutations';
 // Keys
 export enum AppActionTypes {
   // UI
-  SET_USER_DROPDOWN = 'SET_USER_DROPDOWN',
-  SET_NOTIFICATION_DROPDOWN = 'SET_NOTIFICATION_DROPDOWN'
+  SET_USER_DROPDOWN = 'SET_USER_DROPDOWN'
 }
 
 // actions context type
@@ -20,15 +19,11 @@ type ActionAugments = Omit<ActionContext<AppState, RootState>, 'commit'> & {
 // Action Interface
 export type HomeActions = {
   // UI
-  [AppActionTypes.SET_NOTIFICATION_DROPDOWN]({ commit }: ActionAugments, payload: boolean): Promise<void>;
   [AppActionTypes.SET_USER_DROPDOWN]({ commit }: ActionAugments, payload: boolean): Promise<void>;
 };
 
 export const actions: ActionTree<AppState, RootState> = {
   // UI
-  async [AppActionTypes.SET_NOTIFICATION_DROPDOWN]({ commit }, payload): Promise<void> {
-    commit(AppMutationTypes.SET_NOTIFICATION_DROPDOWN, payload);
-  },
   async [AppActionTypes.SET_USER_DROPDOWN]({ commit }, payload): Promise<void> {
     commit(AppMutationTypes.SET_USER_DROPDOWN, payload);
   }

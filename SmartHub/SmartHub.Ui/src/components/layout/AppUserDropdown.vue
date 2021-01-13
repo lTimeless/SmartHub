@@ -59,7 +59,7 @@ import { useIdentity } from '@/hooks/useIdentity';
 import { useCurrentRoute } from '@/hooks/useCurrentRoute';
 
 export default defineComponent({
-  name: 'UserDropdown',
+  name: 'AppUserDropdown',
   components: {
     AppIcon
   },
@@ -78,9 +78,6 @@ export default defineComponent({
     ];
 
     const setDropDownValue = (value: boolean) => {
-      if (value) {
-        // store.dispatch(AppActionTypes.SET_NOTIFICATION_DROPDOWN, false);
-      }
       store.dispatch(AppActionTypes.SET_USER_DROPDOWN, value);
     };
 
@@ -98,7 +95,6 @@ export default defineComponent({
     const logoutClick = async () => {
       await clearStorage();
       await router.push(Routes.Login);
-      await store.dispatch(AppActionTypes.SET_NOTIFICATION_DROPDOWN, false);
       await store.dispatch(AppActionTypes.SET_USER_DROPDOWN, false);
     };
 

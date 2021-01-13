@@ -24,11 +24,11 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent } from 'vue';
-import { useRoute, useRouter } from 'vue-router';
+import { defineComponent } from 'vue';
+import { useRouter } from 'vue-router';
 import AppIcon from '@/components/icons/AppIcon.vue';
 import { Routes } from '@/types/enums';
-import { useCurrentRoute } from "@/hooks/useCurrentRoute";
+import { useCurrentRoute } from '@/hooks/useCurrentRoute';
 
 export default defineComponent({
   name: 'NavigationItem',

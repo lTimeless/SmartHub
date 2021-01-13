@@ -1,3 +1,19 @@
+<script lang="ts">
+import { defineComponent } from 'vue';
+import Navbar from '@/components/ui/layout/Navbar.vue';
+import AppSidebar from '@/components/ui/layout/AppSidebar/AppSidebar.vue';
+export default defineComponent({
+  name: 'Layout',
+  components: {
+    AppSidebar,
+    Navbar
+  },
+  setup() {
+    return {};
+  }
+});
+</script>
+
 <template>
   <div class="md:flex md:flex-row md:h-screen background">
     <!-- Sidebar-->
@@ -23,21 +39,3 @@
     </div>
   </div>
 </template>
-
-<script lang="ts">
-import { defineComponent } from 'vue';
-import Navbar from '@/components/ui/layout/Navbar.vue';
-import AppSidebar from '@/components/ui/layout/AppSidebar/AppSidebar.vue';
-
-export default defineComponent({
-  name: 'Layout',
-  components: {
-    AppSidebar,
-    Navbar
-  },
-  setup() {
-    return {};
-  }
-});
-</script>
-<style lang="scss" scoped></style>

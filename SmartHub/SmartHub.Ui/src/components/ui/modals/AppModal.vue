@@ -78,7 +78,7 @@ import { defineComponent, PropType, toRefs } from 'vue';
 import Loader from '@/components/ui/AppSpinner.vue';
 
 export default defineComponent({
-  name: 'BaseModal',
+  name: 'AppModal',
   props: {
     title: {
       type: String,

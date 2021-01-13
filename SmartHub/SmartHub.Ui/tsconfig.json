@@ -31,7 +31,7 @@
     "src/**/*.tsx",
     "src/**/*.vue",
     "tests/**/*.ts",
-    "tests/**/*.tsx", "src/apollo.ts"
+    "tests/**/*.tsx", "src/apollo-client.ts"
   ],
   "exclude": [
     "node_modules"

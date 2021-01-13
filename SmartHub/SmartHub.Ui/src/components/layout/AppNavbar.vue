@@ -15,7 +15,7 @@
     </div>
     <!-- back btn -->
     <div class="flex-row hidden md:flex md:justify-end w-1/2">
-      <a class="text-gray-600 text-xl p-2 text-primaryBlueHover uppercase">{{ route.name }}</a>
+      <a class="text-xl p-2 text-primaryBlueHover uppercase">{{ route.name }}</a>
     </div>
   </div>
 </template>
@@ -29,7 +29,7 @@ import { useCurrentRoute } from '@/hooks/useCurrentRoute';
 
 // TODO hier dann über vuex die sidebar via btn steuern
 export default defineComponent({
-  name: 'Navbar',
+  name: 'AppNavbar',
   components: {
     AppIcon
   },

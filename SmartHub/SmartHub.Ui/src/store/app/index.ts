@@ -5,7 +5,6 @@ import { mutations } from '@/store/app/mutations';
 import { actions } from '@/store/app/actions';
 
 export const state: AppState = {
-  notificationDropdownOpen: false,
   userDropDownOpen: false
 };
 
