@@ -1,8 +1,11 @@
 <template>
   <div class="relative z-30 inline-block text-left cursor-pointer">
     <div
-      class="block relative z-30 h-14 w-14 flex justify-center items-center hover:bg-charcoalBlue-200 rounded-l"
-      :class="[isRoute ? 'bg-primaryBlue md:bg-charcoalBlue-500' : '']"
+      class="relative z-30 h-14 flex items-center hover:bg-charcoalBlue-200 rounded-l"
+      :class="[
+        isRoute ? 'bg-primaryBlue md:bg-charcoalBlue-500' : '',
+        onlyIcon ? 'w-14 justify-center' : ' w-48 justify-start pl-4'
+      ]"
       @click="setDropDownValue(!showDropdown)"
     >
       <AppIcon
@@ -11,7 +14,13 @@
         height="h-7"
         width="w-7"
       />
+      <div v-if="!onlyIcon">
+        <div class="tracking-wide text-lg leading-loose text-primaryBlue" :class="[onlyIcon ? ' ' : ' pl-2']">
+          {{ onlyIcon ? ' ' : 'Me' }}
+        </div>
+      </div>
     </div>
+    <!-- Button to close open modal by clicking outside -->
     <button
       v-if="showDropdown"
       @click="setDropDownValue(false)"
@@ -19,6 +28,7 @@
       @keyup.esc="escapeDropdown"
       class="fixed inset-0 h-full w-full bg-black opacity-20 cursor-default"
     ></button>
+    <!-- Modal -->
     <div
       v-if="showDropdown"
       class="absolute md:inset-x-0 md:bottom-2 md:left-16 origin-top-right right-0 mt-2 mr-2 md:mr-0 z-30 w-40 rounded border bg-white ring-1 ring-black ring-opacity-5"
@@ -49,7 +59,7 @@
   </div>
 </template>
 <script lang="ts">
-import { computed, defineComponent, ref } from 'vue';
+import { computed, defineComponent, ref, toRefs } from 'vue';
 import { useStore } from 'vuex';
 import { useRouter } from 'vue-router';
 import { Routes } from '@/types/enums';
@@ -63,8 +73,14 @@ export default defineComponent({
   components: {
     AppIcon
   },
-  props: {},
-  setup() {
+  props: {
+    onlyIcon: {
+      type: Boolean,
+      required: false,
+      default: true
+    }
+  },
+  setup(props) {
     const store = useStore();
     const { clearStorage } = useIdentity();
     const router = useRouter();
@@ -106,7 +122,8 @@ export default defineComponent({
       escapeDropdown,
       dropDownBtnClick,
       logoutClick,
-      setDropDownValue
+      setDropDownValue,
+      ...toRefs(props)
     };
   }
 });

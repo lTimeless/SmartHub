@@ -1,22 +1,24 @@
 <template>
   <router-link
     :to="route"
-    class="block relative h-14 w-14 flex justify-center items-center hover:bg-primaryBlueHover rounded-l"
+    class="h-14 flex hover:bg-primaryBlueHover rounded-l items-center"
     :class="[
+      onlyIcon ? 'w-14 justify-center' : ' w-48 justify-start pl-4',
       isRoute ? 'bg-primaryBlue' : '',
       route === routes.Statistics ? ' border-t border-primaryBlueHover' : ''
     ]"
   >
-    <div v-if="onlyIcon">
-      <AppIcon
-        :icon-name="iconName"
-        :icon-color="isRoute ? 'text-white' : 'text-primaryBlue'"
-        height="h-7"
-        width="w-7"
-      />
-    </div>
-    <div v-else>
-      <div class="tracking-wide text-lg leading-loose">
+    <AppIcon
+      :icon-name="iconName"
+      :icon-color="isRoute ? 'text-white' : 'text-primaryBlue'"
+      height="h-7"
+      width="w-7"
+    />
+    <div v-if="!onlyIcon">
+      <div
+        class="tracking-wide text-lg leading-loose"
+        :class="[isRoute ? 'text-white' : 'text-primaryBlue', onlyIcon ? ' ' : ' pl-2']"
+      >
         {{ label }}
       </div>
     </div>
@@ -24,7 +26,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
+import { defineComponent, toRefs } from 'vue';
 import { useRouter } from 'vue-router';
 import AppIcon from '@/components/icons/AppIcon.vue';
 import { Routes } from '@/types/enums';
@@ -67,7 +69,7 @@ export default defineComponent({
       isRoute,
       routes: Routes,
       getActiveClass,
-      ...props
+      ...toRefs(props)
     };
   }
 });

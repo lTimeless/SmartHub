@@ -1,12 +1,12 @@
 <template>
   <router-link
     :to="routes.Home"
-    class="flex items-end mx-auto"
-    :class="[onlyIcon ? 'pr-3' : '']"
+    class="flex hover:bg-primaryBlueHover rounded-l items-end"
+    :class="[onlyIcon ? 'w-14 justify-center' : ' w-48 justify-start pl-4']"
     title="Home"
   >
-    <Logo :width="35" />
-    <span v-if="onlyIcon" class="ml-2 hidden text-2xl font-bold sm:block text-primary">
+    <Logo :width="32" />
+    <span v-if="!onlyIcon" class="ml-2 hidden text-xl sm:block text-primaryBlue">
       {{ appConfig.applicationName }}
     </span>
   </router-link>

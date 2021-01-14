@@ -1,51 +1,69 @@
 <template>
-  <div class="sidebar">
+  <div class="sidebar" :class="[miniOpen ? 'md:w-14' : 'w-48']">
     <div class="flex flex-col space-y w-full items-center">
-      <AppBrand class="my-3" />
+      <AppBrand class="my-3" :only-icon="onlyIcon" />
       <div v-for="view in sidebarLists" :key="view.label">
         <NavigationItem
           v-if="roleIncluded(view.rolesRequired)"
           :icon-name="view.iconName"
           :label="view.label"
           :route="view.route"
+          :only-icon="onlyIcon"
         />
       </div>
     </div>
-    <div class="flex flex-col space-y">
-      <a class="block relative w-full h-14 md:w-14 md:flex justify-center items-center">
-        <NavigationItem icon-name="Inbox" route="/inbox" class="cursor-not-allowed" />
+    <div class="flex flex-col space-y w-full items-center">
+      <a
+        class="block relative h-14 md:flex justify-center items-center"
+        :class="[onlyIcon ? 'w-14' : ' w-full']"
+      >
+        <NavigationItem
+          icon-name="Inbox"
+          label="Inbox"
+          route="/inbox"
+          class="cursor-not-allowed"
+          :only-icon="onlyIcon"
+        />
         <div
-          class="absolute top-0 right-0 mr-3 mt-3 bg-red-500 w-4 h-4 text-xs text-white rounded-full text-center"
+          class="absolute top-0 mt-3 bg-red-500 w-4 h-4 text-xs text-white rounded-full text-center"
+          :class="[onlyIcon ? 'right-0 mr-3 ' : ' left-0 ml-8']"
         >
           5
         </div>
       </a>
-      <AppUserDropdown />
+      <AppUserDropdown :only-icon="onlyIcon" />
+      <MiniToggle :only-icon="onlyIcon" />
     </div>
   </div>
 </template>
 
 <script lang="ts">
 import AppUserDropdown from '../AppUserDropdown.vue';
-import { computed, defineComponent, ref } from 'vue';
+import { computed, defineComponent, ref, watch } from 'vue';
 import { useRouter } from 'vue-router';
 import { Roles, Routes } from '@/types/enums';
 import NavigationItem from '@/components/layout/AppSidebar/NavigationItem.vue';
 import AppBrand from '@/components/layout/AppSidebar/AppBrand.vue';
 import { useIdentity } from '@/hooks/useIdentity';
+import MiniToggle from './MiniToggle.vue';
+import { useStore } from 'vuex';
 
 export default defineComponent({
   name: 'AppSidebar',
   components: {
     AppUserDropdown,
     NavigationItem,
-    AppBrand
+    AppBrand,
+    MiniToggle
   },
   props: {},
   setup() {
     const router = useRouter();
+    const store = useStore();
     const { isRole } = useIdentity();
     const role = ref(isRole());
+    const onlyIcon = ref(true);
+    const miniOpen = computed(() => store.state.appModule.miniSidebarOpen);
     const sidebarLists = [
       // Guest views
       {
@@ -145,10 +163,20 @@ export default defineComponent({
     ];
     const currentPath = computed(() => router.currentRoute.value.path);
     const roleIncluded = (rolesNeeded: string[]) => rolesNeeded.includes(role.value);
+    watch(
+      miniOpen,
+      (newV) => {
+        onlyIcon.value = newV;
+        console.log(onlyIcon.value);
+      },
+      { immediate: true }
+    );
 
     return {
       currentPath,
       sidebarLists,
+      miniOpen,
+      onlyIcon,
       roleIncluded,
       routes: Routes
     };
@@ -157,7 +185,7 @@ export default defineComponent({
 </script>
 <style lang="scss" scoped>
 .sidebar {
-  @apply hidden md:flex flex-col justify-between items-center flex-none md:w-14 bg-white rounded;
+  @apply hidden md:flex flex-col justify-between items-center flex-none bg-white rounded;
   //backdrop-filter: blur(10px);
   //background: rgba(255, 255, 255, 0.25);
 }

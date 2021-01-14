@@ -10,4 +10,6 @@ export interface RootState {
 export interface AppState {
   appConfig?: AppConfig;
   userDropDownOpen: boolean;
+  mobileSidebarOpen: boolean;
+  miniSidebarOpen: boolean;
 }
