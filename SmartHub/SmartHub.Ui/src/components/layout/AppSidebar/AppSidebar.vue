@@ -1,5 +1,5 @@
 <template>
-  <div class="sidebar" :class="[miniOpen ? 'md:w-14' : 'w-48']">
+  <div class="sidebar" :class="[miniOpen ? 'md:w-12' : 'w-48']">
     <div class="flex flex-col space-y w-full items-center">
       <AppBrand class="my-3" :only-icon="onlyIcon" />
       <div v-for="view in sidebarLists" :key="view.label">
@@ -14,8 +14,8 @@
     </div>
     <div class="flex flex-col space-y w-full items-center">
       <a
-        class="block relative h-14 md:flex justify-center items-center"
-        :class="[onlyIcon ? 'w-14' : ' w-full']"
+        class="block relative h-12 md:flex justify-center items-center"
+        :class="[onlyIcon ? 'w-12' : ' w-full']"
       >
         <NavigationItem
           icon-name="Inbox"

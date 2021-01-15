@@ -119,7 +119,7 @@
                       </template>
                       <template v-else>
                         <div class="text-left pl-3">
-                          <span class="text-gray-500 text-sm text-left mt-2">No devices available</span>
+                          <span class="text-gray-500 text-sm text-left mt-2">No devices</span>
                         </div>
                       </template>
                     </div>
@@ -127,7 +127,7 @@
                 </template>
                 <template v-else>
                   <div class="text-left">
-                    <span class="text-gray-500 text-sm text-left mt-2">No subGroups available</span>
+                    <span class="text-gray-500 text-sm text-left mt-2">No subGroups</span>
                   </div>
                 </template>
               </template>
@@ -144,13 +144,13 @@
               </template>
               <template v-else>
                 <div class="text-left">
-                  <span class="text-gray-500 text-sm text-left mt-2">No devices available</span>
+                  <span class="text-gray-500 text-sm text-left mt-2">No devices</span>
                 </div>
               </template>
             </div>
           </AppCard>
         </div>
-        <div v-else>No groups available</div>
+        <div v-else>No groups</div>
       </div>
     </template>
   </div>

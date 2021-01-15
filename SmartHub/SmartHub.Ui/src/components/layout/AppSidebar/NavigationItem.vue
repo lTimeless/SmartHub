@@ -1,19 +1,14 @@
 <template>
   <router-link
     :to="route"
-    class="h-14 flex hover:bg-primaryBlueHover rounded-l items-center"
+    class="h-12 flex hover:bg-primaryBlueHover rounded-l items-center"
     :class="[
-      onlyIcon ? 'w-14 justify-center' : ' w-48 justify-start pl-4',
+      onlyIcon ? 'w-12 justify-center' : ' w-48 justify-start pl-4',
       isRoute ? 'bg-primaryBlue' : '',
       route === routes.Statistics ? ' border-t border-primaryBlueHover' : ''
     ]"
   >
-    <AppIcon
-      :icon-name="iconName"
-      :icon-color="isRoute ? 'text-white' : 'text-primaryBlue'"
-      height="h-7"
-      width="w-7"
-    />
+    <AppIcon :icon-name="iconName" :icon-color="isRoute ? 'text-white' : 'text-primaryBlue'" />
     <div v-if="!onlyIcon">
       <div
         class="tracking-wide text-lg leading-loose"

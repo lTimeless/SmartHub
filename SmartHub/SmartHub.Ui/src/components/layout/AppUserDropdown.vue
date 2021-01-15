@@ -2,26 +2,21 @@
   <div class="relative z-30 inline-block text-left cursor-pointer">
     <div
       class="flex flex-row items-center"
-      :class="[onlyIcon ? 'w-14 justify-center' : ' w-48 justify-start']"
+      :class="[onlyIcon ? 'w-12 justify-center' : ' w-48 justify-start']"
     >
       <div
-        class="relative z-30 h-14 flex items-center hover:bg-charcoalBlue-200 rounded-l"
+        class="relative z-30 h-12 flex items-center hover:bg-charcoalBlue-200 rounded-l"
         :class="[
           isRoute ? `bg-primaryBlue ${onlyIcon ? 'bg-charcoalBlue-500' : ''}` : '',
-          onlyIcon ? 'w-14 justify-center' : 'w-2/3 pl-4'
+          onlyIcon ? 'w-12 justify-center' : 'w-2/3 pl-4'
         ]"
         @click="onlyIcon ? setDropDownValue(!showDropdown) : handleRouteClick(routes.Me)"
       >
-        <AppIcon
-          icon-name="User"
-          :icon-color="isRoute ? 'text-white' : 'text-primaryBlue'"
-          height="h-7"
-          width="w-7"
-        />
+        <AppIcon icon-name="User" :icon-color="isRoute ? 'text-white' : 'text-primaryBlue'" />
         <div v-if="!onlyIcon">
           <div
-            class="tracking-wide text-lg leading-loose text-primaryBlue"
-            :class="[onlyIcon ? ' ' : ' pl-2']"
+            class="tracking-wide text-lg leading-loose"
+            :class="[isRoute ? 'text-white' : 'text-primaryBlue', onlyIcon ? ' ' : ' pl-2']"
           >
             {{ onlyIcon ? ' ' : 'Me' }}
           </div>
@@ -29,10 +24,10 @@
       </div>
       <div
         v-if="!onlyIcon"
-        class="hover:bg-charcoalBlue-200 w-1/3 h-14 flex flex-row justify-center items-center"
+        class="hover:bg-charcoalBlue-200 w-1/3 h-12 flex flex-row justify-center items-center"
         @click="logoutClick"
       >
-        <AppIcon icon-name="Logout" height="h-7" width="w-7" />
+        <AppIcon icon-name="Logout" />
       </div>
     </div>
 

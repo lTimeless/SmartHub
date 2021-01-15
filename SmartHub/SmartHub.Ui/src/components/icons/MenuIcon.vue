@@ -1,7 +1,5 @@
 <template>
-  <line x1="3" y1="12" x2="21" y2="12"></line>
-  <line x1="3" y1="6" x2="21" y2="6"></line>
-  <line x1="3" y1="18" x2="21" y2="18"></line>
+  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path>
 </template>
 
 <script>

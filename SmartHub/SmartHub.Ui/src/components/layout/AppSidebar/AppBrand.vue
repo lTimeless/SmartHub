@@ -2,7 +2,7 @@
   <router-link
     :to="routes.Home"
     class="flex hover:bg-primaryBlueHover rounded-l items-end"
-    :class="[onlyIcon ? 'w-14 justify-center' : ' w-48 justify-start pl-4']"
+    :class="[onlyIcon ? 'w-12 justify-center' : ' w-48 justify-start pl-4']"
     title="Home"
   >
     <Logo :width="32" />
