@@ -36,7 +36,6 @@
 
 <script lang="ts">
 import { defineComponent, ref, computed } from 'vue';
-import Fuse from 'fuse.js';
 
 export default defineComponent({
   name: 'AppSearch',
@@ -75,12 +74,7 @@ export default defineComponent({
     const searchInput = ref('');
     const iconPadding = ref(2);
     const searchData = () => {
-      const fuse = new Fuse(props.data, {
-        keys: props.searchKeys as string[],
-        threshold: 0.25
-      });
-      const result = fuse.search(searchInput.value);
-      context.emit('search-result', result);
+      console.log('search');
     };
 
     const toggleTable = (value: boolean) => {
