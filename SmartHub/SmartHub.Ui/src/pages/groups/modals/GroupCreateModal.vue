@@ -14,7 +14,7 @@
       <span class="text-gray-600 dark:text-gray-400">Name</span>
       <input
         type="text"
-        v-model="groupCreateinput.name"
+        v-model="groupCreateInput.name"
         class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md"
         placeholder="Group name"
       />
@@ -23,7 +23,7 @@
       <span class="text-gray-600 dark:text-gray-400">Description</span>
       <input
         type="text"
-        v-model="groupCreateinput.description"
+        v-model="groupCreateInput.description"
         class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md"
         placeholder="Group description"
       />
@@ -48,48 +48,24 @@ import { GET_GROUPS_COUNT } from '@/pages/home/HomeQueries';
 export default defineComponent({
   name: 'GroupCreateModal',
   emits: ['close'],
-  props: {
-    parentGroupId: {
-      type: String,
-      required: false,
-      default: ''
-    },
-    parentGroupName: {
-      type: String,
-      required: false,
-      default: ''
-    }
-  },
   components: {
     AppModal
   },
   setup(props, context) {
     const state = reactive({
       title: '',
-      groupTitle: 'Create new Group',
-      subGroupTitle: 'Create new SubGroup to '
+      groupTitle: 'Create new Group'
     });
     const groupCreateInput = reactive<CreateGroupInput>({
-      name: '',
-      isSubGroup: false
+      name: ''
     });
     const { mutate: createGroup, loading: loadCreate, error: errCreate } = useMutation(CREATE_GROUP);
-
-    if (props.parentGroupId !== undefined) {
-      state.title = state.subGroupTitle + props.parentGroupName;
-    } else {
-      state.title = state.groupTitle;
-    }
 
     const saveBtnActive = computed(() => groupCreateInput.name !== '');
     const close = () => {
       context.emit('close', false);
     };
     const save = async () => {
-      if (typeof props.parentGroupId !== 'undefined') {
-        groupCreateInput.parentGroupId = props.parentGroupId;
-        groupCreateInput.isSubGroup = true;
-      }
       await createGroup(
         { input: groupCreateInput },
         { refetchQueries: [{ query: GET_GROUPS }, { query: GET_GROUPS_COUNT }] }
@@ -98,7 +74,7 @@ export default defineComponent({
     };
     return {
       ...toRefs(state),
-      groupCreateinput: groupCreateInput,
+      groupCreateInput,
       saveBtnActive,
       loadCreate,
       errCreate,

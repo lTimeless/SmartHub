@@ -14,55 +14,6 @@
             Add Group
           </button>
         </div>
-        <!-- Filter button -->
-        <div class="w-full md:w-1/3 xl:w-2/6 ml-2">
-          <button
-            v-if="showSubGroupsIcon"
-            @click="showSubGroups()"
-            class="flex justify-center content-center p-2 mt-4 hover:bg-indigo-400 text-gray-600 bg-white border border-transparent rounded-lg focus:outline-none"
-          >
-            <svg
-              class="h-5 w-5"
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21"
-              />
-            </svg>
-          </button>
-          <button
-            v-if="!showSubGroupsIcon"
-            @click="showSubGroups()"
-            class="flex justify-center content-center p-2 mt-4 hover:bg-indigo-400 text-gray-600 bg-white border border-transparent rounded-lg focus:outline-none"
-          >
-            <svg
-              class="h-5 w-5"
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
-              />
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
-              />
-            </svg>
-          </button>
-        </div>
       </div>
     </div>
 
@@ -97,54 +48,14 @@
                 Creator: <span class="font-bold">{{ group.createdBy }}</span>
               </div>
               <div class="border-border border-t my-2"></div>
-              <!-- Show available subGroups -->
-              <template v-if="!group.isSubGroup">
-                <template v-if="group.subGroups !== undefined && group.subGroups.length > 0">
-                  <div class="text-left">
-                    <div>
-                      <span class="text-gray-500 text-sm text-left mt-2">SubGroups</span>
-                    </div>
-                    <!-- Show available subGroup devices-->
-                    <div v-for="subgroup in group.subGroups" :key="subgroup.id" class="pl-3">
-                      {{ subgroup.name }}
-                      <template v-if="subgroup.devices !== undefined && subgroup.devices.length > 0">
-                        <div class="text-left pl-3">
-                          <div>
-                            <span class="text-gray-500 text-sm text-left mt-2">Devices</span>
-                          </div>
-                          <div v-for="device in subgroup.devices" :key="device.id" class="pl-3">
-                            {{ device.name }}
-                          </div>
-                        </div>
-                      </template>
-                      <template v-else>
-                        <div class="text-left pl-3">
-                          <span class="text-gray-500 text-sm text-left mt-2">No devices</span>
-                        </div>
-                      </template>
-                    </div>
-                  </div>
-                </template>
-                <template v-else>
-                  <div class="text-left">
-                    <span class="text-gray-500 text-sm text-left mt-2">No subGroups</span>
-                  </div>
-                </template>
-              </template>
               <!-- Show available devices -->
-              <template v-if="group.devices !== undefined && group.devices.length > 0">
+              <template v-if="group.devices !== undefined">
                 <div class="text-left">
                   <div>
-                    <span class="text-gray-500 text-sm text-left mt-2">Devices</span>
+                    <span class="text-gray-500 text-sm text-left mt-2">
+                      {{ group.devices.length }} device{{ group.devices.length > 1 ? 's' : '' }}</span
+                    >
                   </div>
-                  <div v-for="device in group.devices" :key="device.id" class="pl-3">
-                    {{ device.name }}
-                  </div>
-                </div>
-              </template>
-              <template v-else>
-                <div class="text-left">
-                  <span class="text-gray-500 text-sm text-left mt-2">No devices</span>
                 </div>
               </template>
             </div>
@@ -162,7 +73,6 @@ import AppCard from '@/components/ui/cards/AppCard.vue';
 import GroupCreateModal from './modals/GroupCreateModal.vue';
 import GroupDropdown from './components/GroupDropdown.vue';
 import { useQuery, useResult } from '@vue/apollo-composable';
-import { Group } from '@/types/types';
 import Loader from '@/components/ui/AppSpinner.vue';
 import { GET_GROUPS } from './GroupQueries';
 import { useRouter } from 'vue-router';
@@ -184,7 +94,6 @@ export default defineComponent({
     const state = reactive({
       showCreateModal: false,
       showDetailModal: false,
-      showSubGroupsIcon: false,
       groupId: '',
       closeDropdown: false
     });
@@ -202,15 +111,6 @@ export default defineComponent({
       state.showCreateModal = !state.showCreateModal;
     };
 
-    const showSubGroups = () => {
-      state.showSubGroupsIcon = !state.showSubGroupsIcon;
-      if (state.showSubGroupsIcon) {
-        groups.value = groups.value?.filter((x: Group) => x.isSubGroup);
-      } else {
-        groups.value = tempGroups.value;
-      }
-    };
-
     const goToDetail = (name: string) => {
       router.push({ name: 'GroupDetail', params: { name: name } });
     };
@@ -221,7 +121,6 @@ export default defineComponent({
       ...toRefs(state),
       toggleCreateModal,
       goToDetail,
-      showSubGroups,
       groups
     };
   }

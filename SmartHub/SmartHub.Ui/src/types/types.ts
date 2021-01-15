@@ -155,7 +155,6 @@ export interface CreateGroupInput {
   name: string;
   description?: string;
   parentGroupId?: string;
-  isSubGroup?: boolean;
 }
 
 export interface UpdateGroupInput {

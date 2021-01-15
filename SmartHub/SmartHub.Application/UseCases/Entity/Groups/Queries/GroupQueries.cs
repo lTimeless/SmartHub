@@ -29,14 +29,14 @@ namespace SmartHub.Application.UseCases.Entity.Groups.Queries
 			return groupsRepository.GetAllAsQueryable();
 		}
 
-		public int GetParentGroupsCount([Service] IBaseRepositoryAsync<Group> groupsRepository)
+		/// <summary>
+		/// Gets the current count of all groups
+		/// </summary>
+		/// <param name="groupsRepository"></param>
+		/// <returns></returns>
+		public int GetGroupsCount([Service] IBaseRepositoryAsync<Group> groupsRepository)
 		{
-			return groupsRepository.GetAllAsQueryable().Count(x => !x.IsSubGroup);
-		}
-
-		public int GetSubGroupsCount([Service] IBaseRepositoryAsync<Group> groupsRepository)
-		{
-			return groupsRepository.GetAllAsQueryable().Count(x => x.IsSubGroup);
+			return groupsRepository.GetAllAsQueryable().Count();
 		}
 	}
 }

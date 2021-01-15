@@ -5,7 +5,6 @@ export const GET_GROUPS = gql`
     groups {
       id
       name
-      isSubGroup
       createdBy
       lastModifiedBy
       lastModifiedAt
@@ -16,10 +15,6 @@ export const GET_GROUPS = gql`
         name
         pluginName
         pluginName
-      }
-      subGroups {
-        id
-        name
       }
     }
   }
@@ -30,7 +25,6 @@ export const GET_GROUP_BY_ID = gql`
     groups(where: { name: { eq: $name } }) {
       id
       name
-      isSubGroup
       createdBy
       lastModifiedBy
       lastModifiedAt
@@ -41,10 +35,6 @@ export const GET_GROUP_BY_ID = gql`
         name
         pluginName
         pluginName
-      }
-      subGroups {
-        id
-        name
       }
     }
   }

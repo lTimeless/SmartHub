@@ -5,6 +5,7 @@ using SmartHub.Application.Common.Models;
 using SmartHub.Domain.Common.Enums;
 using SmartHub.Domain.Common.Extensions;
 using SmartHub.Domain.Entities;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace SmartHub.Application.UseCases.Entity.Groups.Mutations
@@ -30,20 +31,10 @@ namespace SmartHub.Application.UseCases.Entity.Groups.Mutations
 			{
 				return new GroupPayload(new UserError($"Group name can't be empty, null or whitespace: {input.Name}", AppErrorCodes.IsEmpty));
 			}
-
-			if (input.IsSubGroup && !string.IsNullOrWhiteSpace(input.ParentGroupId))
+			var groupsExist = groupRepository.GetAllAsQueryable().Any(x => x.Name == input.Name);
+			if (groupsExist)
 			{
-				var foundGroup = await groupRepository.FindByAsync(x => x.Id == input.ParentGroupId);
-				if (foundGroup != null && foundGroup.IsSubGroup)
-				{
-					return new GroupPayload(new UserError("You can not create a subgroup of a subgroup.", AppErrorCodes.IsSubGroup));
-				}
-
-				var newSubgroup = new Group(input.Name, input.Description, input.IsSubGroup);
-				foundGroup?.AddSubGroup(newSubgroup);
-				await unitOfWork.SaveAsync();
-
-				return new GroupPayload(newSubgroup, $"Created new SubGroup with name {input.Name} for group {foundGroup?.Name}.");
+				return new GroupPayload(new UserError($"Group with name {input.Name} already exist.", AppErrorCodes.Exists));
 			}
 
 			var newGroup = new Group(input.Name, input.Description);

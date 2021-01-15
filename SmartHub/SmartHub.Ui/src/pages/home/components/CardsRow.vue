@@ -16,10 +16,8 @@
         </div>
       </template>
       <template #subTitle>
-        <span>{{ parentGroupsCount }} </span>
-        <span class="whitespace-no-wrap mr-3"> Groups</span>
-        <span>{{ subGroupsCount }} </span>
-        <span class="whitespace-no-wrap"> Subgroups</span>
+        <span>{{ groupsCount }} </span>
+        <span class="whitespace-no-wrap ml-2"> Since last login </span>
       </template>
     </AppCardRouterLink>
   </div>
@@ -40,7 +38,7 @@
         </div>
       </template>
       <template #subTitle>
-        <span>2 </span>
+        <span>{{ devicesCount }} </span>
         <span class="whitespace-no-wrap ml-2"> Since last login </span>
       </template>
     </AppCardRouterLink>
@@ -91,7 +89,7 @@
 
 <script lang="ts">
 import { useQuery, useResult } from '@vue/apollo-composable';
-import { defineComponent, watch, ref } from 'vue';
+import { defineComponent } from 'vue';
 import AppIcon from '@/components/icons/AppIcon.vue';
 import AppCardRouterLink from '@/components/ui/cards/AppCardRouterLink.vue';
 import { Routes } from '@/types/enums';
@@ -108,26 +106,12 @@ export default defineComponent({
     const { result: groupsCountResult } = useQuery(GET_GROUPS_COUNT);
     const { result: devicesResult } = useQuery(GET_DEVICES_COUNT);
 
-    const groupsCounts = useResult(groupsCountResult);
-    const subGroupsCount = ref(0);
-    const parentGroupsCount = ref(0);
-    const groupsCount = ref(0);
-    watch(
-      groupsCounts,
-      (newResult) => {
-        parentGroupsCount.value = newResult?.parentGroupsCount;
-        subGroupsCount.value = newResult?.subGroupsCount;
-        groupsCount.value = parentGroupsCount.value + subGroupsCount.value;
-      },
-      { immediate: true }
-    );
+    const groupsCount = useResult(groupsCountResult);
     const devicesCount = useResult(devicesResult, 0, (data) => data.devicesCount);
 
     return {
-      parentGroupsCount,
-      devicesCount,
-      subGroupsCount,
       groupsCount,
+      devicesCount,
       routes: Routes
     };
   }

@@ -147,6 +147,7 @@ import { useMutation } from '@vue/apollo-composable';
 import { CREATE_DEVICE } from '../DeviceMutations';
 import { GET_DEVICES } from '../DeviceQueries';
 import { GET_DEVICES_COUNT } from '@/pages/home/HomeQueries';
+import { GET_GROUPS } from '@/pages/groups/GroupQueries';
 
 export default defineComponent({
   name: 'DeviceCreateModal',
@@ -171,10 +172,16 @@ export default defineComponent({
       context.emit('close', false);
     };
     const save = async () => {
-      await createDevice(
-        { input: deviceCreateInput },
-        { refetchQueries: [{ query: GET_DEVICES }, { query: GET_DEVICES_COUNT }] }
-      );
+      let refetchOpts = { refetchQueries: [{ query: GET_DEVICES }, { query: GET_DEVICES_COUNT }] };
+      if (deviceCreateInput.groupName) {
+        refetchOpts.refetchQueries = [
+          { query: GET_DEVICES },
+          { query: GET_DEVICES_COUNT },
+          { query: GET_GROUPS }
+        ];
+      }
+
+      await createDevice({ input: deviceCreateInput }, refetchOpts);
       context.emit('close', false);
     };
     return {
