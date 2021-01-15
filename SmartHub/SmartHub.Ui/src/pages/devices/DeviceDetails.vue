@@ -181,7 +181,7 @@ export default defineComponent({
       id: ''
     });
     const { mutate: updateDevice, loading: loadUpdate, error: errUpdate } = useMutation(UPDATE_DEVICE);
-    const { result, loading, error } = useQuery(GET_DEVICE_BY_ID, () => ({ id: route.params.id }), {
+    const { result, loading, error } = useQuery(GET_DEVICE_BY_ID, () => ({ name: route.params.name }), {
       fetchPolicy: 'no-cache'
     });
     const device = useResult(result, null, (data) => data.devices[0]);

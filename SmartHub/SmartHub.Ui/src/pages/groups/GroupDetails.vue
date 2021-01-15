@@ -128,7 +128,7 @@ export default defineComponent({
       id: ''
     });
     const { mutate: updateGroup, loading: loadUpdate, error: errUpdate } = useMutation(UPDATE_GROUP);
-    const { result, loading, error } = useQuery(GET_GROUP_BY_ID, () => ({ id: route.params.id }), {
+    const { result, loading, error } = useQuery(GET_GROUP_BY_ID, () => ({ name: route.params.name }), {
       fetchPolicy: 'no-cache'
     });
     const group = useResult(result, null, (data) => data.groups[0]);

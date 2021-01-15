@@ -34,7 +34,7 @@
             <div v-if="device" class="p-3 w-full">
               <h1
                 class="text-xl text-left text-gray-600 font-bold cursor-pointer"
-                @click="goToDetail(device.id)"
+                @click="goToDetail(device.name)"
               >
                 {{ device.name }}
               </h1>
@@ -84,8 +84,8 @@ export default defineComponent({
       state.showCreateModal = !state.showCreateModal;
     };
 
-    const goToDetail = (id: string) => {
-      router.push({ name: 'DeviceDetails', params: { id: id } });
+    const goToDetail = (name: string) => {
+      router.push({ name: 'DeviceDetails', params: { name: name } });
     };
 
     return {

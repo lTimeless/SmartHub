@@ -1,8 +1,8 @@
 import gql from 'graphql-tag';
 
 export const GET_DEVICE_BY_ID = gql`
-  query GET_DEVICE_BY_ID($id: String!) {
-    devices(where: { id: { eq: $id } }) {
+  query GET_DEVICE_BY_ID($name: String!) {
+    devices(where: { name: { eq: $name } }) {
       id
       name
       description

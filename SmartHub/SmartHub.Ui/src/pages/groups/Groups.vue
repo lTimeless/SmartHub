@@ -86,7 +86,7 @@
               <div class="flex items-start justify-between">
                 <h1
                   class="text-xl text-left text-gray-600 font-bold cursor-pointer"
-                  @click="goToDetail(group.id)"
+                  @click="goToDetail(group.name)"
                 >
                   {{ group.name }}
                 </h1>
@@ -211,8 +211,8 @@ export default defineComponent({
       }
     };
 
-    const goToDetail = (id: string) => {
-      router.push({ name: 'GroupDetail', params: { id: id } });
+    const goToDetail = (name: string) => {
+      router.push({ name: 'GroupDetail', params: { name: name } });
     };
 
     return {

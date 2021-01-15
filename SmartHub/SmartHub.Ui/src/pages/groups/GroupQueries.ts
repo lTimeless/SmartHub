@@ -26,8 +26,8 @@ export const GET_GROUPS = gql`
 `;
 
 export const GET_GROUP_BY_ID = gql`
-  query GET_GROUP_BY_ID($id: String!) {
-    groups(where: { id: { eq: $id } }) {
+  query GET_GROUP_BY_ID($name: String!) {
+    groups(where: { name: { eq: $name } }) {
       id
       name
       isSubGroup
