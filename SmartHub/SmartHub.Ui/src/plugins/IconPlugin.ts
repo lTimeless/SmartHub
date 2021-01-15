@@ -17,6 +17,9 @@ import BellIcon from '@/components/icons/BellIcon.vue';
 import MenuIcon from '@/components/icons/MenuIcon.vue';
 import CloseIcon from '@/components/icons/CloseIcon.vue';
 import InboxIcon from '@/components/icons/InboxIcon.vue';
+import ChevronDoubleRightIcon from '@/components/icons/ChevronDoubleRightIcon.vue';
+import ChevronDoubleLeftIcon from '@/components/icons/ChevronDoubleLeftIcon.vue';
+import LogoutIcon from '@/components/icons/LogoutIcon.vue';
 import { App } from '@vue/runtime-core';
 
 export default {
@@ -41,5 +44,8 @@ export default {
     app.component('MenuIcon', MenuIcon);
     app.component('CloseIcon', CloseIcon);
     app.component('InboxIcon', InboxIcon);
+    app.component('ChevronDoubleRightIcon', ChevronDoubleRightIcon);
+    app.component('ChevronDoubleLeftIcon', ChevronDoubleLeftIcon);
+    app.component('LogoutIcon', LogoutIcon);
   }
 };

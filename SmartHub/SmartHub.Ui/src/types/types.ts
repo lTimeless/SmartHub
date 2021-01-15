@@ -34,7 +34,6 @@ interface Address {
   zipCode: string;
 }
 
-// ########## Entities ##########
 /*
   Base entity
  */

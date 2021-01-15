@@ -1,6 +1,16 @@
 <template>
-  <path d="M21.21 15.89A10 10 0 1 1 8 2.83"></path>
-  <path d="M22 12A10 10 0 0 0 12 2v10z"></path>
+  <path
+    stroke-linecap="round"
+    stroke-linejoin="round"
+    stroke-width="2"
+    d="M11 3.055A9.001 9.001 0 1020.945 13H11V3.055z"
+  ></path>
+  <path
+    stroke-linecap="round"
+    stroke-linejoin="round"
+    stroke-width="2"
+    d="M20.488 9H15V3.512A9.025 9.025 0 0120.488 9z"
+  ></path>
 </template>
 
 <script>
