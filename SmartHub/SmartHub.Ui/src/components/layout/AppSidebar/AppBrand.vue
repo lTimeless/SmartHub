@@ -1,7 +1,7 @@
 <template>
   <router-link
     :to="routes.Home"
-    class="flex hover:bg-primaryBlueHover rounded-l items-end"
+    class="flex rounded-l items-end"
     :class="[onlyIcon ? 'w-12 justify-center' : ' w-48 justify-start pl-4']"
     title="Home"
   >
