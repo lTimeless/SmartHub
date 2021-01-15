@@ -18,17 +18,5 @@ namespace SmartHub.Domain.Common.Extensions
 			group.Devices.Add(newDevice);
 			return group;
 		}
-
-		/// <summary>
-		/// Adds a new subGroup.
-		/// </summary>
-		/// <param name="group">This group entity.</param>
-		/// <param name="newSubGroup">The new subGroup entity to be added.</param>
-		/// <returns></returns>
-		public static Group AddSubGroup(this Group group,Group newSubGroup)
-		{
-			group.SubGroups.Add(newSubGroup);
-			return group;
-		}
 	}
 }

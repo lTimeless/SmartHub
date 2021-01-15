@@ -8,7 +8,6 @@ export const GET_DEVICES_COUNT = gql`
 
 export const GET_GROUPS_COUNT = gql`
   query GetGroupsCount {
-    parentGroupsCount
-    subGroupsCount
+    groupsCount
   }
 `;

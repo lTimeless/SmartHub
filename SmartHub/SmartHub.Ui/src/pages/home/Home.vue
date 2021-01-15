@@ -9,7 +9,7 @@
         <CardsRow />
       </div>
       <!-- Expand Arrow -->
-      <div class="px-4 my-2 flex justify-end cursor-pointer">
+      <div v-if="isRole() === adminRole" class="px-4 my-2 flex justify-end cursor-pointer">
         <div class="cursor-pointer flex" @click="expandAdminRow = !expandAdminRow">
           <span v-if="!expandAdminRow" class="text-sm text-primaryGreenHover pr-1">More</span>
           <svg
