@@ -45,10 +45,10 @@ export default defineComponent({
     };
 
     const handleMenuClick = () => {
-      if (iconName.value == 'Close') {
+      if (iconName.value === 'Close') {
         iconName.value = 'Menu';
         store.dispatch(AppActionTypes.SET_MOBILE_SIDEBAR, true);
-      } else if (iconName.value == 'Menu') {
+      } else if (iconName.value === 'Menu') {
         iconName.value = 'Close';
         store.dispatch(AppActionTypes.SET_MOBILE_SIDEBAR, false);
       }

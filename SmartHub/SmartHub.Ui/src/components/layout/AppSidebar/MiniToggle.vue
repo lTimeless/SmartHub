@@ -35,10 +35,10 @@ export default defineComponent({
     const iconName = ref('ChevronDoubleRight');
 
     const handleIconClick = () => {
-      if (iconName.value == 'ChevronDoubleRight') {
+      if (iconName.value === 'ChevronDoubleRight') {
         iconName.value = 'ChevronDoubleLeft';
         store.dispatch(AppActionTypes.SET_MINI_SIDEBAR, false);
-      } else if (iconName.value == 'ChevronDoubleLeft') {
+      } else if (iconName.value === 'ChevronDoubleLeft') {
         iconName.value = 'ChevronDoubleRight';
         store.dispatch(AppActionTypes.SET_MINI_SIDEBAR, true);
       }

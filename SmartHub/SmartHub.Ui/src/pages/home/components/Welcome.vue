@@ -28,7 +28,7 @@ const GET_USERNAME = gql`
 `;
 
 export default defineComponent({
-  name: `Welcome`,
+  name: 'Welcome',
   setup() {
     const { result } = useQuery(GET_USERNAME);
     const userName = useResult(result, '', (data) => data.me.userName);
