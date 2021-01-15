@@ -7,7 +7,7 @@
       <div
         class="relative z-30 h-14 flex items-center hover:bg-charcoalBlue-200 rounded-l"
         :class="[
-          isRoute ? 'bg-primaryBlue md:bg-charcoalBlue-500' : '',
+          isRoute ? `bg-primaryBlue ${onlyIcon ? 'bg-charcoalBlue-500' : ''}` : '',
           onlyIcon ? 'w-14 justify-center' : 'w-2/3 pl-4'
         ]"
         @click="onlyIcon ? setDropDownValue(!showDropdown) : handleRouteClick(routes.Me)"
@@ -30,8 +30,9 @@
       <div
         v-if="!onlyIcon"
         class="hover:bg-charcoalBlue-200 w-1/3 h-14 flex flex-row justify-center items-center"
+        @click="logoutClick"
       >
-        <AppIcon icon-name="Logout" height="h-7" width="w-7" @click="logoutClick" />
+        <AppIcon icon-name="Logout" height="h-7" width="w-7" />
       </div>
     </div>
 
@@ -128,6 +129,7 @@ export default defineComponent({
       await clearStorage();
       await router.push(Routes.Login);
       await store.dispatch(AppActionTypes.SET_USER_DROPDOWN, false);
+      await store.dispatch(AppActionTypes.RESET_SIDEBAR);
     };
 
     return {

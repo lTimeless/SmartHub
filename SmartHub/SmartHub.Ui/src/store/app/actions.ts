@@ -7,7 +7,8 @@ export enum AppActionTypes {
   // UI
   SET_USER_DROPDOWN = 'SET_USER_DROPDOWN',
   SET_MOBILE_SIDEBAR = 'SET_MOBILE_SIDEBAR',
-  SET_MINI_SIDEBAR = 'SET_MINI_SIDEBAR'
+  SET_MINI_SIDEBAR = 'SET_MINI_SIDEBAR',
+  RESET_SIDEBAR = 'RESET_SIDEBAR'
 }
 
 // actions context type
@@ -24,6 +25,7 @@ export type HomeActions = {
   [AppActionTypes.SET_USER_DROPDOWN]({ commit }: ActionAugments, payload: boolean): Promise<void>;
   [AppActionTypes.SET_MOBILE_SIDEBAR]({ commit }: ActionAugments, payload: boolean): Promise<void>;
   [AppActionTypes.SET_MINI_SIDEBAR]({ commit }: ActionAugments, payload: boolean): Promise<void>;
+  [AppActionTypes.RESET_SIDEBAR]({ commit }: ActionAugments): Promise<void>;
 };
 
 export const actions: ActionTree<AppState, RootState> = {
@@ -36,5 +38,9 @@ export const actions: ActionTree<AppState, RootState> = {
   },
   async [AppActionTypes.SET_MINI_SIDEBAR]({ commit }, payload): Promise<void> {
     commit(AppMutationTypes.SET_MINI_SIDEBAR, payload);
+  },
+  async [AppActionTypes.RESET_SIDEBAR]({ commit }): Promise<void> {
+    commit(AppMutationTypes.SET_MINI_SIDEBAR, true);
+    commit(AppMutationTypes.SET_MOBILE_SIDEBAR, false);
   }
 };
