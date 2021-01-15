@@ -167,7 +167,6 @@ export default defineComponent({
       miniOpen,
       (newV) => {
         onlyIcon.value = newV;
-        console.log(onlyIcon.value);
       },
       { immediate: true }
     );
