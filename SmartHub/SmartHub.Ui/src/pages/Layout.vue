@@ -1,5 +1,5 @@
 <script lang="ts">
-import { computed, defineComponent, ref, render, watch } from 'vue';
+import { computed, defineComponent, ref, watch } from 'vue';
 import Navbar from '@/components/layout/AppNavbar.vue';
 import AppSidebar from '@/components/layout/AppSidebar/AppSidebar.vue';
 import AppMobileSidebar from '@/components/layout/AppSidebar/AppMobileSidebar.vue';
@@ -16,6 +16,7 @@ export default defineComponent({
     const store = useStore();
     const hideAfterXSec = ref(false);
     const showMobileSidebar = computed(() => store.state.appModule.mobileSidebarOpen);
+
     watch(showMobileSidebar, (newV) => {
       if (!newV) {
         setTimeout(() => (hideAfterXSec.value = newV), 300);
@@ -23,6 +24,7 @@ export default defineComponent({
         hideAfterXSec.value = newV;
       }
     });
+
     return {
       showMobileSidebar,
       hideAfterXSec
@@ -32,7 +34,7 @@ export default defineComponent({
 </script>
 
 <template>
-  <div class="md:flex md:flex-row h-max-screen md:h-screen background">
+  <div class="md:flex md:flex-row h-full background">
     <AppMobileSidebar v-if="hideAfterXSec" />
     <!-- Sidebar-->
     <AppSidebar v-if="!showMobileSidebar" />
