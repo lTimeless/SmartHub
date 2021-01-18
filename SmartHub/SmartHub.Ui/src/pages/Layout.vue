@@ -34,7 +34,7 @@ export default defineComponent({
 </script>
 
 <template>
-  <div class="md:flex md:flex-row h-full background">
+  <div class="flex h-full background">
     <AppMobileSidebar v-if="hideAfterXSec" />
     <!-- Sidebar-->
     <AppSidebar v-if="!showMobileSidebar" />
