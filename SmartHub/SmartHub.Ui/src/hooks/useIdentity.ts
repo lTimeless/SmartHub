@@ -1,7 +1,10 @@
-import { Roles } from '@/types/enums';
+import { AppActionTypes } from '@/store/app/actions';
+import { Roles, Routes } from '@/types/enums';
 import { useStorage } from '@vueuse/core';
 import jwtDecode from 'jwt-decode';
 import { Ref } from 'vue';
+import { useRouter } from 'vue-router';
+import { useStore } from 'vuex';
 
 type TokenPayload = {
   unique_name: string;
@@ -17,16 +20,26 @@ type IdentityState = {
   clearStorage: () => void;
   isAuthenticated: () => boolean;
   isRole: () => Roles;
+  logout: () => void;
 };
 
 const numberThousand = 1000; // used for tokenpayload "exp date" conversion
 const LOCAL_STORAGE_TOKEN = 'token';
 
 export const useIdentity = (): IdentityState => {
+  const router = useRouter();
+  const store = useStore();
   const token = useStorage(LOCAL_STORAGE_TOKEN, '');
   const isAuthenticated = () => token.value !== '';
   const clearStorage = () => {
     token.value = '';
+  };
+
+  const logout = async () => {
+    clearStorage();
+    await router.push(Routes.Login);
+    await store.dispatch(AppActionTypes.SET_USER_DROPDOWN, false);
+    await store.dispatch(AppActionTypes.RESET_SIDEBAR);
   };
 
   const isRole = () => {
@@ -53,6 +66,7 @@ export const useIdentity = (): IdentityState => {
     token,
     clearStorage,
     isAuthenticated,
-    isRole
+    isRole,
+    logout
   };
-}
+};

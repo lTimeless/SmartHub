@@ -1,7 +1,7 @@
 <template>
   <!-- Navbar -->
-  <div v-if="!isRoute" class="flex flex-row justify-between items-center">
-    <div class="flex flex-row md:w-1/2 w-full">
+  <div class="flex flex-row justify-between items-center">
+    <div class="flex flex-row md:w-1/2 w-full h-12">
       <!-- Burger Menu btn-->
       <div class="md:hidden flex flex-row justify-start items-center md:w-14 w-full rounded">
         <button type="button">
@@ -9,10 +9,10 @@
         </button>
       </div>
       <!-- Route Name -->
-      <a class="text-xl p-2 text-primaryBlueHover uppercase">{{ route.name }}</a>
+      <a v-if="!isRoute" class="md:text-xl text-lg p-2 text-primaryBlueHover uppercase">{{ route.name }}</a>
     </div>
     <!-- back btn -->
-    <div class="flex-row hidden md:flex md:justify-end md:w-1/2">
+    <div v-if="!isRoute" class="flex-row hidden md:flex md:justify-end md:w-1/2">
       <button class="rounded p-2 hover:bg-charcoalBlue-600" type="button" @click="goBack">
         <AppIcon icon-name="ArrowLeft" icon-color="text-primaryBlueHover" />
       </button>
@@ -47,10 +47,10 @@ export default defineComponent({
     const handleMenuClick = () => {
       if (iconName.value === 'Close') {
         iconName.value = 'Menu';
-        store.dispatch(AppActionTypes.SET_MOBILE_SIDEBAR, true);
+        store.dispatch(AppActionTypes.SET_MOBILE_SIDEBAR, false);
       } else if (iconName.value === 'Menu') {
         iconName.value = 'Close';
-        store.dispatch(AppActionTypes.SET_MOBILE_SIDEBAR, false);
+        store.dispatch(AppActionTypes.SET_MOBILE_SIDEBAR, true);
       }
     };
     return {

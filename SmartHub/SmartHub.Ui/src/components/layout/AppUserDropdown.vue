@@ -25,7 +25,7 @@
       <div
         v-if="!onlyIcon"
         class="hover:bg-charcoalBlue-200 w-1/3 h-12 flex flex-row justify-center items-center"
-        @click="logoutClick"
+        @click="logout"
       >
         <AppIcon icon-name="Logout" />
       </div>
@@ -61,7 +61,7 @@
         <div class="border-t border-solid border-gray-400 mx-4" />
         <div class="py-1">
           <a
-            @click="logoutClick"
+            @click="logout"
             class="block px-4 py-2 text-sm text-gray-600 hover:bg-gray-200 cursor-pointer active:bg-gray-100"
             role="menuitem"
             >Logout</a
@@ -95,7 +95,7 @@ export default defineComponent({
   },
   setup(props) {
     const store = useStore();
-    const { clearStorage } = useIdentity();
+    const { logout } = useIdentity();
     const router = useRouter();
     const dropdownPopoverShow = ref<boolean>(false);
     const showDropdown = computed(() => store.state.appModule.userDropDownOpen);
@@ -120,13 +120,6 @@ export default defineComponent({
       });
     };
 
-    const logoutClick = async () => {
-      await clearStorage();
-      await router.push(Routes.Login);
-      await store.dispatch(AppActionTypes.SET_USER_DROPDOWN, false);
-      await store.dispatch(AppActionTypes.RESET_SIDEBAR);
-    };
-
     return {
       dropdownPopoverShow,
       showDropdown,
@@ -134,7 +127,7 @@ export default defineComponent({
       ...useCurrentRoute(Routes.Me),
       escapeDropdown,
       handleRouteClick,
-      logoutClick,
+      logout,
       setDropDownValue,
       ...toRefs(props),
       routes: Routes
