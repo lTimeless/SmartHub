@@ -3,11 +3,11 @@
   <div class="flex flex-row justify-between items-center">
     <div class="flex flex-row md:w-1/2 w-full h-12">
       <!-- Burger Menu btn-->
-      <div class="md:hidden flex flex-row justify-start items-center md:w-14 w-full rounded">
-        <button type="button">
-          <AppIcon :icon-name="iconName" icon-color="text-primaryBlueHover" @click="handleMenuClick" />
-        </button>
-      </div>
+<!--      <div class="md:hidden flex flex-row justify-start items-center md:w-14 w-full rounded">-->
+<!--        <button type="button">-->
+<!--          <AppIcon :icon-name="iconName" icon-color="text-primaryBlueHover" @click="handleMenuClick" />-->
+<!--        </button>-->
+<!--      </div>-->
       <!-- Route Name -->
       <a v-if="!isRoute" class="md:text-xl text-lg p-2 text-primaryBlueHover uppercase">{{ route.name }}</a>
     </div>

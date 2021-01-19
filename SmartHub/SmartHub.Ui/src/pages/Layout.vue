@@ -13,33 +13,33 @@ export default defineComponent({
     Navbar
   },
   setup() {
-    const store = useStore();
-    const hideAfterXSec = ref(false);
-    const showMobileSidebar = computed(() => store.state.appModule.mobileSidebarOpen);
+    // const store = useStore();
+    // const hideAfterXSec = ref(false);
+    // const showMobileSidebar = computed(() => store.state.appModule.mobileSidebarOpen);
 
-    watch(showMobileSidebar, (newV) => {
-      if (!newV) {
-        setTimeout(() => (hideAfterXSec.value = newV), 300);
-      } else {
-        hideAfterXSec.value = newV;
-      }
-    });
+    // watch(showMobileSidebar, (newV) => {
+    //   if (!newV) {
+    //     setTimeout(() => (hideAfterXSec.value = newV), 300);
+    //   } else {
+    //     hideAfterXSec.value = newV;
+    //   }
+    // });
 
     return {
-      showMobileSidebar,
-      hideAfterXSec
+      // showMobileSidebar,
+      // hideAfterXSec
     };
   }
 });
 </script>
 
 <template>
-  <div class="flex h-full background">
-    <AppMobileSidebar v-if="hideAfterXSec" />
+  <div class="flex h-full overflow-hidden">
+    <!--    <AppMobileSidebar v-if="hideAfterXSec" />-->
     <!-- Sidebar-->
-    <AppSidebar v-if="!showMobileSidebar" />
+    <AppSidebar />
     <!-- Main View-->
-    <div class="main background" :class="[showMobileSidebar ? 'transform transition translate-x-48' : '']">
+    <div class="background absolute md:relative flex flex-auto h-screen w-full overflow-auto main">
       <div class="flex flex-col w-full m-2 md:m-5 md:px-3 z-10">
         <Navbar />
         <router-view v-slot="{ Component }">
@@ -60,10 +60,7 @@ export default defineComponent({
   </div>
 </template>
 <style scoped>
-.transition {
-  transition: 0.3s transform cubic-bezier(0, 0.12, 0.14, 1);
-}
 .main {
-  @apply absolute transition md:relative flex flex-auto h-screen w-full overflow-y-auto;
+  -ms-overflow-style: none;
 }
 </style>
