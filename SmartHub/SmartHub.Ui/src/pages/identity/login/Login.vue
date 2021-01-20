@@ -13,7 +13,7 @@
         </div>
       </template>
       <template v-else>
-        <div class="h-108 md:h-auto md:w-1/2">
+        <div class="hidden md:block h-108 md:h-auto md:w-1/2">
           <img
             aria-hidden="true"
             class="object-fill w-full h-full dark:hidden"

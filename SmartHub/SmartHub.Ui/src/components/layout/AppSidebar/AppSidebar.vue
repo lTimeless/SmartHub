@@ -1,42 +1,3 @@
-<template>
-  <div class="sidebar" :class="[miniOpen ? 'md:w-12' : 'w-48']">
-    <div class="flex flex-col space-y w-full items-center">
-      <AppBrand class="my-3" :only-icon="onlyIcon" />
-      <div v-for="view in sidebarLists" :key="view.label">
-        <NavigationItem
-          v-if="roleIncluded(view.rolesRequired)"
-          :icon-name="view.iconName"
-          :label="view.label"
-          :route="view.route"
-          :only-icon="onlyIcon"
-        />
-      </div>
-    </div>
-    <div class="flex flex-col space-y w-full items-center">
-      <a
-        class="block relative h-12 md:flex justify-center items-center"
-        :class="[onlyIcon ? 'w-12' : ' w-full']"
-      >
-        <NavigationItem
-          icon-name="Inbox"
-          label="Inbox"
-          route="/inbox"
-          class="cursor-not-allowed"
-          :only-icon="onlyIcon"
-        />
-        <div
-          class="absolute top-0 mt-3 bg-red-500 w-4 h-4 text-xs text-white rounded-full text-center"
-          :class="[onlyIcon ? 'right-0 mr-3 ' : ' left-0 ml-8']"
-        >
-          5
-        </div>
-      </a>
-      <AppUserDropdown :only-icon="onlyIcon" />
-      <MiniToggle :only-icon="onlyIcon" />
-    </div>
-  </div>
-</template>
-
 <script lang="ts">
 import AppUserDropdown from '../AppUserDropdown.vue';
 import { computed, defineComponent, ref, watch } from 'vue';
@@ -47,6 +8,8 @@ import AppBrand from '@/components/layout/AppSidebar/AppBrand.vue';
 import { useIdentity } from '@/hooks/useIdentity';
 import MiniToggle from './MiniToggle.vue';
 import { useStore } from 'vuex';
+import { AppActionTypes } from '@/store/app/actions';
+import AppIcon from '@/components/icons/AppIcon.vue';
 
 export default defineComponent({
   name: 'AppSidebar',
@@ -54,6 +17,7 @@ export default defineComponent({
     AppUserDropdown,
     NavigationItem,
     AppBrand,
+    AppIcon,
     MiniToggle
   },
   props: {},
@@ -62,8 +26,8 @@ export default defineComponent({
     const store = useStore();
     const { isRole } = useIdentity();
     const role = ref(isRole());
-    const onlyIcon = ref(true);
-    const miniOpen = computed(() => store.state.appModule.miniSidebarOpen);
+    const mobileSidebarOpen = computed(() => store.state.appModule.mobileSidebarOpen);
+    const miniSidebarOpen = computed(() => store.state.appModule.miniSidebarOpen);
     const sidebarLists = [
       // Guest views
       {
@@ -161,31 +125,99 @@ export default defineComponent({
       //   children: [{ title: 'About', icon: 'mdi-information', path: '/about' }]
       // }
     ];
+
     const currentPath = computed(() => router.currentRoute.value.path);
     const roleIncluded = (rolesNeeded: string[]) => rolesNeeded.includes(role.value);
-    watch(
-      miniOpen,
-      (newV) => {
-        onlyIcon.value = newV;
-      },
-      { immediate: true }
-    );
+
+    const closeMobileSidebar = () => {
+      if (mobileSidebarOpen.value) {
+        store.dispatch(AppActionTypes.SET_MOBILE_SIDEBAR, false);
+      }
+    };
+    watch(router.currentRoute, (oldV, newV) => {
+      if (oldV !== newV) {
+        closeMobileSidebar();
+      }
+    });
 
     return {
       currentPath,
       sidebarLists,
-      miniOpen,
-      onlyIcon,
+      miniSidebarOpen,
       roleIncluded,
-      routes: Routes
+      routes: Routes,
+      mobileSidebarOpen,
+      closeMobileSidebar
     };
   }
 });
 </script>
+
+<template>
+  <!-- Sidebar -->
+  <div
+    :class="[miniSidebarOpen ? 'md:w-12' : 'w-48']"
+    class="rounded md:left-0 md:top-0 md:bottom-0 md:overflow-y-auto md:flex-no-wrap md:overflow-hidden bg-white flex flex-none z-30"
+  >
+    <!-- Background if MobileSidebar is open -->
+    <button
+      @click="closeMobileSidebar"
+      v-if="mobileSidebarOpen"
+      class="absolute inset-0 h-full w-full bg-black opacity-20 cursor-default z-20"
+    />
+    <div
+      class="md:flex flex-col justify-between md:relative absolute top-0 left-0 right-0 z-40 overflow-y-auto overflow-x-hidden"
+      :class="[mobileSidebarOpen ? 'bg-white m-2 py-3 px-6' : 'hidden']"
+    >
+      <!-- Collapse header -->
+      <div class="md:min-w-full md:hidden mb-2">
+        <div class="flex flex-wrap">
+          <div class="w-4/12 flex items-center">
+            <AppIcon icon-name="Close" @click="closeMobileSidebar" class="cursor-pointer md:hidden" />
+          </div>
+          <div class="">
+            <AppBrand />
+          </div>
+        </div>
+      </div>
+      <div class="flex flex-col space-y w-full items-center">
+        <AppBrand v-if="!mobileSidebarOpen" class="md:my-3" :only-icon="miniSidebarOpen" />
+        <div v-for="view in sidebarLists" :key="view.label" :class="[mobileSidebarOpen ? 'w-full' : '']">
+          <NavigationItem
+            v-if="roleIncluded(view.rolesRequired)"
+            :icon-name="view.iconName"
+            :label="view.label"
+            :route="view.route"
+            :only-icon="miniSidebarOpen"
+            :mobile-sidebar-open="mobileSidebarOpen"
+          />
+        </div>
+      </div>
+      <div class="flex flex-col space-y w-full items-center">
+        <a
+          class="relative h-12 md:flex justify-center items-center"
+          :class="[miniSidebarOpen && !mobileSidebarOpen ? 'w-12' : ' w-full']"
+        >
+          <NavigationItem
+            icon-name="Inbox"
+            label="Inbox"
+            route="/inbox"
+            class="cursor-not-allowed"
+            :only-icon="miniSidebarOpen"
+            :mobile-sidebar-open="mobileSidebarOpen"
+          />
+        </a>
+        <AppUserDropdown :only-icon="miniSidebarOpen" :mobile-sidebar-open="mobileSidebarOpen"/>
+        <MiniToggle :only-icon="miniSidebarOpen" />
+      </div>
+    </div>
+  </div>
+</template>
 <style lang="scss" scoped>
 .sidebar {
   @apply hidden md:flex flex-col justify-between items-center flex-none bg-white rounded;
-  //backdrop-filter: blur(10px);
-  //background: rgba(255, 255, 255, 0.25);
+}
+.transition {
+  transition: 0.3s transform cubic-bezier(0, 0.12, 0.14, 1);
 }
 </style>
