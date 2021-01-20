@@ -6,7 +6,7 @@
     title="Home"
   >
     <Logo :width="32" />
-    <span v-if="!onlyIcon" class="ml-2 hidden text-xl sm:block text-primaryBlue">
+    <span v-if="!onlyIcon" class="ml-2 text-xl text-primaryBlue">
       {{ appConfig.applicationName }}
     </span>
   </router-link>

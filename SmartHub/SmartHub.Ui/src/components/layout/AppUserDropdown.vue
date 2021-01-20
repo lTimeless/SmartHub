@@ -1,49 +1,55 @@
 <template>
-  <div class="relative z-30 inline-block text-left cursor-pointer">
+  <!-- Background if MobileSidebar is open -->
+  <div v-if="showDropdown" class="fixed inset-0 h-full w-full bg-black opacity-20 cursor-default" />
+  <!-- User Button and modal -->
+  <div class="relative z-30 text-left cursor-pointer" :class="[mobileSidebarOpen ? 'w-full' : '']">
     <div
       class="flex flex-row items-center"
-      :class="[onlyIcon ? 'w-12 justify-center' : ' w-48 justify-start']"
+      :class="[
+        onlyIcon && !mobileSidebarOpen
+          ? 'w-12 justify-center'
+          : mobileSidebarOpen
+          ? 'w-full justify-start'
+          : ' w-48 justify-start'
+      ]"
     >
       <div
         class="relative z-30 h-12 flex items-center hover:bg-charcoalBlue-200 rounded-l"
         :class="[
           isRoute ? `bg-primaryBlue ${onlyIcon ? 'bg-charcoalBlue-500' : ''}` : '',
-          onlyIcon ? 'w-12 justify-center' : 'w-2/3 pl-4'
+          onlyIcon && !mobileSidebarOpen ? 'w-12 justify-center' : 'w-2/3 pl-4'
         ]"
-        @click="onlyIcon ? setDropDownValue(!showDropdown) : handleRouteClick(routes.Me)"
+        @click="
+          onlyIcon && !mobileSidebarOpen ? setDropDownValue(!showDropdown) : handleRouteClick(routes.Me)
+        "
       >
         <AppIcon icon-name="User" :icon-color="isRoute ? 'text-white' : 'text-primaryBlue'" />
-        <div v-if="!onlyIcon">
+        <div v-if="!onlyIcon || mobileSidebarOpen">
           <div
             class="tracking-wide text-lg leading-loose"
-            :class="[isRoute ? 'text-white' : 'text-primaryBlue', onlyIcon ? ' ' : ' pl-2']"
+            :class="[
+              isRoute ? 'text-white' : 'text-primaryBlue',
+              onlyIcon && !mobileSidebarOpen ? ' ' : ' pl-2'
+            ]"
           >
-            {{ onlyIcon ? ' ' : 'Me' }}
+            {{ onlyIcon && !mobileSidebarOpen ? ' ' : 'Me' }}
           </div>
         </div>
       </div>
       <div
-        v-if="!onlyIcon"
-        class="hover:bg-charcoalBlue-200 w-1/3 h-12 flex flex-row justify-center items-center"
+        v-if="!onlyIcon || mobileSidebarOpen"
+        class="hover:bg-charcoalBlue-200 w-1/3 h-12 flex flex-row justify-center items-center rounded-r"
         @click="logout"
       >
         <AppIcon icon-name="Logout" />
       </div>
     </div>
-
-    <!-- Button to close open modal by clicking outside -->
-    <template v-if="onlyIcon">
-      <button
-        v-if="showDropdown"
-        @click="setDropDownValue(false)"
-        tabindex="-1"
-        @keyup.esc="escapeDropdown"
-        class="fixed inset-0 h-full w-full bg-black opacity-20 cursor-default"
-      ></button>
+    <template v-if="onlyIcon && !mobileSidebarOpen">
       <!-- Modal -->
       <div
+        ref="modalTarget"
         v-if="showDropdown"
-        class="absolute md:inset-x-0 md:bottom-2 md:left-16 origin-top-right right-0 mt-2 mr-2 md:mr-0 z-30 w-40 rounded border bg-white ring-1 ring-black ring-opacity-5"
+        class="fixed md:inset-x-0 md:bottom-2 md:left-16 origin-top-right right-0 mt-2 mr-2 md:mr-0 z-30 w-40 rounded border bg-white ring-1 ring-black ring-opacity-5"
         role="menu"
         aria-orientation="vertical"
         aria-labelledby="options-menu"
@@ -80,6 +86,7 @@ import { AppActionTypes } from '@/store/app/actions';
 import AppIcon from '@/components/icons/AppIcon.vue';
 import { useIdentity } from '@/hooks/useIdentity';
 import { useCurrentRoute } from '@/hooks/useCurrentRoute';
+import { onClickOutside } from '@vueuse/core';
 
 export default defineComponent({
   name: 'AppUserDropdown',
@@ -91,12 +98,18 @@ export default defineComponent({
       type: Boolean,
       required: false,
       default: true
+    },
+    mobileSidebarOpen: {
+      type: Boolean,
+      required: false,
+      default: false
     }
   },
   setup(props) {
     const store = useStore();
     const { logout } = useIdentity();
     const router = useRouter();
+    const modalTarget = ref(null);
     const dropdownPopoverShow = ref<boolean>(false);
     const showDropdown = computed(() => store.state.appModule.userDropDownOpen);
     const dropDownList = [
@@ -110,9 +123,9 @@ export default defineComponent({
       store.dispatch(AppActionTypes.SET_USER_DROPDOWN, value);
     };
 
-    const escapeDropdown = () => {
+    onClickOutside(modalTarget, () => {
       setDropDownValue(false);
-    };
+    });
 
     const handleRouteClick = async (path: string) => {
       await router.push(path).then(() => {
@@ -124,8 +137,8 @@ export default defineComponent({
       dropdownPopoverShow,
       showDropdown,
       dropDownList,
+      modalTarget,
       ...useCurrentRoute(Routes.Me),
-      escapeDropdown,
       handleRouteClick,
       logout,
       setDropDownValue,

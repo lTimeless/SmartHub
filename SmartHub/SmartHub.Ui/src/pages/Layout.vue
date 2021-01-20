@@ -39,8 +39,8 @@ export default defineComponent({
     <!-- Sidebar-->
     <AppSidebar />
     <!-- Main View-->
-    <div class="background absolute md:relative flex flex-auto h-screen w-full overflow-auto main">
-      <div class="flex flex-col w-full m-2 md:m-5 md:px-3 z-10">
+    <div class="background relative flex flex-auto h-screen w-full overflow-auto main">
+      <div class="flex flex-col w-full m-2 md:m-5 md:px-3">
         <Navbar />
         <router-view v-slot="{ Component }">
           <transition
