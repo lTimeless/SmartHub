@@ -6,8 +6,7 @@
 /* Scrollbar */
 /* width */
 ::-webkit-scrollbar {
-  //width: 12px;
-  @apply w-0 md:w-2
+  @apply w-0 md:w-2;
 }
 
 /* Track */

@@ -58,16 +58,10 @@ export default defineComponent({
       default: false
     }
   },
-  setup(props, context) {
+  setup(props) {
     const { isRoute } = useCurrentRoute(props.route);
 
-    const handleNavigationClick = () => {
-      console.log('click');
-      context.emit('update:close-mobile-sidebar', false);
-    };
-
     return {
-      handleNavigationClick,
       isRoute,
       routes: Routes,
       ...toRefs(props)
