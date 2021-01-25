@@ -1,4 +1,5 @@
 ﻿using HotChocolate.Types;
+using SmartHub.Application.UseCases.DeviceState.Queries;
 using SmartHub.Application.UseCases.Entity.Devices.Queries;
 using SmartHub.Application.UseCases.Entity.Groups.Queries;
 using SmartHub.Application.UseCases.Identity.Queries;
@@ -26,6 +27,8 @@ namespace SmartHub.Api.GraphQl
 			descriptor.Include<InitQueries>();
 			// NetworkScanner
 			descriptor.Include<NetworkScannerQueries>();
+			// DeviceState
+			descriptor.Include<DeviceLightStateQueries>();
 		}
 	}
 }

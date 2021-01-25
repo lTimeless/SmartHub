@@ -8,7 +8,7 @@
         ///
         /// </summary>
         /// <param name="onOff"></param>
-        ILight SetToggleLight(bool? onOff);
+        ILight SetLight(bool? onOff);
 
         /// <summary>
         ///

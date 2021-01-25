@@ -11,6 +11,8 @@ namespace SmartHub.Domain.Common.Enums
 		NotUpdated,
 		Exists,
 		NoHome,
+		// DeviceState
+		NotSet,
 		// Identity
 		NotAuthorized,
 		// Input

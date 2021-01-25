@@ -157,7 +157,7 @@ export default defineComponent({
   <!-- Sidebar -->
   <div
     :class="[miniSidebarOpen ? 'md:w-12' : 'w-48']"
-    class="rounded md:left-0 md:top-0 md:bottom-0 md:overflow-y-auto md:flex-no-wrap md:overflow-hidden bg-white flex flex-none z-30"
+    class="rounded md:left-0 md:top-0 md:bottom-0 md:overflow-y-auto md:flex-no-wrap md:overflow-hidden bg-white flex flex-none z-40"
   >
     <!-- Background if MobileSidebar is open -->
     <button

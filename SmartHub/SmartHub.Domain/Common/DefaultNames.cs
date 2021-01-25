@@ -7,5 +7,7 @@
 
         public const string Group = "DEFAULT_GROUP";
         public const string Setting = "DEFAULT_SETTING";
+
+        public const string Plugin = "Plugin";
     }
 }

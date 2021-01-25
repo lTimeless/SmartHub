@@ -29,7 +29,7 @@ namespace SmartHub.Application.UseCases.PluginAdapter.Loader
 			var foundAllFindPluginsInAssembliesDictionary = FindPluginsInAssemblies(pluginPath);
 			if (!foundAllFindPluginsInAssembliesDictionary.ContainsKey(pluginName))
 			{
-				throw new PluginException($"Error: No plugin found on your machine for the given name - {pluginName}");
+				throw new PluginException($"Error: No plugin found, on your machine, with name - {pluginName}");
 			}
 
 			var pluginDto = foundAllFindPluginsInAssembliesDictionary[pluginName];
@@ -38,7 +38,7 @@ namespace SmartHub.Application.UseCases.PluginAdapter.Loader
 				throw new PluginException($"Error: Couldn't load plugin {pluginName}");
 			}
 
-			var iPluginsFromAssembly = await LoadAndCreateIPlugins(pluginDto.Path).ConfigureAwait(false);
+			var iPluginsFromAssembly = await LoadAndCreateIPlugins(pluginDto.Path);
 
 			if (iPluginsFromAssembly.IsNullOrEmpty())
 			{
@@ -55,7 +55,8 @@ namespace SmartHub.Application.UseCases.PluginAdapter.Loader
 			var assemblyPluginInfos = new Dictionary<string, PluginDto>();
 			(PluginLoadContext pluginLoadContext, IEnumerable<Assembly> assemblies) = LoadAssembliesAndContext(path);
 
-			foreach (var assembly in assemblies)
+			var assBies = assemblies.ToList();
+			foreach (var assembly in assBies)
 			{
 				foreach (var plugin in PluginHelper.GetValidPluginTypes(assembly))
 				{

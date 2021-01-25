@@ -1,8 +1,12 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.WebUtilities;
+using System;
 using System.Net.Http;
 using System.Text.Json;
 using System.Threading.Tasks;
 using SmartHub.Application.Common.Interfaces;
+using SmartHub.Domain.Common.Extensions;
+using System.Collections.Generic;
+using System.Net.Http.Json;
 
 namespace SmartHub.Infrastructure.Services.Http
 {
@@ -15,19 +19,21 @@ namespace SmartHub.Infrastructure.Services.Http
 			_httpClient = clientFactory.CreateClient("SmartHub");
 		}
 
-		/// <inheritdoc cref="IHttpService.SendAsync"/>
-		public async Task<bool> SendAsync(string ipAddress, string query)
+		/// <inheritdoc cref="IHttpService.SendAsync{T}"/>
+		public async Task<Tuple<T?, bool>> SendAsync<T>(string ipAddress, Tuple<string, Dictionary<string, string?>> queryTuple) where T: class
 		{
+			var (path, queryParams) = queryTuple;
 			var uri = new UriBuilder
 			{
 				Host = ipAddress,
-				Query = query
+				Path = path
 			};
-			//bsp. http://192.168.2.23?turn=On
-			var request = new HttpRequestMessage(HttpMethod.Get, uri.ToString());
+			var url = QueryHelpers.AddQueryString(uri.ToStringWithoutTrailingSlash(), queryParams);
+			var request = new HttpRequestMessage(HttpMethod.Get, url);
 
 			using var response = await _httpClient.SendAsync(request, HttpCompletionOption.ResponseHeadersRead);
-			return response.IsSuccessStatusCode;
+			var json = await response.Content.ReadFromJsonAsync<T>();
+			return new(json, response.IsSuccessStatusCode);
 		}
 
 		/// <inheritdoc cref="IHttpService.GetAsync{T}"/>

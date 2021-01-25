@@ -22,7 +22,7 @@ namespace SmartHub.Application.UseCases.PluginAdapter.Helper
 		public static IEnumerable<Type> GetValidPluginTypes(Assembly assembly)
 		{
 			return assembly.GetTypes()
-				.Where(type => !type.IsInterface && typeof(IPlugin).IsAssignableFrom(type))
+				.Where(type => !type.IsInterface && !type.IsAbstract && typeof(IPlugin).IsAssignableFrom(type))
 				.ToList();
 		}
 

@@ -2,7 +2,7 @@
   <!-- Background if MobileSidebar is open -->
   <div v-if="showDropdown" class="fixed inset-0 h-full w-full bg-black opacity-20 cursor-default" />
   <!-- User Button and modal -->
-  <div class="relative z-30 text-left cursor-pointer" :class="[mobileSidebarOpen ? 'w-full' : '']">
+  <div class="relative z-40 text-left cursor-pointer" :class="[mobileSidebarOpen ? 'w-full' : '']">
     <div
       class="flex flex-row items-center"
       :class="[
@@ -14,7 +14,7 @@
       ]"
     >
       <div
-        class="relative z-30 h-12 flex items-center hover:bg-charcoalBlue-200 rounded-l"
+        class="relative z-40 h-12 flex items-center hover:bg-charcoalBlue-200 rounded-l"
         :class="[
           isRoute ? `bg-primaryBlue ${onlyIcon ? 'bg-charcoalBlue-500' : ''}` : '',
           onlyIcon && !mobileSidebarOpen ? 'w-12 justify-center' : 'w-2/3 pl-4'
@@ -49,7 +49,7 @@
       <div
         ref="modalTarget"
         v-if="showDropdown"
-        class="fixed md:inset-x-0 md:bottom-2 md:left-16 origin-top-right right-0 mt-2 mr-2 md:mr-0 z-30 w-40 rounded border bg-white ring-1 ring-black ring-opacity-5"
+        class="fixed md:inset-x-0 md:bottom-2 md:left-16 origin-top-right right-0 mt-2 mr-2 md:mr-0 z-40 w-40 rounded border bg-white ring-1 ring-black ring-opacity-5"
         role="menu"
         aria-orientation="vertical"
         aria-labelledby="options-menu"
