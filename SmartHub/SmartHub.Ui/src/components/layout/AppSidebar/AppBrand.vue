@@ -2,7 +2,7 @@
   <router-link
     :to="routes.Home"
     class="flex rounded-l items-end"
-    :class="[onlyIcon ? 'w-12 justify-center' : ' w-48 justify-start pl-4']"
+    :class="[onlyIcon ? 'w-12 justify-center' : ' w-48 justify-start']"
     title="Home"
   >
     <Logo :width="32" />

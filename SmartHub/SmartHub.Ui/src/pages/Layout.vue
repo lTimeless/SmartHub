@@ -1,41 +1,22 @@
 <script lang="ts">
-import { computed, defineComponent, ref, watch } from 'vue';
+import { defineComponent } from 'vue';
 import Navbar from '@/components/layout/AppNavbar.vue';
 import AppSidebar from '@/components/layout/AppSidebar/AppSidebar.vue';
-import AppMobileSidebar from '@/components/layout/AppSidebar/AppMobileSidebar.vue';
-import { useStore } from 'vuex';
 
 export default defineComponent({
   name: 'Layout',
   components: {
     AppSidebar,
-    AppMobileSidebar,
     Navbar
   },
   setup() {
-    // const store = useStore();
-    // const hideAfterXSec = ref(false);
-    // const showMobileSidebar = computed(() => store.state.appModule.mobileSidebarOpen);
-
-    // watch(showMobileSidebar, (newV) => {
-    //   if (!newV) {
-    //     setTimeout(() => (hideAfterXSec.value = newV), 300);
-    //   } else {
-    //     hideAfterXSec.value = newV;
-    //   }
-    // });
-
-    return {
-      // showMobileSidebar,
-      // hideAfterXSec
-    };
+    return {};
   }
 });
 </script>
 
 <template>
   <div class="flex h-full overflow-hidden">
-    <!--    <AppMobileSidebar v-if="hideAfterXSec" />-->
     <!-- Sidebar-->
     <AppSidebar />
     <!-- Main View-->

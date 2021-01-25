@@ -170,18 +170,23 @@ export default defineComponent({
       :class="[mobileSidebarOpen ? 'bg-white m-2 py-3 px-6' : 'hidden']"
     >
       <!-- Collapse header -->
-      <div class="md:min-w-full md:hidden mb-2">
+      <div v-if="mobileSidebarOpen" class="mb-2">
         <div class="flex flex-wrap">
-          <div class="w-4/12 flex items-center">
-            <AppIcon icon-name="Close" @click="closeMobileSidebar" class="cursor-pointer md:hidden" />
+          <div class="w-2/12 flex items-center">
+            <AppIcon icon-name="Close" @click="closeMobileSidebar" class="cursor-pointer" />
           </div>
-          <div class="">
+          <div class="w-10/12 flex justify-center pl-2">
             <AppBrand />
           </div>
         </div>
       </div>
       <div class="flex flex-col space-y w-full items-center">
-        <AppBrand v-if="!mobileSidebarOpen" class="md:my-3" :only-icon="miniSidebarOpen" />
+        <AppBrand
+          v-if="!mobileSidebarOpen"
+          class="my-4"
+          :class="[miniSidebarOpen ? '' : 'pl-3']"
+          :only-icon="miniSidebarOpen"
+        />
         <div v-for="view in sidebarLists" :key="view.label" :class="[mobileSidebarOpen ? 'w-full' : '']">
           <NavigationItem
             v-if="roleIncluded(view.rolesRequired)"
@@ -207,7 +212,7 @@ export default defineComponent({
             :mobile-sidebar-open="mobileSidebarOpen"
           />
         </a>
-        <AppUserDropdown :only-icon="miniSidebarOpen" :mobile-sidebar-open="mobileSidebarOpen"/>
+        <AppUserDropdown :only-icon="miniSidebarOpen" :mobile-sidebar-open="mobileSidebarOpen" />
         <MiniToggle :only-icon="miniSidebarOpen" />
       </div>
     </div>
