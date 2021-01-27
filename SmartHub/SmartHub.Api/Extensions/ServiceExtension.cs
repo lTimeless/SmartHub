@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using HotChocolate.Types;
+using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.IO.Compression;
 using Microsoft.AspNetCore.Authorization;
@@ -67,6 +68,7 @@ namespace SmartHub.Api.Extensions
 				.AddQueryType<RootQueryType>()
 				.AddMutationType<RootMutationType>()
 				.AddAuthorization()
+				.AddDirectiveType<DeferDirectiveType>()
 				.AddTypes()
 				.AddProjections()
 				.AddFiltering()

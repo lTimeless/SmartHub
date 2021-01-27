@@ -1,6 +1,5 @@
 ﻿using HotChocolate;
 using HotChocolate.AspNetCore.Authorization;
-using HotChocolate.Types;
 using Serilog;
 using SmartHub.Application.Common.Exceptions;
 using SmartHub.Application.Common.Interfaces;
@@ -10,13 +9,10 @@ using SmartHub.Application.UseCases.AppFolder.AppConfigParser;
 using SmartHub.Application.UseCases.PluginAdapter.Helper;
 using SmartHub.Application.UseCases.PluginAdapter.Host;
 using SmartHub.BasePlugin.Interfaces.DeviceTypes;
-using SmartHub.Domain.Common;
 using SmartHub.Domain.Common.Enums;
 using SmartHub.Domain.Entities;
 using System;
 using System.Collections.Generic;
-using System.Net.Http;
-using System.Net.Http.Json;
 using System.Threading.Tasks;
 
 namespace SmartHub.Application.UseCases.DeviceState.Queries
@@ -30,6 +26,15 @@ namespace SmartHub.Application.UseCases.DeviceState.Queries
 	{
 		private readonly ILogger _log = Log.ForContext(typeof(DeviceLightStateQueries));
 
+		/// <summary>
+		///
+		/// </summary>
+		/// <param name="appConfigService"></param>
+		/// <param name="pluginHostService"></param>
+		/// <param name="httpService"></param>
+		/// <param name="deviceRepository"></param>
+		/// <param name="input"></param>
+		/// <returns></returns>
 		public async Task<DeviceStatePayload> SetLightState([Service] IAppConfigService appConfigService,
 			[Service] IPluginHostService pluginHostService, [Service] IHttpService httpService,
 			[Service] IBaseRepositoryAsync<Device> deviceRepository, DeviceLightStateInput input)
@@ -72,10 +77,9 @@ namespace SmartHub.Application.UseCases.DeviceState.Queries
 			}
 			else
 			{
-				// TODO implement later -> error path
-				_log.Information($"{connectionType}");
+				return new(new($"Error:  No connection type set for device {foundDevice.Name}.",AppErrorCodes.NotSet));
 			}
-			var (content, success) = await httpService.SendAsync<DeviceLightStateResponse>(foundDevice.Ip.Ipv4, queryTuple);
+			var (content, success) = await httpService.SendAsync<DeviceStateResponse>(foundDevice.Ip.Ipv4, queryTuple);
 			return success
 				? new(content, $"{foundDevice.Name} changed light status")
 				: new(new("Error: Could not set device light state.", AppErrorCodes.NotSet));

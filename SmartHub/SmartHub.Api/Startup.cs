@@ -79,7 +79,7 @@ namespace SmartHub.Api
                 endpoints.MapGraphQL().WithOptions(
 	                new GraphQLServerOptions
 	                {
-		                Tool = { Enable = false }
+		                Tool = { Enable = true }
 	                });
             });
 			// Spa
