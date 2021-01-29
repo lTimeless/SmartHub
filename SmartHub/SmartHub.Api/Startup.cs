@@ -62,6 +62,7 @@ namespace SmartHub.Api
             app.UseStaticFiles();
             app.UseSpaStaticFiles();
             // Routing
+            app.UseWebSockets();
             app.UseRouting();
             // Auth
             app.UseCors("CorsPolicy");

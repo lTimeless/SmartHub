@@ -9,6 +9,7 @@ using SmartHub.Application.UseCases.AppFolder.AppConfigParser;
 using SmartHub.Application.UseCases.PluginAdapter.Helper;
 using SmartHub.Application.UseCases.PluginAdapter.Host;
 using SmartHub.BasePlugin.Interfaces.DeviceTypes;
+using SmartHub.BasePlugin.Types;
 using SmartHub.Domain.Common.Enums;
 using SmartHub.Domain.Entities;
 using System;
@@ -79,7 +80,7 @@ namespace SmartHub.Application.UseCases.DeviceState.Queries
 			{
 				return new(new($"Error:  No connection type set for device {foundDevice.Name}.",AppErrorCodes.NotSet));
 			}
-			var (content, success) = await httpService.SendAsync<DeviceStateResponse>(foundDevice.Ip.Ipv4, queryTuple);
+			var (content, success) = await httpService.SendAsync<LightResponseType>(foundDevice.Ip.Ipv4, queryTuple);
 			return success
 				? new(content, $"{foundDevice.Name} changed light status")
 				: new(new("Error: Could not set device light state.", AppErrorCodes.NotSet));

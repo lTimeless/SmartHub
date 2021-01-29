@@ -1,26 +1,48 @@
-﻿using HotChocolate.Types;
-using SmartHub.Application.Common.Models;
+﻿using HotChocolate;
+using HotChocolate.Types;
+using Serilog;
+using SmartHub.Application.Common.Exceptions;
+using SmartHub.Application.Common.Interfaces;
+using SmartHub.Application.UseCases.PluginAdapter.Helper;
+using SmartHub.Application.UseCases.PluginAdapter.Host;
+using SmartHub.BasePlugin;
+using SmartHub.BasePlugin.Types;
+using SmartHub.Domain.Common.Enums;
 using SmartHub.Domain.Entities;
+using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace SmartHub.Application.UseCases.Entity.Devices.ExtendObjectType
 {
-	public class ExtendDeviceType : ObjectTypeExtension<Device>
+	[ExtendObjectType("Device")]
+	public class ExtendDeviceType
 	{
-		protected override void Configure(IObjectTypeDescriptor<Device> descriptor)
+		private readonly ILogger _log = Log.ForContext(typeof(ExtendDeviceType));
+		public async Task<StatusResponseType?> GetStatus([Parent]Device device, [Service] IPluginHostService pluginHostService, [Service] IHttpService httpService)
 		{
-			descriptor.Field("status")
-				.Type(typeof(DeviceStateResponse))
-				.Resolve(async (x, c) =>
-				{
-					var t = Task.Run(() =>
-					{
-						Task.Delay(1000, c).Wait(c);
-					});
-					t.Wait(1000, c);
-					//TODO: hier für das gerät den status via einem http call abfragen
-					return new DeviceStateResponse(true, "",1,1,1,1);
-				});
+			var queryTuple = new Tuple<string, Dictionary<string, string?>>("", new());
+			IPlugin pluginObject;
+			pluginObject = await pluginHostService.GetPluginByNameAsync<IPlugin>(device.PluginName);
+
+			var connectionType = PluginHelper.CombineConnectionTypes(pluginObject);
+			if ((connectionType & ConnectionTypes.Http) != 0 && device.PrimaryConnection == ConnectionTypes.Http)
+			{
+				//TODO: here get the status path/command from the actual plugin
+				// queryTuple = pluginObject.InstantiateQuery().SetStatus().Build();
+				queryTuple = new("/status", new());
+			}
+			else if ((connectionType & ConnectionTypes.Mqtt) != 0 && device.PrimaryConnection == ConnectionTypes.Mqtt)
+			{
+				// TODO implement later -> MQTT path
+				_log.Information($"{connectionType}");
+			}
+			else
+			{
+				return null;
+			}
+			var (content, success) = await httpService.SendAsync<StatusResponseType>(device.Ip.Ipv4, queryTuple);
+			return success? content : null;
 		}
 	}
 }

@@ -1,13 +1,14 @@
 ﻿using SmartHub.Application.Common.Models;
+using SmartHub.BasePlugin.Types;
 
 namespace SmartHub.Application.UseCases.DeviceState
 {
 	public class DeviceStatePayload : Payload
 	{
-		public DeviceStateResponse? DeviceLightStateResponse { get; }
-		public DeviceStatePayload(DeviceStateResponse? deviceLightStateResponse, string? message = null) : base(message)
+		public LightResponseType? LightResponseType { get; }
+		public DeviceStatePayload(LightResponseType? lightResponseType, string? message = null) : base(message)
 		{
-			DeviceLightStateResponse = deviceLightStateResponse;
+			LightResponseType = lightResponseType;
 		}
 
 		public DeviceStatePayload(UserError error) : base(new []{ error })
