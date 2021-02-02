@@ -230,25 +230,8 @@ _Pvt_Extensions
 # FAKE - F# Make
 .fake/
 
-
-# Project Files / Folders
-SmartHub.Api/ClientApp/node_modules/
-SmartHub/Plugins/
-SmartHub/SmartHub.Api/wwwroot
-
 # Intellij
-SmartHub/.idea
+.idea
 
 # Dev configFolder
 SmartHub.configFolder-dev/
-
-
-
-SmartHub/SmartHub.Api/appsettings.Development.json
-
-SmartHub/SmartHub.Api/appsettings.json
-
-SmartHub/SmartHub.Api/appsettings.Production.json
-/SmartHub/SmartHub.Api/logs/
-swagger.json
-

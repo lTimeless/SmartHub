@@ -1,0 +1,129 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <RootNamespace>SmartHub.WebUI</RootNamespace>
+    <AssemblyName>SmartHub.WebUI</AssemblyName>
+    <TypeScriptCompileBlocked>true</TypeScriptCompileBlocked>
+    <TypeScriptToolsVersion>Latest</TypeScriptToolsVersion>
+    <IsPackable>false</IsPackable>
+    <SpaRoot>ClientApp\</SpaRoot>
+    <DefaultItemExcludes>$(DefaultItemExcludes);$(SpaRoot)node_modules\**</DefaultItemExcludes>
+
+    <!-- Set this to true if you enable server-side prerendering -->
+    <BuildServerSideRenderer>false</BuildServerSideRenderer>
+    <UserSecretsId>4ad38c50-ce06-489e-82b1-b19383316829</UserSecretsId>
+    <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+    <DockerComposeProjectPath>..\docker-compose.dcproj</DockerComposeProjectPath>
+  </PropertyGroup>
+
+  <!-- Nuget packages -->
+  <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="10.1.1" />
+    <PackageReference Include="HotChocolate" Version="11.0.9" />
+    <PackageReference Include="HotChocolate.AspNetCore" Version="11.0.9" />
+    <PackageReference Include="HotChocolate.AspNetCore.Authorization" Version="11.0.9" />
+    <PackageReference Include="HotChocolate.Data" Version="11.0.9" />
+    <PackageReference Include="HotChocolate.Subscriptions" Version="11.0.9" />
+    <PackageReference Include="HotChocolate.Subscriptions.InMemory" Version="11.0.9" />
+    <PackageReference Include="Microsoft.AspNetCore.ResponseCompression" Version="2.2.0" />
+    <PackageReference Include="Microsoft.AspNetCore.SpaServices.Extensions" Version="5.0.2" />
+    <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="5.0.2" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="5.0.2">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="5.0.2" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="5.0.2">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.Extensions.Http.Polly" Version="5.0.1" />
+    <PackageReference Include="Microsoft.Extensions.SecretManager.Tools" Version="2.0.2" />
+    <PackageReference Include="Npgsql" Version="5.0.3" />
+    <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="5.0.2" />
+    <PackageReference Include="Polly" Version="7.2.1" />
+    <PackageReference Include="Serilog" Version="2.10.1-dev-01249" />
+    <PackageReference Include="Serilog.AspNetCore" Version="3.4.1-dev-00180" />
+    <PackageReference Include="Serilog.Enrichers.Environment" Version="2.2.0-dev-00761" />
+    <PackageReference Include="Serilog.Enrichers.Process" Version="2.0.2-dev-00733" />
+    <PackageReference Include="Serilog.Enrichers.Thread" Version="3.2.0-dev-00747" />
+    <PackageReference Include="Serilog.Extensions.Hosting" Version="4.0.0-dev-00051" />
+    <PackageReference Include="Serilog.Extensions.Logging" Version="3.0.2-dev-10281" />
+    <PackageReference Include="Serilog.Sinks.AspNetCore.SignalR" Version="0.3.8" />
+    <PackageReference Include="Serilog.Sinks.Async" Version="1.4.1-dev-00073" />
+    <PackageReference Include="Serilog.Sinks.Console" Version="4.0.0-dev-00839" />
+    <PackageReference Include="Serilog.Sinks.Elasticsearch" Version="8.5.0-alpha0003" />
+    <PackageReference Include="Serilog.Sinks.File" Version="5.0.0-dev-00887" />
+    <PackageReference Include="Serilog.Sinks.Map" Version="1.0.2" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Application\Application.csproj" />
+    <ProjectReference Include="..\Infrastructure\Infrastructure.csproj" />
+  </ItemGroup>
+  <!-- To make sure that in a normal build process the wwwroot folder is also beeing copied to the build folder -->
+  <ItemGroup>
+    <None Include="wwwroot\**">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+<!--  <ItemGroup>-->
+<!--    <Content Update="appsettings.Development.json">-->
+<!--      <DependentUpon>appsettings.json</DependentUpon>-->
+<!--    </Content>-->
+<!--    <Content Update="appsettings.Production.json">-->
+<!--      <DependentUpon>appsettings.json</DependentUpon>-->
+<!--    </Content>-->
+<!--  </ItemGroup>-->
+  <ItemGroup>
+    <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleToAttribute">
+      <_Parameter1>SmartHub.WebUI.Tests</_Parameter1>
+    </AssemblyAttribute>
+    <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleToAttribute">
+      <_Parameter1>DynamicProxyGenAssembly2</_Parameter1>
+    </AssemblyAttribute>
+  </ItemGroup>
+  <ItemGroup>
+    <!-- Don't publish the SPA source files, but do show them in the project files list -->
+    <Content Remove="$(SpaRoot)**" />
+    <None Remove="$(SpaRoot)**" />
+    <Content Update="appsettings.Development.json">
+      <DependentUpon>appsettings.json</DependentUpon>
+    </Content>
+    <Content Update="appsettings.Production.json">
+      <DependentUpon>appsettings.json</DependentUpon>
+    </Content>
+<!--    <None Include="$(SpaRoot)**" Exclude="$(SpaRoot)node_modules\**" />-->
+  </ItemGroup>
+
+  <!-- Smarthub.Ui build process for 'dotnet build' -->
+<!--  <Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)node_modules') ">-->
+<!--    &lt;!&ndash; Ensure Node.js is installed &ndash;&gt;-->
+<!--    <Exec Command="node &#45;&#45;version" ContinueOnError="true">-->
+<!--      <Output TaskParameter="ExitCode" PropertyName="ErrorCode" />-->
+<!--    </Exec>-->
+<!--    <Error Condition="'$(ErrorCode)' != '0'" Text="Node.js is required to build and run this project. To continue, please install Node.js from https://nodejs.org/, and then restart your command prompt or IDE." />-->
+<!--    <Message Importance="high" Text="Restoring dependencies using 'npm'. This may take several minutes..." />-->
+<!--    <Exec WorkingDirectory="$(SpaRoot)" Command="npm install" />-->
+<!--    <Exec WorkingDirectory="$(SpaRoot)" Command="npm run build" />-->
+<!--  </Target>-->
+
+  <!-- Smarthub.Ui build process for 'dotnet publish' -->
+  <Target Name="PublishRunWebpack" AfterTargets="ComputeFilesToPublish">
+    <!-- As part of publishing, ensure the JS resources are freshly built in production mode -->
+    <Exec WorkingDirectory="$(SpaRoot)" Command="npm install" />
+    <Exec WorkingDirectory="$(SpaRoot)" Command="npm run build" />
+
+    <!-- Include the newly-built files in the publish output -->
+    <!--    <ItemGroup>-->
+    <!--      <DistFiles Include="$(SpaRoot)build\**" />-->
+    <!--      <ResolvedFileToPublish Include="@(DistFiles->'%(FullPath)')" Exclude="@(ResolvedFileToPublish)">-->
+    <!--        <RelativePath>%(DistFiles.Identity)</RelativePath>-->
+    <!--        <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>-->
+    <!--        <ExcludeFromSingleFile>true</ExcludeFromSingleFile>-->
+    <!--      </ResolvedFileToPublish>-->
+    <!--    </ItemGroup>-->
+  </Target>
+</Project>
