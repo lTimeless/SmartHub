@@ -4,9 +4,11 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Serilog;
 using Serilog.Sinks.Elasticsearch;
+using SmartHub.Application.Common.Helpers;
 using SmartHub.WebUI.Extensions;
 using SmartHub.WebUI.Serilog;
 using System;
+using System.Net;
 using System.Reflection;
 using System.Threading.Tasks;
 
@@ -50,7 +52,6 @@ namespace SmartHub.WebUI
 					if (env.IsDevelopment() && !string.IsNullOrEmpty(env.ApplicationName))
 					{
 						var appAssembly = Assembly.Load(new AssemblyName(env.ApplicationName));
-
 						if (appAssembly != null)
 						{
 							configurationBuilder.AddUserSecrets(appAssembly, true);
@@ -75,20 +76,19 @@ namespace SmartHub.WebUI
 									configuration.File($"{logFilePath}");
 								}
 							}, 1)
-						.WriteTo.Elasticsearch(
-							new ElasticsearchSinkOptions(new Uri(context.Configuration["ElasticConfiguration:Uri"]))
-							{
-								AutoRegisterTemplate = true,
-								NumberOfShards = 2,
-								NumberOfReplicas = 1,
-								IndexFormat =
-									$"{context.Configuration["SmartHub:ApplicationName"]}-logs-{context.HostingEnvironment.EnvironmentName?.ToLower().Replace(".", "-")}-{DateTime.UtcNow:yyyy-MM}"
-							});
+;
 				})
 				.ConfigureLogging((_, config) => config.ClearProviders())
 				.ConfigureWebHostDefaults(webBuilder =>
 				{
-					webBuilder.UseKestrel();
+					var host = IpAddressUtils.ShowLocalIpv4();
+					webBuilder.UseKestrel(opt =>
+					{
+						opt.ListenLocalhost(5001, conf => conf.UseHttps());
+						opt.Listen(host, 5000);
+						opt.Listen(host, 5001, conf => conf.UseHttps());
+
+					});
 					webBuilder.UseStartup<Startup>();
 				});
 	}

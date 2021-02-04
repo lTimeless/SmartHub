@@ -63,13 +63,7 @@
             </div>
             <button
               @click="InitHome"
-              class="block w-full px-4 py-2 mt-4 text-sm font-medium leading-5 text-center text-white transition-colors duration-150 bg-primary border border-transparent rounded-lg active:bg-ui-primary focus:outline-none focus:shadow-outlineIndigo"
-              :class="
-                !appConfigCreateRequest.autoDetectAddress
-                  ? 'opacity-50 focus:outline-none cursor-not-allowed'
-                  : 'hover:bg-primaryHover'
-              "
-              :disabled="!appConfigCreateRequest.autoDetectAddress"
+              class="block w-full px-4 py-2 mt-4 text-sm font-medium leading-5 text-center text-white bg-primarySienna rounded hover:bg-primarySiennaHover"
             >
               <span class="flex content-center justify-center">
                 <Loader v-if="loadInit" height="h-2" width="w-2" />

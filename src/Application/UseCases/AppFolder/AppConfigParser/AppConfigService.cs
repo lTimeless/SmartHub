@@ -45,7 +45,7 @@ namespace SmartHub.Application.UseCases.AppFolder.AppConfigParser
 			var fileCreated = _fileService.CreateFile(filePath, yaml);
 			if (fileCreated)
 			{
-				_logger.Information("Created yaml-config-file.");
+				_logger.Information("Created yaml-config-file");
 				return;
 			}
 			// Read file if it already exist and override _appConfig
@@ -53,10 +53,10 @@ namespace SmartHub.Application.UseCases.AppFolder.AppConfigParser
 			if (config is not null)
 			{
 				_appConfig = config;
-				_logger.Information("Read yaml-config-file into appConfig.");
+				_logger.Information("Read yaml-config-file into appConfig");
 				return;
 			}
-			_logger.Warning($"YamlConfig is null: {config} .");
+			_logger.Warning($"YamlConfig is null: {config}");
 			return;
 		}
 

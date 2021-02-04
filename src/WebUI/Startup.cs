@@ -47,8 +47,6 @@ namespace SmartHub.WebUI
 
             Log.ForContext(typeof(Startup))
                 .Information("----------------------------------------------------------------");
-            AppExtension.ShowLocalIpv4();
-
             // Response Compression
             app.UseResponseCompression();
             // Serilog
@@ -58,7 +56,10 @@ namespace SmartHub.WebUI
 			// Spa/ StaticFiles
             app.UseHttpsRedirection();
             app.UseStaticFiles();
-            app.UseSpaStaticFiles();
+            if (!env.IsDevelopment())
+            {
+	            app.UseSpaStaticFiles();
+            }
             // Routing
             app.UseWebSockets();
             app.UseRouting();
@@ -76,9 +77,9 @@ namespace SmartHub.WebUI
 
                 // GraphQl
                 endpoints.MapGraphQL().WithOptions(
-	                new GraphQLServerOptions
+	                new()
 	                {
-		                Tool = { Enable = true }
+		                Tool = { Enable = false }
 	                });
             });
 			// Spa
@@ -86,16 +87,13 @@ namespace SmartHub.WebUI
             {
                 // To learn more about options for serving an Angular SPA from ASP.NET Core,
                 // see https://go.microsoft.com/fwlink/?linkid=864501
-                spa.Options.SourcePath = "wwwroot";
+                spa.Options.SourcePath = "ClientApp";
 
-                if (Configuration.GetValue<bool>("Use_StaticFiles"))
+                if (Configuration.GetValue<bool>("Use_DevProxy"))
                 {
-                    return;
+	                // Start separate FE server and Server listens to it
+	                spa.UseProxyToSpaDevelopmentServer("http://localhost:8080");
                 }
-                Log.ForContext(typeof(Startup)).Warning("You need to start separate FE server.. listening to http://localhost:8080");
-                // Start separate FE server and Server listens to it
-                spa.UseProxyToSpaDevelopmentServer("http://localhost:8080");
-                // To start its own FE server
             });
         }
     }

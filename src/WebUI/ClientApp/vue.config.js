@@ -9,5 +9,5 @@ module.exports = {
       }
     }
   },
-  outputDir: '../SmartHub.Api/wwwroot'
+  outputDir: '../wwwroot'
 };

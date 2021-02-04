@@ -3,20 +3,18 @@
     "Api Dev": {
       "commandName": "Project",
       "launchBrowser": false,
-      "applicationUrl": "http://0.0.0.0:5000;https://0.0.0.0:5001",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       },
-      "commandLineArgs": "Use_StaticFiles=false Seed_Db=false Pgsql_User=postgres Pgsql_pwd=1234"
+      "commandLineArgs": "Use_DevProxy=false Seed_Db=false Pgsql_User=postgres Pgsql_pwd=1234"
     },
     "Api Prod": {
       "commandName": "Project",
       "launchBrowser": false,
-      "applicationUrl": "http://0.0.0.0:5000;https://0.0.0.0:5001",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Production"
       },
-      "commandLineArgs": "Use_StaticFiles=false Seed_Db=false Pgsql_User=postgres Pgsql_pwd=1234"
+      "commandLineArgs": "Seed_Db=false Pgsql_User=postgres Pgsql_pwd=1234"
     },
     "Docker": {
       "commandName": "Docker",

@@ -33,7 +33,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\BasePlugin\BasePlugin.csproj" />
     <ProjectReference Include="..\Domain\Domain.csproj" />
     <ProjectReference Include="..\shared\BasePlugin\BasePlugin.csproj" />
   </ItemGroup>
