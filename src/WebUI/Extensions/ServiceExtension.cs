@@ -11,9 +11,10 @@ using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
 using Polly;
-using SmartHub.Domain;
+using SmartHub.Application.Common.Interfaces;
 using SmartHub.Domain.Common.Settings;
 using SmartHub.WebUI.GraphQl;
+using SmartHub.WebUI.Services;
 using SmartHub.WebUI.Validators;
 using System;
 using System.IO.Compression;
@@ -39,6 +40,9 @@ namespace SmartHub.WebUI.Extensions
 			services.AddHttpClientFactory();
 			// Response compression
 			services.AddResponseCompression();
+			// Identity
+			services.AddScoped<ICurrentUserService, CurrentUserService>();
+
 			return services;
 		}
 
@@ -48,8 +52,6 @@ namespace SmartHub.WebUI.Extensions
 
 			services.Configure<HostOptions>(configuration.GetSection("HostOptions"));
 
-			// -------------- SmartHubSettings ---------------
-			services.TryAddSingleton<IValidateOptions<AppConfig>, ApplicationConfigValidation>();
 			services.TryAddSingleton<IValidateOptions<JwtSettings>, JwtSettingsValidation>();
 		}
 

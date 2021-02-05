@@ -5,7 +5,6 @@
         System = 0,
         Admin = 1,
         User = 2,
-        Guest = 4,
-        Anonymous = 8
+        Guest = 4
     }
 }

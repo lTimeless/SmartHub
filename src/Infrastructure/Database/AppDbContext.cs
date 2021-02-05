@@ -14,11 +14,11 @@ namespace SmartHub.Infrastructure.Database
 {
 	public sealed class AppDbContext : IdentityDbContext<User, Role, string>, IAppDbContext
 	{
-		private readonly IUserAccessor _userAccessor;
+		private readonly ICurrentUserService _currentUserService;
 
-		public AppDbContext(DbContextOptions options, IUserAccessor userAccessor) : base(options)
+		public AppDbContext(DbContextOptions options, ICurrentUserService currentUserService) : base(options)
 		{
-			_userAccessor = userAccessor;
+			_currentUserService = currentUserService;
 		}
 
 		public DbSet<Group> Groups { get; set; } = default!;
@@ -50,7 +50,7 @@ namespace SmartHub.Infrastructure.Database
 			foreach (var entry in ChangeTracker.Entries<IEntity>())
 			{
 				var dateTime = DateTimeOffset.Now;
-				var userName = _userAccessor.GetCurrentUsername();
+				var userName = _currentUserService.GetCurrentUsername();
 				switch (entry.State)
 				{
 					case EntityState.Added:

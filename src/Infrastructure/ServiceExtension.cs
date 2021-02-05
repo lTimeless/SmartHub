@@ -124,7 +124,6 @@ namespace SmartHub.Infrastructure
 	        // Identity
             services.AddTransient<IIdentityService, IdentityService>();
             services.AddTransient<TokenGenerator>();
-            services.AddScoped<IUserAccessor, UserAccessor>();
             // Directory
             services.AddTransient<IFileService, FileService>();
             services.AddTransient<IDirectoryService, DirectoryService>();

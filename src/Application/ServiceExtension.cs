@@ -1,11 +1,9 @@
 ﻿using System.Reflection;
 using AutoMapper;
 using Microsoft.Extensions.DependencyInjection;
-using SmartHub.Application.Common.Models;
 using SmartHub.Application.UseCases.AppFolder;
 using SmartHub.Application.UseCases.AppFolder.AppConfigParser;
 using SmartHub.Application.UseCases.GeoLocation;
-using SmartHub.Application.UseCases.Identity;
 using SmartHub.Application.UseCases.NetworkScanner;
 using SmartHub.Application.UseCases.PluginAdapter.Creator;
 using SmartHub.Application.UseCases.PluginAdapter.Host;
@@ -32,8 +30,6 @@ namespace SmartHub.Application
             // HomeFolder
             services.AddSingleton<IAppConfigService, AppConfigService>();
             services.AddTransient<IAppFolderService, AppFolderService>();
-            // Identity
-            services.AddScoped<CurrentUser>();
             // Network
             services.AddScoped<INetworkScannerService, NetworkScannerService>();
             // Geolocation

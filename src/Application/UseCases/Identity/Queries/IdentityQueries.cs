@@ -1,10 +1,8 @@
 ﻿using HotChocolate;
 using HotChocolate.AspNetCore.Authorization;
 using HotChocolate.Types;
-using SmartHub.Application.Common.Attributes;
 using SmartHub.Application.Common.Interfaces;
-using SmartHub.Application.Common.Models;
-using SmartHub.Domain.Entities;
+using SmartHub.Domain.Common.Enums;
 using System;
 using System.Threading.Tasks;
 
@@ -18,20 +16,21 @@ namespace SmartHub.Application.UseCases.Identity.Queries
 		/// <summary>
 		/// Retrieves my own user object.
 		/// </summary>
+		/// <exception cref="ArgumentNullException">Throws if current userName is null.</exception>
 		/// <returns>Returns my user object or throws error if the needed info can't be retrieved from jwt.</returns>
-		[UseCurrentUser]
-		public async Task<User?> GetMe([Service] IIdentityService identityService, [Service] CurrentUser currentUser)
+		public async Task<IdentityPayload> GetMe([Service] IIdentityService identityService, [Service] ICurrentUserService currentUserService)
 		{
-			if (currentUser == null || (currentUser.User == null && currentUser.RequesterName == null))
+			var userName = currentUserService.GetCurrentUsername();
+			if (userName is null)
 			{
-				throw new ArgumentNullException(nameof(currentUser));
+				return new(new("Error: Couldn't retrieve profile for username information.", AppErrorCodes.NotFound));
 			}
-
-			var name = currentUser.User?.UserName ?? currentUser.RequesterName;
-			return name is null
-				? null
-				: await identityService.FindByNameAsync(name);
+			var user = await identityService.FindByNameAsync(userName);
+			if (user is null)
+			{
+				return new(new($"Error: Couldn't retrieve profile for username {userName}.", AppErrorCodes.NotFound));
+			}
+			return new(user, null);
 		}
-
 	}
 }
