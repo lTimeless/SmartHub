@@ -68,11 +68,11 @@
 </template>
 
 <script lang="ts">
-import { reactive, toRefs, defineComponent, ref, watch } from 'vue';
+import { reactive, toRefs, defineComponent, ref, watch, computed } from 'vue';
 import AppCard from '@/components/ui/cards/AppCard.vue';
 import GroupCreateModal from './modals/GroupCreateModal.vue';
 import GroupDropdown from './components/GroupDropdown.vue';
-import { useQuery, useResult } from '@vue/apollo-composable';
+import { useQuery } from '@urql/vue';
 import Loader from '@/components/ui/AppSpinner.vue';
 import { GET_GROUPS } from './GroupQueries';
 import { useRouter } from 'vue-router';
@@ -87,8 +87,8 @@ export default defineComponent({
   },
   setup() {
     const router = useRouter();
-    const { result, loading, error } = useQuery(GET_GROUPS);
-    const groupsResult = useResult(result, null, (data) => data.groups);
+    const { data, fetching: loading, error } = useQuery({ query: GET_GROUPS });
+    const groupsResult = computed(() => data.value.groups);
     const tempGroups = ref();
     const groups = ref();
     const state = reactive({

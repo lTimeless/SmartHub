@@ -87,11 +87,11 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, reactive, ref, watch } from 'vue';
+import { computed, defineComponent, reactive, ref, watch } from 'vue';
 import { AppConfigInitInput } from '@/types/types';
 import { useRouter } from 'vue-router';
 import AppCard from '@/components/ui/cards/AppCard.vue';
-import { useMutation, useQuery, useResult } from '@vue/apollo-composable';
+import { useMutation, useQuery } from '@urql/vue';
 import { Routes } from '@/types/enums';
 import Loader from '@/components/ui/AppSpinner.vue';
 import { INITIALIZE_APP } from '../init/InitMutation';
@@ -116,10 +116,10 @@ export default defineComponent({
     const appConfigCreateRequest: AppConfigInitInput = reactive({
       autoDetectAddress: false
     });
-    const { mutate: initApp, loading: loadInit, error: errInit } = useMutation(INITIALIZE_APP);
+    const { executeMutation: initApp, fetching: loadInit, error: errInit } = useMutation(INITIALIZE_APP);
 
-    const { result, loading, error } = useQuery(ApplicationIsActive);
-    const applicationIsActive = useResult(result, null, (data) => data.applicationIsActive);
+    const { data, fetching: loading, error } = useQuery({ query: ApplicationIsActive });
+    const applicationIsActive = computed(() => data.value.applicationIsActive);
     watch(applicationIsActive, (newApplicationIsActive) => {
       if (newApplicationIsActive) {
         router.push(Routes.Login);

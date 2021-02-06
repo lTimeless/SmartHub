@@ -3,13 +3,14 @@ import { createApp } from 'vue';
 import App from './App.vue';
 import router from './router';
 import { store } from './store';
-import '@/assets/styles/tailwind.scss';
-import { DefaultApolloClient } from '@vue/apollo-composable';
-import { apolloClient } from './apollo-client';
 import IconPlugin from '@/plugins/IconPlugin';
+import { client } from './graphql-client';
+import urql from '@urql/vue';
+
+import '@/assets/styles/tailwind.scss';
 
 const app = createApp(App)
-  .provide(DefaultApolloClient, apolloClient)
+  .use(urql, client)
   .use(router)
   .use(store)
   .use(IconPlugin);

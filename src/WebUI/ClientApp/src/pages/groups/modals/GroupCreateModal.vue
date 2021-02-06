@@ -40,7 +40,7 @@
 import { defineComponent, reactive, computed, toRefs } from 'vue';
 import AppModal from '@/components/ui/modals/AppModal.vue';
 import { CreateGroupInput } from '@/types/types';
-import { useMutation } from '@vue/apollo-composable';
+import { useMutation } from '@urql/vue';
 import { CREATE_GROUP } from '../GroupMutations';
 import { GET_GROUPS } from '../GroupQueries';
 import { GET_GROUPS_COUNT } from '@/pages/home/HomeQueries';
@@ -59,7 +59,9 @@ export default defineComponent({
     const groupCreateInput = reactive<CreateGroupInput>({
       name: ''
     });
-    const { mutate: createGroup, loading: loadCreate, error: errCreate } = useMutation(CREATE_GROUP);
+    const { executeMutation: createGroup, fetching: loadCreate, error: errCreate } = useMutation(
+      CREATE_GROUP
+    );
 
     const saveBtnActive = computed(() => groupCreateInput.name !== '');
     const close = () => {

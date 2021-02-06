@@ -55,10 +55,10 @@
 </template>
 
 <script lang="ts">
-import { reactive, toRefs, defineComponent } from 'vue';
+import { reactive, toRefs, defineComponent, computed } from 'vue';
 import AppCard from '@/components/ui/cards/AppCard.vue';
 import DeviceCreateModal from './modals/DeviceCreateModal.vue';
-import { useQuery, useResult } from '@vue/apollo-composable';
+import { useQuery } from '@urql/vue';
 import Loader from '@/components/ui/AppSpinner.vue';
 import { GET_DEVICES } from './DeviceQueries';
 import { useRouter } from 'vue-router';
@@ -72,8 +72,8 @@ export default defineComponent({
   },
   setup() {
     const router = useRouter();
-    const { result, loading, error } = useQuery(GET_DEVICES);
-    const devices = useResult(result, null, (data) => data.devices);
+    const { data, fetching: loading, error } = useQuery({ query: GET_DEVICES });
+    const devices = computed(() => data.value.devices);
     const state = reactive({
       showCreateModal: false,
       showDetailModal: false,

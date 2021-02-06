@@ -143,7 +143,7 @@ import AppModal from '@/components/ui/modals/AppModal.vue';
 import { CreateDeviceInput } from '@/types/types';
 import { ConnectionTypes, PluginTypes } from '@/types/enums';
 import { useEnumTypes } from '@/hooks/useEnums.ts';
-import { useMutation } from '@vue/apollo-composable';
+import { useMutation } from '@urql/vue';
 import { CREATE_DEVICE } from '../DeviceMutations';
 import { GET_DEVICES } from '../DeviceQueries';
 import { GET_DEVICES_COUNT } from '@/pages/home/HomeQueries';
@@ -166,7 +166,7 @@ export default defineComponent({
       primaryConnection: ConnectionTypes.None.toString(),
       secondaryConnection: ConnectionTypes.None.toString()
     });
-    const { mutate: createDevice, loading: loadCreate, error: errCreate } = useMutation(CREATE_DEVICE);
+    const { executeMutation: createDevice, fetching: loadCreate, error: errCreate } = useMutation(CREATE_DEVICE);
     const saveBtnActive = computed(() => deviceCreateInput.name !== '' && deviceCreateInput.ipv4 !== '');
     const close = () => {
       context.emit('close', false);
@@ -180,8 +180,8 @@ export default defineComponent({
           { query: GET_GROUPS }
         ];
       }
-
-      await createDevice({ input: deviceCreateInput }, refetchOpts);
+      // TODO remove refetchOpts
+      await createDevice({ input: deviceCreateInput });
       context.emit('close', false);
     };
     return {

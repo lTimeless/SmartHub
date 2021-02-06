@@ -13,10 +13,10 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, toRefs } from 'vue';
+import { computed, defineComponent, ref, toRefs } from 'vue';
 import Logo from '@/components/common/svgs/Logo.vue';
 import { Routes } from '@/types/enums';
-import { useQuery, useResult } from '@vue/apollo-composable';
+import { useQuery } from '@urql/vue';
 import gql from 'graphql-tag';
 
 const GET_APP_CONFIG_NAME = gql`
@@ -40,8 +40,8 @@ export default defineComponent({
     }
   },
   setup(props) {
-    const { result } = useQuery(GET_APP_CONFIG_NAME);
-    const appConfig = useResult(result, 'SmartHub', (data) => data.appConfig);
+    const { data } = useQuery({ query: GET_APP_CONFIG_NAME});
+    const appConfig = computed(() => data.value.appConfig);
     return {
       appConfig,
       routes: Routes,

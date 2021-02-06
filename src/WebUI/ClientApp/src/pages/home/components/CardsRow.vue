@@ -6,7 +6,7 @@
         <div class="w-full pr-4 max-w-full flex-grow flex-1">
           <h5 class="text-gray-600 uppercase font-bold text-xs">Groups</h5>
           <span class="text-xl text-gray-600">
-            {{ groupsCount }}
+            {{ groupsFetch || groupsCountResult.groupsCount }}
           </span>
         </div>
         <div class="w-auto pl-4 flex-initial">
@@ -16,7 +16,7 @@
         </div>
       </template>
       <template #subTitle>
-        <span>{{ groupsCount }} </span>
+        <span>{{ groupsFetch || groupsCountResult.groupsCount }} </span>
         <span class="whitespace-no-wrap ml-2"> Since last login </span>
       </template>
     </AppCardRouterLink>
@@ -27,7 +27,7 @@
       <template #title>
         <div class="w-full pr-4 max-w-full flex-grow flex-1">
           <h5 class="text-gray-600 uppercase font-bold text-xs">Devices</h5>
-          <span class="text-xl text-gray-600"> {{ devicesCount }} </span>
+          <span class="text-xl text-gray-600"> {{ devicesFetch || devicesResult.devicesCount }} </span>
         </div>
         <div class="w-auto pl-4 flex-initial">
           <div
@@ -38,7 +38,7 @@
         </div>
       </template>
       <template #subTitle>
-        <span>{{ devicesCount }} </span>
+        <span>{{ devicesFetch || devicesResult.devicesCount }} </span>
         <span class="whitespace-no-wrap ml-2"> Since last login </span>
       </template>
     </AppCardRouterLink>
@@ -88,7 +88,7 @@
 </template>
 
 <script lang="ts">
-import { useQuery, useResult } from '@vue/apollo-composable';
+import { useQuery } from '@urql/vue';
 import { defineComponent } from 'vue';
 import AppIcon from '@/components/icons/AppIcon.vue';
 import AppCardRouterLink from '@/components/ui/cards/AppCardRouterLink.vue';
@@ -103,15 +103,14 @@ export default defineComponent({
   },
   props: {},
   setup() {
-    const { result: groupsCountResult } = useQuery(GET_GROUPS_COUNT);
-    const { result: devicesResult } = useQuery(GET_DEVICES_COUNT);
-
-    const groupsCount = useResult(groupsCountResult);
-    const devicesCount = useResult(devicesResult, 0, (data) => data.devicesCount);
+    const { data: groupsCountResult, fetching: groupsFetch } = useQuery({ query: GET_GROUPS_COUNT });
+    const { data: devicesResult, fetching: devicesFetch } = useQuery({ query: GET_DEVICES_COUNT });
 
     return {
-      groupsCount,
-      devicesCount,
+      groupsCountResult,
+      groupsFetch,
+      devicesResult,
+      devicesFetch,
       routes: Routes
     };
   }

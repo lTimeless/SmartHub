@@ -99,7 +99,7 @@
 import { computed, defineComponent, reactive, ref, watch } from 'vue';
 import { LoginInput } from '@/types/types';
 import { useRouter } from 'vue-router';
-import { useMutation, useQuery, useResult } from '@vue/apollo-composable';
+import { useMutation, useQuery } from '@urql/vue';
 import { Routes } from '@/types/enums';
 import Loader from '@/components/ui/AppSpinner.vue';
 import AppCard from '@/components/ui/cards/AppCard.vue';
@@ -131,10 +131,10 @@ export default defineComponent({
       userName: '',
       password: ''
     });
-    const { mutate: login, loading: loadLogin, error: errLogin } = useMutation(LOGIN);
+    const { executeMutation: login, fetching: loadLogin, error: errLogin } = useMutation(LOGIN);
 
-    const { result, loading, error } = useQuery(HOME_AND_USERS_EXIST);
-    const data = useResult(result, null, (data) => data);
+    const { data: result, fetching: loading, error } = useQuery({ query: HOME_AND_USERS_EXIST });
+    const data = computed(() => result.value);
     watch(data, (newData) => {
       if (!newData.applicationIsActive) {
         router.push(Routes.Init);
@@ -154,7 +154,11 @@ export default defineComponent({
           token.value = res.data.login.token;
           router.push(Routes.Home);
         } else {
-          errLogin.value = { name: res.data.login.errors[0].code, message: res.data.login.errors[0].message };
+        //   errLogin.value = {
+        //     graphQLErrors: [
+        //       { name: res.data.login.errors[0].code, message: res.data.login.errors[0].message,   }
+        //     ]
+        //   };
         }
       });
     };

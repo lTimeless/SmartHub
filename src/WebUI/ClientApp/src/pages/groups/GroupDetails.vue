@@ -72,8 +72,8 @@
 <script lang="ts">
 import Loader from '@/components/ui/AppSpinner.vue';
 import { UpdateGroupInput } from '@/types/types';
-import { defineComponent, reactive } from 'vue';
-import { useMutation, useQuery, useResult } from '@vue/apollo-composable';
+import { computed, defineComponent, reactive } from 'vue';
+import { useMutation, useQuery } from '@urql/vue';
 import { UPDATE_GROUP } from './GroupMutations';
 import { GET_GROUP_BY_ID, GET_GROUPS } from './GroupQueries';
 import { useRoute } from 'vue-router';
@@ -88,11 +88,13 @@ export default defineComponent({
     const updatedGroup: UpdateGroupInput = reactive({
       id: ''
     });
-    const { mutate: updateGroup, loading: loadUpdate, error: errUpdate } = useMutation(UPDATE_GROUP);
-    const { result, loading, error } = useQuery(GET_GROUP_BY_ID, () => ({ name: route.params.name }), {
-      fetchPolicy: 'no-cache'
+    const { executeMutation: updateGroup, fetching: loadUpdate, error: errUpdate } = useMutation(UPDATE_GROUP);
+    const { data: result, fetching: loading, error } = useQuery({
+      query: GET_GROUP_BY_ID,
+      variables: { name: route.params.name },
+      requestPolicy: 'network-only'
     });
-    const group = useResult(result, null, (data) => data.groups[0]);
+    const group = computed(() => result.value.data.groups[0]);
 
     const save = async () => {
       if (group.value) {

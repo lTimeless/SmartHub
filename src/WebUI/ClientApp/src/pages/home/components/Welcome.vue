@@ -6,7 +6,8 @@
       </h3>
       <div>
         <h1 class="text-left text-3xl md:text-6xl text-charcoalBlue-300">Good {{ timeOfDay }}</h1>
-        <h2 class="text-left text-4xl md:text-6xl text-primarySienna">{{ capitalize(userName) }}</h2>
+        <h2 v-if="fetching" class="text-left text-4xl md:text-6xl text-primarySienna">Loading... </h2>
+        <h2 v-else class="text-left text-4xl md:text-6xl text-primarySienna">{{ capitalize(data.me.user.userName) }}</h2>
       </div>
     </div>
   </div>
@@ -15,14 +16,17 @@
 <script lang="ts">
 import { defineComponent } from 'vue';
 import { useDateTime } from '@/hooks/useDateTime';
-import { useQuery, useResult } from '@vue/apollo-composable';
+import { useQuery } from '@urql/vue';
 import { useString } from '@/hooks/useString';
 import gql from 'graphql-tag';
 
 const GET_USERNAME = gql`
   query GetUserName {
     me {
-      userName
+      user {
+        id
+        userName
+      }
     }
   }
 `;
@@ -30,10 +34,11 @@ const GET_USERNAME = gql`
 export default defineComponent({
   name: 'Welcome',
   setup() {
-    const { result } = useQuery(GET_USERNAME);
-    const userName = useResult(result, '', (data) => data.me.userName);
+    const { data, fetching } = useQuery({ query: GET_USERNAME });
+    
     return {
-      userName,
+      data,
+      fetching,
       ...useString(),
       ...useDateTime()
     };

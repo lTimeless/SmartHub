@@ -121,7 +121,7 @@
 import { defineComponent, ref, computed, reactive } from 'vue';
 import { Roles, Routes } from '@/types/enums';
 import { UpdateUserInput } from '@/types/types';
-import { useMutation, useQuery, useResult } from '@vue/apollo-composable';
+import { useMutation, useQuery } from '@urql/vue';
 import Loader from '@/components/ui/AppSpinner.vue';
 import { useRouter } from 'vue-router';
 import { WHO_AM_I } from '../me/MeQueries';
@@ -143,11 +143,12 @@ export default defineComponent({
     const updateUserInput: UpdateUserInput = reactive({
       userId: ''
     });
-    const { mutate: updateUser, loading: loadUpdate, error: errUpdate } = useMutation(UPDATE_USER);
-    const { result: resultUser, loading: loadUser, error: errUser } = useQuery(WHO_AM_I, null, {
-      fetchPolicy: 'no-cache'
+    const { executeMutation: updateUser, fetching: loadUpdate, error: errUpdate } = useMutation(UPDATE_USER);
+    const { data: resultUser, fetching: loadUser, error: errUser } = useQuery({
+      query: WHO_AM_I,
+      requestPolicy: 'network-only'
     });
-    const user = useResult(resultUser, null, (data) => data.me);
+    const user = computed(() => resultUser.value.me);
 
     const onSaveClick = async () => {
       if (typeof user.value === 'undefined') {

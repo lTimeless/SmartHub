@@ -158,10 +158,10 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, reactive, ref } from 'vue';
+import { computed, defineComponent, reactive, ref } from 'vue';
 import Loader from '@/components/ui/AppSpinner.vue';
 import { UpdateDeviceInput } from '@/types/types';
-import { useMutation, useQuery, useResult } from '@vue/apollo-composable';
+import { useMutation, useQuery } from '@urql/vue';
 import { UPDATE_DEVICE } from './DeviceMutations';
 import { GET_DEVICE_BY_ID, GET_DEVICES } from './DeviceQueries';
 import { useEnumTypes } from '@/hooks/useEnums';
@@ -180,18 +180,16 @@ export default defineComponent({
     const updatedDevice: UpdateDeviceInput = reactive({
       id: ''
     });
-    const { mutate: updateDevice, loading: loadUpdate, error: errUpdate } = useMutation(UPDATE_DEVICE);
-    const { result, loading, error } = useQuery(GET_DEVICE_BY_ID, () => ({ name: route.params.name }), {
-      fetchPolicy: 'no-cache'
-    });
-    const device = useResult(result, null, (data) => data.devices[0]);
+    const { executeMutation: updateDevice, fetching: loadUpdate, error: errUpdate } = useMutation(UPDATE_DEVICE);
+    const { data, fetching: loading, error } = useQuery({ query: GET_DEVICE_BY_ID, variables: { name: route.params.name }});
+    const device = computed(() => data.value.devices[0]);
 
     const save = async () => {
       if (device.value) {
         updatedDevice.id = device.value.id;
         updatedDevice.primaryConnection = device.value?.primaryConnection;
         updatedDevice.secondaryConnection = device.value?.secondaryConnection;
-        await updateDevice({ input: updatedDevice }, { refetchQueries: [{ query: GET_DEVICES }] });
+        await updateDevice({ input: updatedDevice });
       }
     };
 

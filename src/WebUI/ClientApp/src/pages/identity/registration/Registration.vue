@@ -158,7 +158,7 @@ import { useRouter } from 'vue-router';
 import Loader from '@/components/ui/AppSpinner.vue';
 import { Routes } from '@/types/enums';
 import AppCard from '@/components/ui/cards/AppCard.vue';
-import { useMutation } from '@vue/apollo-composable';
+import { useMutation } from '@urql/vue';
 import { REGISTRATION } from '../registration/RegistrationMutation';
 import { useIdentity } from '@/hooks/useIdentity';
 
@@ -185,7 +185,9 @@ export default defineComponent({
     onMounted(() => {
       clearStorage();
     });
-    const { mutate: createAccount, loading: loadCreate, error: errCreate } = useMutation(REGISTRATION);
+    const { executeMutation: createAccount, fetching: loadCreate, error: errCreate } = useMutation(
+      REGISTRATION
+    );
 
     const passwordStrength = computed(() => passwordStrengthText.value !== 'Too weak');
     const checkPwd = computed(
