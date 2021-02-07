@@ -18,7 +18,7 @@ namespace SmartHub.Infrastructure.Database
 
 		public async Task SaveAsync()
 		{
-			await AppDbContext.SaveChangesAsync().ConfigureAwait(false);
+			await AppDbContext.SaveChangesAsync();
 		}
 
 		public void Dispose()

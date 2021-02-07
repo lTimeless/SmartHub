@@ -10,14 +10,14 @@
         <p>Error: {{ error.name }} {{ error.message }}</p>
       </div>
     </template>
-    <template v-else-if="group">
+    <template v-else-if="groupResult && groupResult.groups[0]">
       <label class="text-left block text-sm">
         <span class="text-gray-600 dark:text-gray-400">Name</span>
         <input
           type="text"
           v-model="updatedGroup.name"
           class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md"
-          :placeholder="group.name"
+          :placeholder="groupResult.groups[0].name"
         />
       </label>
       <label class="text-left block text-sm my-3">
@@ -26,16 +26,18 @@
           type="text"
           v-model="updatedGroup.description"
           class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md"
-          :placeholder="group.description ?? 'Description'"
+          :placeholder="groupResult.groups[0].description ?? 'Description'"
         />
       </label>
       <!-- Show available devices -->
-      <template v-if="group.devices !== undefined && group.devices.length > 0">
+      <template
+        v-if="groupResult.groups[0].devices !== undefined && groupResult.groups[0].devices.length > 0"
+      >
         <div class="text-left">
           <div>
             <span class="text-gray-500 text-sm text-left mt-2">Devices</span>
           </div>
-          <div v-for="device in group.devices" :key="device.id" class="pl-3">
+          <div v-for="device in groupResult.groups[0].devices" :key="device.id" class="pl-3">
             {{ device.name }}
           </div>
         </div>
@@ -45,7 +47,7 @@
           <span class="text-gray-500 text-sm text-left mt-2">No devices available</span>
         </div>
       </template>
-      <div class="text-gray-500 text-sm text-left mt-10">Creator: {{ group.createdBy }}</div>
+      <div class="text-gray-500 text-sm text-left mt-10">Creator: {{ groupResult.groups[0].createdBy }}</div>
       <!-- Save btn -->
       <div class="flex items-center justify-start mt-4">
         <button
@@ -72,10 +74,10 @@
 <script lang="ts">
 import Loader from '@/components/ui/AppSpinner.vue';
 import { UpdateGroupInput } from '@/types/types';
-import { computed, defineComponent, reactive } from 'vue';
+import { defineComponent, reactive } from 'vue';
 import { useMutation, useQuery } from '@urql/vue';
 import { UPDATE_GROUP } from './GroupMutations';
-import { GET_GROUP_BY_ID, GET_GROUPS } from './GroupQueries';
+import { GET_GROUP_BY_ID } from './GroupQueries';
 import { useRoute } from 'vue-router';
 
 export default defineComponent({
@@ -88,18 +90,19 @@ export default defineComponent({
     const updatedGroup: UpdateGroupInput = reactive({
       id: ''
     });
-    const { executeMutation: updateGroup, fetching: loadUpdate, error: errUpdate } = useMutation(UPDATE_GROUP);
-    const { data: result, fetching: loading, error } = useQuery({
+    const { executeMutation: updateGroup, fetching: loadUpdate, error: errUpdate } = useMutation(
+      UPDATE_GROUP
+    );
+    const { data: groupResult, fetching: loading, error } = useQuery({
       query: GET_GROUP_BY_ID,
       variables: { name: route.params.name },
       requestPolicy: 'network-only'
     });
-    const group = computed(() => result.value.data.groups[0]);
 
     const save = async () => {
-      if (group.value) {
-        updatedGroup.id = group.value.id;
-        await updateGroup({ input: updatedGroup }, { refetchQueries: [{ query: GET_GROUPS }] });
+      if (groupResult.value) {
+        updatedGroup.id = groupResult.value.groups[0].id;
+        await updateGroup({ input: updatedGroup });
       }
     };
 
@@ -108,7 +111,7 @@ export default defineComponent({
       loadUpdate,
       errUpdate,
       error,
-      group,
+      groupResult,
       save,
       updatedGroup
     };

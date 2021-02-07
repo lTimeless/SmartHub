@@ -7,8 +7,8 @@ using Microsoft.EntityFrameworkCore;
 using SmartHub.Application.Common.Interfaces;
 using SmartHub.Application.Common.Interfaces.Database;
 using SmartHub.Domain.Entities;
-using SmartHub.Infrastructure.Database.Configs;
 using System.Reflection;
+using AppRoles = SmartHub.Domain.Common.Enums.Roles;
 
 namespace SmartHub.Infrastructure.Database
 {
@@ -56,12 +56,12 @@ namespace SmartHub.Infrastructure.Database
 					case EntityState.Added:
 						entry.Entity.CreatedAt = dateTime;
 						entry.Entity.LastModifiedAt = dateTime;
-						entry.Entity.CreatedBy = userName;
-						entry.Entity.LastModifiedBy = userName;
+						entry.Entity.CreatedBy = userName ?? AppRoles.Guest.ToString();
+						entry.Entity.LastModifiedBy = userName ?? AppRoles.Guest.ToString();
 						break;
 					case EntityState.Modified:
 						entry.Entity.LastModifiedAt = dateTime;
-						entry.Entity.LastModifiedBy = userName;
+						entry.Entity.LastModifiedBy = userName ?? AppRoles.System.ToString();
 						break;
 				}
 			}

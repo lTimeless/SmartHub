@@ -11,7 +11,7 @@
         <p>Error: {{ errUser.name }} {{ errUser.message }}</p>
       </div>
     </template>
-    <template v-if="user">
+    <template v-if="resultUser && resultUser.me.user">
       <!-- Username -->
       <div class="flex mr-2 justify-between">
         <div class="w-1/3 mr-2">
@@ -21,7 +21,8 @@
               type="text"
               v-model="updateUserInput.userName"
               class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md"
-              :placeholder="user.userName"
+              :placeholder="resultUser.me.user.userName"
+              disabled
             />
           </label>
         </div>
@@ -52,7 +53,9 @@
             type="text"
             v-model="updateUserInput.firstName"
             class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md"
-            :placeholder="user.personName.firstName === '' ? '-' : user.personName.firstName"
+            :placeholder="
+              resultUser.me.user.personName.firstName === '' ? '-' : resultUser.me.user.personName.firstName
+            "
           />
         </label>
         <label class="text-left block text-sm w-full mr-2">
@@ -61,7 +64,9 @@
             type="text"
             v-model="updateUserInput.middleName"
             class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md"
-            :placeholder="user.personName.middleName === '' ? '-' : user.personName.middleName"
+            :placeholder="
+              resultUser.me.user.personName.middleName === '' ? '-' : resultUser.me.user.personName.middleName
+            "
           />
         </label>
         <label class="text-left block text-sm w-full mr-2">
@@ -70,7 +75,9 @@
             type="text"
             v-model="updateUserInput.lastName"
             class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md"
-            :placeholder="user.personName.lastName === '' ? '-' : user.personName.lastName"
+            :placeholder="
+              resultUser.me.user.personName.lastName === '' ? '-' : resultUser.me.user.personName.lastName
+            "
           />
         </label>
       </div>
@@ -81,7 +88,11 @@
           type="text"
           v-model="updateUserInput.email"
           class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md"
-          :placeholder="user.email === '' || user.email === null ? '-' : user.email"
+          :placeholder="
+            resultUser.me.user.email === '' || resultUser.me.user.email === null
+              ? '-'
+              : resultUser.me.user.email
+          "
         />
       </label>
       <label class="text-left block text-sm w-full mr-2 mt-4">
@@ -90,7 +101,11 @@
           type="text"
           v-model="updateUserInput.phoneNumber"
           class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md"
-          :placeholder="user.phoneNumber === '' || user.phoneNumber === null ? '-' : user.phoneNumber"
+          :placeholder="
+            resultUser.me.user.phoneNumber === '' || resultUser.me.user.phoneNumber === null
+              ? '-'
+              : resultUser.me.user.phoneNumber
+          "
         />
       </label>
       <label class="text-left block text-sm w-full mr-2 mt-4">
@@ -99,11 +114,15 @@
           type="text"
           v-model="updateUserInput.personInfo"
           class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md"
-          :placeholder="user.personInfo === '' ? '-' : user.personInfo"
+          :placeholder="resultUser.me.user.personInfo === '' ? '-' : resultUser.me.user.personInfo"
         />
       </label>
-      <div class="text-gray-500 text-sm text-left mt-10">Last modified by: {{ user.lastModifiedBy }}</div>
-      <div class="text-gray-500 text-sm text-left">Last modified at: {{ user.lastModifiedAt }}</div>
+      <div class="text-gray-500 text-sm text-left mt-10">
+        Last modified by: {{ resultUser.me.user.lastModifiedBy }}
+      </div>
+      <div class="text-gray-500 text-sm text-left">
+        Last modified at: {{ resultUser.me.user.lastModifiedAt }}
+      </div>
     </template>
     <!-- Save button -->
     <div class="md:w-2/12 mt-3">
@@ -144,27 +163,20 @@ export default defineComponent({
       userId: ''
     });
     const { executeMutation: updateUser, fetching: loadUpdate, error: errUpdate } = useMutation(UPDATE_USER);
-    const { data: resultUser, fetching: loadUser, error: errUser } = useQuery({
-      query: WHO_AM_I,
-      requestPolicy: 'network-only'
-    });
-    const user = computed(() => resultUser.value.me);
+    const { data: resultUser, fetching: loadUser, error: errUser } = useQuery({ query: WHO_AM_I });
 
     const onSaveClick = async () => {
-      if (typeof user.value === 'undefined') {
-        return;
-      }
-      updateUserInput.userId = user.value.id;
+      const user = resultUser.value?.me.user;
+      updateUserInput.userId = user.id;
       updateUserInput.newRole = selectedRole.value;
-      await updateUser({ input: updateUserInput }, { refetchQueries: [{ query: WHO_AM_I }] });
-
+      await updateUser({ input: updateUserInput });
       if (typeof updateUserInput.newRole !== 'undefined' && updateUserInput.newRole !== prevRole) {
         clearStorage();
         await router.push({ path: Routes.Login, replace: true });
       }
     };
     return {
-      user,
+      resultUser,
       loadUser,
       errUser,
       loadUpdate,

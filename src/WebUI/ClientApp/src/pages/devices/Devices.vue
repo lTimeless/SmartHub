@@ -23,12 +23,12 @@
     <template v-else-if="loading">
       <Loader height="h-48" width="w-48" />
     </template>
-    <template v-if="devices">
-      <div v-if="devices.length > 0">
+    <template v-if="data">
+      <div v-if="data.devices">
         <div class="grid xl:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 gap-4 rounded">
           <AppCard
             class="border hover:border-indigo-400 bg-white w-full"
-            v-for="device in devices"
+            v-for="device in data.devices"
             :key="device.id"
           >
             <div v-if="device" class="p-3 w-full">
@@ -73,7 +73,6 @@ export default defineComponent({
   setup() {
     const router = useRouter();
     const { data, fetching: loading, error } = useQuery({ query: GET_DEVICES });
-    const devices = computed(() => data.value.devices);
     const state = reactive({
       showCreateModal: false,
       showDetailModal: false,
@@ -92,7 +91,7 @@ export default defineComponent({
       ...toRefs(state),
       loading,
       error,
-      devices,
+      data,
       toggleCreateModal,
       goToDetail
     };

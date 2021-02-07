@@ -24,13 +24,13 @@
     <template v-else-if="loading">
       <Loader height="h-48" width="w-48" />
     </template>
-    <template v-else-if="groups">
+    <template v-else-if="data">
       <!-- All groups -->
       <div class="pb-4 h-114 rounded">
-        <div v-if="groups.length > 0" class="grid xl:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 gap-4 rounded">
+        <div v-if="data.groups" class="grid xl:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 gap-4 rounded">
           <AppCard
             class="bg-white border hover:border-indigo-400 w-full"
-            v-for="group in groups"
+            v-for="group in data.groups"
             :key="group.id"
           >
             <div class="p-3 w-full">
@@ -68,7 +68,7 @@
 </template>
 
 <script lang="ts">
-import { reactive, toRefs, defineComponent, ref, watch, computed } from 'vue';
+import { reactive, toRefs, defineComponent } from 'vue';
 import AppCard from '@/components/ui/cards/AppCard.vue';
 import GroupCreateModal from './modals/GroupCreateModal.vue';
 import GroupDropdown from './components/GroupDropdown.vue';
@@ -88,24 +88,12 @@ export default defineComponent({
   setup() {
     const router = useRouter();
     const { data, fetching: loading, error } = useQuery({ query: GET_GROUPS });
-    const groupsResult = computed(() => data.value.groups);
-    const tempGroups = ref();
-    const groups = ref();
     const state = reactive({
       showCreateModal: false,
       showDetailModal: false,
       groupId: '',
       closeDropdown: false
     });
-
-    watch(
-      groupsResult,
-      (newValue) => {
-        tempGroups.value = newValue;
-        groups.value = newValue;
-      },
-      { immediate: true }
-    );
 
     const toggleCreateModal = () => {
       state.showCreateModal = !state.showCreateModal;
@@ -116,12 +104,12 @@ export default defineComponent({
     };
 
     return {
+      data,
       loading,
       error,
       ...toRefs(state),
       toggleCreateModal,
-      goToDetail,
-      groups
+      goToDetail
     };
   }
 });

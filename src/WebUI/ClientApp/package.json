@@ -9,7 +9,9 @@
   },
   "dependencies": {
     "@types/jwt-decode": "^3.1.0",
+    "@urql/devtools": "^2.0.2",
     "@urql/exchange-auth": "^0.1.2",
+    "@urql/exchange-graphcache": "^3.4.0",
     "@urql/vue": "^0.2.1",
     "@vueuse/core": "^4.0.2",
     "chart.js": "^2.9.4",

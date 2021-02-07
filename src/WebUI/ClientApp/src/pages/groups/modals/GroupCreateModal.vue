@@ -53,8 +53,7 @@ export default defineComponent({
   },
   setup(props, context) {
     const state = reactive({
-      title: '',
-      groupTitle: 'Create new Group'
+      title: 'Create new Group'
     });
     const groupCreateInput = reactive<CreateGroupInput>({
       name: ''

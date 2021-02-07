@@ -10,7 +10,7 @@
         <p>Error: {{ error.name }} {{ error.message }}</p>
       </div>
     </template>
-    <template v-else-if="device">
+    <template v-else-if="deviceResult && deviceResult.devices[0]">
       <div class="flex justify-between">
         <div class="w-full mr-2">
           <label class="text-left block text-sm">
@@ -19,7 +19,7 @@
               type="text"
               v-model="updatedDevice.name"
               class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md"
-              :placeholder="device.name"
+              :placeholder="deviceResult.devices[0].name"
             />
           </label>
         </div>
@@ -28,7 +28,7 @@
             <span class="text-gray-600 dark:text-gray-400">PluginType</span>
             <select
               disabled
-              v-model="device.pluginTypes"
+              v-model="deviceResult.devices[0].pluginTypes"
               class="mt-1 text-gray-500 focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md"
             >
               <option v-for="(item, key) in pluginNames" :key="key" :value="item.toUpperCase()">
@@ -47,7 +47,7 @@
               type="text"
               v-model="updatedDevice.description"
               class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md"
-              :placeholder="device.description ?? 'Description'"
+              :placeholder="deviceResult.devices[0].description ?? 'Description'"
             />
           </label>
         </div>
@@ -58,7 +58,7 @@
               type="text"
               v-model="updatedDevice.ipv4"
               class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md"
-              :placeholder="device.ip.ipv4"
+              :placeholder="deviceResult.devices[0].ip.ipv4"
             />
           </label>
         </div>
@@ -85,9 +85,9 @@
             <input
               type="text"
               disabled
-              v-model="device.company.name"
+              v-model="deviceResult.devices[0].company.name"
               class="mt-1 text-gray-500 focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md"
-              :placeholder="device.company.name"
+              :placeholder="deviceResult.devices[0].company.name"
             />
           </label>
         </div>
@@ -97,7 +97,7 @@
             <input
               type="text"
               disabled
-              v-model="device.pluginName"
+              v-model="deviceResult.devices[0].pluginName"
               class="mt-1 text-gray-500 focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md"
               placeholder="Plugin name"
             />
@@ -110,7 +110,7 @@
           <label class="text-left block text-sm">
             <span class="text-gray-600 dark:text-gray-400">Primary connection</span>
             <select
-              v-model="device.primaryConnection"
+              v-model="deviceResult.devices[0].primaryConnection"
               class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md"
             >
               <option v-for="(item, key) in connectionNames" :key="key" :value="item.toUpperCase()">
@@ -123,7 +123,7 @@
           <label class="text-left block text-sm">
             <span class="text-gray-600 dark:text-gray-400">Secondary connection</span>
             <select
-              v-model="device.secondaryConnection"
+              v-model="deviceResult.devices[0].secondaryConnection"
               class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md"
             >
               <option v-for="(item, key) in connectionNames" :key="key" :value="item.toUpperCase()">
@@ -133,7 +133,7 @@
           </label>
         </div>
       </div>
-      <div class="text-gray-500 text-sm text-left mt-10">Creator: {{ device.createdBy }}</div>
+      <div class="text-gray-500 text-sm text-left mt-10">Creator: {{ deviceResult.devices[0].createdBy }}</div>
       <!-- Save btn -->
       <div class="flex items-center justify-start mt-4">
         <button
@@ -158,12 +158,12 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, reactive, ref } from 'vue';
+import { defineComponent, reactive, ref } from 'vue';
 import Loader from '@/components/ui/AppSpinner.vue';
 import { UpdateDeviceInput } from '@/types/types';
 import { useMutation, useQuery } from '@urql/vue';
 import { UPDATE_DEVICE } from './DeviceMutations';
-import { GET_DEVICE_BY_ID, GET_DEVICES } from './DeviceQueries';
+import { GET_DEVICE_BY_ID } from './DeviceQueries';
 import { useEnumTypes } from '@/hooks/useEnums';
 import { useRoute } from 'vue-router';
 
@@ -180,15 +180,19 @@ export default defineComponent({
     const updatedDevice: UpdateDeviceInput = reactive({
       id: ''
     });
-    const { executeMutation: updateDevice, fetching: loadUpdate, error: errUpdate } = useMutation(UPDATE_DEVICE);
-    const { data, fetching: loading, error } = useQuery({ query: GET_DEVICE_BY_ID, variables: { name: route.params.name }});
-    const device = computed(() => data.value.devices[0]);
+    const { executeMutation: updateDevice, fetching: loadUpdate, error: errUpdate } = useMutation(
+      UPDATE_DEVICE
+    );
+    const { data: deviceResult, fetching: loading, error } = useQuery({
+      query: GET_DEVICE_BY_ID,
+      variables: { name: route.params.name }
+    });
 
     const save = async () => {
-      if (device.value) {
-        updatedDevice.id = device.value.id;
-        updatedDevice.primaryConnection = device.value?.primaryConnection;
-        updatedDevice.secondaryConnection = device.value?.secondaryConnection;
+      if (deviceResult.value) {
+        updatedDevice.id = deviceResult.value.devices[0].id;
+        updatedDevice.primaryConnection = deviceResult.value?.devices[0].primaryConnection;
+        updatedDevice.secondaryConnection = deviceResult.value?.devices[0].secondaryConnection;
         await updateDevice({ input: updatedDevice });
       }
     };
@@ -196,7 +200,7 @@ export default defineComponent({
     return {
       loadUpdate,
       errUpdate,
-      device,
+      deviceResult,
       loading,
       error,
       updatedDevice,
