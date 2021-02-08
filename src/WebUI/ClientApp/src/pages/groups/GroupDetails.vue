@@ -73,7 +73,7 @@
 
 <script lang="ts">
 import Loader from '@/components/ui/AppSpinner.vue';
-import { UpdateGroupInput } from '@/types/types';
+import { UpdateGroupInput } from '@/types/graphql/inputs';
 import { defineComponent, reactive } from 'vue';
 import { useMutation, useQuery } from '@urql/vue';
 import { UPDATE_GROUP } from './GroupMutations';

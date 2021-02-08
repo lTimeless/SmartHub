@@ -1,4 +1,4 @@
-import gql from 'graphql-tag';
+import { gql } from '@urql/core';
 
 export const CREATE_DEVICE = gql`
   mutation CreateDevice($input: CreateDeviceInput!) {

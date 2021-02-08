@@ -218,7 +218,7 @@ export default defineComponent({
     </div>
   </div>
 </template>
-<style lang="scss" scoped>
+<style lang="css" scoped>
 .sidebar {
   @apply hidden md:flex flex-col justify-between items-center flex-none bg-white rounded;
 }

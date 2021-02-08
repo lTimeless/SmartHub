@@ -23,8 +23,15 @@ namespace SmartHub.Application.UseCases.Entity.Devices.ExtendObjectType
 		{
 			var queryTuple = new Tuple<string, Dictionary<string, string?>>("", new());
 			IPlugin pluginObject;
-			pluginObject = await pluginHostService.GetPluginByNameAsync<IPlugin>(device.PluginName);
-
+			try
+			{
+				pluginObject = await pluginHostService.GetPluginByNameAsync<IPlugin>(device.PluginName);
+			}
+			catch (PluginException e)
+			{
+				_log.Information(e.Message);
+				return null;
+			}
 			var connectionType = PluginHelper.CombineConnectionTypes(pluginObject);
 			if ((connectionType & ConnectionTypes.Http) != 0 && device.PrimaryConnection == ConnectionTypes.Http)
 			{

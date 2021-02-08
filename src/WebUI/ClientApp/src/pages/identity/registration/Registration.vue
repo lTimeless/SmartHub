@@ -153,7 +153,7 @@
 
 <script lang="ts">
 import { defineComponent, onMounted, ref, reactive, computed } from 'vue';
-import { RegistrationInput } from '@/types/types';
+import { RegistrationInput } from '@/types/graphql/inputs';
 import { useRouter } from 'vue-router';
 import Loader from '@/components/ui/AppSpinner.vue';
 import { Routes } from '@/types/enums';

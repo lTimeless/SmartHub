@@ -10,7 +10,7 @@
         <p>Error: {{ error.name }} {{ error.message }}</p>
       </div>
     </template>
-    <template v-else-if="deviceResult && deviceResult.devices[0]">
+    <template v-else-if="deviceResult && deviceResult.devices">
       <div class="flex justify-between">
         <div class="w-full mr-2">
           <label class="text-left block text-sm">
@@ -133,7 +133,9 @@
           </label>
         </div>
       </div>
-      <div class="text-gray-500 text-sm text-left mt-10">Creator: {{ deviceResult.devices[0].createdBy }}</div>
+      <div class="text-gray-500 text-sm text-left mt-10">
+        Creator: {{ deviceResult.devices[0].createdBy }}
+      </div>
       <!-- Save btn -->
       <div class="flex items-center justify-start mt-4">
         <button
@@ -160,12 +162,13 @@
 <script lang="ts">
 import { defineComponent, reactive, ref } from 'vue';
 import Loader from '@/components/ui/AppSpinner.vue';
-import { UpdateDeviceInput } from '@/types/types';
+import { UpdateDeviceInput } from '@/types/graphql/inputs';
 import { useMutation, useQuery } from '@urql/vue';
 import { UPDATE_DEVICE } from './DeviceMutations';
 import { GET_DEVICE_BY_ID } from './DeviceQueries';
 import { useEnumTypes } from '@/hooks/useEnums';
 import { useRoute } from 'vue-router';
+import { DevicePayload, DevicesPayload } from '@/types/graphql/payloads';
 
 export default defineComponent({
   name: 'DeviceDetails',
@@ -180,16 +183,18 @@ export default defineComponent({
     const updatedDevice: UpdateDeviceInput = reactive({
       id: ''
     });
-    const { executeMutation: updateDevice, fetching: loadUpdate, error: errUpdate } = useMutation(
-      UPDATE_DEVICE
-    );
-    const { data: deviceResult, fetching: loading, error } = useQuery({
+    const {
+      executeMutation: updateDevice,
+      fetching: loadUpdate,
+      error: errUpdate
+    } = useMutation<DevicePayload>(UPDATE_DEVICE);
+    const { data: deviceResult, fetching: loading, error } = useQuery<DevicesPayload>({
       query: GET_DEVICE_BY_ID,
       variables: { name: route.params.name }
     });
 
     const save = async () => {
-      if (deviceResult.value) {
+      if (typeof deviceResult.value?.devices !== 'undefined') {
         updatedDevice.id = deviceResult.value.devices[0].id;
         updatedDevice.primaryConnection = deviceResult.value?.devices[0].primaryConnection;
         updatedDevice.secondaryConnection = deviceResult.value?.devices[0].secondaryConnection;

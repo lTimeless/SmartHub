@@ -105,8 +105,15 @@ module.exports = {
     }
   },
   variants: {
-    backgroundColor: ['responsive', 'hover', 'focus', 'active'],
-    animation: ['responsive', 'motion-safe', 'motion-reduce']
+    extend: {
+      ringColor: ['hover'],
+      ringOffsetColor: ['hover'],
+      ringOffsetWidth: ['hover'],
+      ringOpacity: ['hover'],
+      ringWidth: ['hover'],
+      opacity: ['disabled'],
+      scale: ['hover']
+    }
   },
   plugins: [require('@tailwindcss/forms')]
 };

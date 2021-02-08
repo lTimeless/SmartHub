@@ -88,7 +88,7 @@
 
 <script lang="ts">
 import { computed, defineComponent, reactive, ref, watch } from 'vue';
-import { AppConfigInitInput } from '@/types/types';
+import { AppConfigInitInput } from '@/types/graphql/inputs';
 import { useRouter } from 'vue-router';
 import AppCard from '@/components/ui/cards/AppCard.vue';
 import { useMutation, useQuery } from '@urql/vue';

@@ -16,21 +16,18 @@
       <div
         class="relative z-40 h-12 flex items-center hover:bg-charcoalBlue-200 rounded-l"
         :class="[
-          isRoute ? `bg-primaryBlue ${onlyIcon ? 'bg-charcoalBlue-500' : ''}` : '',
+          isRoute ? `bg-blueGray-300 ${onlyIcon ? 'bg-blueGray-300' : ''}` : '',
           onlyIcon && !mobileSidebarOpen ? 'w-12 justify-center' : 'w-2/3 pl-4'
         ]"
         @click="
           onlyIcon && !mobileSidebarOpen ? setDropDownValue(!showDropdown) : handleRouteClick(routes.Me)
         "
       >
-        <AppIcon icon-name="User" :icon-color="isRoute ? 'text-white' : 'text-primaryBlue'" />
+        <AppIcon icon-name="User" :icon-color="'text-primaryBlue'" />
         <div v-if="!onlyIcon || mobileSidebarOpen">
           <div
-            class="tracking-wide text-lg leading-loose"
-            :class="[
-              isRoute ? 'text-white' : 'text-primaryBlue',
-              onlyIcon && !mobileSidebarOpen ? ' ' : ' pl-2'
-            ]"
+            class="tracking-wide text-lg leading-loose text-primaryBlue"
+            :class="[onlyIcon && !mobileSidebarOpen ? ' ' : ' pl-2']"
           >
             {{ onlyIcon && !mobileSidebarOpen ? ' ' : 'Me' }}
           </div>

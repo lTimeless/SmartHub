@@ -97,7 +97,7 @@
 
 <script lang="ts">
 import { computed, defineComponent, reactive, ref, watch } from 'vue';
-import { LoginInput } from '@/types/types';
+import { LoginInput } from '@/types/graphql/inputs';
 import { useRouter } from 'vue-router';
 import { useMutation, useQuery } from '@urql/vue';
 import { Routes } from '@/types/enums';

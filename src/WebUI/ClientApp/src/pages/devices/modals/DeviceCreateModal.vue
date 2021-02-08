@@ -140,7 +140,7 @@
 <script lang="ts">
 import { defineComponent, reactive, computed } from 'vue';
 import AppModal from '@/components/ui/modals/AppModal.vue';
-import { CreateDeviceInput } from '@/types/types';
+import { CreateDeviceInput } from '@/types/graphql/inputs';
 import { ConnectionTypes, PluginTypes } from '@/types/enums';
 import { useEnumTypes } from '@/hooks/useEnums.ts';
 import { useMutation } from '@urql/vue';

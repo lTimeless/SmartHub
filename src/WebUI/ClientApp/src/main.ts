@@ -7,13 +7,15 @@ import IconPlugin from '@/plugins/IconPlugin';
 import { client } from './graphql-client';
 import urql from '@urql/vue';
 
-import '@/assets/styles/tailwind.scss';
+import '@/assets/styles/tailwind.css';
+import ControlsPlugin from './plugins/ControlsPlugin';
 
 const app = createApp(App)
   .use(urql, client)
   .use(router)
   .use(store)
-  .use(IconPlugin);
+  .use(IconPlugin)
+  .use(ControlsPlugin);
 // app.config.errorHandler((err, vueInstance, vueInfo) => {
 //   // send to Sentry e.g
 // });

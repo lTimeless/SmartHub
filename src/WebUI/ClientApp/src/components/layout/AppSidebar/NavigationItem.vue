@@ -1,20 +1,17 @@
 <template>
   <router-link
     :to="route"
-    class="h-12 flex hover:bg-primaryBlueHover rounded items-center"
+    class="h-12 flex hover:bg-primaryBlueHover rounded-l-lg items-center"
     :class="[
       mobileSidebarOpen ? 'w-full space-x-3' : '',
       onlyIcon && !mobileSidebarOpen ? 'w-12 justify-center' : ' w-48 justify-start pl-4',
-      isRoute ? 'bg-primaryBlue' : '',
+      isRoute ? 'bg-blueGray-300' : '',
       route === routes.Statistics ? ' border-t border-primaryBlueHover' : ''
     ]"
   >
-    <AppIcon :icon-name="iconName" :icon-color="isRoute ? 'text-white' : 'text-primaryBlue'" />
+    <AppIcon :icon-name="iconName" :icon-color="'text-primaryBlue'" />
     <div v-if="!onlyIcon || mobileSidebarOpen">
-      <div
-        class="tracking-wide text-lg leading-loose"
-        :class="[isRoute ? 'text-white' : 'text-primaryBlue', onlyIcon ? ' ' : ' pl-2']"
-      >
+      <div class="tracking-wide text-lg leading-loose text-primaryBlue" :class="[onlyIcon ? ' ' : ' pl-2']">
         {{ label }}
       </div>
     </div>

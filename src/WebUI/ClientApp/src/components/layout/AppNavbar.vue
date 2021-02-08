@@ -9,12 +9,16 @@
         </button>
       </div>
       <!-- Route Name -->
-      <a v-if="!isRoute" class="md:text-xl text-lg p-2 text-primaryBlueHover uppercase">{{ route.name }}</a>
+      <a v-if="!isRoute" class="md:text-xl text-lg p-2 text-primaryBlue uppercase">{{ route.name }}</a>
     </div>
     <!-- back btn -->
     <div v-if="!isRoute" class="flex-row hidden md:flex md:justify-end md:w-1/2">
-      <button class="rounded p-2 hover:bg-charcoalBlue-600" type="button" @click="goBack">
-        <AppIcon icon-name="ArrowLeft" icon-color="text-primaryBlueHover" />
+      <button
+        class="rounded p-2 focus:outline-none focus:ring-2 focus:ring-primaryBlue focus:ring-opacity-50 hover:ring-2 hover:ring-primaryBlue hover:ring-opacity-50"
+        type="button"
+        @click="goBack"
+      >
+        <AppIcon icon-name="ArrowLeft" icon-color="text-primaryBlue" />
       </button>
     </div>
   </div>

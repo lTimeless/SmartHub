@@ -39,7 +39,7 @@
 <script lang="ts">
 import { defineComponent, reactive, computed, toRefs } from 'vue';
 import AppModal from '@/components/ui/modals/AppModal.vue';
-import { CreateGroupInput } from '@/types/types';
+import { CreateGroupInput } from '@/types/graphql/inputs';
 import { useMutation } from '@urql/vue';
 import { CREATE_GROUP } from '../GroupMutations';
 import { GET_GROUPS } from '../GroupQueries';

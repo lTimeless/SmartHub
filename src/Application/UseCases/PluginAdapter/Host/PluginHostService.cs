@@ -13,6 +13,7 @@ using SmartHub.BasePlugin;
 using SmartHub.Domain;
 using SmartHub.Domain.Common.Extensions;
 using SmartHub.Domain.Entities;
+using System;
 
 namespace SmartHub.Application.UseCases.PluginAdapter.Host
 {

@@ -1,4 +1,14 @@
-import gql from 'graphql-tag';
+import { gql } from '@urql/core';
+
+export const FRAGMENT_GET_DEVICE_STATUS = gql`
+  fragment DeviceStatus on Device {
+    status {
+      lights {
+        ison
+      }
+    }
+  }
+`;
 
 export const GET_DEVICE_BY_ID = gql`
   query GET_DEVICE_BY_ID($name: String!) {
@@ -30,13 +40,8 @@ export const GET_DEVICES = gql`
     devices {
       id
       name
-      description
       primaryConnection
       secondaryConnection
-      createdAt
-      lastModifiedAt
-      createdBy
-      lastModifiedBy
       pluginName
       pluginTypes
       ip {
@@ -46,6 +51,8 @@ export const GET_DEVICES = gql`
         name
         shortName
       }
+      ...DeviceStatus
     }
   }
+  ${FRAGMENT_GET_DEVICE_STATUS}
 `;

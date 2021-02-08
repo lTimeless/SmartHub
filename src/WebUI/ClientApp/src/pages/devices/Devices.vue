@@ -26,11 +26,7 @@
     <template v-if="data">
       <div v-if="data.devices">
         <div class="grid xl:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 gap-4 rounded">
-          <AppCard
-            class="border hover:border-indigo-400 bg-white w-full"
-            v-for="device in data.devices"
-            :key="device.id"
-          >
+          <AppCard class="hover:shadow-md bg-white w-full" v-for="device in data.devices" :key="device.id">
             <div v-if="device" class="p-3 w-full">
               <h1
                 class="text-xl text-left text-gray-600 font-bold cursor-pointer"
@@ -39,11 +35,10 @@
                 {{ device.name }}
               </h1>
 
-              <div class="text-gray-500 text-sm font-normal text-left">
-                Creator: <span class="font-bold">{{ device.createdBy }}</span>
-              </div>
               <div class="border-border border-t my-2"></div>
-              <!-- TODO: Here add the actual controlls or infos for the device -->
+              <div class="flex justify-center">
+                <AppDeviceControl device-type-name="Light" :light-state="device.status"></AppDeviceControl>
+              </div>
             </div>
             <div v-else>Error loading device ...</div>
           </AppCard>
@@ -55,28 +50,29 @@
 </template>
 
 <script lang="ts">
-import { reactive, toRefs, defineComponent, computed } from 'vue';
+import { reactive, toRefs, defineComponent } from 'vue';
 import AppCard from '@/components/ui/cards/AppCard.vue';
 import DeviceCreateModal from './modals/DeviceCreateModal.vue';
 import { useQuery } from '@urql/vue';
 import Loader from '@/components/ui/AppSpinner.vue';
 import { GET_DEVICES } from './DeviceQueries';
 import { useRouter } from 'vue-router';
+import { DevicesPayload } from '../../types/graphql/payloads';
+import AppDeviceControl from '../../components/ui/controls/AppDeviceControl.vue';
 
 export default defineComponent({
   name: 'Devices',
   components: {
     AppCard,
     DeviceCreateModal,
-    Loader
+    Loader,
+    AppDeviceControl
   },
   setup() {
     const router = useRouter();
-    const { data, fetching: loading, error } = useQuery({ query: GET_DEVICES });
+    const { data, fetching: loading, error } = useQuery<DevicesPayload>({ query: GET_DEVICES });
     const state = reactive({
-      showCreateModal: false,
-      showDetailModal: false,
-      deviceId: ''
+      showCreateModal: false
     });
 
     const toggleCreateModal = () => {

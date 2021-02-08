@@ -32,7 +32,8 @@
 
 /* Background Gradient */
 .background {
-  @apply bg-gradient-to-b from-primaryBlue via-primaryBlue to-charcoalBlue-500
+  /* @apply bg-gradient-to-b from-charcoalBlue-300 via-charcoalBlue-200 to-charcoalBlue-50 */
+  @apply bg-blueGray-300;
 }
 
 /* Table */

@@ -139,7 +139,7 @@
 <script lang="ts">
 import { defineComponent, ref, computed, reactive } from 'vue';
 import { Roles, Routes } from '@/types/enums';
-import { UpdateUserInput } from '@/types/types';
+import { UpdateUserInput } from '@/types/graphql/inputs';
 import { useMutation, useQuery } from '@urql/vue';
 import Loader from '@/components/ui/AppSpinner.vue';
 import { useRouter } from 'vue-router';

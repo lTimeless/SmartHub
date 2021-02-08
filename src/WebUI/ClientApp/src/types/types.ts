@@ -1,10 +1,23 @@
 import { ConnectionTypes, PluginTypes } from './enums';
-
 // ########## Entities ##########
+
+/**
+ * Address
+ */
+interface Address {
+  __typename?: 'Address';
+  street: string;
+  city: string;
+  state: string;
+  country: string;
+  zipCode: string;
+}
+
 /*
   Application config
  */
 export interface AppConfig {
+  __typename?: 'AppConfig';
   applicationName?: string;
   configName?: string;
   description?: string;
@@ -26,14 +39,6 @@ export interface AppConfig {
   saveXLimit?: string;
 }
 
-interface Address {
-  street: string;
-  city: string;
-  state: string;
-  country: string;
-  zipCode: string;
-}
-
 /*
   Base entity
  */
@@ -47,127 +52,62 @@ interface BaseEntity {
   description?: string;
 }
 
-interface PersonName {
+export interface PersonName {
+  __typename?: 'PersonName';
   firstName: string | null;
   middleName: string | null;
   lastName: string | null;
 }
 
-export interface User {
+export interface User extends BaseEntity {
+  __typename?: 'User';
   id: string;
   userName: string;
-  personInfo: string | null;
+  personInfo?: string;
   personName: PersonName;
-  roles: string[] | null;
-  email: string | null;
-  phoneNumber: string | null;
-  lastModifiedAt: string;
-  lastModifiedBy: string;
+  roles?: string[];
+  email?: string;
+  phoneNumber?: string;
 }
 
-interface Company {
+export interface Company {
+  __typename?: 'Company';
   name: string;
   shortName: string;
 }
-interface IpAddress {
+export interface IpAddress {
+  __typename?: 'IpAddress';
   ipv4: string;
 }
 
 export interface Device extends BaseEntity {
+  __typename?: 'Device';
   company: Company;
   ip: IpAddress;
   pluginName: string;
   pluginTypes: PluginTypes;
   primaryConnection: ConnectionTypes;
   secondaryConnection: ConnectionTypes;
+  status?: LightState;
 }
 
 export interface Group extends BaseEntity {
+  __typename?: 'Group';
   devices?: Device[];
   isSubGroup: boolean;
   subGroups?: Group[];
 }
 
-// ########## GraphQl ##########
-/*
-  GraphQl payload type
- */
-export interface Payload {
-  message?: string;
-  errors?: string[];
-}
+// ########## Device/Plugin Types ##########
+export type LightState = {
+  lights?: Light[];
+};
 
-// Identity Inputs, Payloads
-export interface IdentityPayload extends Payload {
-  token?: string;
-  user?: User;
-}
-
-export interface LoginInput {
-  userName: string;
-  password: string;
-}
-
-export interface RegistrationInput {
-  userName: string;
-  password: string;
-  role: string;
-}
-
-// User Inputs
-export interface UpdateUserInput {
-  userId: string;
-  userName?: string;
-  personInfo?: string;
-  firstName?: string;
-  middleName?: string;
-  lastName?: string;
-  email?: string;
-  phoneNumber?: string;
-  newRole?: string;
-}
-
-// Device Inputs
-export interface CreateDeviceInput {
-  groupName?: string;
-  name: string;
-  description?: string;
-  ipv4: string;
-  companyName: string;
-  pluginName: string;
-  pluginTypes: string;
-  primaryConnection: string;
-  secondaryConnection: string;
-}
-
-export interface UpdateDeviceInput {
-  id: string;
-  groupName?: string;
-  name?: string;
-  description?: string;
-  ipv4?: string;
-  primaryConnection?: ConnectionTypes;
-  secondaryConnection?: ConnectionTypes;
-}
-
-// Group Inputs
-export interface CreateGroupInput {
-  name: string;
-  description?: string;
-  parentGroupId?: string;
-}
-
-export interface UpdateGroupInput {
-  id: string;
-  name?: string;
-  description?: string;
-  isSubGroup?: boolean;
-  devices?: Device[];
-}
-
-// AppConfig Inputs
-export interface AppConfigInitInput {
-  name?: string;
-  description?: string;
-  autoDetectAddress: boolean;
-}
+export type Light = {
+  ison?: boolean;
+  mode?: string;
+  red?: number;
+  green?: number;
+  blue?: number;
+  white?: number;
+};
