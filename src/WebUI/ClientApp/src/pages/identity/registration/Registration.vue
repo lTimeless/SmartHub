@@ -153,14 +153,18 @@
 
 <script lang="ts">
 import { defineComponent, onMounted, ref, reactive, computed } from 'vue';
-import { RegistrationInput } from '@/types/graphql/inputs';
 import { useRouter } from 'vue-router';
 import Loader from '@/components/ui/AppSpinner.vue';
 import { Routes } from '@/types/enums';
 import AppCard from '@/components/ui/cards/AppCard.vue';
 import { useMutation } from '@urql/vue';
-import { REGISTRATION } from '../registration/RegistrationMutation';
+import {
+  REGISTRATION,
+  RegistrationMutationPayload,
+  RegistrationMutationVariables
+} from '../registration/RegistrationMutation';
 import { useIdentity } from '@/hooks/useIdentity';
+import { RegistrationInput } from '@/types/graphql/inputs';
 
 export default defineComponent({
   name: 'Registration',
@@ -185,9 +189,7 @@ export default defineComponent({
     onMounted(() => {
       clearStorage();
     });
-    const { executeMutation: createAccount, fetching: loadCreate, error: errCreate } = useMutation(
-      REGISTRATION
-    );
+    const { executeMutation: createAccount, fetching: loadCreate, error: errCreate } = useMutation<RegistrationMutationPayload, RegistrationMutationVariables>(REGISTRATION);
 
     const passwordStrength = computed(() => passwordStrengthText.value !== 'Too weak');
     const checkPwd = computed(
@@ -214,7 +216,7 @@ export default defineComponent({
 
     const onRegistrationClick = async () => {
       await createAccount({ input: registrationRequest }).then((res) => {
-        if (res.data.registration.token != null) {
+        if (res.data && res.data.registration.token) {
           token.value = res.data.registration.token;
           router.push(Routes.Home);
           return Promise.resolve();

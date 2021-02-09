@@ -62,3 +62,19 @@ export enum PluginTypes {
   Sensor = 32, //  default if it is not defined
   Rgb = 64 // red green blue
 }
+
+/**
+ * Application error codes
+ */
+export enum AppErrorCodes {
+  ServerError = 'SERVER_ERROR',
+  NotFound = 'NOT_FOUND',
+  NotCreated = 'NOT_CREATED',
+  NotUpdated = 'NOT_UPDATED',
+  Exists = 'EXISTS',
+  NoHome = 'NO_HOME',
+  NotSet = 'NOT_SET',
+  NotAuthorized = 'NOT_AUTHORIZED',
+  IsEmpty = 'IS_EMPTY',
+  IsSubGroup = 'IS_SUB_GROUP'
+}

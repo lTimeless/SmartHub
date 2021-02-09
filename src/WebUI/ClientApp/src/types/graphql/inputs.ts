@@ -2,25 +2,12 @@ import { ConnectionTypes } from '../enums';
 
 // ########## Inputs ##########
 /**
- * AppConfig inputs
+ * AppConfig input
  */
 export interface AppConfigInitInput {
   name?: string;
   description?: string;
   autoDetectAddress: boolean;
-}
-
-/**
- * Identity inputs
- */
-export interface LoginInput {
-  userName: string;
-  password: string;
-}
-export interface RegistrationInput {
-  userName: string;
-  password: string;
-  role: string;
 }
 
 /**
@@ -76,4 +63,21 @@ export interface UpdateGroupInput {
   id: string;
   name?: string;
   description?: string;
+}
+
+/**
+ * Registration Input
+ */
+export interface RegistrationInput {
+  userName: string;
+  password: string;
+  role: string;
+}
+
+/**
+ * Login Input
+ */
+export interface LoginInput {
+  userName: string;
+  password: string;
 }

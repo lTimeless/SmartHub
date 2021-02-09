@@ -143,8 +143,8 @@ import { UpdateUserInput } from '@/types/graphql/inputs';
 import { useMutation, useQuery } from '@urql/vue';
 import Loader from '@/components/ui/AppSpinner.vue';
 import { useRouter } from 'vue-router';
-import { WHO_AM_I } from '../me/MeQueries';
-import { UPDATE_USER } from '../me/MeMutations';
+import { MeQueryType, ME } from '../me/MeQueries';
+import { UpdateUserMutationPayload, UpdateUserMutationVariables, UPDATE_USER } from '../me/MeMutations';
 import { useIdentity } from '@/hooks/useIdentity';
 
 export default defineComponent({
@@ -162,17 +162,21 @@ export default defineComponent({
     const updateUserInput: UpdateUserInput = reactive({
       userId: ''
     });
-    const { executeMutation: updateUser, fetching: loadUpdate, error: errUpdate } = useMutation(UPDATE_USER);
-    const { data: resultUser, fetching: loadUser, error: errUser } = useQuery({ query: WHO_AM_I });
+    const { executeMutation: updateUser, fetching: loadUpdate, error: errUpdate } = useMutation<UpdateUserMutationPayload,UpdateUserMutationVariables>(UPDATE_USER);
+    const { data: resultUser, fetching: loadUser, error: errUser } = useQuery<MeQueryType>({
+      query: ME
+    });
 
     const onSaveClick = async () => {
       const user = resultUser.value?.me.user;
-      updateUserInput.userId = user.id;
-      updateUserInput.newRole = selectedRole.value;
-      await updateUser({ input: updateUserInput });
-      if (typeof updateUserInput.newRole !== 'undefined' && updateUserInput.newRole !== prevRole) {
-        clearStorage();
-        await router.push({ path: Routes.Login, replace: true });
+      if (user) {
+        updateUserInput.userId = user.id;
+        updateUserInput.newRole = selectedRole.value;
+        await updateUser({ input: updateUserInput });
+        if (typeof updateUserInput.newRole !== 'undefined' && updateUserInput.newRole !== prevRole) {
+          clearStorage();
+          await router.push({ path: Routes.Login, replace: true });
+        }
       }
     };
     return {

@@ -165,10 +165,10 @@ import Loader from '@/components/ui/AppSpinner.vue';
 import { UpdateDeviceInput } from '@/types/graphql/inputs';
 import { useMutation, useQuery } from '@urql/vue';
 import { UPDATE_DEVICE } from './DeviceMutations';
-import { GET_DEVICE_BY_ID } from './DeviceQueries';
+import { GetDeviceByIdVariable, GetDevicesQueryType, GET_DEVICE_BY_ID } from './DeviceQueries';
 import { useEnumTypes } from '@/hooks/useEnums';
 import { useRoute } from 'vue-router';
-import { DevicePayload, DevicesPayload } from '@/types/graphql/payloads';
+import { DevicePayload } from '@/types/graphql/payloads';
 
 export default defineComponent({
   name: 'DeviceDetails',
@@ -188,9 +188,9 @@ export default defineComponent({
       fetching: loadUpdate,
       error: errUpdate
     } = useMutation<DevicePayload>(UPDATE_DEVICE);
-    const { data: deviceResult, fetching: loading, error } = useQuery<DevicesPayload>({
+    const { data: deviceResult, fetching: loading, error } = useQuery<GetDevicesQueryType, GetDeviceByIdVariable>({
       query: GET_DEVICE_BY_ID,
-      variables: { name: route.params.name }
+      variables: { name: route.params.name as string }
     });
 
     const save = async () => {

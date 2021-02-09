@@ -1,5 +1,5 @@
 <template>
-  <component :is="typeFullName" :light-state="lightState"></component>
+  <component :is="typeFullName" :light-state="lightState" :handle-btn-click="handleBtnClick"></component>
 </template>
 
 <script lang="ts">

@@ -9,7 +9,6 @@ using System.Threading.Tasks;
 namespace SmartHub.Application.UseCases.Identity.Queries
 {
 	[Authorize]
-	[ExtendObjectType(Name = "RootQueries")]
 	[GraphQLDescription("All queries for the me services.")]
 	public class IdentityQueries
 	{

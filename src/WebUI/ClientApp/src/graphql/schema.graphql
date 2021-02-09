@@ -1,459 +1,497 @@
-# This file was generated based on ".graphqlconfig". Do not edit manually.
-
 schema {
-    query: AppQueries
-    mutation: AppMutations
+  query: AppQueries
+  mutation: AppMutations
 }
 
 type Address {
-    city: String!
-    country: String!
-    state: String!
-    street: String!
-    zipCode: String!
+  street: String!
+  city: String!
+  state: String!
+  country: String!
+  zipCode: String!
 }
 
 type AppConfig {
-    address: Address
-    applicationName: String
-    baseFolderName: String
-    configFileName: String
-    configFilePath: String!
-    configFolderName: String
-    configFolderPath: String
-    configName: String
-    deleteXAmountAfterLimit: Int
-    description: String
-    downloadServerUrl: String
-    isActive: Boolean!
-    logFolderName: String
-    logFolderPath: String
-    pluginFolderName: String
-    pluginFolderPath: String
-    saveXLimit: Int
-    timeZone: String
-    unitSystem: String
+  configFilePath: String!
+  applicationName: String
+  configName: String
+  description: String
+  address: Address
+  isActive: Boolean!
+  unitSystem: String
+  timeZone: String
+  downloadServerUrl: String
+  baseFolderName: String
+  configFolderName: String
+  configFolderPath: String
+  configFileName: String
+  pluginFolderName: String
+  pluginFolderPath: String
+  logFolderName: String
+  logFolderPath: String
+  deleteXAmountAfterLimit: Int
+  saveXLimit: Int
 }
 
-"All mutations for the users entity."
+"Main entrypoint for all mutations."
 type AppMutations {
-    createDevice(input: CreateDeviceInput!): DevicePayload!
-    createGroup(input: CreateGroupInput!): GroupPayload!
-    initializeApp(input: AppConfigInitInput!): InitPayload!
-    login(input: LoginInput!): IdentityPayload!
-    registration(input: RegistrationInput!): IdentityPayload!
-    updateDevice(input: UpdateDeviceInput!): DevicePayload!
-    updateGroup(input: UpdateGroupInput!): GroupPayload!
-    updateUser(input: UpdateUserInput!): UserPayload!
+  login(input: LoginInput!): IdentityPayload!
+  registration(input: RegistrationInput!): IdentityPayload!
+  initializeApp(input: AppConfigInitInput!): InitPayload!
+  createGroup(input: CreateGroupInput!): GroupPayload!
+  updateGroup(input: UpdateGroupInput!): GroupPayload!
+  createDevice(input: CreateDeviceInput!): DevicePayload!
+  updateDevice(input: UpdateDeviceInput!): DevicePayload!
+  updateUser(input: UpdateUserInput!): UserPayload!
 }
 
-"All queries for the me services."
+"Main entrypoint for all queries."
 type AppQueries {
-    appConfig: AppConfig!
-    applicationIsActive: Boolean!
-    devices(order: [DeviceSortInput!], where: DeviceFilterInput): [Device!]!
-    devicesCount: Int!
-    groups(order: [GroupSortInput!], where: GroupFilterInput): [Group!]!
-    me: User
-    parentGroupsCount: Int!
-    scanNetworkDevices(order: [NetworkDeviceSortInput!], where: NetworkDeviceFilterInput): [NetworkDevice!]!
-    subGroupsCount: Int!
-    usersExist: Boolean!
+  groups(where: GroupFilterInput order: [GroupSortInput!]): [Group!]!
+  groupsCount: Int!
+  devices(where: DeviceFilterInput order: [DeviceSortInput!]): [Device!]!
+  devicesCount: Int!
+  me: IdentityPayload!
+  appConfig: AppConfig! @authorize(apply: BEFORE_RESOLVER)
+  usersExist: Boolean!
+  applicationIsActive: Boolean!
+  scanNetworkDevices(where: NetworkDeviceFilterInput order: [NetworkDeviceSortInput!]): [NetworkDevice!]!
+  setLightState(input: DeviceLightStateInput!): DeviceStatePayload!
 }
 
 type BaseEntity {
-    createdAt: DateTime!
-    createdBy: String!
-    description: String
-    id: String!
-    lastModifiedAt: DateTime!
-    lastModifiedBy: String!
-    name: String!
-    setDescription(description: String!): BaseEntity!
-    setName(name: String!): BaseEntity!
+  setName(name: String!): BaseEntity!
+  setDescription(description: String!): BaseEntity!
+  id: String!
+  name: String!
+  description: String
+  createdAt: DateTime!
+  lastModifiedAt: DateTime!
+  createdBy: String!
+  lastModifiedBy: String!
 }
 
 type Company {
-    name: String!
-    shortName: String!
+  name: String!
+  shortName: String!
 }
 
 type Device {
-    company: Company!
-    createdAt: DateTime!
-    createdBy: String!
-    description: String
-    groups: [Group!]!
-    id: String!
-    ip: IpAddress!
-    lastModifiedAt: DateTime!
-    lastModifiedBy: String!
-    name: String!
-    pluginName: String!
-    pluginTypes: PluginTypes!
-    primaryConnection: ConnectionTypes!
-    secondaryConnection: ConnectionTypes!
-    setDescription(description: String!): BaseEntity!
-    setName(name: String!): BaseEntity!
+  setName(name: String!): BaseEntity!
+  setDescription(description: String!): BaseEntity!
+  ip: IpAddress!
+  company: Company!
+  primaryConnection: ConnectionTypes!
+  secondaryConnection: ConnectionTypes!
+  pluginName: String!
+  pluginTypes: PluginTypes!
+  groups: [Group!]!
+  id: String!
+  name: String!
+  description: String
+  createdAt: DateTime!
+  lastModifiedAt: DateTime!
+  createdBy: String!
+  lastModifiedBy: String!
+  status: StatusResponseType
 }
 
 type DevicePayload {
-    device: Device
-    errors: [UserError!]
-    message: String
+  device: Device
+  errors: [UserError!]
+  message: String
+}
+
+type DeviceStatePayload {
+  lightResponseType: LightResponseType
+  errors: [UserError!]
+  message: String
 }
 
 type Group {
-    createdAt: DateTime!
-    createdBy: String!
-    description: String
-    devices: [Device!]!
-    id: String!
-    isSubGroup: Boolean!
-    lastModifiedAt: DateTime!
-    lastModifiedBy: String!
-    name: String!
-    setDescription(description: String!): BaseEntity!
-    setName(name: String!): BaseEntity!
-    subGroups: [Group!]!
+  setName(name: String!): BaseEntity!
+  setDescription(description: String!): BaseEntity!
+  devices: [Device!]!
+  id: String!
+  name: String!
+  description: String
+  createdAt: DateTime!
+  lastModifiedAt: DateTime!
+  createdBy: String!
+  lastModifiedBy: String!
 }
 
 type GroupPayload {
-    errors: [UserError!]
-    group: Group
-    message: String
+  group: Group
+  errors: [UserError!]
+  message: String
 }
 
 type IdentityPayload {
-    errors: [UserError!]
-    message: String
-    token: String
-    user: User
+  token: String
+  user: User
+  errors: [UserError!]
+  message: String
 }
 
 type InitPayload {
-    appConfig: AppConfig
-    errors: [UserError!]
-    message: String
+  appConfig: AppConfig
+  errors: [UserError!]
+  message: String
 }
 
 type IpAddress {
-    ipv4: String!
+  ipv4: String!
+}
+
+type LightResponseType {
+  ison: Boolean!
+  mode: String
+  red: Int!
+  green: Int!
+  blue: Int!
+  white: Int!
 }
 
 type NetworkDevice {
-    description: String
-    hostname: String
-    ipv4: String
-    ipv6: String
-    macAddress: String
-    name: String
+  name: String
+  description: String
+  ipv4: String
+  ipv6: String
+  hostname: String
+  macAddress: String
 }
 
 type PersonName {
-    firstName: String!
-    lastName: String!
-    middleName: String!
+  firstName: String!
+  middleName: String!
+  lastName: String!
+}
+
+type StatusResponseType {
+  lights: [LightResponseType]
 }
 
 type User {
-    accessFailedCount: Int!
-    concurrencyStamp: String
-    createdAt: DateTime!
-    createdBy: String!
-    email: String
-    emailConfirmed: Boolean!
-    id: String
-    isFirstLogin: Boolean!
-    lastModifiedAt: DateTime!
-    lastModifiedBy: String!
-    lockoutEnabled: Boolean!
-    lockoutEnd: DateTime
-    normalizedEmail: String
-    normalizedUserName: String
-    passwordHash: String
-    personInfo: String!
-    personName: PersonName!
-    phoneNumber: String
-    phoneNumberConfirmed: Boolean!
-    securityStamp: String
-    twoFactorEnabled: Boolean!
-    userName: String
+  createdAt: DateTime!
+  lastModifiedAt: DateTime!
+  createdBy: String!
+  lastModifiedBy: String!
+  isFirstLogin: Boolean!
+  personInfo: String!
+  personName: PersonName!
+  id: String
+  userName: String
+  normalizedUserName: String
+  email: String
+  normalizedEmail: String
+  emailConfirmed: Boolean!
+  passwordHash: String
+  securityStamp: String
+  concurrencyStamp: String
+  phoneNumber: String
+  phoneNumberConfirmed: Boolean!
+  twoFactorEnabled: Boolean!
+  lockoutEnd: DateTime
+  lockoutEnabled: Boolean!
+  accessFailedCount: Int!
 }
 
 type UserError {
-    code: AppErrorCodes!
-    message: String!
+  message: String!
+  code: AppErrorCodes!
 }
 
 type UserPayload {
-    errors: [UserError!]
-    message: String
-    user: User!
-}
-
-enum AppErrorCodes {
-    EXISTS
-    IS_EMPTY
-    IS_SUB_GROUP
-    NOT_CREATED
-    NOT_FOUND
-    NOT_UPDATED
-    SERVER_ERROR
-}
-
-enum ConnectionTypes {
-    HTTP
-    MQTT
-    NONE
-}
-
-enum PluginTypes {
-    BASE
-    DOOR
-    HT
-    LIGHT
-    MOCK
-    NONE
-    RGB
-    SENSOR
-}
-
-enum SortEnumType {
-    ASC
-    DESC
+  user: User!
+  errors: [UserError!]
+  message: String
 }
 
 input AppConfigInitInput {
-    autoDetectAddress: Boolean!
-    description: String
-    name: String
-}
-
-input BooleanOperationFilterInput {
-    eq: Boolean
-    neq: Boolean
+  name: String
+  description: String
+  autoDetectAddress: Boolean!
 }
 
 input CompanyFilterInput {
-    and: [CompanyFilterInput!]
-    name: StringOperationFilterInput
-    or: [CompanyFilterInput!]
-    shortName: StringOperationFilterInput
+  and: [CompanyFilterInput!]
+  or: [CompanyFilterInput!]
+  name: StringOperationFilterInput
+  shortName: StringOperationFilterInput
 }
 
 input CompanySortInput {
-    name: SortEnumType
-    shortName: SortEnumType
+  name: SortEnumType
+  shortName: SortEnumType
 }
 
 input ComparableDateTimeOffsetOperationFilterInput {
-    eq: DateTime
-    gt: DateTime
-    gte: DateTime
-    in: [DateTime!]
-    lt: DateTime
-    lte: DateTime
-    neq: DateTime
-    ngt: DateTime
-    ngte: DateTime
-    nin: [DateTime!]
-    nlt: DateTime
-    nlte: DateTime
+  eq: DateTime
+  neq: DateTime
+  in: [DateTime!]
+  nin: [DateTime!]
+  gt: DateTime
+  ngt: DateTime
+  gte: DateTime
+  ngte: DateTime
+  lt: DateTime
+  nlt: DateTime
+  lte: DateTime
+  nlte: DateTime
 }
 
 input ConnectionTypesOperationFilterInput {
-    eq: ConnectionTypes
-    in: [ConnectionTypes!]
-    neq: ConnectionTypes
-    nin: [ConnectionTypes!]
+  eq: ConnectionTypes
+  neq: ConnectionTypes
+  in: [ConnectionTypes!]
+  nin: [ConnectionTypes!]
 }
 
 input CreateDeviceInput {
-    companyName: String!
-    description: String
-    groupName: String
-    ipv4: String!
-    name: String!
-    pluginName: String!
-    pluginTypes: PluginTypes!
-    primaryConnection: ConnectionTypes!
-    secondaryConnection: ConnectionTypes!
+  name: String!
+  description: String
+  ipv4: String!
+  companyName: String!
+  pluginName: String!
+  groupName: String
+  pluginTypes: PluginTypes!
+  primaryConnection: ConnectionTypes!
+  secondaryConnection: ConnectionTypes!
 }
 
 input CreateGroupInput {
-    description: String
-    isSubGroup: Boolean!
-    name: String!
-    parentGroupId: String
+  name: String!
+  description: String
 }
 
 input DeviceFilterInput {
-    and: [DeviceFilterInput!]
-    company: CompanyFilterInput
-    createdAt: ComparableDateTimeOffsetOperationFilterInput
-    createdBy: StringOperationFilterInput
-    description: StringOperationFilterInput
-    groups: ListFilterInputTypeOfGroupFilterInput
-    id: StringOperationFilterInput
-    ip: IpAddressFilterInput
-    lastModifiedAt: ComparableDateTimeOffsetOperationFilterInput
-    lastModifiedBy: StringOperationFilterInput
-    name: StringOperationFilterInput
-    or: [DeviceFilterInput!]
-    pluginName: StringOperationFilterInput
-    pluginTypes: PluginTypesOperationFilterInput
-    primaryConnection: ConnectionTypesOperationFilterInput
-    secondaryConnection: ConnectionTypesOperationFilterInput
+  and: [DeviceFilterInput!]
+  or: [DeviceFilterInput!]
+  ip: IpAddressFilterInput
+  company: CompanyFilterInput
+  primaryConnection: ConnectionTypesOperationFilterInput
+  secondaryConnection: ConnectionTypesOperationFilterInput
+  pluginName: StringOperationFilterInput
+  pluginTypes: PluginTypesOperationFilterInput
+  groups: ListFilterInputTypeOfGroupFilterInput
+  id: StringOperationFilterInput
+  name: StringOperationFilterInput
+  description: StringOperationFilterInput
+  createdAt: ComparableDateTimeOffsetOperationFilterInput
+  lastModifiedAt: ComparableDateTimeOffsetOperationFilterInput
+  createdBy: StringOperationFilterInput
+  lastModifiedBy: StringOperationFilterInput
+}
+
+input DeviceLightStateInput {
+  deviceId: String!
+  setLight: Boolean!
 }
 
 input DeviceSortInput {
-    company: CompanySortInput
-    createdAt: SortEnumType
-    createdBy: SortEnumType
-    description: SortEnumType
-    id: SortEnumType
-    ip: IpAddressSortInput
-    lastModifiedAt: SortEnumType
-    lastModifiedBy: SortEnumType
-    name: SortEnumType
-    pluginName: SortEnumType
-    pluginTypes: SortEnumType
-    primaryConnection: SortEnumType
-    secondaryConnection: SortEnumType
+  ip: IpAddressSortInput
+  company: CompanySortInput
+  primaryConnection: SortEnumType
+  secondaryConnection: SortEnumType
+  pluginName: SortEnumType
+  pluginTypes: SortEnumType
+  id: SortEnumType
+  name: SortEnumType
+  description: SortEnumType
+  createdAt: SortEnumType
+  lastModifiedAt: SortEnumType
+  createdBy: SortEnumType
+  lastModifiedBy: SortEnumType
 }
 
 input GroupFilterInput {
-    and: [GroupFilterInput!]
-    createdAt: ComparableDateTimeOffsetOperationFilterInput
-    createdBy: StringOperationFilterInput
-    description: StringOperationFilterInput
-    devices: ListFilterInputTypeOfDeviceFilterInput
-    id: StringOperationFilterInput
-    isSubGroup: BooleanOperationFilterInput
-    lastModifiedAt: ComparableDateTimeOffsetOperationFilterInput
-    lastModifiedBy: StringOperationFilterInput
-    name: StringOperationFilterInput
-    or: [GroupFilterInput!]
-    subGroups: ListFilterInputTypeOfGroupFilterInput
+  and: [GroupFilterInput!]
+  or: [GroupFilterInput!]
+  devices: ListFilterInputTypeOfDeviceFilterInput
+  id: StringOperationFilterInput
+  name: StringOperationFilterInput
+  description: StringOperationFilterInput
+  createdAt: ComparableDateTimeOffsetOperationFilterInput
+  lastModifiedAt: ComparableDateTimeOffsetOperationFilterInput
+  createdBy: StringOperationFilterInput
+  lastModifiedBy: StringOperationFilterInput
 }
 
 input GroupSortInput {
-    createdAt: SortEnumType
-    createdBy: SortEnumType
-    description: SortEnumType
-    id: SortEnumType
-    isSubGroup: SortEnumType
-    lastModifiedAt: SortEnumType
-    lastModifiedBy: SortEnumType
-    name: SortEnumType
+  id: SortEnumType
+  name: SortEnumType
+  description: SortEnumType
+  createdAt: SortEnumType
+  lastModifiedAt: SortEnumType
+  createdBy: SortEnumType
+  lastModifiedBy: SortEnumType
 }
 
 input IpAddressFilterInput {
-    and: [IpAddressFilterInput!]
-    ipv4: StringOperationFilterInput
-    or: [IpAddressFilterInput!]
+  and: [IpAddressFilterInput!]
+  or: [IpAddressFilterInput!]
+  ipv4: StringOperationFilterInput
 }
 
 input IpAddressSortInput {
-    ipv4: SortEnumType
+  ipv4: SortEnumType
 }
 
 input ListFilterInputTypeOfDeviceFilterInput {
-    all: DeviceFilterInput
-    any: Boolean
-    none: DeviceFilterInput
-    some: DeviceFilterInput
+  all: DeviceFilterInput
+  none: DeviceFilterInput
+  some: DeviceFilterInput
+  any: Boolean
 }
 
 input ListFilterInputTypeOfGroupFilterInput {
-    all: GroupFilterInput
-    any: Boolean
-    none: GroupFilterInput
-    some: GroupFilterInput
+  all: GroupFilterInput
+  none: GroupFilterInput
+  some: GroupFilterInput
+  any: Boolean
 }
 
 input LoginInput {
-    password: String!
-    userName: String!
+  userName: String!
+  password: String!
 }
 
 input NetworkDeviceFilterInput {
-    and: [NetworkDeviceFilterInput!]
-    description: StringOperationFilterInput
-    hostname: StringOperationFilterInput
-    ipv4: StringOperationFilterInput
-    ipv6: StringOperationFilterInput
-    macAddress: StringOperationFilterInput
-    name: StringOperationFilterInput
-    or: [NetworkDeviceFilterInput!]
+  and: [NetworkDeviceFilterInput!]
+  or: [NetworkDeviceFilterInput!]
+  name: StringOperationFilterInput
+  description: StringOperationFilterInput
+  ipv4: StringOperationFilterInput
+  ipv6: StringOperationFilterInput
+  hostname: StringOperationFilterInput
+  macAddress: StringOperationFilterInput
 }
 
 input NetworkDeviceSortInput {
-    description: SortEnumType
-    hostname: SortEnumType
-    ipv4: SortEnumType
-    ipv6: SortEnumType
-    macAddress: SortEnumType
-    name: SortEnumType
+  name: SortEnumType
+  description: SortEnumType
+  ipv4: SortEnumType
+  ipv6: SortEnumType
+  hostname: SortEnumType
+  macAddress: SortEnumType
 }
 
 input PluginTypesOperationFilterInput {
-    eq: PluginTypes
-    in: [PluginTypes!]
-    neq: PluginTypes
-    nin: [PluginTypes!]
+  eq: PluginTypes
+  neq: PluginTypes
+  in: [PluginTypes!]
+  nin: [PluginTypes!]
 }
 
 input RegistrationInput {
-    password: String!
-    role: String!
-    userName: String!
+  userName: String!
+  password: String!
+  role: String!
 }
 
 input StringOperationFilterInput {
-    and: [StringOperationFilterInput!]
-    contains: String
-    endsWith: String
-    eq: String
-    in: [String]
-    ncontains: String
-    nendsWith: String
-    neq: String
-    nin: [String]
-    nstartsWith: String
-    or: [StringOperationFilterInput!]
-    startsWith: String
+  and: [StringOperationFilterInput!]
+  or: [StringOperationFilterInput!]
+  eq: String
+  neq: String
+  contains: String
+  ncontains: String
+  in: [String]
+  nin: [String]
+  startsWith: String
+  nstartsWith: String
+  endsWith: String
+  nendsWith: String
 }
 
 input UpdateDeviceInput {
-    description: String
-    groupName: String
-    id: String!
-    ipv4: String
-    name: String
-    primaryConnection: ConnectionTypes
-    secondaryConnection: ConnectionTypes
+  id: String!
+  name: String
+  description: String
+  ipv4: String
+  groupName: String
+  primaryConnection: ConnectionTypes
+  secondaryConnection: ConnectionTypes
 }
 
 input UpdateGroupInput {
-    description: String
-    id: String!
-    name: String
+  id: String!
+  name: String
+  description: String
 }
 
 input UpdateUserInput {
-    email: String
-    firstName: String
-    lastName: String
-    middleName: String
-    newRole: String
-    personInfo: String
-    phoneNumber: String
-    userId: String!
-    userName: String
+  userId: String!
+  userName: String
+  personInfo: String
+  firstName: String
+  middleName: String
+  lastName: String
+  email: String
+  phoneNumber: String
+  newRole: String
 }
 
+enum AppErrorCodes {
+  SERVER_ERROR
+  NOT_FOUND
+  NOT_CREATED
+  NOT_UPDATED
+  EXISTS
+  NO_HOME
+  NOT_SET
+  NOT_AUTHORIZED
+  IS_EMPTY
+  IS_SUB_GROUP
+}
+
+enum ApplyPolicy {
+  BEFORE_RESOLVER
+  AFTER_RESOLVER
+}
+
+enum ConnectionTypes {
+  NONE
+  HTTP
+  MQTT
+}
+
+enum PluginTypes {
+  NONE
+  BASE
+  MOCK
+  DOOR
+  LIGHT
+  HT
+  SENSOR
+  RGB
+}
+
+enum SortEnumType {
+  ASC
+  DESC
+}
+
+directive @authorize("The name of the authorization policy that determines access to the annotated resource." policy: String "Roles that are allowed to access the annotated resource." roles: [String!] "Defines when when the resolver shall be executed.By default the resolver is executed after the policy has determined that the current user is allowed to access the field." apply: ApplyPolicy! = BEFORE_RESOLVER) repeatable on SCHEMA | OBJECT | FIELD_DEFINITION
+
+"The `@defer` directive may be provided for fragment spreads and inline fragments to inform the executor to delay the execution of the current fragment to indicate deprioritization of the current fragment. A query with `@defer` directive will cause the request to potentially return multiple responses, where non-deferred data is delivered in the initial response and data deferred is delivered in a subsequent response. `@include` and `@skip` take precedence over `@defer`."
+directive @defer("If this argument label has a value other than null, it will be passed on to the result of this defer directive. This label is intended to give client applications a way to identify to which fragment a deferred result belongs to." label: String "Deferred when true." if: Boolean) on FRAGMENT_SPREAD | INLINE_FRAGMENT
+
+"The @deprecated directive is used within the type system definition language to indicate deprecated portions of a GraphQL service’s schema,such as deprecated fields on a type or deprecated enum values."
+directive @deprecated("Deprecations include a reason for why it is deprecated, which is formatted using Markdown syntax (as specified by CommonMark)." reason: String = "No longer supported") on FIELD_DEFINITION | ENUM_VALUE
+
+"Directs the executor to include this field or fragment only when the `if` argument is true."
+directive @include("Included when true." if: Boolean!) on FIELD | FRAGMENT_SPREAD | INLINE_FRAGMENT
+
+"Directs the executor to skip this field or fragment when the `if` argument is true."
+directive @skip("Skipped when true." if: Boolean!) on FIELD | FRAGMENT_SPREAD | INLINE_FRAGMENT
+
+"The `@specifiedBy` directive is used within the type system definition language to provide a URL for specifying the behavior of custom scalar definitions."
+directive @specifiedBy("The specifiedBy URL points to a human-readable specification. This field will only read a result for scalar types." url: String!) on SCALAR
+
+"The `@stream` directive may be provided for a field of `List` type so that the backend can leverage technology such as asynchronous iterators to provide a partial list in the initial response, and additional list items in subsequent responses. `@include` and `@skip` take precedence over `@stream`."
+directive @stream("If this argument label has a value other than null, it will be passed on to the result of this stream directive. This label is intended to give client applications a way to identify to which fragment a streamed result belongs to." label: String "The initial elements that shall be send down to the consumer." initialCount: Int! "Streamed when true." if: Boolean!) on FIELD
 
 "The `DateTime` scalar represents an ISO-8601 compliant date time type."
-scalar DateTime
+scalar DateTime @specifiedBy(url: "https:\/\/www.graphql-scalars.com\/date-time")

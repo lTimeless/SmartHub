@@ -103,7 +103,7 @@ import { useMutation, useQuery } from '@urql/vue';
 import { Routes } from '@/types/enums';
 import Loader from '@/components/ui/AppSpinner.vue';
 import AppCard from '@/components/ui/cards/AppCard.vue';
-import { LOGIN } from '../login/LoginMutation';
+import { LOGIN, LoginMutationVariables, LoginMutationPayload } from '../login/LoginMutation';
 import { useIdentity } from '@/hooks/useIdentity';
 import gql from 'graphql-tag';
 
@@ -131,7 +131,7 @@ export default defineComponent({
       userName: '',
       password: ''
     });
-    const { executeMutation: login, fetching: loadLogin, error: errLogin } = useMutation(LOGIN);
+    const { executeMutation: login, fetching: loadLogin, error: errLogin } = useMutation<LoginMutationPayload,LoginMutationVariables>(LOGIN);
 
     const { data: result, fetching: loading, error } = useQuery({ query: HOME_AND_USERS_EXIST });
     const data = computed(() => result.value);
@@ -150,15 +150,15 @@ export default defineComponent({
       loginInput.userName = userName.value;
       loginInput.password = password.value;
       await login({ input: loginInput }).then((res) => {
-        if (res.data.login.token !== null) {
+        if (res.data && res.data.login.token) {
           token.value = res.data.login.token;
           router.push(Routes.Home);
         } else {
-        //   errLogin.value = {
-        //     graphQLErrors: [
-        //       { name: res.data.login.errors[0].code, message: res.data.login.errors[0].message,   }
-        //     ]
-        //   };
+          //   errLogin.value = {
+          //     graphQLErrors: [
+          //       { name: res.data.login.errors[0].code, message: res.data.login.errors[0].message,   }
+          //     ]
+          //   };
         }
       });
     };

@@ -88,20 +88,14 @@
 
 <script lang="ts">
 import { computed, defineComponent, reactive, ref, watch } from 'vue';
-import { AppConfigInitInput } from '@/types/graphql/inputs';
 import { useRouter } from 'vue-router';
 import AppCard from '@/components/ui/cards/AppCard.vue';
 import { useMutation, useQuery } from '@urql/vue';
 import { Routes } from '@/types/enums';
 import Loader from '@/components/ui/AppSpinner.vue';
-import { INITIALIZE_APP } from '../init/InitMutation';
-import gql from 'graphql-tag';
-
-const ApplicationIsActive = gql`
-  query ApplicationIsActive {
-    applicationIsActive
-  }
-`;
+import { INITIALIZE_APP, InitMutationPayload, InitMutationVariables } from './InitMutation';
+import { ApplicationIsActiveQueryType, APP_IS_ACTIVE } from './InitQueries';
+import { AppConfigInitInput } from '@/types/graphql/inputs';
 
 export default defineComponent({
   name: 'Init',
@@ -116,10 +110,10 @@ export default defineComponent({
     const appConfigCreateRequest: AppConfigInitInput = reactive({
       autoDetectAddress: false
     });
-    const { executeMutation: initApp, fetching: loadInit, error: errInit } = useMutation(INITIALIZE_APP);
+    const { executeMutation: initApp, fetching: loadInit, error: errInit } = useMutation<InitMutationPayload, InitMutationVariables>(INITIALIZE_APP);
 
-    const { data, fetching: loading, error } = useQuery({ query: ApplicationIsActive });
-    const applicationIsActive = computed(() => data.value.applicationIsActive);
+    const { data, fetching: loading, error } = useQuery<ApplicationIsActiveQueryType>({ query: APP_IS_ACTIVE });
+    const applicationIsActive = computed(() => data.value?.applicationIsActive);
     watch(applicationIsActive, (newApplicationIsActive) => {
       if (newApplicationIsActive) {
         router.push(Routes.Login);

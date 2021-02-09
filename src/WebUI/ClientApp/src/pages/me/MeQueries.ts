@@ -1,11 +1,23 @@
+import { IdentityPayload } from '@/types/graphql/payloads';
 import gql from 'graphql-tag';
 
-export const WHO_AM_I = gql`
+export const FRAGMENT_ME = gql`
+  fragment IdUserName on User {
+    id
+    userName
+  }
+`;
+
+/** Types */
+export type MeQueryType = { __typename?: 'AppQueries' } & {
+  me: IdentityPayload;
+};
+
+export const ME = gql`
   query GetMe {
     me {
       user {
-        id
-        userName
+        ...IdUserName
         createdAt
         createdBy
         lastModifiedAt
@@ -21,4 +33,5 @@ export const WHO_AM_I = gql`
       }
     }
   }
+  ${FRAGMENT_ME}
 `;

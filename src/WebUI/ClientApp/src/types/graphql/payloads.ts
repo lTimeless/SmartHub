@@ -1,40 +1,66 @@
-import { Device, Group, User } from '../types';
+import { AppErrorCodes } from '../enums';
+import { AppConfig, Device, Group, User } from '../types';
 
 // ########## Payloads ##########
 /**
  * Base payload type
  */
+export type UserError = {
+  __typename?: 'UserError';
+  message: string;
+  code: AppErrorCodes;
+};
+
 export type Payload = {
-  __typename?: 'AppQueries';
   message?: string;
-  errors?: string[];
+  errors?: Array<UserError>;
 };
 
 /**
- *   Devices payload
+ *   Init app
+ */
+export interface InitPayload extends Payload {
+  __typename?: 'InitPayload';
+  appConfig?: AppConfig;
+}
+
+/**
+ *   Devices
  */
 export interface DevicesPayload extends Payload {
+  __typename?: 'DevicesPayload';
   devices?: Array<Device>;
 }
 
 /**
- *   Device payload
+ *   Device
  */
 export interface DevicePayload extends Payload {
+  __typename?: 'DevicePayload';
   device?: Device;
 }
 
 /**
- * Identity paylaod
+ * Identity
  */
 export interface IdentityPayload extends Payload {
+  __typename?: 'IdentityPayload';
   token?: string;
   user?: User;
 }
 
 /**
- * Groups payload
+ * Group
  */
 export interface GroupsPayload extends Payload {
+  __typename?: 'GroupsPayload';
   groups: Array<{ __typename?: 'Group' } & Group>;
+}
+
+/**
+ * User
+ */
+export interface UserPayload extends Payload {
+  __typename?: 'UserPayload';
+  user: User;
 }

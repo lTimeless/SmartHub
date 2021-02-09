@@ -1,6 +1,7 @@
 <template>
   <div v-if="lightState && lightState.lights">
     <button
+
       class="rounded-full p-2 focus:outline-none focus:ring focus:ring-primaryBlue focus:ring-opacity-50"
       :class="[
         lightState.lights[0].ison
@@ -18,6 +19,7 @@
 import { defineComponent, PropType, toRefs } from 'vue';
 import { LightState } from '../../../types/types';
 import AppIcon from '../../icons/AppIcon.vue';
+
 export default defineComponent({
   name: 'LightControl',
   props: {

@@ -37,7 +37,11 @@
 
               <div class="border-border border-t my-2"></div>
               <div class="flex justify-center">
-                <AppDeviceControl device-type-name="Light" :light-state="device.status"></AppDeviceControl>
+                <AppDeviceControl
+                  device-type-name="Light"
+                  :light-state="device.status"
+                  @click="handleLightBtn"
+                ></AppDeviceControl>
               </div>
             </div>
             <div v-else>Error loading device ...</div>
@@ -55,10 +59,10 @@ import AppCard from '@/components/ui/cards/AppCard.vue';
 import DeviceCreateModal from './modals/DeviceCreateModal.vue';
 import { useQuery } from '@urql/vue';
 import Loader from '@/components/ui/AppSpinner.vue';
-import { GET_DEVICES } from './DeviceQueries';
+import { GetDevicesQueryType, GET_DEVICES } from './DeviceQueries';
 import { useRouter } from 'vue-router';
-import { DevicesPayload } from '../../types/graphql/payloads';
 import AppDeviceControl from '../../components/ui/controls/AppDeviceControl.vue';
+import { SetLightStateDocument, SetLightStateQueryType, useSetLightStateQuery } from '../../graphql/queries/useSetLightStateQuery';
 
 export default defineComponent({
   name: 'Devices',
@@ -70,7 +74,7 @@ export default defineComponent({
   },
   setup() {
     const router = useRouter();
-    const { data, fetching: loading, error } = useQuery<DevicesPayload>({ query: GET_DEVICES });
+    const { data, fetching: loading, error } = useQuery<GetDevicesQueryType>({ query: GET_DEVICES });
     const state = reactive({
       showCreateModal: false
     });
@@ -83,13 +87,31 @@ export default defineComponent({
       router.push({ name: 'DeviceDetails', params: { name: name } });
     };
 
+    const handleLightBtn = () => {
+      const variables = {
+        input: {
+          deviceId: '48f84387-4e50-4876-9534-edeb5dc662ca',
+          setLight: false
+        }
+      };
+      console.log('click');
+      // TODO deviceId an diese component überreichen
+      // const { data } = useSetLightStateQuery(variables);
+      const { data } = useQuery<SetLightStateQueryType>({
+        query: SetLightStateDocument,
+        variables: variables
+      });
+      console.log(data);
+    };
+
     return {
       ...toRefs(state),
       loading,
       error,
       data,
       toggleCreateModal,
-      goToDetail
+      goToDetail,
+      handleLightBtn
     };
   }
 });

@@ -5,8 +5,8 @@
       <template #title>
         <div class="w-full pr-4 max-w-full flex-grow flex-1">
           <h5 class="text-gray-600 uppercase font-bold text-xs">Groups</h5>
-          <span class="text-xl text-gray-600">
-            {{ groupsFetch || groupsCountResult.groupsCount }}
+          <span v-if="!groupsFetch" class="text-xl text-gray-600">
+            {{ groupsCountResult && groupsCountResult.groupsCount }}
           </span>
         </div>
         <div class="w-auto pl-4 flex-initial">
@@ -16,7 +16,7 @@
         </div>
       </template>
       <template #subTitle>
-        <span>{{ groupsFetch || groupsCountResult.groupsCount }} </span>
+        <span v-if="!groupsFetch">{{ groupsCountResult && groupsCountResult.groupsCount }} </span>
         <span class="whitespace-no-wrap ml-2"> Since last login </span>
       </template>
     </AppCardRouterLink>
@@ -27,7 +27,9 @@
       <template #title>
         <div class="w-full pr-4 max-w-full flex-grow flex-1">
           <h5 class="text-gray-600 uppercase font-bold text-xs">Devices</h5>
-          <span class="text-xl text-gray-600"> {{ devicesFetch || devicesResult.devicesCount }} </span>
+          <span v-if="!devicesFetch" class="text-xl text-gray-600">
+            {{ devicesResult && devicesResult.devicesCount }}
+          </span>
         </div>
         <div class="w-auto pl-4 flex-initial">
           <div
@@ -38,7 +40,7 @@
         </div>
       </template>
       <template #subTitle>
-        <span>{{ devicesFetch || devicesResult.devicesCount }} </span>
+        <span v-if="!devicesFetch">{{ devicesResult && devicesResult.devicesCount }} </span>
         <span class="whitespace-no-wrap ml-2"> Since last login </span>
       </template>
     </AppCardRouterLink>
@@ -93,7 +95,12 @@ import { defineComponent } from 'vue';
 import AppIcon from '@/components/icons/AppIcon.vue';
 import AppCardRouterLink from '@/components/ui/cards/AppCardRouterLink.vue';
 import { Routes } from '@/types/enums';
-import { GET_DEVICES_COUNT, GET_GROUPS_COUNT } from '../HomeQueries';
+import {
+  GetDevicesCountQueryType,
+  GetGroupsCountQueryType,
+  GET_DEVICES_COUNT,
+  GET_GROUPS_COUNT
+} from '../HomeQueries';
 
 export default defineComponent({
   name: 'CardsRow',
@@ -103,8 +110,12 @@ export default defineComponent({
   },
   props: {},
   setup() {
-    const { data: groupsCountResult, fetching: groupsFetch } = useQuery({ query: GET_GROUPS_COUNT });
-    const { data: devicesResult, fetching: devicesFetch } = useQuery({ query: GET_DEVICES_COUNT });
+    const { data: groupsCountResult, fetching: groupsFetch } = useQuery<GetGroupsCountQueryType>({
+      query: GET_GROUPS_COUNT
+    });
+    const { data: devicesResult, fetching: devicesFetch } = useQuery<GetDevicesCountQueryType>({
+      query: GET_DEVICES_COUNT
+    });
 
     return {
       groupsCountResult,
