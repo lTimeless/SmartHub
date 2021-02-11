@@ -22,6 +22,7 @@ import ChevronDoubleLeftIcon from '@/components/icons/ChevronDoubleLeftIcon.vue'
 import LogoutIcon from '@/components/icons/LogoutIcon.vue';
 import PowerIcon from '@/components/icons/PowerIcon.vue';
 import BulbIcon from '@/components/icons/BulbIcon.vue';
+import EditIcon from '@/components/icons/EditIcon.vue';
 import { App } from '@vue/runtime-core';
 
 export default {
@@ -51,5 +52,6 @@ export default {
     app.component('LogoutIcon', LogoutIcon);
     app.component('PowerIcon', PowerIcon);
     app.component('BulbIcon', BulbIcon);
+    app.component('EditIcon', EditIcon);
   }
 };

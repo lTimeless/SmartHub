@@ -1,10 +1,9 @@
 <template>
-  <component :is="typeFullName" :light-state="lightState" :handle-btn-click="handleBtnClick"></component>
+  <component :is="typeFullName" :state="state" :device-id="deviceId"></component>
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, PropType } from 'vue';
-import { LightState } from '../../../types/types';
+import { computed, defineComponent } from 'vue';
 
 export default defineComponent({
   name: 'AppDeviceControl',
@@ -13,10 +12,14 @@ export default defineComponent({
       type: String,
       required: true
     },
-    lightState: {
-      type: Object as PropType<LightState> | null,
+    state: {
+      type: Object,
       required: false,
       default: null
+    },
+    deviceId: {
+      type: String,
+      required: true
     }
   },
   setup(props) {

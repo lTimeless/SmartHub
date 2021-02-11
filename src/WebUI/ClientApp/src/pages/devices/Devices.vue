@@ -25,22 +25,26 @@
     </template>
     <template v-if="data">
       <div v-if="data.devices">
-        <div class="grid xl:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 gap-4 rounded">
-          <AppCard class="hover:shadow-md bg-white w-full" v-for="device in data.devices" :key="device.id">
-            <div v-if="device" class="p-3 w-full">
-              <h1
-                class="text-xl text-left text-gray-600 font-bold cursor-pointer"
-                @click="goToDetail(device.name)"
-              >
-                {{ device.name }}
-              </h1>
+        <div class="grid xl:grid-cols-6 md:grid-cols-4 grid-cols-2 gap-4 rounded">
+          <AppCard class="bg-white w-full" v-for="device in data.devices" :key="device.id">
+            <div v-if="device" class="w-full">
+              <div class="flex flex-row justify-between items-center content-center">
+                <h1 class="text-xl text-left text-gray-600 font-bold">
+                  {{ device.name }}
+                </h1>
+                <AppIcon
+                  icon-name="Edit"
+                  @click="goToDetail(device.name)"
+                  class="cursor-pointer p-1 rounded focus:outline-none hover:ring-2 hover:ring-primaryBlue hover:ring-opacity-50 mr-1"
+                />
+              </div>
 
               <div class="border-border border-t my-2"></div>
               <div class="flex justify-center">
                 <AppDeviceControl
-                  device-type-name="Light"
-                  :light-state="device.status"
-                  @click="handleLightBtn"
+                  :device-type-name="capitalize(device.pluginTypes.toString())"
+                  :state="device.status"
+                  :device-id="device.id"
                 ></AppDeviceControl>
               </div>
             </div>
@@ -63,10 +67,13 @@ import { GetDevicesQueryType, GET_DEVICES } from './DeviceQueries';
 import { useRouter } from 'vue-router';
 import AppDeviceControl from '../../components/ui/controls/AppDeviceControl.vue';
 import { SetLightStateDocument, SetLightStateQueryType, useSetLightStateQuery } from '../../graphql/queries/useSetLightStateQuery';
+import AppIcon from "@/components/icons/AppIcon.vue";
+import { useString } from "@/hooks/useString";
 
 export default defineComponent({
   name: 'Devices',
   components: {
+    AppIcon,
     AppCard,
     DeviceCreateModal,
     Loader,
@@ -74,7 +81,7 @@ export default defineComponent({
   },
   setup() {
     const router = useRouter();
-    const { data, fetching: loading, error } = useQuery<GetDevicesQueryType>({ query: GET_DEVICES });
+    const { data, fetching: loading, error } = useQuery<GetDevicesQueryType>({ query: GET_DEVICES, requestPolicy: 'network-only' });
     const state = reactive({
       showCreateModal: false
     });
@@ -87,34 +94,15 @@ export default defineComponent({
       router.push({ name: 'DeviceDetails', params: { name: name } });
     };
 
-    const handleLightBtn = () => {
-      const variables = {
-        input: {
-          deviceId: '48f84387-4e50-4876-9534-edeb5dc662ca',
-          setLight: false
-        }
-      };
-      console.log('click');
-      // TODO deviceId an diese component überreichen
-      // const { data } = useSetLightStateQuery(variables);
-      const { data } = useQuery<SetLightStateQueryType>({
-        query: SetLightStateDocument,
-        variables: variables
-      });
-      console.log(data);
-    };
-
     return {
       ...toRefs(state),
+      ...useString(),
       loading,
       error,
       data,
       toggleCreateModal,
-      goToDetail,
-      handleLightBtn
+      goToDetail
     };
   }
 });
 </script>
-
-<style lang="scss" scoped></style>

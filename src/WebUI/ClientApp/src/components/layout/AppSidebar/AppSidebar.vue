@@ -49,7 +49,7 @@ export default defineComponent({
         label: 'Devices',
         rolesRequired: [Roles.User, Roles.Admin],
         route: Routes.Devices,
-        iconName: 'Server',
+        iconName: 'Device',
         children: []
       },
       {

@@ -5,7 +5,7 @@
       <!-- Burger Menu btn-->
       <div class="md:hidden flex flex-row justify-start items-center md:w-14 w-full rounded">
         <button type="button" class="ml-6 mt-1">
-          <AppIcon :icon-name="iconName" icon-color="text-primaryBlueHover" @click="handleMenuClick" />
+          <AppIcon :icon-name="iconName" icon-color="text-primaryBlue" @click="handleMenuClick" />
         </button>
       </div>
       <!-- Route Name -->
@@ -14,7 +14,7 @@
     <!-- back btn -->
     <div v-if="!isRoute" class="flex-row hidden md:flex md:justify-end md:w-1/2">
       <button
-        class="rounded p-2 focus:outline-none focus:ring-2 focus:ring-primaryBlue focus:ring-opacity-50 hover:ring-2 hover:ring-primaryBlue hover:ring-opacity-50"
+        class="rounded p-1 focus:outline-none hover:ring-2 hover:ring-primaryBlue hover:ring-opacity-50"
         type="button"
         @click="goBack"
       >
