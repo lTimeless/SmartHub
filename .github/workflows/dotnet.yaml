@@ -1,19 +1,20 @@
 name: .Net5 CI
+
 on:
   workflow_dispatch:
   push:
     branches: [ master, develop]
     paths:
-      - 'SmartHub/**'
-      - '!SmartHub/SmartHub.Ui/**'
+      - 'src/**'
+      - '!src/WebUI/ClientApp/**'
       - '!**.md'
   pull_request:
     branches: [ master, develop]
     paths:
-      - 'SmartHub/**'
+      - 'src/**'
 
 env:
-  folderName: 'SmartHub/'
+  folderName: 'src/'
   solution: 'SmartHub.sln'
   
 jobs:
