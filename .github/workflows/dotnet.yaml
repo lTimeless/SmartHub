@@ -14,7 +14,6 @@ on:
       - 'src/**'
 
 env:
-  folderName: 'src/'
   solution: 'SmartHub.sln'
   
 jobs:
@@ -31,10 +30,10 @@ jobs:
       uses: actions/setup-node@master
 
     - name: Install dependencies
-      run: dotnet restore $folderName$solution
+      run: dotnet restore $solution
       
     - name: Build with dotnet
-      run: dotnet build ${{ format('{0}/{1}', '$folderName', '$solution') }} --configuration Release --no-restore
+      run: dotnet build $solution --configuration Release --no-restore
       
     - name: Run Test
-      run: dotnet test ${{ format('{0}/{1}', '$folderName', '$solution') }} --no-restore --verbosity normal
+      run: dotnet test $solution --no-restore --verbosity normal
