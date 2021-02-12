@@ -235,3 +235,5 @@ _Pvt_Extensions
 
 # Dev configFolder
 SmartHub.configFolder-dev/
+
+src/WebUI/Logs/
