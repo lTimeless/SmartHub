@@ -110,9 +110,14 @@ export default defineComponent({
     const appConfigCreateRequest: AppConfigInitInput = reactive({
       autoDetectAddress: false
     });
-    const { executeMutation: initApp, fetching: loadInit, error: errInit } = useMutation<InitMutationPayload, InitMutationVariables>(INITIALIZE_APP);
+    const { executeMutation: initApp, fetching: loadInit, error: errInit } = useMutation<
+      InitMutationPayload,
+      InitMutationVariables
+    >(INITIALIZE_APP);
 
-    const { data, fetching: loading, error } = useQuery<ApplicationIsActiveQueryType>({ query: APP_IS_ACTIVE });
+    const { data, fetching: loading, error } = useQuery<ApplicationIsActiveQueryType>({
+      query: APP_IS_ACTIVE
+    });
     const applicationIsActive = computed(() => data.value?.applicationIsActive);
     watch(applicationIsActive, (newApplicationIsActive) => {
       if (newApplicationIsActive) {

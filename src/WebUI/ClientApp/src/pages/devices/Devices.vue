@@ -65,10 +65,9 @@ import { useQuery } from '@urql/vue';
 import Loader from '@/components/ui/AppSpinner.vue';
 import { GetDevicesQueryType, GET_DEVICES } from './DeviceQueries';
 import { useRouter } from 'vue-router';
-import AppDeviceControl from '../../components/ui/controls/AppDeviceControl.vue';
-import { SetLightStateDocument, SetLightStateQueryType, useSetLightStateQuery } from '../../graphql/queries/useSetLightStateQuery';
-import AppIcon from "@/components/icons/AppIcon.vue";
-import { useString } from "@/hooks/useString";
+import AppDeviceControl from '../../components/controls/AppDeviceControl.vue';
+import AppIcon from '@/components/icons/AppIcon.vue';
+import { useString } from '@/hooks/useString';
 
 export default defineComponent({
   name: 'Devices',
@@ -81,7 +80,10 @@ export default defineComponent({
   },
   setup() {
     const router = useRouter();
-    const { data, fetching: loading, error } = useQuery<GetDevicesQueryType>({ query: GET_DEVICES, requestPolicy: 'network-only' });
+    const { data, fetching: loading, error } = useQuery<GetDevicesQueryType>({
+      query: GET_DEVICES,
+      requestPolicy: 'network-only'
+    });
     const state = reactive({
       showCreateModal: false
     });

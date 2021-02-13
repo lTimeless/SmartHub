@@ -1,3 +1,4 @@
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono&display=swap');
 /*! @import */
 @tailwind base;
 @tailwind components;
@@ -30,30 +31,8 @@
   //background: #c1cacb;
 }
 
-/* Background Gradient */
+/* Background */
 .background {
   /* @apply bg-gradient-to-b from-charcoalBlue-300 via-charcoalBlue-200 to-charcoalBlue-50 */
   @apply bg-blueGray-300;
-}
-
-/* Table */
-table {
-    @apply text-left mb-6;
-  th {
-      @apply py-3 px-4 bg-gray-400 border-white uppercase text-sm text-gray-600 font-bold tracking-wider;
-  }
-
-  td {
-      @apply px-4 py-2 border-white border-b text-sm text-gray-600 font-semibold tracking-wider;
-  }
-
-  tr {
-      @apply border-b border-gray-300;
-  &:nth-child(even) {
-       @apply bg-gray-200;
-   }
-  &:nth-child(odd) {
-       @apply bg-white;
-   }
-  }
 }

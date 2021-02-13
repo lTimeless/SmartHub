@@ -2,7 +2,7 @@ import { ConnectionTypes } from '../enums';
 
 // ########## Inputs ##########
 /**
- * AppConfig input
+ * AppConfig
  */
 export interface AppConfigInitInput {
   name?: string;
@@ -11,7 +11,7 @@ export interface AppConfigInitInput {
 }
 
 /**
- * User inputs
+ * User
  */
 export interface UpdateUserInput {
   userId: string;
@@ -26,7 +26,7 @@ export interface UpdateUserInput {
 }
 
 /**
- * Device inputs
+ * Device
  */
 export interface CreateDeviceInput {
   groupName?: string;
@@ -51,7 +51,15 @@ export interface UpdateDeviceInput {
 }
 
 /**
- * Group inputs
+ * Device Light State
+ */
+export type DeviceLightStateInput = {
+  deviceId: string;
+  setLight: boolean;
+};
+
+/**
+ * Group
  */
 export interface CreateGroupInput {
   name: string;
@@ -66,7 +74,7 @@ export interface UpdateGroupInput {
 }
 
 /**
- * Registration Input
+ * Registration
  */
 export interface RegistrationInput {
   userName: string;
@@ -75,7 +83,7 @@ export interface RegistrationInput {
 }
 
 /**
- * Login Input
+ * Login
  */
 export interface LoginInput {
   userName: string;

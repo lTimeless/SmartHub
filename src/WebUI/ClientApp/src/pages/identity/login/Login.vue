@@ -131,7 +131,10 @@ export default defineComponent({
       userName: '',
       password: ''
     });
-    const { executeMutation: login, fetching: loadLogin, error: errLogin } = useMutation<LoginMutationPayload,LoginMutationVariables>(LOGIN);
+    const { executeMutation: login, fetching: loadLogin, error: errLogin } = useMutation<
+      LoginMutationPayload,
+      LoginMutationVariables
+    >(LOGIN);
 
     const { data: result, fetching: loading, error } = useQuery({ query: HOME_AND_USERS_EXIST });
     const data = computed(() => result.value);

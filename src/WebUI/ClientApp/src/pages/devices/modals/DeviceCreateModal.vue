@@ -166,7 +166,9 @@ export default defineComponent({
       primaryConnection: ConnectionTypes.None.toString(),
       secondaryConnection: ConnectionTypes.None.toString()
     });
-    const { executeMutation: createDevice, fetching: loadCreate, error: errCreate } = useMutation(CREATE_DEVICE);
+    const { executeMutation: createDevice, fetching: loadCreate, error: errCreate } = useMutation(
+      CREATE_DEVICE
+    );
     const saveBtnActive = computed(() => deviceCreateInput.name !== '' && deviceCreateInput.ipv4 !== '');
     const close = () => {
       context.emit('close', false);

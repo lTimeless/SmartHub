@@ -162,7 +162,10 @@ export default defineComponent({
     const updateUserInput: UpdateUserInput = reactive({
       userId: ''
     });
-    const { executeMutation: updateUser, fetching: loadUpdate, error: errUpdate } = useMutation<UpdateUserMutationPayload,UpdateUserMutationVariables>(UPDATE_USER);
+    const { executeMutation: updateUser, fetching: loadUpdate, error: errUpdate } = useMutation<
+      UpdateUserMutationPayload,
+      UpdateUserMutationVariables
+    >(UPDATE_USER);
     const { data: resultUser, fetching: loadUser, error: errUser } = useQuery<MeQueryType>({
       query: ME
     });

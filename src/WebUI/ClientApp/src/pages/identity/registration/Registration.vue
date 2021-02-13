@@ -189,7 +189,10 @@ export default defineComponent({
     onMounted(() => {
       clearStorage();
     });
-    const { executeMutation: createAccount, fetching: loadCreate, error: errCreate } = useMutation<RegistrationMutationPayload, RegistrationMutationVariables>(REGISTRATION);
+    const { executeMutation: createAccount, fetching: loadCreate, error: errCreate } = useMutation<
+      RegistrationMutationPayload,
+      RegistrationMutationVariables
+    >(REGISTRATION);
 
     const passwordStrength = computed(() => passwordStrengthText.value !== 'Too weak');
     const checkPwd = computed(

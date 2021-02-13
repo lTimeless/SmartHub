@@ -1,5 +1,5 @@
 import { AppErrorCodes } from '../enums';
-import { AppConfig, Device, Group, User } from '../types';
+import { AppConfig, Device, Group, LightResponse, User } from '../types';
 
 // ########## Payloads ##########
 /**
@@ -63,4 +63,12 @@ export interface GroupsPayload extends Payload {
 export interface UserPayload extends Payload {
   __typename?: 'UserPayload';
   user: User;
+}
+
+/**
+ * Device State
+ */
+export interface DeviceStatePayload extends Payload {
+  __typename?: 'DeviceStatePayload';
+  lightResponseType?: LightResponse;
 }

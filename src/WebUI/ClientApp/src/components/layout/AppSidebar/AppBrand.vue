@@ -13,8 +13,8 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, ref, toRefs } from 'vue';
-import Logo from '@/components/common/svgs/Logo.vue';
+import { computed, defineComponent, toRefs } from 'vue';
+import Logo from '@/components/svgs/Logo.vue';
 import { Routes } from '@/types/enums';
 import { useQuery } from '@urql/vue';
 import gql from 'graphql-tag';
@@ -40,7 +40,7 @@ export default defineComponent({
     }
   },
   setup(props) {
-    const { data } = useQuery({ query: GET_APP_CONFIG_NAME});
+    const { data } = useQuery({ query: GET_APP_CONFIG_NAME });
     const appConfig = computed(() => data.value.appConfig);
     return {
       appConfig,

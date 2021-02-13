@@ -258,7 +258,7 @@
 
 <script>
 export default {
-  name: 'NotFoundLogo',
+  name: 'NotFound',
   props: {
     width: {
       type: Number,

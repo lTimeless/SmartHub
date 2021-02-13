@@ -1,16 +1,6 @@
 import { Device } from '@/types/types';
 import { gql } from '@urql/core';
 
-export const FRAGMENT_GET_DEVICE_STATUS = gql`
-  fragment DeviceStatus on Device {
-    status {
-      lights {
-        ison
-      }
-    }
-  }
-`;
-
 /** Variables */
 export type GetDeviceByIdVariable = {
   name: string;
@@ -21,6 +11,18 @@ export type GetDevicesQueryType = { __typename?: 'AppQueries' } & {
   devices: Array<Device>;
 };
 
+/** Fragments */
+export const FRAGMENT_GET_DEVICE_STATUS = gql`
+  fragment DeviceStatus on Device {
+    status {
+      lights {
+        ison
+      }
+    }
+  }
+`;
+
+/** Queries */
 export const GET_DEVICE_BY_ID = gql`
   query GET_DEVICE_BY_ID($name: String!) {
     devices(where: { name: { eq: $name } }) {

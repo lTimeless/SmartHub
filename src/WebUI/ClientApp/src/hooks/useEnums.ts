@@ -31,4 +31,4 @@ export const useEnumTypes = (): ToRefs<State> => {
   return {
     ...toRefs(state)
   };
-}
+};

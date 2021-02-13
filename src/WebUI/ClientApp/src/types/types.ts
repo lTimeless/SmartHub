@@ -100,14 +100,15 @@ export interface Group extends BaseEntity {
 
 // ########## Device/Plugin Types ##########
 export type LightState = {
-  lights?: Light[];
+  lights?: LightResponse[];
 };
 
-export type Light = {
-  ison?: boolean;
+export type LightResponse = {
+  __typename?: 'LightResponse';
+  ison: boolean;
   mode?: string;
-  red?: number;
-  green?: number;
-  blue?: number;
-  white?: number;
+  red: number;
+  green: number;
+  blue: number;
+  white: number;
 };

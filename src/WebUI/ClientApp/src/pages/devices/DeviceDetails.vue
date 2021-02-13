@@ -188,7 +188,10 @@ export default defineComponent({
       fetching: loadUpdate,
       error: errUpdate
     } = useMutation<DevicePayload>(UPDATE_DEVICE);
-    const { data: deviceResult, fetching: loading, error } = useQuery<GetDevicesQueryType, GetDeviceByIdVariable>({
+    const { data: deviceResult, fetching: loading, error } = useQuery<
+      GetDevicesQueryType,
+      GetDeviceByIdVariable
+    >({
       query: GET_DEVICE_BY_ID,
       variables: { name: route.params.name as string }
     });
