@@ -4,7 +4,7 @@
     class="h-12 flex hover:bg-primaryBlueHover rounded-l-lg items-center"
     :class="[
       mobileSidebarOpen ? 'w-full space-x-3' : '',
-      onlyIcon && !mobileSidebarOpen ? 'w-12 justify-center' : ' w-48 justify-start pl-4',
+      onlyIcon && !mobileSidebarOpen ? 'w-12 justify-center' : ' w-52 justify-start pl-4',
       isRoute ? 'bg-blueGray-300' : '',
       route === routes.Statistics ? ' border-t border-primaryBlueHover' : ''
     ]"

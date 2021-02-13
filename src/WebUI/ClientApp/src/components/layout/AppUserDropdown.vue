@@ -10,7 +10,7 @@
           ? 'w-12 justify-center'
           : mobileSidebarOpen
           ? 'w-full justify-start'
-          : ' w-48 justify-start'
+          : ' w-52 justify-start'
       ]"
     >
       <div
