@@ -9,9 +9,9 @@ import { identityRoutes } from '@/pages/identity/IdentityRoutes';
 import { initRoutes } from '@/pages/init/InitRoutes';
 import { homeRoutes } from '@/pages/home/HomeRoutes';
 import { usersRoutes } from '@/pages/users/UsersRoutes';
-import { meRoutes } from '@/pages/me/MeRoutes';
-import { deviceRoutes } from '@/pages/devices/DeviceRoutes';
-import { groupRoutes } from '@/pages/groups/GroupRoutes';
+import { meRoutes } from '../pages/me/MeRoutes';
+import { deviceRoutes } from '../pages/devices/DeviceRoutes';
+import { groupRoutes } from '../pages/groups/GroupRoutes';
 import { automationsRoutes } from '@/pages/automations/AutomationsRoutes';
 import { adminRoutes } from '@/pages/admin/AdminRoutes';
 

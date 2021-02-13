@@ -30,7 +30,7 @@ export default defineComponent({
 });
 </script>
 
-<style scoped lang="scss">
+<style scoped lang="css">
 .loader {
   border-top-color: #3498db;
   -webkit-animation: spinner 1.5s linear infinite;

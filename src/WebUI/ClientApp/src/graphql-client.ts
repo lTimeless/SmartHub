@@ -9,5 +9,5 @@ export const client = createClient({
       headers: { authorization: token ? `Bearer ${token}` : '' }
     };
   },
-  exchanges: [devtoolsExchange, dedupExchange, cacheExchange, fetchExchange]
+  exchanges: [dedupExchange, cacheExchange, fetchExchange]
 });

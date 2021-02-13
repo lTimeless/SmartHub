@@ -12,7 +12,7 @@ export default defineComponent({
 });
 </script>
 
-<style lang="scss">
+<style lang="css">
 #app {
   font-family: 'JetBrains Mono', Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
