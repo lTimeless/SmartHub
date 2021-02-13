@@ -1,0 +1,58 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - '*'
+
+env:
+  mainProject: './src/WebUI/WebUI.csproj'
+
+jobs:
+  release:
+    name: Create Release
+    strategy:
+      matrix:
+        kind: ['linux', 'windows', 'macOS']
+        include:
+          - kind: linux
+            os: ubuntu-latest
+            target: linux-x64
+          - kind: windows
+            os: windows-latest
+            target: win-x64
+          - kind: macOS
+            os: macos-latest
+            target: osx-x64
+    runs-on: ${{ matrix.os }}
+    steps:
+        - uses: actions/checkout@v2
+        - name: Setup .NET 5
+          uses: actions/setup-dotnet@v1
+          with:
+            dotnet-version: 5.0.100
+        - name: Use latest Node.js version
+          uses: actions/setup-node@master
+
+        - name: "Build and Zip"
+          shell: bash
+          run: |
+            tag=${GITHUB_REF#refs/*/}
+            release_name="SmartHub-$tag-${{ matrix.target }}"
+            # Build everything
+            dotnet publish $mainProject --framework net5.0 --runtime "${{ matrix.target }}" --self-contained true -c Release -o "$release_name"
+            # Pack files
+            if [ "${{ matrix.target }}" == "win-x64" ]; then
+              # Pack to zip for Windows
+              7z a -tzip "${release_name}.zip" "./${release_name}/*"
+            else
+            tar czvf "${release_name}.tar.gz" "$release_name"
+            fi
+            # Delete output directory
+            rm -r "$release_name"
+        - name: "Create Release"
+          uses: softprops/action-gh-release@v1
+          with:
+            files: "SmartHub-*"
+          env:
+            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

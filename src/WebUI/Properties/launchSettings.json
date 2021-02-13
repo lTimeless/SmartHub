@@ -1,0 +1,26 @@
+﻿{
+  "profiles": {
+    "Api Dev": {
+      "commandName": "Project",
+      "launchBrowser": false,
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      },
+      "commandLineArgs": "Use_DevProxy=false Seed_Db=false Pgsql_User=postgres Pgsql_pwd=1234"
+    },
+    "Api Prod": {
+      "commandName": "Project",
+      "launchBrowser": false,
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Production"
+      },
+      "commandLineArgs": "Seed_Db=false Pgsql_User=postgres Pgsql_pwd=1234"
+    },
+    "Docker": {
+      "commandName": "Docker",
+      "launchUrl": "{Scheme}://{ServiceHost}:{ServicePort}",
+      "publishAllPorts": true,
+      "useSSL": true
+    }
+  }
+}
