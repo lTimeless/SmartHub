@@ -21,9 +21,9 @@
 <script lang="js">
 import Chart from 'chart.js';
 export default {
-  mounted: function () {
-    this.$nextTick(function () {
-      let config = {
+  mounted () {
+    this.$nextTick(() => {
+      const config = {
         type: 'line',
         data: {
           labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],

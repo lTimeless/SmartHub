@@ -1,3 +1,91 @@
+<script lang="ts">
+import { computed, defineComponent, reactive, ref, watch } from 'vue';
+import { LoginInput } from '@/types/graphql/inputs';
+import { useRouter } from 'vue-router';
+import { useMutation, useQuery } from '@urql/vue';
+import { Routes } from '@/types/enums';
+import Loader from '@/components/ui/AppSpinner.vue';
+import AppCard from '@/components/ui/cards/AppCard.vue';
+import { useIdentity } from '@/hooks/useIdentity';
+import gql from 'graphql-tag';
+import { LOGIN, LoginMutationVariables, LoginMutationPayload } from '../login/LoginMutation';
+
+const HOME_AND_USERS_EXIST = gql`
+  query HomeAndUsersExist {
+    applicationIsActive
+    usersExist
+  }
+`;
+
+export default defineComponent({
+  name: 'Login',
+  components: {
+    Loader,
+    AppCard
+  },
+  props: {},
+  setup() {
+    const router = useRouter();
+    const { token } = useIdentity();
+    const title = 'Login';
+    const password = ref('');
+    const userName = ref('');
+    const loginInput: LoginInput = reactive({
+      userName: '',
+      password: ''
+    });
+    const { executeMutation: login, fetching: loadLogin, error: errLogin } = useMutation<
+      LoginMutationPayload,
+      LoginMutationVariables
+    >(LOGIN);
+
+    const { data: result, fetching: loading, error } = useQuery({ query: HOME_AND_USERS_EXIST });
+    const data = computed(() => result.value);
+    watch(data, (newData) => {
+      if (!newData.applicationIsActive) {
+        router.push(Routes.Init);
+        return Promise.resolve();
+      }
+      if (!newData.usersExist) {
+        router.push(Routes.Registration);
+        return Promise.resolve();
+      }
+    });
+
+    const onLoginClick = async () => {
+      loginInput.userName = userName.value;
+      loginInput.password = password.value;
+      await login({ input: loginInput }).then((res) => {
+        if (res.data && res.data.login.token) {
+          token.value = res.data.login.token;
+          router.push(Routes.Home);
+        } else {
+          //   errLogin.value = {
+          //     graphQLErrors: [
+          //       { name: res.data.login.errors[0].code, message: res.data.login.errors[0].message,   }
+          //     ]
+          //   };
+        }
+      });
+    };
+
+    const signInDisabled = computed(() => userName.value.length === 0 || password.value.length < 4);
+
+    return {
+      loadLogin,
+      errLogin,
+      error,
+      loading,
+      title,
+      onLoginClick,
+      password,
+      userName,
+      signInDisabled
+    };
+  }
+});
+</script>
+
 <template>
   <!-- Main View -->
   <div class="flex items-center min-h-screen p-6 background">
@@ -94,93 +182,3 @@
     </AppCard>
   </div>
 </template>
-
-<script lang="ts">
-import { computed, defineComponent, reactive, ref, watch } from 'vue';
-import { LoginInput } from '@/types/graphql/inputs';
-import { useRouter } from 'vue-router';
-import { useMutation, useQuery } from '@urql/vue';
-import { Routes } from '@/types/enums';
-import Loader from '@/components/ui/AppSpinner.vue';
-import AppCard from '@/components/ui/cards/AppCard.vue';
-import { LOGIN, LoginMutationVariables, LoginMutationPayload } from '../login/LoginMutation';
-import { useIdentity } from '@/hooks/useIdentity';
-import gql from 'graphql-tag';
-
-const HOME_AND_USERS_EXIST = gql`
-  query HomeAndUsersExist {
-    applicationIsActive
-    usersExist
-  }
-`;
-
-export default defineComponent({
-  name: 'Login',
-  components: {
-    Loader,
-    AppCard
-  },
-  props: {},
-  setup() {
-    const router = useRouter();
-    const { token } = useIdentity();
-    const title = 'Login';
-    const password = ref('');
-    const userName = ref('');
-    const loginInput: LoginInput = reactive({
-      userName: '',
-      password: ''
-    });
-    const { executeMutation: login, fetching: loadLogin, error: errLogin } = useMutation<
-      LoginMutationPayload,
-      LoginMutationVariables
-    >(LOGIN);
-
-    const { data: result, fetching: loading, error } = useQuery({ query: HOME_AND_USERS_EXIST });
-    const data = computed(() => result.value);
-    watch(data, (newData) => {
-      if (!newData.applicationIsActive) {
-        router.push(Routes.Init);
-        return Promise.resolve();
-      }
-      if (!newData.usersExist) {
-        router.push(Routes.Registration);
-        return Promise.resolve();
-      }
-    });
-
-    const onLoginClick = async () => {
-      loginInput.userName = userName.value;
-      loginInput.password = password.value;
-      await login({ input: loginInput }).then((res) => {
-        if (res.data && res.data.login.token) {
-          token.value = res.data.login.token;
-          router.push(Routes.Home);
-        } else {
-          //   errLogin.value = {
-          //     graphQLErrors: [
-          //       { name: res.data.login.errors[0].code, message: res.data.login.errors[0].message,   }
-          //     ]
-          //   };
-        }
-      });
-    };
-
-    const signInDisabled = computed(() => userName.value.length === 0 || password.value.length < 4);
-
-    return {
-      loadLogin,
-      errLogin,
-      error,
-      loading,
-      title,
-      onLoginClick,
-      password,
-      userName,
-      signInDisabled
-    };
-  }
-});
-</script>
-
-<style lang="scss" scoped></style>

@@ -93,9 +93,9 @@ import AppCard from '@/components/ui/cards/AppCard.vue';
 import { useMutation, useQuery } from '@urql/vue';
 import { Routes } from '@/types/enums';
 import Loader from '@/components/ui/AppSpinner.vue';
+import { AppConfigInitInput } from '@/types/graphql/inputs';
 import { INITIALIZE_APP, InitMutationPayload, InitMutationVariables } from './InitMutation';
 import { ApplicationIsActiveQueryType, APP_IS_ACTIVE } from './InitQueries';
-import { AppConfigInitInput } from '@/types/graphql/inputs';
 
 export default defineComponent({
   name: 'Init',
@@ -146,22 +146,21 @@ export default defineComponent({
 });
 </script>
 
-<style scoped lang="scss">
+<style scoped lang="css">
 .registration {
   width: 100%;
   height: 100vh;
   display: flex;
   background-color: var(--color-login-background);
-  .fully-centered {
-    align-self: center;
-    height: 80%;
-
-    .img {
-      max-width: 90%;
-      display: flex;
-      justify-items: center;
-      margin: auto;
-    }
-  }
+}
+.fully-centered {
+  align-self: center;
+  height: 80%;
+}
+.img {
+  max-width: 90%;
+  display: flex;
+  justify-items: center;
+  margin: auto;
 }
 </style>

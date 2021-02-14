@@ -9,7 +9,9 @@ module.exports = {
     ecmaVersion: 2020
   },
   extends: [
-    // '@antfu/eslint-config'
+    'plugin:import/errors',
+    'plugin:import/warnings',
+    'plugin:import/typescript',
     'plugin:vue/vue3-strongly-recommended',
     'eslint:recommended',
     'plugin:@typescript-eslint/recommended',
@@ -17,16 +19,103 @@ module.exports = {
     '@vue/prettier',
     '@vue/prettier/@typescript-eslint'
   ],
+  // plugins: ['vue'],
   ignorePatterns: ['**/*.svg', '**/svgs/*.vue'],
   rules: {
+    'no-console': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
+    'no-debugger': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
+    'linebreak-style': ['error', 'unix'],
+    // import
+    'import/order': 'error',
+    'import/first': 'error',
+    'import/no-mutable-exports': 'error',
+    'import/no-unresolved': 'off',
+    'import/no-absolute-path': 'off',
+
+    // TS
+    'no-useless-constructor': 'off',
+    '@typescript-eslint/semi': ['warn', 'always'],
+    // '@typescript-eslint/indent': ['error', 2],
+    '@typescript-eslint/member-delimiter-style': [
+      'error',
+      { multiline: { delimiter: 'semi', requireLast: true } }
+    ],
+    '@typescript-eslint/type-annotation-spacing': ['error', {}],
+
     'no-unused-vars': 'off',
-    '@typescript-eslint/no-unused-vars': 'off'
-    // 'no-console': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
-    // 'no-debugger': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
+    '@typescript-eslint/no-unused-vars': [2, { args: 'none', ignoreRestSiblings: true }],
+    'no-redeclare': 'off',
+    '@typescript-eslint/no-redeclare': 'error',
+
+    // off
+    '@typescript-eslint/camelcase': 'off',
+    '@typescript-eslint/explicit-function-return-type': 'off',
+    '@typescript-eslint/explicit-member-accessibility': 'off',
+    '@typescript-eslint/no-explicit-any': 'off',
+    '@typescript-eslint/no-parameter-properties': 'off',
+    '@typescript-eslint/no-empty-interface': 'off',
+    '@typescript-eslint/ban-ts-ignore': 'off',
+    '@typescript-eslint/no-empty-function': 'off',
+    '@typescript-eslint/no-non-null-assertion': 'off',
+    '@typescript-eslint/ban-ts-comment': 'off',
+    '@typescript-eslint/explicit-module-boundary-types': 'off',
+    '@typescript-eslint/ban-types': 'off',
+
+    // es6
+    'no-var': 'error',
+    'prefer-const': [
+      'error',
+      {
+        destructuring: 'any',
+        ignoreReadBeforeAssign: true
+      }
+    ],
+    'prefer-arrow-callback': [
+      'error',
+      {
+        allowNamedFunctions: false,
+        allowUnboundThis: true
+      }
+    ],
+    'object-shorthand': [
+      'error',
+      'always',
+      {
+        ignoreConstructors: false,
+        avoidQuotes: true
+      }
+    ],
+    'prefer-rest-params': 'error',
+    'prefer-spread': 'error',
+    'prefer-template': 'error',
+    'template-curly-spacing': 'error',
+    'arrow-parens': ['error', 'always', { requireForBlockBody: true }],
+    'generator-star-spacing': 'off',
+    'comma-dangle': ['error', 'never'],
+    // vue
+    // 'vue/max-attributes-per-line': ['warn', { singleline: 5 }],
+
+    // best-practice
+    'array-callback-return': 'error',
+    'block-scoped-var': 'error',
+    'consistent-return': 'off',
+    complexity: ['off', 11],
+    eqeqeq: ['error', 'allow-null'],
+    'no-alert': 'warn',
+    'no-case-declarations': 'error',
+    'no-multi-spaces': 'error',
+    'no-multi-str': 'error',
+    'no-with': 'error',
+    'no-void': 'error',
+    'no-useless-escape': 'error',
+    'vars-on-top': 'error',
+    'require-await': 'off',
+    'no-return-assign': 'off',
+    'operator-linebreak': [2, 'before']
+
     // 'import/prefer-default-export': 'off',
-    // // 'max-len': ['error', { code: 170, tabWidth: 2, ignoreComments: true, ignoreTrailingComments: true }],
+    // 'max-len': ['error', { code: 170, tabWidth: 2, ignoreComments: true, ignoreTrailingComments: true }],
     // 'lines-between-class-members': ['error', 'always', { exceptAfterSingleLine: true }],
-    // 'comma-dangle': ['error', 'never'],
     // 'object-curly-newline': [
     //   'error',
     //   { ImportDeclaration: { multiline: true, minProperties: 10 }, ExportDeclaration: 'never' }
@@ -37,7 +126,5 @@ module.exports = {
     // 'arrow-body-style': ['error', 'as-needed'],
     // 'implicit-arrow-linebreak': 'off',
     // 'function-paren-newline': ['error', 'consistent'],
-    // 'linebreak-style': ['error', 'unix'],
-    // 'vue/max-attributes-per-line': ['warn', { singleline: 5 }]
   }
 };

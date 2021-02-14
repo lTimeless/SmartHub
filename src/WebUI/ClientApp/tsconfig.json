@@ -5,50 +5,28 @@
     "module": "esnext",
     "moduleResolution": "node",
     "strict": true,
+    "strictNullChecks": true,
     "jsx": "preserve",
     "sourceMap": true,
     "resolveJsonModule": true,
+    "skipLibCheck": true,
     "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
     "lib": ["esnext", "dom"],
     "paths": {
       "@/*": [
           "src/*"
       ]
     },
-    "types": ["vite/client"]
+    "types": ["vite/client", "node"],
+    // "plugins": [{ "name": "@vuedx/typescript-plugin-vue" }],
+
   },
   "include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.tsx", "src/**/*.vue"],
   "exclude": [
-    "node_modules"
+    "node_modules",
+    "dist",
+    "public",
+    "tests"
   ]
 }
-
-// {
-//   "compilerOptions": {
-//     "target": "esnext",
-//     "module": "esnext",
-//     "strict": true,
-//     "jsx": "preserve",
-//     "importHelpers": true,
-//     "moduleResolution": "node",
-//     "skipLibCheck": true,
-//     "esModuleInterop": true,
-//     "allowSyntheticDefaultImports": true,
-//     "sourceMap": true,
-//     "baseUrl": ".",
-//     "types": [
-//       "webpack-env"
-//     ],
-//     "paths": {
-//       "@/*": [
-//         "src/*"
-//       ]
-//     },
-//     "lib": [
-//       "esnext",
-//       "dom",
-//       "dom.iterable",
-//       "scripthost"
-//     ]
-//   }
-// }

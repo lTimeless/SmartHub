@@ -237,3 +237,5 @@ _Pvt_Extensions
 SmartHub.configFolder-dev/
 
 src/WebUI/Logs/
+
+src/WebUI/wwwroot/

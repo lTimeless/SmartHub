@@ -1,5 +1,5 @@
 import { createClient, dedupExchange, fetchExchange, cacheExchange } from '@urql/vue';
-import { devtoolsExchange } from '@urql/devtools';
+// import { devtoolsExchange } from '@urql/devtools';
 
 export const client = createClient({
   url: '/graphql',

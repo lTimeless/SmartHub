@@ -41,9 +41,9 @@ import { defineComponent, reactive, computed, toRefs } from 'vue';
 import AppModal from '@/components/ui/modals/AppModal.vue';
 import { CreateGroupInput } from '@/types/graphql/inputs';
 import { useMutation } from '@urql/vue';
+import { GET_GROUPS_COUNT } from '@/pages/home/HomeQueries';
 import { CREATE_GROUP } from '../GroupMutations';
 import { GET_GROUPS } from '../GroupQueries';
-import { GET_GROUPS_COUNT } from '@/pages/home/HomeQueries';
 
 export default defineComponent({
   name: 'GroupCreateModal',

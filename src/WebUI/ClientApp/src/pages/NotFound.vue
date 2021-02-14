@@ -1,3 +1,15 @@
+<script lang="ts">
+import NotFound from '@/components/svgs/NotFound.vue';
+import { defineComponent } from 'vue';
+
+export default defineComponent({
+  name: 'NotFound',
+  components: {
+    NotFound
+  }
+});
+</script>
+
 <template>
   <div>
     <div class="flex flex-col items-center mb-2 text-primary">
@@ -11,17 +23,3 @@
     </div>
   </div>
 </template>
-
-<script lang="ts">
-import NotFound from '@/components/svgs/NotFound.vue';
-import { defineComponent } from 'vue';
-
-export default defineComponent({
-  name: 'NotFound',
-  components: {
-    NotFound
-  }
-});
-</script>
-
-<style scoped></style>

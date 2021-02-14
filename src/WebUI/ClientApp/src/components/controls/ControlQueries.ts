@@ -5,6 +5,7 @@ import { gql } from '@urql/core';
 export type SetLightStateQueryType = { __typename?: 'AppQueries' } & {
   setLightState: DeviceStatePayload;
 };
+
 /** Queries */
 export const SET_LIGHT_STATE = gql`
   query SetLightState($input: DeviceLightStateInput!) {

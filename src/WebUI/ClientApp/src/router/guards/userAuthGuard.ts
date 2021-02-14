@@ -33,8 +33,6 @@ export const useRouteAuthGuard = (
   next: NavigationGuardNext
 ): void => {
   if (to.matched.some((record) => record.meta.requiresAuth)) {
-    console.log();
-    
     const { isAuthenticated } = useIdentity();
     // TODO: BE call machen wenn Token noch im storage ist, wenn der noch gültig ist dann weiter zum dashboard wenn nicht dann einen neuen beantragen
     // Refreshtoken!!!!
@@ -47,8 +45,6 @@ export const useRouteAuthGuard = (
       validateUserRoleToRoute(to, next);
     }
   } else {
-    console.log(to.matched, 'next');
-
     next();
   }
 };

@@ -1,3 +1,55 @@
+<script lang="ts">
+import { reactive, toRefs, defineComponent } from 'vue';
+import AppCard from '@/components/ui/cards/AppCard.vue';
+import { useQuery } from '@urql/vue';
+import Loader from '@/components/ui/AppSpinner.vue';
+import { useRouter } from 'vue-router';
+import AppIcon from '@/components/icons/AppIcon.vue';
+import { useString } from '@/hooks/useString';
+import AppDeviceControl from '../../components/controls/AppDeviceControl.vue';
+import { GetDevicesQueryType, GET_DEVICES } from './DeviceQueries';
+import DeviceCreateModal from './modals/DeviceCreateModal.vue';
+
+export default defineComponent({
+  name: 'Devices',
+  components: {
+    AppIcon,
+    AppCard,
+    DeviceCreateModal,
+    Loader,
+    AppDeviceControl
+  },
+  setup() {
+    const router = useRouter();
+    const { data, fetching: loading, error } = useQuery<GetDevicesQueryType>({
+      query: GET_DEVICES,
+      requestPolicy: 'network-only'
+    });
+    const state = reactive({
+      showCreateModal: false
+    });
+
+    const toggleCreateModal = () => {
+      state.showCreateModal = !state.showCreateModal;
+    };
+
+    const goToDetail = (name: string) => {
+      router.push({ name: 'DeviceDetails', params: { name } });
+    };
+
+    return {
+      ...toRefs(state),
+      ...useString(),
+      loading,
+      error,
+      data,
+      toggleCreateModal,
+      goToDetail
+    };
+  }
+});
+</script>
+
 <template>
   <div>
     <DeviceCreateModal v-if="showCreateModal" @close="toggleCreateModal" />
@@ -56,55 +108,3 @@
     </template>
   </div>
 </template>
-
-<script lang="ts">
-import { reactive, toRefs, defineComponent } from 'vue';
-import AppCard from '@/components/ui/cards/AppCard.vue';
-import DeviceCreateModal from './modals/DeviceCreateModal.vue';
-import { useQuery } from '@urql/vue';
-import Loader from '@/components/ui/AppSpinner.vue';
-import { GetDevicesQueryType, GET_DEVICES } from './DeviceQueries';
-import { useRouter } from 'vue-router';
-import AppDeviceControl from '../../components/controls/AppDeviceControl.vue';
-import AppIcon from '@/components/icons/AppIcon.vue';
-import { useString } from '@/hooks/useString';
-
-export default defineComponent({
-  name: 'Devices',
-  components: {
-    AppIcon,
-    AppCard,
-    DeviceCreateModal,
-    Loader,
-    AppDeviceControl
-  },
-  setup() {
-    const router = useRouter();
-    const { data, fetching: loading, error } = useQuery<GetDevicesQueryType>({
-      query: GET_DEVICES,
-      requestPolicy: 'network-only'
-    });
-    const state = reactive({
-      showCreateModal: false
-    });
-
-    const toggleCreateModal = () => {
-      state.showCreateModal = !state.showCreateModal;
-    };
-
-    const goToDetail = (name: string) => {
-      router.push({ name: 'DeviceDetails', params: { name: name } });
-    };
-
-    return {
-      ...toRefs(state),
-      ...useString(),
-      loading,
-      error,
-      data,
-      toggleCreateModal,
-      goToDetail
-    };
-  }
-});
-</script>

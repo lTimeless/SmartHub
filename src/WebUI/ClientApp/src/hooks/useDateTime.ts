@@ -15,7 +15,7 @@ export const useDateTime = (): DateTimeState => {
     const d = new Date();
     const m = d.getMinutes();
     const h = d.getHours();
-    currentTime.value = (h < 10 ? '0' + h : h) + ':' + (m < 10 ? '0' + m : m);
+    currentTime.value = `${h < 10 ? `0${h}` : h}:${m < 10 ? `0${m}` : m}`;
   };
   setInterval(time, 1000);
 

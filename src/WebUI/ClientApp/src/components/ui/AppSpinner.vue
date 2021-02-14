@@ -6,7 +6,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
+import { defineComponent, toRefs } from 'vue';
 import { useTimeout } from '@vueuse/core';
 
 export default defineComponent({
@@ -21,9 +21,10 @@ export default defineComponent({
       required: true
     }
   },
-  setup() {
+  setup(props) {
     const { ready } = useTimeout(300, true);
     return {
+      ...toRefs(props),
       ready
     };
   }

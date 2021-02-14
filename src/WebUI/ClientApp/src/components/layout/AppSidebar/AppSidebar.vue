@@ -1,15 +1,15 @@
 <script lang="ts">
-import AppUserDropdown from '../AppUserDropdown.vue';
 import { computed, defineComponent, ref, watch } from 'vue';
 import { useRouter } from 'vue-router';
 import { Roles, Routes } from '@/types/enums';
 import NavigationItem from '@/components/layout/AppSidebar/NavigationItem.vue';
 import AppBrand from '@/components/layout/AppSidebar/AppBrand.vue';
 import { useIdentity } from '@/hooks/useIdentity';
-import MiniToggle from './MiniToggle.vue';
 import { useStore } from 'vuex';
 import { AppActionTypes } from '@/store/app/actions';
 import AppIcon from '@/components/icons/AppIcon.vue';
+import AppUserDropdown from '../AppUserDropdown.vue';
+import MiniToggle from './MiniToggle.vue';
 
 export default defineComponent({
   name: 'AppSidebar',
@@ -218,7 +218,7 @@ export default defineComponent({
     </div>
   </div>
 </template>
-<style lang="css" scoped>
+<style lang="postcss" scoped>
 .sidebar {
   @apply hidden md:flex flex-col justify-between items-center flex-none bg-white rounded;
 }

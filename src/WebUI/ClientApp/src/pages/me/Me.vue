@@ -1,3 +1,64 @@
+<script lang="ts">
+import { defineComponent, ref, computed, reactive } from 'vue';
+import { Roles, Routes } from '@/types/enums';
+import { UpdateUserInput } from '@/types/graphql/inputs';
+import { useMutation, useQuery } from '@urql/vue';
+import Loader from '@/components/ui/AppSpinner.vue';
+import { useRouter } from 'vue-router';
+import { useIdentity } from '@/hooks/useIdentity';
+import { MeQueryType, ME } from '../me/MeQueries';
+import { UpdateUserMutationPayload, UpdateUserMutationVariables, UPDATE_USER } from '../me/MeMutations';
+
+export default defineComponent({
+  name: 'Me',
+  components: {
+    Loader
+  },
+  setup() {
+    const router = useRouter();
+    const { isRole, clearStorage } = useIdentity();
+    const userRole = computed(() => isRole());
+    const selectedRole = ref(userRole.value);
+    const prevRole = selectedRole.value;
+    const roles = Roles;
+    const updateUserInput: UpdateUserInput = reactive({
+      userId: ''
+    });
+    const { executeMutation: updateUser, fetching: loadUpdate, error: errUpdate } = useMutation<
+      UpdateUserMutationPayload,
+      UpdateUserMutationVariables
+    >(UPDATE_USER);
+    const { data: resultUser, fetching: loadUser, error: errUser } = useQuery<MeQueryType>({
+      query: ME
+    });
+
+    const onSaveClick = async () => {
+      const user = resultUser.value?.me.user;
+      if (user) {
+        updateUserInput.userId = user.id;
+        updateUserInput.newRole = selectedRole.value;
+        await updateUser({ input: updateUserInput });
+        if (typeof updateUserInput.newRole !== 'undefined' && updateUserInput.newRole !== prevRole) {
+          clearStorage();
+          await router.push({ path: Routes.Login, replace: true });
+        }
+      }
+    };
+    return {
+      resultUser,
+      loadUser,
+      errUser,
+      loadUpdate,
+      errUpdate,
+      updateUserInput,
+      onSaveClick,
+      roles,
+      selectedRole
+    };
+  }
+});
+</script>
+
 <template>
   <div class="relative flex-col w-full justify-end bg-white border p-3 rounded">
     <!-- Form -->
@@ -135,66 +196,3 @@
     </div>
   </div>
 </template>
-
-<script lang="ts">
-import { defineComponent, ref, computed, reactive } from 'vue';
-import { Roles, Routes } from '@/types/enums';
-import { UpdateUserInput } from '@/types/graphql/inputs';
-import { useMutation, useQuery } from '@urql/vue';
-import Loader from '@/components/ui/AppSpinner.vue';
-import { useRouter } from 'vue-router';
-import { MeQueryType, ME } from '../me/MeQueries';
-import { UpdateUserMutationPayload, UpdateUserMutationVariables, UPDATE_USER } from '../me/MeMutations';
-import { useIdentity } from '@/hooks/useIdentity';
-
-export default defineComponent({
-  name: 'Me',
-  components: {
-    Loader
-  },
-  setup() {
-    const router = useRouter();
-    const { isRole, clearStorage } = useIdentity();
-    const userRole = computed(() => isRole());
-    const selectedRole = ref(userRole.value);
-    const prevRole = selectedRole.value;
-    const roles = Roles;
-    const updateUserInput: UpdateUserInput = reactive({
-      userId: ''
-    });
-    const { executeMutation: updateUser, fetching: loadUpdate, error: errUpdate } = useMutation<
-      UpdateUserMutationPayload,
-      UpdateUserMutationVariables
-    >(UPDATE_USER);
-    const { data: resultUser, fetching: loadUser, error: errUser } = useQuery<MeQueryType>({
-      query: ME
-    });
-
-    const onSaveClick = async () => {
-      const user = resultUser.value?.me.user;
-      if (user) {
-        updateUserInput.userId = user.id;
-        updateUserInput.newRole = selectedRole.value;
-        await updateUser({ input: updateUserInput });
-        if (typeof updateUserInput.newRole !== 'undefined' && updateUserInput.newRole !== prevRole) {
-          clearStorage();
-          await router.push({ path: Routes.Login, replace: true });
-        }
-      }
-    };
-    return {
-      resultUser,
-      loadUser,
-      errUser,
-      loadUpdate,
-      errUpdate,
-      updateUserInput,
-      onSaveClick,
-      roles,
-      selectedRole
-    };
-  }
-});
-</script>
-
-<style scoped></style>

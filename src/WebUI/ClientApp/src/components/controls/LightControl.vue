@@ -9,7 +9,7 @@
           : 'ring-2 ring-blueGray-300 md:hover:ring-green-500 hover:ring'
       ]"
     >
-      <AppIcon icon-name="Bulb" :icon-color="'text-primaryBlue'" height="h-10" width="h-10"></AppIcon>
+      <AppIcon icon-name="Bulb" :icon-color="'text-primaryBlue'" height="h-10" width="h-10" />
     </button>
   </div>
   <div v-else class="text-gray-500 text-sm">No Light State available</div>
@@ -18,9 +18,9 @@
 <script lang="ts">
 import { defineComponent, PropType, ref, toRefs, onMounted, reactive } from 'vue';
 import { LightState } from '@/types/types';
-import AppIcon from '../icons/AppIcon.vue';
 import { useQuery } from '@urql/vue';
 import { SET_LIGHT_STATE, SetLightStateQueryType } from '@/components/controls/ControlQueries';
+import AppIcon from '../icons/AppIcon.vue';
 
 export default defineComponent({
   name: 'LightControl',
@@ -59,7 +59,7 @@ export default defineComponent({
     const { executeQuery } = useQuery<SetLightStateQueryType>({
       query: SET_LIGHT_STATE,
       pause: true,
-      variables: variables,
+      variables,
       requestPolicy: 'network-only'
     });
 

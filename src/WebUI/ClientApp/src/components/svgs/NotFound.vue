@@ -1,9 +1,30 @@
+<script lang="ts">
+import { computed, defineComponent, toRefs } from 'vue';
+export default defineComponent({
+  name: 'NotFound',
+  props: {
+    width: {
+      type: Number,
+      default: 40,
+      required: false
+    }
+  },
+  setup(props) {
+    const getHeight = computed( () => Math.ceil((props.width / 48) * 48));
+    return {
+      ...toRefs(props),
+      getHeight
+    }
+  }
+});
+</script>
+
 <template>
   <svg
     id="fd59ce54-f850-4dfc-bc34-dd7d379d600e"
     data-name="Layer 1"
     xmlns="http://www.w3.org/2000/svg"
-    :width="getWidth"
+    :width="width"
     :height="getHeight"
     viewBox="0 0 1074.392 584.231"
   >
@@ -255,25 +276,3 @@
     <circle cx="460.946" cy="355.1155" r="5" fill="#6c63ff" opacity="0.3" />
   </svg>
 </template>
-
-<script>
-export default {
-  name: 'NotFound',
-  props: {
-    width: {
-      type: Number,
-      default: 40
-    }
-  },
-
-  computed: {
-    getWidth() {
-      return this.width;
-    },
-
-    getHeight() {
-      return Math.ceil((this.getWidth / 48) * 48);
-    }
-  }
-};
-</script>
