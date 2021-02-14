@@ -1,6 +1,7 @@
 module.exports = {
   root: true,
   env: {
+    browser: true,
     node: true
   },
   parserOptions: {
@@ -9,33 +10,21 @@ module.exports = {
     ecmaVersion: 2020
   },
   extends: [
-    'plugin:import/errors',
-    'plugin:import/warnings',
-    'plugin:import/typescript',
     'plugin:vue/vue3-strongly-recommended',
-    'eslint:recommended',
     'plugin:@typescript-eslint/recommended',
     '@vue/typescript/recommended',
     '@vue/prettier',
     '@vue/prettier/@typescript-eslint'
   ],
-  // plugins: ['vue'],
-  ignorePatterns: ['**/*.svg', '**/svgs/*.vue'],
+  plugins: ['@typescript-eslint'],
+  ignorePatterns: ['node_modules/**', 'dist/**', '**/*.svg', '**/svgs/*.vue'],
   rules: {
     'no-console': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
     'no-debugger': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
     'linebreak-style': ['error', 'unix'],
-    // import
-    'import/order': 'error',
-    'import/first': 'error',
-    'import/no-mutable-exports': 'error',
-    'import/no-unresolved': 'off',
-    'import/no-absolute-path': 'off',
-
     // TS
     'no-useless-constructor': 'off',
     '@typescript-eslint/semi': ['warn', 'always'],
-    // '@typescript-eslint/indent': ['error', 2],
     '@typescript-eslint/member-delimiter-style': [
       'error',
       { multiline: { delimiter: 'semi', requireLast: true } }
@@ -46,9 +35,7 @@ module.exports = {
     '@typescript-eslint/no-unused-vars': [2, { args: 'none', ignoreRestSiblings: true }],
     'no-redeclare': 'off',
     '@typescript-eslint/no-redeclare': 'error',
-
     // off
-    '@typescript-eslint/camelcase': 'off',
     '@typescript-eslint/explicit-function-return-type': 'off',
     '@typescript-eslint/explicit-member-accessibility': 'off',
     '@typescript-eslint/no-explicit-any': 'off',
@@ -60,7 +47,6 @@ module.exports = {
     '@typescript-eslint/ban-ts-comment': 'off',
     '@typescript-eslint/explicit-module-boundary-types': 'off',
     '@typescript-eslint/ban-types': 'off',
-
     // es6
     'no-var': 'error',
     'prefer-const': [
@@ -85,16 +71,10 @@ module.exports = {
         avoidQuotes: true
       }
     ],
-    'prefer-rest-params': 'error',
-    'prefer-spread': 'error',
-    'prefer-template': 'error',
     'template-curly-spacing': 'error',
     'arrow-parens': ['error', 'always', { requireForBlockBody: true }],
     'generator-star-spacing': 'off',
     'comma-dangle': ['error', 'never'],
-    // vue
-    // 'vue/max-attributes-per-line': ['warn', { singleline: 5 }],
-
     // best-practice
     'array-callback-return': 'error',
     'block-scoped-var': 'error',

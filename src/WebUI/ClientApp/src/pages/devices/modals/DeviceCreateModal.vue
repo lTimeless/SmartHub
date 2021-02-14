@@ -16,7 +16,7 @@ export default defineComponent({
   components: {
     AppModal
   },
-  setup(props, context) {
+  setup(_, context) {
     const deviceCreateInput = reactive<CreateDeviceInput>({
       name: '',
       groupName: '',
