@@ -1,6 +1,6 @@
 <script lang="ts">
 import { reactive, toRefs, defineComponent } from 'vue';
-import AppCard from '@/components/ui/cards/AppCard.vue';
+import AppCard from '@/components/ui/AppCards/AppCard.vue';
 import { useQuery } from '@urql/vue';
 import Loader from '@/components/ui/AppSpinner.vue';
 import { useRouter } from 'vue-router';
@@ -46,11 +46,9 @@ export default defineComponent({
 });
 </script>
 
-
 <template>
   <div>
-    <GroupCreateModal v-if="showCreateModal" @close="toggleCreateModal" />
-
+    <GroupCreateModal v-if="showCreateModal" @close="toggleCreateModal()" />
     <!-- Buttons -->
     <div class="w-full">
       <div class="flex justify-start items-center mb-4 xl:w-1/3">

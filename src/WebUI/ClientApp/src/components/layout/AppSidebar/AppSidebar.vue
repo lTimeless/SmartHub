@@ -3,7 +3,7 @@ import { computed, defineComponent, ref, watch } from 'vue';
 import { useRouter } from 'vue-router';
 import { Roles, Routes } from '@/types/enums';
 import NavigationItem from '@/components/layout/AppSidebar/NavigationItem.vue';
-import AppBrand from '@/components/layout/AppSidebar/AppBrand.vue';
+import AppBrand from '@/components/ui/AppBrand/AppBrand.vue';
 import { useIdentity } from '@/hooks/useIdentity';
 import { useStore } from 'vuex';
 import { AppActionTypes } from '@/store/app/actions';
@@ -157,7 +157,7 @@ export default defineComponent({
   <!-- Sidebar -->
   <div
     :class="[miniSidebarOpen ? 'md:w-12' : 'w-52']"
-    class="rounded md:left-0 md:top-0 md:bottom-0 md:overflow-y-auto md:flex-no-wrap md:overflow-hidden bg-white flex flex-none z-40"
+    class="md:left-0 md:top-0 md:bottom-0 md:overflow-y-auto md:flex-no-wrap md:overflow-hidden bg-white flex flex-none z-40"
   >
     <!-- Background if MobileSidebar is open -->
     <button
@@ -166,7 +166,7 @@ export default defineComponent({
       class="absolute inset-0 h-full w-full bg-black opacity-20 cursor-default z-20"
     />
     <div
-      class="md:flex flex-col justify-between md:relative absolute top-0 left-0 right-0 z-40 overflow-y-auto overflow-x-hidden"
+      class="rounded md:flex flex-col justify-between md:relative absolute top-0 left-0 right-0 z-40 overflow-y-auto overflow-x-hidden"
       :class="[mobileSidebarOpen ? 'bg-white m-2 py-3 px-6' : 'hidden']"
     >
       <!-- Collapse header -->

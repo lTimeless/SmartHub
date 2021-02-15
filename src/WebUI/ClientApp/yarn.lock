@@ -624,7 +624,7 @@
     resolve-from "^5.0.0"
     typescript "^4.0.3"
 
-"@vuedx/typescript-plugin-vue@0.6.3", "@vuedx/typescript-plugin-vue@^0.6.0":
+"@vuedx/typescript-plugin-vue@0.6.3", "@vuedx/typescript-plugin-vue@^0.6.3":
   version "0.6.3"
   resolved "https://registry.yarnpkg.com/@vuedx/typescript-plugin-vue/-/typescript-plugin-vue-0.6.3.tgz#cc2d99bdc0abbde9bb5909341c47715af00539a3"
   integrity sha512-zAhXM9LDVYvjAMnTiqf6yZcJXXh1rQrH3JhcmQNmlxk26sRysfa/VWNC8qkfq9vcOKRf1eQusH4g+Vov6qPGig==

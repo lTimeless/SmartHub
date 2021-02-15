@@ -89,7 +89,7 @@
 <script lang="ts">
 import { computed, defineComponent, reactive, ref, watch } from 'vue';
 import { useRouter } from 'vue-router';
-import AppCard from '@/components/ui/cards/AppCard.vue';
+import AppCard from '@/components/ui/AppCards/AppCard.vue';
 import { useMutation, useQuery } from '@urql/vue';
 import { Routes } from '@/types/enums';
 import Loader from '@/components/ui/AppSpinner.vue';

@@ -1,3 +1,62 @@
+<script lang="ts">
+import { defineComponent, PropType, toRefs } from 'vue';
+import Loader from '@/components/ui/AppSpinner.vue';
+
+export default defineComponent({
+  name: 'AppModal',
+  props: {
+    title: {
+      type: String,
+      required: true
+    },
+    saveBtnTitle: {
+      type: String,
+      required: true
+    },
+    closeBtnTitle: {
+      type: String,
+      required: true
+    },
+    close: {
+      type: Function as PropType<() => void>,
+      required: true
+    },
+    save: {
+      type: Function as PropType<() => void>,
+      required: true
+    },
+    saveBtnActive: {
+      type: Boolean,
+      default: true
+    },
+    mainBgColor: {
+      type: String,
+      default: 'bg-indigo-400'
+    },
+    mainBorderColor: {
+      type: String,
+      default: 'border-indigo-400'
+    },
+    saveBtnColor: {
+      type: String,
+      default: 'bg-indigo-400'
+    },
+    loading: {
+      type: Boolean,
+      required: true
+    }
+  },
+  components: {
+    Loader
+  },
+  setup(props) {
+    return {
+      ...toRefs(props)
+    };
+  }
+});
+</script>
+
 <template>
   <teleport to="body">
     <div>
@@ -72,64 +131,3 @@
     </div>
   </teleport>
 </template>
-
-<script lang="ts">
-import { defineComponent, PropType, toRefs } from 'vue';
-import Loader from '@/components/ui/AppSpinner.vue';
-
-export default defineComponent({
-  name: 'AppModal',
-  props: {
-    title: {
-      type: String,
-      required: true
-    },
-    saveBtnTitle: {
-      type: String,
-      required: true
-    },
-    closeBtnTitle: {
-      type: String,
-      required: true
-    },
-    close: {
-      type: Function as PropType<() => void>,
-      required: true
-    },
-    save: {
-      type: Function as PropType<() => void>,
-      required: true
-    },
-    saveBtnActive: {
-      type: Boolean,
-      default: true
-    },
-    mainBgColor: {
-      type: String,
-      default: 'bg-indigo-400'
-    },
-    mainBorderColor: {
-      type: String,
-      default: 'border-indigo-400'
-    },
-    saveBtnColor: {
-      type: String,
-      default: 'bg-indigo-400'
-    },
-    loading: {
-      type: Boolean,
-      required: true
-    }
-  },
-  components: {
-    Loader
-  },
-  setup(props) {
-    return {
-      ...toRefs(props)
-    };
-  }
-});
-</script>
-
-<style scoped></style>

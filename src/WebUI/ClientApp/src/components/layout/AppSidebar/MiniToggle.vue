@@ -1,6 +1,6 @@
 <template>
   <div
-    class="h-12 md:flex hidden hover:bg-primaryBlueHover rounded-l items-center cursor-pointer"
+    class="h-12 md:flex hidden hover:bg-primaryBlueHover items-center cursor-pointer"
     :class="[onlyIcon ? 'w-12 justify-center' : ' w-52 justify-start pl-4']"
     @click="handleIconClick"
   >

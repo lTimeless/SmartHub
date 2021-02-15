@@ -1,12 +1,12 @@
 <template>
-  <div class="relative flex-1 h-full max-w-4xl mx-auto overflow-hidden rounded p-3">
-    <div class="flex flex-col overflow-y-auto md:flex-row">
+  <div class="flex-1 mx-auto overflow-hidden rounded p-2">
+    <div class="flex flex-col overflow-y-auto md:flex-row h-full">
       <slot />
     </div>
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import { defineComponent } from 'vue';
 
 export default defineComponent({

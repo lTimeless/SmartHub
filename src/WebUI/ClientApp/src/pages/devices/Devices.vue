@@ -1,6 +1,6 @@
 <script lang="ts">
 import { reactive, toRefs, defineComponent } from 'vue';
-import AppCard from '@/components/ui/cards/AppCard.vue';
+import AppCard from '@/components/ui/AppCards/AppCard.vue';
 import { useQuery } from '@urql/vue';
 import Loader from '@/components/ui/AppSpinner.vue';
 import { useRouter } from 'vue-router';
@@ -55,31 +55,40 @@ export default defineComponent({
     <DeviceCreateModal v-if="showCreateModal" @close="toggleCreateModal" />
 
     <!-- Buttons -->
-    <div class="w-full">
-      <div class="flex justify-between items-center mb-4">
-        <!-- Add Button -->
-        <div class="flex justify-start w-full md:w-1/3 xl:w-1/6">
-          <button
-            @click="toggleCreateModal"
-            class="block w-full px-4 py-2 mt-4 text-sm text-gray-600 font-medium leading-5 text-center bg-white hover:text-white hover:bg-indigo-400 border border-transparent rounded-lg active:bg-primary focus:outline-none"
-          >
-            Add Device
-          </button>
-        </div>
+    <div class="w-full flex justify-between items-center my-4">
+      <!-- Add Button -->
+      <div class="flex justify-start">
+        <button
+          @click="toggleCreateModal"
+          class="h-9 w-9 text-gray-600 text-center bg-white hover:text-white hover:bg-primaryBlue rounded-lg active:bg-primary focus:outline-none"
+        >
+          <a class="text-2xl">+</a>
+        </button>
+        <button
+          class="ml-1 flex flex-row justify-between items-center content-center focus:outline-none cursor-not-allowed "
+        >
+          <AppIcon
+            icon-name="Edit"
+            :icon-color="false ? 'text-white' : ''"
+            class="h-9 w-9 p-2 mr-1 bg-white rounded-lg"
+            :class="[false ? 'hover:bg-primaryBlue' : '']"
+          />
+        </button>
       </div>
     </div>
     <!-- Show devices -->
-    <template v-if="error">
+    <div v-if="error">
       <p>Error: {{ error.name }} - {{ error.message }}</p>
-    </template>
-    <template v-else-if="loading">
+    </div>
+    <div v-else-if="loading">
       <Loader height="h-48" width="w-48" />
-    </template>
-    <template v-if="data">
+    </div>
+    <div v-if="data">
       <div v-if="data.devices">
         <div class="grid xl:grid-cols-6 md:grid-cols-4 grid-cols-2 gap-4 rounded">
-          <AppCard class="bg-white w-full" v-for="device in data.devices" :key="device.id">
+          <AppCard class="bg-white w-full h-36" v-for="device in data.devices" :key="device.id">
             <div v-if="device" class="w-full">
+              <!-- Header -->
               <div class="flex flex-row justify-between items-center content-center">
                 <h1 class="text-xl text-left text-gray-600 font-bold">
                   {{ device.name }}
@@ -87,12 +96,13 @@ export default defineComponent({
                 <AppIcon
                   icon-name="Edit"
                   @click="goToDetail(device.name)"
-                  class="cursor-pointer p-1 rounded focus:outline-none hover:ring-2 hover:ring-primaryBlue hover:ring-opacity-50 mr-1"
+                  class="cursor-pointer p-1 rounded focus:outline-none hover:ring-2 hover:ring-primaryBlue mr-1"
                 />
               </div>
-
-              <div class="border-border border-t my-2"></div>
-              <div class="flex justify-center">
+              <!-- Divider -->
+              <div class="border-border border-t border-blueGray-300 my-2"></div>
+              <!-- Body -->
+              <div class="flex justify-center py-4">
                 <AppDeviceControl
                   :device-type-name="capitalize(device.pluginTypes.toString())"
                   :state="device.status"
@@ -105,6 +115,6 @@ export default defineComponent({
         </div>
       </div>
       <div v-else>No devices available</div>
-    </template>
+    </div>
   </div>
 </template>

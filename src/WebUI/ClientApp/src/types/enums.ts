@@ -7,7 +7,7 @@ export enum Routes {
   Registration = '/registration',
   Init = '/init',
   // Error
-  NotFound = '/:patchMatch(.*)*',
+  NotFound = '/:patchMatch(.*)',
   NotAuthorized = '/notAuth',
   // Me
   Me = '/me',

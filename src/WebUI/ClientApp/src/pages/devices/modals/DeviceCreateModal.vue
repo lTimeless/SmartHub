@@ -1,14 +1,11 @@
 <script lang="ts">
 import { defineComponent, reactive, computed } from 'vue';
-import AppModal from '@/components/ui/modals/AppModal.vue';
+import AppModal from '@/components/ui/AppModals/AppModal.vue';
 import { CreateDeviceInput } from '@/types/graphql/inputs';
 import { ConnectionTypes, PluginTypes } from '@/types/enums';
 import { useEnumTypes } from '@/hooks/useEnums.ts';
 import { useMutation } from '@urql/vue';
-import { GET_DEVICES_COUNT } from '@/pages/home/HomeQueries';
-import { GET_GROUPS } from '@/pages/groups/GroupQueries';
 import { CREATE_DEVICE } from '../DeviceMutations';
-import { GET_DEVICES } from '../DeviceQueries';
 
 export default defineComponent({
   name: 'DeviceCreateModal',
@@ -35,15 +32,6 @@ export default defineComponent({
       context.emit('close', false);
     };
     const save = async () => {
-      const refetchOpts = { refetchQueries: [{ query: GET_DEVICES }, { query: GET_DEVICES_COUNT }] };
-      if (deviceCreateInput.groupName) {
-        refetchOpts.refetchQueries = [
-          { query: GET_DEVICES },
-          { query: GET_DEVICES_COUNT },
-          { query: GET_GROUPS }
-        ];
-      }
-      // TODO remove refetchOpts
       await createDevice({ input: deviceCreateInput });
       context.emit('close', false);
     };
@@ -108,7 +96,7 @@ export default defineComponent({
             type="text"
             v-model="deviceCreateInput.description"
             class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md"
-            placeholder="Description (optional)"
+            placeholder="Description(optional)"
           />
         </label>
       </div>

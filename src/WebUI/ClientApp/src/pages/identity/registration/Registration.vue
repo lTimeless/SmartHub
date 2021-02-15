@@ -3,7 +3,7 @@ import { defineComponent, onMounted, ref, reactive, computed } from 'vue';
 import { useRouter } from 'vue-router';
 import Loader from '@/components/ui/AppSpinner.vue';
 import { Routes } from '@/types/enums';
-import AppCard from '@/components/ui/cards/AppCard.vue';
+import AppCard from '@/components/ui/AppCards/AppCard.vue';
 import { useMutation } from '@urql/vue';
 import { useIdentity } from '@/hooks/useIdentity';
 import { RegistrationInput } from '@/types/graphql/inputs';

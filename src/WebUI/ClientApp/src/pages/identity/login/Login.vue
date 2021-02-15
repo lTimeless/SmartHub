@@ -5,7 +5,7 @@ import { useRouter } from 'vue-router';
 import { useMutation, useQuery } from '@urql/vue';
 import { Routes } from '@/types/enums';
 import Loader from '@/components/ui/AppSpinner.vue';
-import AppCard from '@/components/ui/cards/AppCard.vue';
+import AppCard from '@/components/ui/AppCards/AppCard.vue';
 import { useIdentity } from '@/hooks/useIdentity';
 import gql from 'graphql-tag';
 import { LOGIN, LoginMutationVariables, LoginMutationPayload } from '../login/LoginMutation';
