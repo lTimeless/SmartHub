@@ -12,8 +12,8 @@ module.exports = {
   extends: [
     'plugin:vue/vue3-strongly-recommended',
     'plugin:@typescript-eslint/recommended',
+    'plugin:prettier/recommended',
     '@vue/typescript/recommended',
-    '@vue/prettier',
     '@vue/prettier/@typescript-eslint'
   ],
   plugins: ['@typescript-eslint'],
@@ -47,6 +47,8 @@ module.exports = {
     '@typescript-eslint/ban-ts-comment': 'off',
     '@typescript-eslint/explicit-module-boundary-types': 'off',
     '@typescript-eslint/ban-types': 'off',
+    '@typescript-eslint/no-var-requires': 'off',
+    '@typescript-eslint/no-unused-vars': 'off',
     // es6
     'no-var': 'error',
     'prefer-const': [
@@ -91,7 +93,22 @@ module.exports = {
     'vars-on-top': 'error',
     'require-await': 'off',
     'no-return-assign': 'off',
-    'operator-linebreak': [2, 'before']
+    'operator-linebreak': [2, 'before'],
+    // vue
+    'vue/max-attributes-per-line': ['warn', { singleline: 5 }],
+    'vue/html-self-closing': [
+      'error',
+      {
+        html: {
+          void: 'always',
+          normal: 'never',
+          component: 'always',
+          slot: 'always'
+        },
+        svg: 'always',
+        math: 'always'
+      }
+    ]
 
     // 'import/prefer-default-export': 'off',
     // 'max-len': ['error', { code: 170, tabWidth: 2, ignoreComments: true, ignoreTrailingComments: true }],

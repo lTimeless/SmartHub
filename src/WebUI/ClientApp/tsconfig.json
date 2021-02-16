@@ -27,7 +27,6 @@
     "node_modules",
     "dist",
     "public",
-    "tests",
-    "src/components/**/Logo.vue"s
+    "tests"
   ]
 }

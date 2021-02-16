@@ -2,6 +2,7 @@ import path from 'path';
 import { defineConfig } from 'vite';
 import vue from '@vitejs/plugin-vue';
 import tsconfigPaths from 'vite-tsconfig-paths';
+import ViteFonts from 'vite-plugin-fonts';
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -31,5 +32,13 @@ export default defineConfig({
   optimizeDeps: {
     include: ['@urql/vue', '@urql/core']
   },
-  plugins: [vue(), tsconfigPaths()]
+  plugins: [
+    vue(), 
+    tsconfigPaths(), 
+    ViteFonts({
+      google: {
+        families: ['JetBrains Mono', 'Roboto']
+      },
+    })
+  ]
 });

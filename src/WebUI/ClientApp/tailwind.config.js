@@ -1,8 +1,5 @@
-// eslint-disable-next-line @typescript-eslint/no-var-requires
 const colors = require('tailwindcss/colors');
-// eslint-disable-next-line @typescript-eslint/no-var-requires
 const typography = require('@tailwindcss/typography');
-// eslint-disable-next-line @typescript-eslint/no-var-requires
 const forms = require('@tailwindcss/forms');
 
 module.exports = {

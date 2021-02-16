@@ -14,7 +14,7 @@ export default defineComponent({
 
 <style lang="css">
 #app {
-  font-family: 'JetBrains Mono', Avenir, Helvetica, Arial, sans-serif;
+  font-family: 'JetBrains Mono', 'Roboto', Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }

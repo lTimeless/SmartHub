@@ -65,7 +65,7 @@ export default defineComponent({
           <a class="text-2xl">+</a>
         </button>
         <button
-          class="ml-1 flex flex-row justify-between items-center content-center focus:outline-none cursor-not-allowed "
+          class="ml-1 flex flex-row justify-between items-center content-center focus:outline-none cursor-not-allowed"
         >
           <AppIcon
             icon-name="Edit"
@@ -107,7 +107,7 @@ export default defineComponent({
                   :device-type-name="capitalize(device.pluginTypes.toString())"
                   :state="device.status"
                   :device-id="device.id"
-                ></AppDeviceControl>
+                />
               </div>
             </div>
             <div v-else>Error loading device ...</div>

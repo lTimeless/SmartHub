@@ -88,8 +88,9 @@ export default defineComponent({
 
 <template>
   <!-- Main View -->
-  <div class="flex items-center min-h-screen p-6 background">
-    <AppCard class="bg-white">
+  <div class="flex flex-row justify-center items-center min-h-screen p-6 background">
+    <div class="w-full xl:w-1/2">
+          <AppCard class="bg-white">
       <template v-if="loading">
         <div class="flex items-center justify-center w-full h-108">
           <Loader height="h-48" width="w-48" />
@@ -104,7 +105,7 @@ export default defineComponent({
         <div class="hidden md:block h-108 md:h-auto md:w-1/2">
           <img
             aria-hidden="true"
-            class="object-fill w-full h-full dark:hidden"
+            class=" w-full h-full"
             src="../../../assets/images/undraw_smart_home_28oy.svg"
             alt="Office"
           />
@@ -180,5 +181,7 @@ export default defineComponent({
         </div>
       </template>
     </AppCard>
+    </div>
+
   </div>
 </template>
