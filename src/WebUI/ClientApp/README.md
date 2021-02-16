@@ -1,24 +1,21 @@
 # smarthub
 
 ## Project setup
-```
-npm install
-```
+
+`npm install` or `yarn`
 
 ### Compiles and hot-reloads for development
-```
-npm run serve
-```
+
+`npm run dev` or `yarn run dev`
 
 ### Compiles and minifies for production
-```
-npm run build
-```
+
+`npm run build` or `yarn run build`
 
 ### Lints and fixes files
-```
-npm run lint
-```
+
+`npm run lint` or `yarn run typecheck`
 
 ### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+
+See [vitejs Configuration Reference](https://vitejs.dev/).

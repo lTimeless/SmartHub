@@ -1,7 +1,7 @@
 <script lang="ts">
 import { computed, defineComponent, ref, watch } from 'vue';
 import { useRouter } from 'vue-router';
-import { Roles, Routes } from '@/types/enums';
+import { Routes } from '@/types/enums';
 import NavigationItem from '@/components/layout/AppSidebar/NavigationItem.vue';
 import AppBrand from '@/components/ui/AppBrand/AppBrand.vue';
 import { useIdentity } from '@/hooks/useIdentity';
