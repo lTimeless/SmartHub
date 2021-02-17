@@ -1,3 +1,66 @@
+<script lang="ts">
+import { defineComponent, reactive, ref } from 'vue';
+import Loader from '@/components/ui/AppSpinner.vue';
+import { UpdateDeviceInput } from '@/types/graphql/inputs';
+import { useMutation, useQuery } from '@urql/vue';
+import { useEnumTypes } from '@/hooks/useEnums';
+import { useRoute } from 'vue-router';
+import { DevicePayload } from '@/types/graphql/payloads';
+import { GetDeviceByIdVariable, GetDevicesQueryType, GET_DEVICE_BY_ID } from './DeviceQueries';
+import { UPDATE_DEVICE } from './DeviceMutations';
+
+export default defineComponent({
+  name: 'DeviceDetails',
+  components: {
+    Loader
+  },
+  setup() {
+    const route = useRoute();
+    const selectedPluginType = ref<number>();
+    const selectedPConnType = ref<number>();
+    const selectedSConnType = ref<number>();
+    const updatedDevice: UpdateDeviceInput = reactive({
+      id: ''
+    });
+    const {
+      executeMutation: updateDevice,
+      fetching: loadUpdate,
+      error: errUpdate
+    } = useMutation<DevicePayload>(UPDATE_DEVICE);
+    const { data: deviceResult, fetching: loading, error } = useQuery<
+      GetDevicesQueryType,
+      GetDeviceByIdVariable
+    >({
+      query: GET_DEVICE_BY_ID,
+      variables: { name: route.params.name as string }
+    });
+
+    const save = async () => {
+      if (typeof deviceResult.value?.devices !== 'undefined') {
+        updatedDevice.id = deviceResult.value.devices[0].id;
+        updatedDevice.primaryConnection = deviceResult.value?.devices[0].primaryConnection;
+        updatedDevice.secondaryConnection = deviceResult.value?.devices[0].secondaryConnection;
+        await updateDevice({ input: updatedDevice });
+      }
+    };
+
+    return {
+      loadUpdate,
+      errUpdate,
+      deviceResult,
+      loading,
+      error,
+      updatedDevice,
+      selectedPluginType,
+      selectedPConnType,
+      selectedSConnType,
+      save,
+      ...useEnumTypes()
+    };
+  }
+});
+</script>
+
 <template>
   <div class="relative flex-col w-full justify-end bg-white border p-3 rounded">
     <template v-if="loading">
@@ -158,68 +221,3 @@
     </template>
   </div>
 </template>
-
-<script lang="ts">
-import { defineComponent, reactive, ref } from 'vue';
-import Loader from '@/components/ui/AppSpinner.vue';
-import { UpdateDeviceInput } from '@/types/graphql/inputs';
-import { useMutation, useQuery } from '@urql/vue';
-import { UPDATE_DEVICE } from './DeviceMutations';
-import { GetDeviceByIdVariable, GetDevicesQueryType, GET_DEVICE_BY_ID } from './DeviceQueries';
-import { useEnumTypes } from '@/hooks/useEnums';
-import { useRoute } from 'vue-router';
-import { DevicePayload } from '@/types/graphql/payloads';
-
-export default defineComponent({
-  name: 'DeviceDetails',
-  components: {
-    Loader
-  },
-  setup() {
-    const route = useRoute();
-    const selectedPluginType = ref<number>();
-    const selectedPConnType = ref<number>();
-    const selectedSConnType = ref<number>();
-    const updatedDevice: UpdateDeviceInput = reactive({
-      id: ''
-    });
-    const {
-      executeMutation: updateDevice,
-      fetching: loadUpdate,
-      error: errUpdate
-    } = useMutation<DevicePayload>(UPDATE_DEVICE);
-    const { data: deviceResult, fetching: loading, error } = useQuery<
-      GetDevicesQueryType,
-      GetDeviceByIdVariable
-    >({
-      query: GET_DEVICE_BY_ID,
-      variables: { name: route.params.name as string }
-    });
-
-    const save = async () => {
-      if (typeof deviceResult.value?.devices !== 'undefined') {
-        updatedDevice.id = deviceResult.value.devices[0].id;
-        updatedDevice.primaryConnection = deviceResult.value?.devices[0].primaryConnection;
-        updatedDevice.secondaryConnection = deviceResult.value?.devices[0].secondaryConnection;
-        await updateDevice({ input: updatedDevice });
-      }
-    };
-
-    return {
-      loadUpdate,
-      errUpdate,
-      deviceResult,
-      loading,
-      error,
-      updatedDevice,
-      selectedPluginType,
-      selectedPConnType,
-      selectedSConnType,
-      save,
-      ...useEnumTypes()
-    };
-  }
-});
-</script>
-
-<style scoped></style>

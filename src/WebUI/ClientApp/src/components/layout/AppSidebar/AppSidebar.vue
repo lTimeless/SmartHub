@@ -1,15 +1,16 @@
 <script lang="ts">
-import AppUserDropdown from '../AppUserDropdown.vue';
 import { computed, defineComponent, ref, watch } from 'vue';
 import { useRouter } from 'vue-router';
-import { Roles, Routes } from '@/types/enums';
+import { Routes } from '@/types/enums';
 import NavigationItem from '@/components/layout/AppSidebar/NavigationItem.vue';
-import AppBrand from '@/components/layout/AppSidebar/AppBrand.vue';
+import AppBrand from '@/components/ui/AppBrand/AppBrand.vue';
 import { useIdentity } from '@/hooks/useIdentity';
-import MiniToggle from './MiniToggle.vue';
 import { useStore } from 'vuex';
 import { AppActionTypes } from '@/store/app/actions';
 import AppIcon from '@/components/icons/AppIcon.vue';
+import AppUserDropdown from '../AppUserDropdown.vue';
+import MiniToggle from './MiniToggle.vue';
+import { useSidebar } from './usesidebar';
 
 export default defineComponent({
   name: 'AppSidebar',
@@ -25,109 +26,13 @@ export default defineComponent({
     const router = useRouter();
     const store = useStore();
     const { isRole } = useIdentity();
+    const { sidebarList } = useSidebar();
     const role = ref(isRole());
     const mobileSidebarOpen = computed(() => store.state.appModule.mobileSidebarOpen);
     const miniSidebarOpen = computed(() => store.state.appModule.miniSidebarOpen);
-    const sidebarLists = [
-      // Guest views
-      {
-        label: 'Home',
-        rolesRequired: [Roles.Guest, Roles.User, Roles.Admin],
-        route: Routes.Home,
-        iconName: 'Home',
-        children: []
-      },
-      // User views
-      {
-        label: 'Groups',
-        rolesRequired: [Roles.User, Roles.Admin],
-        route: Routes.Groups,
-        iconName: 'Folder',
-        children: []
-      },
-      {
-        label: 'Devices',
-        rolesRequired: [Roles.User, Roles.Admin],
-        route: Routes.Devices,
-        iconName: 'Device',
-        children: []
-      },
-      {
-        label: 'Users',
-        rolesRequired: [Roles.User, Roles.Admin],
-        route: Routes.Users,
-        iconName: 'Users',
-        children: []
-      },
-      {
-        label: 'Automations',
-        rolesRequired: [Roles.User, Roles.Admin],
-        route: Routes.Automations,
-        iconName: 'Repeat',
-        children: []
-      },
-      {
-        label: 'Statistics',
-        rolesRequired: [Roles.User, Roles.Admin],
-        route: Routes.Statistics,
-        iconName: 'Pie-chart',
-        children: []
-      },
-      {
-        label: 'Plugins',
-        rolesRequired: [Roles.User, Roles.Admin],
-        route: Routes.Plugins,
-        iconName: 'Plugin',
-        children: []
-      },
-      {
-        label: 'Configuration',
-        rolesRequired: [Roles.User, Roles.Admin],
-        route: Routes.Configuration,
-        iconName: 'Settings',
-        children: []
-      }
-      // Admin views
-      // TODO werden zu tabs oder mini-sidebar in der config view von der Admin view
-      // {
-      //   name: 'System',
-      //   roleNeeded: [Roles.Admin],
-      //   path: Routes.System,
-      //   icon: 'mdi-desktop-classic',
-      //   children: []
-      // },
-      // {
-      //   name: 'Health',
-      //   roleNeeded: [Roles.Admin],
-      //   path: Routes.Health,
-      //   icon: 'mdi-clipboard-pulse',
-      //   children: []
-      // }
-      // {
-      //   name: 'Activity',
-      //   roleNeeded: [Roles.Admin],
-      //   path: Routes.Activity,
-      //   icon: 'mdi-calendar-alert',
-      //   children: []
-      // },
-      // {
-      //   name: 'Logs',
-      //   roleNeeded: [Roles.Admin],
-      //   path: Routes.Logs,
-      //   icon: 'mdi-file-document',
-      //   children: []
-      // }
-      // TODO: move to toolbar or help icon on the bottom of sidebar
-      // {
-      //   name: 'About',
-      //   roleNeeded: ['Guest', 'User', 'Admin'],
-      //   path: '/about',
-      //   children: [{ title: 'About', icon: 'mdi-information', path: '/about' }]
-      // }
-    ];
 
     const currentPath = computed(() => router.currentRoute.value.path);
-    const roleIncluded = (rolesNeeded: string[]) => rolesNeeded.includes(role.value);
+    const roleIncluded = (rolesRequired: string[]) => rolesRequired.includes(role.value);
 
     const closeMobileSidebar = () => {
       if (mobileSidebarOpen.value) {
@@ -142,7 +47,7 @@ export default defineComponent({
 
     return {
       currentPath,
-      sidebarLists,
+      sidebarList,
       miniSidebarOpen,
       roleIncluded,
       routes: Routes,
@@ -157,7 +62,7 @@ export default defineComponent({
   <!-- Sidebar -->
   <div
     :class="[miniSidebarOpen ? 'md:w-12' : 'w-52']"
-    class="rounded md:left-0 md:top-0 md:bottom-0 md:overflow-y-auto md:flex-no-wrap md:overflow-hidden bg-white flex flex-none z-40"
+    class="md:left-0 md:top-0 md:bottom-0 md:overflow-y-auto md:flex-no-wrap md:overflow-hidden bg-white flex flex-none z-40"
   >
     <!-- Background if MobileSidebar is open -->
     <button
@@ -166,7 +71,7 @@ export default defineComponent({
       class="absolute inset-0 h-full w-full bg-black opacity-20 cursor-default z-20"
     />
     <div
-      class="md:flex flex-col justify-between md:relative absolute top-0 left-0 right-0 z-40 overflow-y-auto overflow-x-hidden"
+      class="rounded md:flex flex-col justify-between md:relative absolute top-0 left-0 right-0 z-40 overflow-y-auto overflow-x-hidden"
       :class="[mobileSidebarOpen ? 'bg-white m-2 py-3 px-6' : 'hidden']"
     >
       <!-- Collapse header -->
@@ -187,9 +92,9 @@ export default defineComponent({
           :class="[miniSidebarOpen ? '' : 'pl-3']"
           :only-icon="miniSidebarOpen"
         />
-        <div v-for="view in sidebarLists" :key="view.label" :class="[mobileSidebarOpen ? 'w-full' : '']">
+        <div v-for="view in sidebarList" :key="view.label" :class="[mobileSidebarOpen ? 'w-full' : '']">
           <NavigationItem
-            v-if="roleIncluded(view.rolesRequired)"
+            v-if="roleIncluded(view.rolesRequired) && view.active"
             :icon-name="view.iconName"
             :label="view.label"
             :route="view.route"
@@ -218,11 +123,3 @@ export default defineComponent({
     </div>
   </div>
 </template>
-<style lang="css" scoped>
-.sidebar {
-  @apply hidden md:flex flex-col justify-between items-center flex-none bg-white rounded;
-}
-.transition {
-  transition: 0.3s transform cubic-bezier(0, 0.12, 0.14, 1);
-}
-</style>

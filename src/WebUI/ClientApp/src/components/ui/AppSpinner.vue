@@ -6,7 +6,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
+import { defineComponent, toRefs } from 'vue';
 import { useTimeout } from '@vueuse/core';
 
 export default defineComponent({
@@ -21,16 +21,17 @@ export default defineComponent({
       required: true
     }
   },
-  setup() {
+  setup(props) {
     const { ready } = useTimeout(300, true);
     return {
+      ...toRefs(props),
       ready
     };
   }
 });
 </script>
 
-<style scoped lang="scss">
+<style scoped lang="css">
 .loader {
   border-top-color: #3498db;
   -webkit-animation: spinner 1.5s linear infinite;

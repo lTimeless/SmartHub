@@ -50,9 +50,9 @@
 <script lang="ts">
 import { defineComponent, ref } from 'vue';
 import { Roles } from '@/types/enums';
+import { useIdentity } from '@/hooks/useIdentity';
 import AdminCardsRow from './components/AdminCardsRow.vue';
 import CardsRow from './components/CardsRow.vue';
-import { useIdentity } from '@/hooks/useIdentity';
 import Welcome from './components/Welcome.vue';
 
 export default defineComponent({

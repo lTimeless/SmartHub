@@ -1,3 +1,54 @@
+<script lang="ts">
+import { defineComponent, reactive, computed } from 'vue';
+import AppModal from '@/components/ui/AppModals/AppModal.vue';
+import { CreateDeviceInput } from '@/types/graphql/inputs';
+import { ConnectionTypes, PluginTypes } from '@/types/enums';
+import { useEnumTypes } from '@/hooks/useEnums.ts';
+import { useMutation } from '@urql/vue';
+import { CREATE_DEVICE } from '../DeviceMutations';
+
+export default defineComponent({
+  name: 'DeviceCreateModal',
+  emits: ['close'],
+  components: {
+    AppModal
+  },
+  setup(_, context) {
+    const deviceCreateInput = reactive<CreateDeviceInput>({
+      name: '',
+      groupName: '',
+      ipv4: '',
+      companyName: '',
+      pluginName: '',
+      pluginTypes: PluginTypes.None.toString(),
+      primaryConnection: ConnectionTypes.None.toString(),
+      secondaryConnection: ConnectionTypes.None.toString()
+    });
+    const { executeMutation: createDevice, fetching: loadCreate, error: errCreate } = useMutation(
+      CREATE_DEVICE
+    );
+    const saveBtnActive = computed(() => deviceCreateInput.name !== '' && deviceCreateInput.ipv4 !== '');
+    const close = () => {
+      context.emit('close', false);
+    };
+    const save = async () => {
+      await createDevice({ input: deviceCreateInput });
+      context.emit('close', false);
+    };
+    return {
+      deviceCreateInput,
+      ConnectionTypes,
+      saveBtnActive,
+      close,
+      save,
+      loadCreate,
+      errCreate,
+      ...useEnumTypes()
+    };
+  }
+});
+</script>
+
 <template>
   <AppModal
     title="Create new Device"
@@ -45,7 +96,7 @@
             type="text"
             v-model="deviceCreateInput.description"
             class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md"
-            placeholder="Description (optional)"
+            placeholder="Description(optional)"
           />
         </label>
       </div>
@@ -136,68 +187,3 @@
     </template>
   </AppModal>
 </template>
-
-<script lang="ts">
-import { defineComponent, reactive, computed } from 'vue';
-import AppModal from '@/components/ui/modals/AppModal.vue';
-import { CreateDeviceInput } from '@/types/graphql/inputs';
-import { ConnectionTypes, PluginTypes } from '@/types/enums';
-import { useEnumTypes } from '@/hooks/useEnums.ts';
-import { useMutation } from '@urql/vue';
-import { CREATE_DEVICE } from '../DeviceMutations';
-import { GET_DEVICES } from '../DeviceQueries';
-import { GET_DEVICES_COUNT } from '@/pages/home/HomeQueries';
-import { GET_GROUPS } from '@/pages/groups/GroupQueries';
-
-export default defineComponent({
-  name: 'DeviceCreateModal',
-  emits: ['close'],
-  components: {
-    AppModal
-  },
-  setup(props, context) {
-    const deviceCreateInput = reactive<CreateDeviceInput>({
-      name: '',
-      groupName: '',
-      ipv4: '',
-      companyName: '',
-      pluginName: '',
-      pluginTypes: PluginTypes.None.toString(),
-      primaryConnection: ConnectionTypes.None.toString(),
-      secondaryConnection: ConnectionTypes.None.toString()
-    });
-    const { executeMutation: createDevice, fetching: loadCreate, error: errCreate } = useMutation(
-      CREATE_DEVICE
-    );
-    const saveBtnActive = computed(() => deviceCreateInput.name !== '' && deviceCreateInput.ipv4 !== '');
-    const close = () => {
-      context.emit('close', false);
-    };
-    const save = async () => {
-      let refetchOpts = { refetchQueries: [{ query: GET_DEVICES }, { query: GET_DEVICES_COUNT }] };
-      if (deviceCreateInput.groupName) {
-        refetchOpts.refetchQueries = [
-          { query: GET_DEVICES },
-          { query: GET_DEVICES_COUNT },
-          { query: GET_GROUPS }
-        ];
-      }
-      // TODO remove refetchOpts
-      await createDevice({ input: deviceCreateInput });
-      context.emit('close', false);
-    };
-    return {
-      deviceCreateInput,
-      ConnectionTypes,
-      saveBtnActive,
-      close,
-      save,
-      loadCreate,
-      errCreate,
-      ...useEnumTypes()
-    };
-  }
-});
-</script>
-
-<style scoped></style>

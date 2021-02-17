@@ -1,12 +1,9 @@
 import { CommitOptions, DispatchOptions, Store as VuexStore } from 'vuex';
 
 import { RootState } from '@/store/index.types';
-import { AuthMutations } from '@/store/auth/mutations';
-import { AuthGetters } from '@/store/auth/getters';
-import { AuthActions } from '@/store/auth/actions';
-import { HomeMutations } from '@/store/home/mutations';
-import { HomeActions } from '@/store/home/actions';
-import { HomeGetters } from '@/store/home/getters';
+import { AppMutations } from '@/store/app/mutations';
+import { HomeActions } from '@/store/app/actions';
+import { HomeGetters } from '@/store/app/getters';
 declare module '@vue/runtime-core' {
   interface ComponentCustomProperties {
     $store: MyStore;
@@ -14,9 +11,9 @@ declare module '@vue/runtime-core' {
 }
 
 // Store types
-type Mutations = AuthMutations & HomeMutations;
-type Actions = HomeActions & AuthActions;
-type Getters = AuthGetters & HomeGetters;
+type Mutations = AppMutations;
+type Actions = HomeActions;
+type Getters = HomeGetters;
 
 // setup store type
 export type MyStore = Omit<VuexStore<RootState>, 'commit' | 'getters' | 'dispatch'> & {

@@ -1,6 +1,5 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router';
 import { useRouteAuthGuard } from '@/router/guards/userAuthGuard';
-import NotFound from '@/pages/NotFound.vue';
 import NotAuthorized from '@/pages/NotAuthorized.vue';
 import Statistics from '@/pages/statistics/Statistics.vue';
 import { Routes } from '@/types/enums';
@@ -9,11 +8,12 @@ import { identityRoutes } from '@/pages/identity/IdentityRoutes';
 import { initRoutes } from '@/pages/init/InitRoutes';
 import { homeRoutes } from '@/pages/home/HomeRoutes';
 import { usersRoutes } from '@/pages/users/UsersRoutes';
-import { meRoutes } from '@/pages/me/MeRoutes';
-import { deviceRoutes } from '@/pages/devices/DeviceRoutes';
-import { groupRoutes } from '@/pages/groups/GroupRoutes';
 import { automationsRoutes } from '@/pages/automations/AutomationsRoutes';
 import { adminRoutes } from '@/pages/admin/AdminRoutes';
+import NotFound from '@/pages/NotFound.vue';
+import { deviceRoutes } from '../pages/devices/DeviceRoutes';
+import { groupRoutes } from '../pages/groups/GroupRoutes';
+import { meRoutes } from '../pages/me/MeRoutes';
 
 const routes: Array<RouteRecordRaw> = [
   ...identityRoutes,

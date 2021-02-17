@@ -23,7 +23,7 @@ export default defineComponent({
     }
   },
   setup(props) {
-    const typeFullName = computed(() => props.deviceTypeName + 'Control');
+    const typeFullName = computed(() => `${props.deviceTypeName}Control`);
     return {
       typeFullName
     };

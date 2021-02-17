@@ -1,4 +1,3 @@
-@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono&display=swap');
 /*! @import */
 @tailwind base;
 @tailwind components;
@@ -14,21 +13,19 @@
 ::-webkit-scrollbar-track {
   border-radius: 100vh;
   @apply bg-gray-100 bg-opacity-30 border rounded;
-  //background: var(--color-sidebar);
+  /* background: var(--color-sidebar); */
 }
 
 /* Handle */
 ::-webkit-scrollbar-thumb {
   @apply bg-gray-100 bg-opacity-30 border rounded right-2 left-2;
   backdrop-filter: blur(10px);
-  //border-radius: 100vh;
-  //border: 3px solid #edf2f7;
 }
 
 /* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
   @apply bg-gray-400 bg-opacity-50 border rounded w-6;
-  //background: #c1cacb;
+  /* background: #c1cacb; */
 }
 
 /* Background */

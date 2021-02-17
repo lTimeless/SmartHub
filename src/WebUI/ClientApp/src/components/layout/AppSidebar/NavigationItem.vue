@@ -1,7 +1,7 @@
 <template>
   <router-link
     :to="route"
-    class="h-12 flex hover:bg-primaryBlueHover rounded-l-lg items-center"
+    class="h-12 flex hover:bg-primaryBlueHover items-center"
     :class="[
       mobileSidebarOpen ? 'w-full space-x-3' : '',
       onlyIcon && !mobileSidebarOpen ? 'w-12 justify-center' : ' w-52 justify-start pl-4',

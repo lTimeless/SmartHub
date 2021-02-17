@@ -1,20 +1,6 @@
-<template>
-  <router-link
-    :to="routes.Home"
-    class="flex rounded-l items-end"
-    :class="[onlyIcon ? 'w-12 justify-center' : ' w-52 justify-start']"
-    title="Home"
-  >
-    <Logo :width="32" />
-    <span v-if="!onlyIcon" class="ml-2 text-xl text-primaryBlue">
-      {{ appConfig.applicationName }}
-    </span>
-  </router-link>
-</template>
-
 <script lang="ts">
 import { computed, defineComponent, toRefs } from 'vue';
-import Logo from '@/components/svgs/Logo.vue';
+import Logo from './Logo.vue';
 import { Routes } from '@/types/enums';
 import { useQuery } from '@urql/vue';
 import gql from 'graphql-tag';
@@ -51,4 +37,16 @@ export default defineComponent({
 });
 </script>
 
-<style scoped></style>
+<template>
+  <router-link
+    :to="routes.Home"
+    class="flex rounded-l items-end"
+    :class="[onlyIcon ? 'w-12 justify-center' : ' w-52 justify-start']"
+    title="Home"
+  >
+    <Logo :width="32" />
+    <span v-if="!onlyIcon" class="ml-2 text-xl text-primaryBlue">
+      {{ appConfig.applicationName }}
+    </span>
+  </router-link>
+</template>

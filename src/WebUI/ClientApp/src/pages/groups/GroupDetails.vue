@@ -76,9 +76,9 @@ import Loader from '@/components/ui/AppSpinner.vue';
 import { UpdateGroupInput } from '@/types/graphql/inputs';
 import { defineComponent, reactive } from 'vue';
 import { useMutation, useQuery } from '@urql/vue';
+import { useRoute } from 'vue-router';
 import { UPDATE_GROUP } from './GroupMutations';
 import { GET_GROUP_BY_ID } from './GroupQueries';
-import { useRoute } from 'vue-router';
 
 export default defineComponent({
   name: 'GroupDetails',

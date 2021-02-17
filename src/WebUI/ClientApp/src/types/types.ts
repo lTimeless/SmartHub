@@ -54,9 +54,9 @@ interface BaseEntity {
 
 export interface PersonName {
   __typename?: 'PersonName';
-  firstName: string | null;
-  middleName: string | null;
-  lastName: string | null;
+  firstName?: string;
+  middleName?: string;
+  lastName?: string;
 }
 
 export interface User extends BaseEntity {

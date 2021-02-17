@@ -1,3 +1,95 @@
+<script lang="ts">
+import { defineComponent, onMounted, ref, reactive, computed } from 'vue';
+import { useRouter } from 'vue-router';
+import Loader from '@/components/ui/AppSpinner.vue';
+import { Routes } from '@/types/enums';
+import AppCard from '@/components/ui/AppCards/AppCard.vue';
+import { useMutation } from '@urql/vue';
+import { useIdentity } from '@/hooks/useIdentity';
+import { RegistrationInput } from '@/types/graphql/inputs';
+import {
+  REGISTRATION,
+  RegistrationMutationPayload,
+  RegistrationMutationVariables
+} from '../registration/RegistrationMutation';
+
+export default defineComponent({
+  name: 'Registration',
+  components: {
+    AppCard,
+    Loader
+  },
+  props: {},
+  setup() {
+    const router = useRouter();
+    const { token, clearStorage } = useIdentity();
+    const title = 'Create account';
+    const passwordStrengthText = ref('');
+    const togglePassword = ref(false);
+    const confirmPwd = ref('');
+    const registrationRequest: RegistrationInput = reactive({
+      userName: '',
+      password: '',
+      role: 'User' // default role, can only be changed after registration
+    });
+
+    onMounted(() => {
+      clearStorage();
+    });
+    const { executeMutation: createAccount, fetching: loadCreate, error: errCreate } = useMutation<
+      RegistrationMutationPayload,
+      RegistrationMutationVariables
+    >(REGISTRATION);
+
+    const passwordStrength = computed(() => passwordStrengthText.value !== 'Too weak');
+    const checkPwd = computed(
+      () => registrationRequest.password === '' || registrationRequest.password !== confirmPwd.value
+    );
+    const registrationDisabled = computed(
+      () => registrationRequest.userName === '' || checkPwd.value || !passwordStrength.value
+    );
+
+    const checkPasswordStrength = () => {
+      const strongRegex = new RegExp('^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])(?=.{8,})');
+      const mediumRegex = new RegExp(
+        '^(((?=.*[a-z])(?=.*[A-Z]))|((?=.*[a-z])(?=.*[0-9]))|((?=.*[A-Z])(?=.*[0-9])))(?=.{6,})'
+      );
+      const value = registrationRequest.password;
+      if (strongRegex.test(value)) {
+        passwordStrengthText.value = 'Strong password';
+      } else if (mediumRegex.test(value)) {
+        passwordStrengthText.value = 'Could be stronger';
+      } else {
+        passwordStrengthText.value = 'Too weak';
+      }
+    };
+
+    const onRegistrationClick = async () => {
+      await createAccount({ input: registrationRequest }).then((res) => {
+        if (res.data && res.data.registration.token) {
+          token.value = res.data.registration.token;
+          router.push(Routes.Home);
+          return Promise.resolve();
+        }
+      });
+    };
+
+    return {
+      loadCreate,
+      errCreate,
+      registrationRequest,
+      togglePassword,
+      title,
+      confirmPwd,
+      checkPasswordStrength,
+      passwordStrengthText,
+      registrationDisabled,
+      onRegistrationClick
+    };
+  }
+});
+</script>
+
 <template>
   <!-- Main View -->
   <div class="flex items-center min-h-screen p-6 background">
@@ -150,154 +242,3 @@
     </AppCard>
   </div>
 </template>
-
-<script lang="ts">
-import { defineComponent, onMounted, ref, reactive, computed } from 'vue';
-import { useRouter } from 'vue-router';
-import Loader from '@/components/ui/AppSpinner.vue';
-import { Routes } from '@/types/enums';
-import AppCard from '@/components/ui/cards/AppCard.vue';
-import { useMutation } from '@urql/vue';
-import {
-  REGISTRATION,
-  RegistrationMutationPayload,
-  RegistrationMutationVariables
-} from '../registration/RegistrationMutation';
-import { useIdentity } from '@/hooks/useIdentity';
-import { RegistrationInput } from '@/types/graphql/inputs';
-
-export default defineComponent({
-  name: 'Registration',
-  components: {
-    AppCard,
-    Loader
-  },
-  props: {},
-  setup() {
-    const router = useRouter();
-    const { token, clearStorage } = useIdentity();
-    const title = 'Create account';
-    const passwordStrengthText = ref('');
-    const togglePassword = ref(false);
-    const confirmPwd = ref('');
-    const registrationRequest: RegistrationInput = reactive({
-      userName: '',
-      password: '',
-      role: 'User' // default role, can only be changed after registration
-    });
-
-    onMounted(() => {
-      clearStorage();
-    });
-    const { executeMutation: createAccount, fetching: loadCreate, error: errCreate } = useMutation<
-      RegistrationMutationPayload,
-      RegistrationMutationVariables
-    >(REGISTRATION);
-
-    const passwordStrength = computed(() => passwordStrengthText.value !== 'Too weak');
-    const checkPwd = computed(
-      () => registrationRequest.password === '' || registrationRequest.password !== confirmPwd.value
-    );
-    const registrationDisabled = computed(
-      () => registrationRequest.userName === '' || checkPwd.value || !passwordStrength.value
-    );
-
-    const checkPasswordStrength = () => {
-      const strongRegex = new RegExp('^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])(?=.{8,})');
-      const mediumRegex = new RegExp(
-        '^(((?=.*[a-z])(?=.*[A-Z]))|((?=.*[a-z])(?=.*[0-9]))|((?=.*[A-Z])(?=.*[0-9])))(?=.{6,})'
-      );
-      const value = registrationRequest.password;
-      if (strongRegex.test(value)) {
-        passwordStrengthText.value = 'Strong password';
-      } else if (mediumRegex.test(value)) {
-        passwordStrengthText.value = 'Could be stronger';
-      } else {
-        passwordStrengthText.value = 'Too weak';
-      }
-    };
-
-    const onRegistrationClick = async () => {
-      await createAccount({ input: registrationRequest }).then((res) => {
-        if (res.data && res.data.registration.token) {
-          token.value = res.data.registration.token;
-          router.push(Routes.Home);
-          return Promise.resolve();
-        }
-      });
-    };
-
-    return {
-      loadCreate,
-      errCreate,
-      registrationRequest,
-      togglePassword,
-      title,
-      confirmPwd,
-      checkPasswordStrength,
-      passwordStrengthText,
-      registrationDisabled,
-      onRegistrationClick
-    };
-  }
-});
-</script>
-
-<style scoped lang="scss">
-.registration {
-  width: 100%;
-  height: 100vh;
-  display: flex;
-  background-color: var(--color-ui-login-background);
-  .fully-centered {
-    align-self: center;
-    height: 80%;
-
-    .img {
-      max-width: 90%;
-      display: flex;
-      justify-items: center;
-      margin: auto;
-    }
-
-    .progress-step {
-      position: relative;
-      width: 20px;
-      height: 20px;
-      border: 2px solid var(--color-ui-primary);
-      border-radius: 50%;
-      padding: 3px;
-      color: white;
-      background-color: var(--color-ui-primary);
-      font-weight: bold;
-      z-index: 2;
-
-      &.active {
-        background-color: var(--color-ui-primary);
-
-        ~ .progress-step {
-          color: #ccc;
-          background-color: #ccc;
-          border: 2px solid #ccc;
-        }
-
-        ~ .progress-step::before {
-          background-color: #ccc;
-        }
-      }
-    }
-  }
-
-  input[type='password']::-ms-reveal,
-  input[type='password']::-ms-clear {
-    display: none;
-  }
-
-  p {
-    a {
-      text-decoration: underline;
-      /*color: var(--color-ui-background);*/
-    }
-  }
-}
-</style>

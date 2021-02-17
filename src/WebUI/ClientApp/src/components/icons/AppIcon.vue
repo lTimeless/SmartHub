@@ -41,7 +41,7 @@ export default defineComponent({
     }
   },
   setup(props) {
-    const iconFullName = computed(() => props.iconName + 'Icon');
+    const iconFullName = computed(() => `${props.iconName}Icon`);
     return {
       iconFullName,
       ...toRefs(props)

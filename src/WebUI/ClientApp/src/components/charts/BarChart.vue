@@ -21,9 +21,9 @@
 <script lang="js">
 import Chart from 'chart.js';
 export default {
-  mounted: function () {
-    this.$nextTick(function () {
-      let config = {
+  mounted () {
+    this.$nextTick(() => {
+      const config = {
         type: 'bar',
         data: {
           labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
@@ -107,7 +107,7 @@ export default {
           }
         }
       };
-      let ctx = document.getElementById('bar-chart').getContext('2d');
+      const ctx = document.getElementById('bar-chart').getContext('2d');
       window.myBar = new Chart(ctx, config);
     });
   }

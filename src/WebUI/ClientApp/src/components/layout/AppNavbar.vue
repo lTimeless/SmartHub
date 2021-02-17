@@ -9,7 +9,7 @@
         </button>
       </div>
       <!-- Route Name -->
-      <a v-if="!isRoute" class="md:text-xl text-lg p-2 text-primaryBlue uppercase">{{ route.name }}</a>
+      <a v-if="!isRoute" class="md:text-xl text-lg py-2 text-primaryBlue uppercase">{{ route.name }}</a>
     </div>
     <!-- back btn -->
     <div v-if="!isRoute" class="flex-row hidden md:flex md:justify-end md:w-1/2">

@@ -1,7 +1,54 @@
+<script lang="ts">
+import { reactive, toRefs, defineComponent } from 'vue';
+import AppCard from '@/components/ui/AppCards/AppCard.vue';
+import { useQuery } from '@urql/vue';
+import Loader from '@/components/ui/AppSpinner.vue';
+import { useRouter } from 'vue-router';
+import GroupCreateModal from './modals/GroupCreateModal.vue';
+import GroupDropdown from './components/GroupDropdown.vue';
+import { GET_GROUPS } from './GroupQueries';
+
+export default defineComponent({
+  name: 'Groups',
+  components: {
+    AppCard,
+    GroupCreateModal,
+    GroupDropdown,
+    Loader
+  },
+  setup() {
+    const router = useRouter();
+    const { data, fetching: loading, error } = useQuery({ query: GET_GROUPS });
+    const state = reactive({
+      showCreateModal: false,
+      showDetailModal: false,
+      groupId: '',
+      closeDropdown: false
+    });
+
+    const toggleCreateModal = () => {
+      state.showCreateModal = !state.showCreateModal;
+    };
+
+    const goToDetail = (name: string) => {
+      router.push({ name: 'GroupDetail', params: { name } });
+    };
+
+    return {
+      data,
+      loading,
+      error,
+      ...toRefs(state),
+      toggleCreateModal,
+      goToDetail
+    };
+  }
+});
+</script>
+
 <template>
   <div>
-    <GroupCreateModal v-if="showCreateModal" @close="toggleCreateModal" />
-
+    <GroupCreateModal v-if="showCreateModal" @close="toggleCreateModal()" />
     <!-- Buttons -->
     <div class="w-full">
       <div class="flex justify-start items-center mb-4 xl:w-1/3">
@@ -66,53 +113,3 @@
     </template>
   </div>
 </template>
-
-<script lang="ts">
-import { reactive, toRefs, defineComponent } from 'vue';
-import AppCard from '@/components/ui/cards/AppCard.vue';
-import GroupCreateModal from './modals/GroupCreateModal.vue';
-import GroupDropdown from './components/GroupDropdown.vue';
-import { useQuery } from '@urql/vue';
-import Loader from '@/components/ui/AppSpinner.vue';
-import { GET_GROUPS } from './GroupQueries';
-import { useRouter } from 'vue-router';
-
-export default defineComponent({
-  name: 'Groups',
-  components: {
-    AppCard,
-    GroupCreateModal,
-    GroupDropdown,
-    Loader
-  },
-  setup() {
-    const router = useRouter();
-    const { data, fetching: loading, error } = useQuery({ query: GET_GROUPS });
-    const state = reactive({
-      showCreateModal: false,
-      showDetailModal: false,
-      groupId: '',
-      closeDropdown: false
-    });
-
-    const toggleCreateModal = () => {
-      state.showCreateModal = !state.showCreateModal;
-    };
-
-    const goToDetail = (name: string) => {
-      router.push({ name: 'GroupDetail', params: { name: name } });
-    };
-
-    return {
-      data,
-      loading,
-      error,
-      ...toRefs(state),
-      toggleCreateModal,
-      goToDetail
-    };
-  }
-});
-</script>
-
-<style lang="scss" scoped></style>

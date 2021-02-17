@@ -1,5 +1,5 @@
 import { createClient, dedupExchange, fetchExchange, cacheExchange } from '@urql/vue';
-import { devtoolsExchange } from '@urql/devtools';
+// import { devtoolsExchange } from '@urql/devtools';
 
 export const client = createClient({
   url: '/graphql',
@@ -9,5 +9,5 @@ export const client = createClient({
       headers: { authorization: token ? `Bearer ${token}` : '' }
     };
   },
-  exchanges: [devtoolsExchange, dedupExchange, cacheExchange, fetchExchange]
+  exchanges: [dedupExchange, cacheExchange, fetchExchange]
 });

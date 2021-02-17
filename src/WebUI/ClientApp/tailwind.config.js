@@ -1,8 +1,15 @@
-// eslint-disable-next-line @typescript-eslint/no-var-requires
 const colors = require('tailwindcss/colors');
+const typography = require('@tailwindcss/typography');
+const forms = require('@tailwindcss/forms');
 
 module.exports = {
-  purge: ['./src/**/*.{vue,js,ts,jsx,tsx}'],
+  purge: {
+    enabled: process.env.NODE_ENV === 'production',
+    content: ['./index.html', './src/**/*.vue', './src/**/*.md', './src/**/*.js', './src/**/*.ts'],
+    options: {
+      safelist: ['prose', 'prose-sm', 'm-auto']
+    }
+  },
   darkMode: 'media', // or 'media' or 'class'
   theme: {
     extend: {
@@ -115,5 +122,5 @@ module.exports = {
       scale: ['hover']
     }
   },
-  plugins: [require('@tailwindcss/forms')]
+  plugins: [forms, typography]
 };

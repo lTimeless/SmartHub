@@ -14,7 +14,7 @@
       ]"
     >
       <div
-        class="relative z-40 h-12 flex items-center hover:bg-charcoalBlue-200 rounded-l"
+        class="relative z-40 h-12 flex items-center hover:bg-charcoalBlue-200"
         :class="[
           isRoute ? `bg-blueGray-300 ${onlyIcon ? 'bg-blueGray-300' : ''}` : '',
           onlyIcon && !mobileSidebarOpen ? 'w-12 justify-center' : 'w-2/3 pl-4'
@@ -35,7 +35,7 @@
       </div>
       <div
         v-if="!onlyIcon || mobileSidebarOpen"
-        class="hover:bg-charcoalBlue-200 w-1/3 h-12 flex flex-row justify-center items-center rounded-r"
+        class="hover:bg-charcoalBlue-200 w-1/3 h-12 flex flex-row justify-center items-center"
         @click="logout"
       >
         <AppIcon icon-name="Logout" />
@@ -64,11 +64,12 @@
         <div class="border-t border-solid border-gray-400 mx-4" />
         <div class="py-1">
           <a
-            @click="logout"
             class="block px-4 py-2 text-sm text-gray-600 hover:bg-gray-200 cursor-pointer active:bg-gray-100"
             role="menuitem"
-            >Logout</a
+            @click="logout"
           >
+            Logout
+          </a>
         </div>
       </div>
     </template>
