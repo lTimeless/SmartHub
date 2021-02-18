@@ -7,8 +7,8 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
-import BarChart from '@/components/charts/BarChart.vue';
-import LineChart from '@/components/charts/LineChart.vue';
+import BarChart from '@/pages/statistics/components/BarChart.vue';
+import LineChart from '@/pages/statistics/components/LineChart.vue';
 
 export default defineComponent({
   name: 'Statistics',

@@ -1,10 +1,10 @@
 import { AppActionTypes } from '@/store/app/actions';
 import { Roles, Routes } from '@/types/enums';
 import { useStorage } from '@vueuse/core';
-import jwtDecode from 'jwt-decode';
 import { Ref } from 'vue';
 import router from '@/router';
 import { store } from '@/store';
+import { useJwt } from '@vueuse/integrations'
 
 type TokenPayload = {
   unique_name: string;
@@ -15,18 +15,10 @@ type TokenPayload = {
   iat: number;
 };
 
-type IdentityState = {
-  token: Ref<string>;
-  clearStorage: () => void;
-  isAuthenticated: () => boolean;
-  isRole: () => Roles;
-  logout: () => void;
-};
-
 const numberThousand = 1000; // used for tokenpayload "exp date" conversion
 const LOCAL_STORAGE_TOKEN = 'token';
 
-export const useIdentity = (): IdentityState => {
+export const useIdentity = () => {
   const token = useStorage(LOCAL_STORAGE_TOKEN, '');
   const isAuthenticated = () => token.value !== '';
   const clearStorage = () => {
@@ -44,11 +36,14 @@ export const useIdentity = (): IdentityState => {
     if (token.value === '') {
       return Roles.None;
     }
-    const tokenPayload = jwtDecode(token.value) as TokenPayload;
-    if (Date.now() >= tokenPayload.exp * numberThousand) {
+    const { payload: tokenPayload } = useJwt<TokenPayload>(token.value);
+    if (tokenPayload.value && Date.now() >= tokenPayload.value.exp * numberThousand) {
       return Roles.None;
     }
-    const { roles } = tokenPayload;
+    const roles = tokenPayload.value?.roles;
+    if(!roles) {
+      return Roles.None;
+    }
     if (roles.includes('Admin')) {
       return Roles.Admin;
     }

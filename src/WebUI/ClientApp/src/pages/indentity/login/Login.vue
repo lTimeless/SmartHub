@@ -4,11 +4,11 @@ import { LoginInput } from '@/types/graphql/inputs';
 import { useRouter } from 'vue-router';
 import { useMutation, useQuery } from '@urql/vue';
 import { Routes } from '@/types/enums';
-import Loader from '@/components/ui/AppSpinner.vue';
-import AppCard from '@/components/ui/AppCards/AppCard.vue';
+import Loader from '@/components/app/AppSpinner.vue';
+import AppCard from '@/components/app/AppCards/AppCard.vue';
 import { useIdentity } from '@/hooks/useIdentity';
 import gql from 'graphql-tag';
-import { LOGIN, LoginMutationVariables, LoginMutationPayload } from '../login/LoginMutation';
+import { LOGIN, LoginMutationVariables, LoginMutationPayload } from '../../../graphql/mutations/LoginMutation';
 
 const HOME_AND_USERS_EXIST = gql`
   query HomeAndUsersExist {

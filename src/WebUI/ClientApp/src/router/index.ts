@@ -1,19 +1,19 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router';
 import { useRouteAuthGuard } from '@/router/guards/userAuthGuard';
-import NotAuthorized from '@/pages/NotAuthorized.vue';
+import NotAuthorized from '@/pages/errors/NotAuthorized.vue';
 import Statistics from '@/pages/statistics/Statistics.vue';
 import { Routes } from '@/types/enums';
-import Layout from '@/pages/Layout.vue';
-import { identityRoutes } from '@/pages/identity/IdentityRoutes';
-import { initRoutes } from '@/pages/init/InitRoutes';
-import { homeRoutes } from '@/pages/home/HomeRoutes';
-import { usersRoutes } from '@/pages/users/UsersRoutes';
-import { automationsRoutes } from '@/pages/automations/AutomationsRoutes';
-import { adminRoutes } from '@/pages/admin/AdminRoutes';
-import NotFound from '@/pages/NotFound.vue';
-import { deviceRoutes } from '../pages/devices/DeviceRoutes';
-import { groupRoutes } from '../pages/groups/GroupRoutes';
-import { meRoutes } from '../pages/me/MeRoutes';
+import Layout from '@/pages/layout/Layout.vue';
+import { identityRoutes } from '@/router/routes/IdentityRoutes';
+import { initRoutes } from '@/router/routes/InitRoutes';
+import { homeRoutes } from '@/router/routes/HomeRoutes';
+import { usersRoutes } from '@/router/routes/UsersRoutes';
+import { automationsRoutes } from '@/router/routes/AutomationsRoutes';
+import { adminRoutes } from '@/router/routes/AdminRoutes';
+import NotFound from '@/pages/errors/NotFound.vue';
+import { deviceRoutes } from './routes/DeviceRoutes';
+import { groupRoutes } from './routes/GroupRoutes';
+import { meRoutes } from './routes/MeRoutes';
 
 const routes: Array<RouteRecordRaw> = [
   ...identityRoutes,
@@ -38,7 +38,7 @@ const routes: Array<RouteRecordRaw> = [
       {
         path: Routes.Configuration,
         name: 'Configuration',
-        component: () => import(/* webpackChunkName: "config" */ '../pages/configurations/Configuration.vue'),
+        component: () => import(/* webpackChunkName: "config" */ '../pages/configuration/Configuration.vue'),
         meta: {
           requiresAuth: true,
           isUser: true

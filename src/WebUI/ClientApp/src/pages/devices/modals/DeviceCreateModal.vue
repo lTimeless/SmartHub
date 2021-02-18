@@ -1,11 +1,11 @@
 <script lang="ts">
 import { defineComponent, reactive, computed } from 'vue';
-import AppModal from '@/components/ui/AppModals/AppModal.vue';
+import AppModal from '@/components/app/AppModals/AppModal.vue';
 import { CreateDeviceInput } from '@/types/graphql/inputs';
 import { ConnectionTypes, PluginTypes } from '@/types/enums';
 import { useEnumTypes } from '@/hooks/useEnums.ts';
 import { useMutation } from '@urql/vue';
-import { CREATE_DEVICE } from '../DeviceMutations';
+import { CREATE_DEVICE } from '../../../graphql/mutations/DeviceMutations';
 
 export default defineComponent({
   name: 'DeviceCreateModal',

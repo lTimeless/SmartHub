@@ -50,6 +50,10 @@ namespace SmartHub.Application.UseCases.Identity.Mutations
 
 			foundUser.IsFirstLogin = false;
 			await unitOfWork.SaveAsync();
+
+			// Response.Cookies.Append("X-Access-Token", token, new CookieOptions() { HttpOnly = true, SameSite = SameSiteMode.Strict });
+			// Response.Cookies.Append("X-Username", foundUser.UserName, new CookieOptions() { HttpOnly = true, SameSite = SameSiteMode.Strict });
+			// Response.Cookies.Append("X-Refresh-Token", foundUser.RefreshToken, new CookieOptions() { HttpOnly = true, SameSite = SameSiteMode.Strict });
 			return new(foundUser, token);
 		}
 	}

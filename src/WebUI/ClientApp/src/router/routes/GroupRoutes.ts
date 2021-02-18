@@ -5,7 +5,7 @@ export const groupRoutes: Array<RouteRecordRaw> = [
   {
     path: Routes.Groups,
     name: 'Groups',
-    component: () => import(/* webpackChunkName: "groups" */ './Groups.vue'),
+    component: () => import(/* webpackChunkName: "groups" */ '../../pages/groups/Groups.vue'),
     meta: {
       requiresAuth: true,
       isUser: true
@@ -14,7 +14,7 @@ export const groupRoutes: Array<RouteRecordRaw> = [
   {
     path: Routes.GroupDetails,
     name: 'GroupDetail',
-    component: () => import(/* webpackChunkName: "groups" */ './GroupDetails.vue'),
+    component: () => import(/* webpackChunkName: "groups" */ '../../pages/groups/GroupDetails.vue'),
     meta: {
       requiresAuth: true,
       isUser: true

@@ -1,9 +1,9 @@
 import { RouteRecordRaw } from 'vue-router';
 import { Routes } from '@/types/enums';
-import Activity from './Activity.vue';
-import Logs from './Logs.vue';
-import System from './System.vue';
-import Health from './Health.vue';
+import Activity from '../../pages/admin/Activity.vue';
+import Logs from '../../pages/admin/Logs.vue';
+import System from '../../pages/admin/System.vue';
+import Health from '../../pages/admin/Health.vue';
 
 export const adminRoutes: Array<RouteRecordRaw> = [
   {

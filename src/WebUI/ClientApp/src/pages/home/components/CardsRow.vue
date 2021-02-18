@@ -93,14 +93,14 @@
 import { useQuery } from '@urql/vue';
 import { defineComponent } from 'vue';
 import AppIcon from '@/components/icons/AppIcon.vue';
-import AppCardRouterLink from '@/components/ui/AppCards/AppCardRouterLink.vue';
+import AppCardRouterLink from '@/components/app/AppCards/AppCardRouterLink.vue';
 import { Routes } from '@/types/enums';
 import {
   GetDevicesCountQueryType,
   GetGroupsCountQueryType,
   GET_DEVICES_COUNT,
   GET_GROUPS_COUNT
-} from '../HomeQueries';
+} from '../../../graphql/queries/HomeQueries';
 
 export default defineComponent({
   name: 'CardsRow',

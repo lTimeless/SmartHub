@@ -3,11 +3,11 @@ import { defineComponent, ref, computed, reactive } from 'vue';
 import { Roles, Routes } from '@/types/enums';
 import { UpdateUserInput } from '@/types/graphql/inputs';
 import { useMutation, useQuery } from '@urql/vue';
-import Loader from '@/components/ui/AppSpinner.vue';
+import Loader from '@/components/app/AppSpinner.vue';
 import { useRouter } from 'vue-router';
 import { useIdentity } from '@/hooks/useIdentity';
-import { MeQueryType, ME } from '../me/MeQueries';
-import { UpdateUserMutationPayload, UpdateUserMutationVariables, UPDATE_USER } from '../me/MeMutations';
+import { MeQueryType, ME } from '../../graphql/queries/MeQueries';
+import { UpdateUserMutationPayload, UpdateUserMutationVariables, UPDATE_USER } from '../../graphql/mutations/MeMutations';
 
 export default defineComponent({
   name: 'Me',

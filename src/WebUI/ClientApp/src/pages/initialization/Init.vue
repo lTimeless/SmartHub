@@ -89,13 +89,13 @@
 <script lang="ts">
 import { computed, defineComponent, reactive, ref, watch } from 'vue';
 import { useRouter } from 'vue-router';
-import AppCard from '@/components/ui/AppCards/AppCard.vue';
+import AppCard from '@/components/app/AppCards/AppCard.vue';
 import { useMutation, useQuery } from '@urql/vue';
 import { Routes } from '@/types/enums';
-import Loader from '@/components/ui/AppSpinner.vue';
+import Loader from '@/components/app/AppSpinner.vue';
 import { AppConfigInitInput } from '@/types/graphql/inputs';
-import { INITIALIZE_APP, InitMutationPayload, InitMutationVariables } from './InitMutation';
-import { ApplicationIsActiveQueryType, APP_IS_ACTIVE } from './InitQueries';
+import { INITIALIZE_APP, InitMutationPayload, InitMutationVariables } from '../../graphql/mutations/InitMutation';
+import { ApplicationIsActiveQueryType, APP_IS_ACTIVE } from '../../graphql/queries/InitQueries';
 
 export default defineComponent({
   name: 'Init',

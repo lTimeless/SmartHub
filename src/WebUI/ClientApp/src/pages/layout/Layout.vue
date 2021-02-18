@@ -1,7 +1,7 @@
 <script lang="ts">
 import { defineComponent } from 'vue';
-import Navbar from '@/components/layout/AppNavbar.vue';
-import AppSidebar from '@/components/layout/AppSidebar/AppSidebar.vue';
+import Navbar from '@/pages/layout/components/AppNavbar.vue';
+import AppSidebar from '@/pages/layout/components/AppSidebar/AppSidebar.vue';
 
 export default defineComponent({
   name: 'Layout',

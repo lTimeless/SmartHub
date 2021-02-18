@@ -1,12 +1,12 @@
 <script lang="ts">
 import { reactive, toRefs, defineComponent } from 'vue';
-import AppCard from '@/components/ui/AppCards/AppCard.vue';
+import AppCard from '@/components/app/AppCards/AppCard.vue';
 import { useQuery } from '@urql/vue';
-import Loader from '@/components/ui/AppSpinner.vue';
+import Loader from '@/components/app/AppSpinner.vue';
 import { useRouter } from 'vue-router';
 import GroupCreateModal from './modals/GroupCreateModal.vue';
 import GroupDropdown from './components/GroupDropdown.vue';
-import { GET_GROUPS } from './GroupQueries';
+import { GET_GROUPS } from '../../graphql/queries/GroupQueries';
 
 export default defineComponent({
   name: 'Groups',

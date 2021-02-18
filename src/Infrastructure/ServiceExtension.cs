@@ -1,7 +1,9 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Authentication.Cookies;
+using System;
 using System.Linq;
 using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -19,6 +21,7 @@ using SmartHub.Infrastructure.Services.FileSystem;
 using SmartHub.Infrastructure.Services.Http;
 using SmartHub.Infrastructure.Services.Identity;
 using SmartHub.Infrastructure.Services.Initialization;
+using System.Threading.Tasks;
 
 namespace SmartHub.Infrastructure
 {
@@ -81,11 +84,12 @@ namespace SmartHub.Infrastructure
                 x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
                 x.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
                 x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-            }).AddJwtBearer(x =>
+                x.DefaultSignInScheme = JwtBearerDefaults.AuthenticationScheme;
+            }).AddJwtBearer(options =>
             {
-                x.RequireHttpsMetadata = false;
-                x.SaveToken = true;
-                x.TokenValidationParameters = new TokenValidationParameters
+	            options.RequireHttpsMetadata = false;
+	            options.SaveToken = true;
+	            options.TokenValidationParameters = new TokenValidationParameters
                 {
                     ValidateIssuerSigningKey = true,
                     IssuerSigningKey = new SymmetricSecurityKey(
@@ -98,6 +102,21 @@ namespace SmartHub.Infrastructure
                     ValidIssuer = configuration["JwtSettings:Issuer"],
                     ValidAudience = configuration["JwtSettings:Audience"]
                 };
+
+                options.SaveToken = true;
+                options.Events = new();
+                options.Events.OnMessageReceived = context => {
+	                if (context.Request.Cookies.ContainsKey("X-Access-Token"))
+	                {
+		                context.Token = context.Request.Cookies["X-Access-Token"];
+	                }
+	                return Task.CompletedTask;
+                };
+            }).AddCookie(options =>
+            {
+	            options.Cookie.SameSite = SameSiteMode.Strict;
+	            options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
+	            options.Cookie.IsEssential = true;
             });
 
             services.AddAuthorization(options =>

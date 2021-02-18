@@ -5,7 +5,7 @@ export const initRoutes: Array<RouteRecordRaw> = [
   {
     path: Routes.Init,
     name: 'init',
-    component: () => import(/* webpackChunkName: "init" */ './Init.vue'),
+    component: () => import(/* webpackChunkName: "init" */ '../../pages/initialization/Init.vue'),
 
     meta: {
       requiresAuth: false

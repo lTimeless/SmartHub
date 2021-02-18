@@ -5,7 +5,7 @@ export const automationsRoutes: Array<RouteRecordRaw> = [
   {
     path: Routes.Automations,
     name: 'Automations',
-    component: () => import(/* webpackChunkName: "init" */ './Automations.vue'),
+    component: () => import(/* webpackChunkName: "init" */ '../../pages/automations/Automations.vue'),
     meta: {
       requiresAuth: true,
       isUser: true

@@ -1,13 +1,13 @@
 <script lang="ts">
 import { defineComponent, reactive, ref } from 'vue';
-import Loader from '@/components/ui/AppSpinner.vue';
+import Loader from '@/components/app/AppSpinner.vue';
 import { UpdateDeviceInput } from '@/types/graphql/inputs';
 import { useMutation, useQuery } from '@urql/vue';
 import { useEnumTypes } from '@/hooks/useEnums';
 import { useRoute } from 'vue-router';
 import { DevicePayload } from '@/types/graphql/payloads';
-import { GetDeviceByIdVariable, GetDevicesQueryType, GET_DEVICE_BY_ID } from './DeviceQueries';
-import { UPDATE_DEVICE } from './DeviceMutations';
+import { GetDeviceByIdVariable, GetDevicesQueryType, GET_DEVICE_BY_ID } from '../../graphql/queries/DeviceQueries';
+import { UPDATE_DEVICE } from '../../graphql/mutations/DeviceMutations';
 
 export default defineComponent({
   name: 'DeviceDetails',

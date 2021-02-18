@@ -10,6 +10,7 @@
     "dev": "vite",
     "build": "vite build",
     "serve": "vite preview",
+    "lint": "eslint . --ext js,vue,ts",
     "typecheck": "vuedx-typecheck ."
   },
   "dependencies": {
@@ -19,6 +20,7 @@
     "@urql/exchange-graphcache": "^3.4.0",
     "@urql/vue": "^0.2.1",
     "@vueuse/core": "^4.0.2",
+    "@vueuse/integrations": "^4.1.1",
     "chart.js": "^2.9.4",
     "core-js": "^3.8.1",
     "graphql": "^15.4.0",

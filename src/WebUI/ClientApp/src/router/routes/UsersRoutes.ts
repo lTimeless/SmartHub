@@ -5,7 +5,7 @@ export const usersRoutes: Array<RouteRecordRaw> = [
   {
     path: Routes.Users,
     name: 'Users',
-    component: () => import(/* webpackChunkName: "home" */ './Users.vue'),
+    component: () => import(/* webpackChunkName: "home" */ '../../pages/users/Users.vue'),
     meta: {
       requiresAuth: true,
       isUser: true

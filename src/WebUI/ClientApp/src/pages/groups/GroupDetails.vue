@@ -72,13 +72,13 @@
 </template>
 
 <script lang="ts">
-import Loader from '@/components/ui/AppSpinner.vue';
+import Loader from '@/components/app/AppSpinner.vue';
 import { UpdateGroupInput } from '@/types/graphql/inputs';
 import { defineComponent, reactive } from 'vue';
 import { useMutation, useQuery } from '@urql/vue';
 import { useRoute } from 'vue-router';
-import { UPDATE_GROUP } from './GroupMutations';
-import { GET_GROUP_BY_ID } from './GroupQueries';
+import { UPDATE_GROUP } from '../../graphql/mutations/GroupMutations';
+import { GET_GROUP_BY_ID } from '../../graphql/queries/GroupQueries';
 
 export default defineComponent({
   name: 'GroupDetails',

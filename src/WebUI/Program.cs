@@ -3,12 +3,10 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Serilog;
-using Serilog.Sinks.Elasticsearch;
 using SmartHub.Application.Common.Helpers;
 using SmartHub.WebUI.Extensions;
 using SmartHub.WebUI.Serilog;
 using System;
-using System.Net;
 using System.Reflection;
 using System.Threading.Tasks;
 

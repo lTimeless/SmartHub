@@ -7,7 +7,7 @@ import router from './router';
 import { store } from './store';
 import { client } from './graphql-client';
 
-import '@/assets/styles/tailwind.css';
+import '@/styles/tailwind.css';
 import ControlsPlugin from './plugins/ControlsPlugin';
 
 const app = createApp(App)

@@ -38,12 +38,12 @@
 
 <script lang="ts">
 import { defineComponent, reactive, computed, toRefs } from 'vue';
-import AppModal from '@/components/ui/AppModals/AppModal.vue';
+import AppModal from '@/components/app/AppModals/AppModal.vue';
 import { CreateGroupInput } from '@/types/graphql/inputs';
 import { useMutation } from '@urql/vue';
-import { GET_GROUPS_COUNT } from '@/pages/home/HomeQueries';
-import { CREATE_GROUP } from '../GroupMutations';
-import { GET_GROUPS } from '../GroupQueries';
+import { GET_GROUPS_COUNT } from '@/graphql/queries/HomeQueries';
+import { CREATE_GROUP } from '../../../graphql/mutations/GroupMutations';
+import { GET_GROUPS } from '../../../graphql/queries/GroupQueries';
 
 export default defineComponent({
   name: 'GroupCreateModal',

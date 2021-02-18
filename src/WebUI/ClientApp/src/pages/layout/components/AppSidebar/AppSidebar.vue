@@ -2,8 +2,8 @@
 import { computed, defineComponent, ref, watch } from 'vue';
 import { useRouter } from 'vue-router';
 import { Routes } from '@/types/enums';
-import NavigationItem from '@/components/layout/AppSidebar/NavigationItem.vue';
-import AppBrand from '@/components/ui/AppBrand/AppBrand.vue';
+import NavigationItem from '@/pages/layout/components/AppSidebar/NavigationItem.vue';
+import AppBrand from '@/components/app/AppBrand/AppBrand.vue';
 import { useIdentity } from '@/hooks/useIdentity';
 import { useStore } from 'vuex';
 import { AppActionTypes } from '@/store/app/actions';

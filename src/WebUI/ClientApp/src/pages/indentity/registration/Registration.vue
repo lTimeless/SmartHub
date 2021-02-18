@@ -1,9 +1,9 @@
 <script lang="ts">
 import { defineComponent, onMounted, ref, reactive, computed } from 'vue';
 import { useRouter } from 'vue-router';
-import Loader from '@/components/ui/AppSpinner.vue';
+import Loader from '@/components/app/AppSpinner.vue';
 import { Routes } from '@/types/enums';
-import AppCard from '@/components/ui/AppCards/AppCard.vue';
+import AppCard from '@/components/app/AppCards/AppCard.vue';
 import { useMutation } from '@urql/vue';
 import { useIdentity } from '@/hooks/useIdentity';
 import { RegistrationInput } from '@/types/graphql/inputs';
@@ -11,7 +11,7 @@ import {
   REGISTRATION,
   RegistrationMutationPayload,
   RegistrationMutationVariables
-} from '../registration/RegistrationMutation';
+} from '../../../graphql/mutations/RegistrationMutation';
 
 export default defineComponent({
   name: 'Registration',

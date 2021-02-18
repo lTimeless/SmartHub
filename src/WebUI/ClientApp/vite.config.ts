@@ -33,8 +33,8 @@ export default defineConfig({
     include: ['@urql/vue', '@urql/core']
   },
   plugins: [
-    vue(), 
-    tsconfigPaths(), 
+    vue(),
+    tsconfigPaths(),
     ViteFonts({
       google: {
         families: ['JetBrains Mono', 'Roboto']

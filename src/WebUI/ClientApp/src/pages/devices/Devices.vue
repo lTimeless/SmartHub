@@ -1,13 +1,13 @@
 <script lang="ts">
 import { reactive, toRefs, defineComponent } from 'vue';
-import AppCard from '@/components/ui/AppCards/AppCard.vue';
+import AppCard from '@/components/app/AppCards/AppCard.vue';
 import { useQuery } from '@urql/vue';
-import Loader from '@/components/ui/AppSpinner.vue';
+import Loader from '@/components/app/AppSpinner.vue';
 import { useRouter } from 'vue-router';
 import AppIcon from '@/components/icons/AppIcon.vue';
 import { useString } from '@/hooks/useString';
 import AppDeviceControl from '../../components/controls/AppDeviceControl.vue';
-import { GetDevicesQueryType, GET_DEVICES } from './DeviceQueries';
+import { GetDevicesQueryType, GET_DEVICES } from '@/graphql/queries/DeviceQueries';
 import DeviceCreateModal from './modals/DeviceCreateModal.vue';
 
 export default defineComponent({

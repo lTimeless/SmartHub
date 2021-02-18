@@ -21,7 +21,7 @@ import { useDateTime } from '@/hooks/useDateTime';
 import { useQuery } from '@urql/vue';
 import { useString } from '@/hooks/useString';
 import gql from 'graphql-tag';
-import { FRAGMENT_ME, MeQueryType } from '@/pages/me/MeQueries';
+import { FRAGMENT_ME, MeQueryType } from '@/graphql/queries/MeQueries';
 
 const GET_USERNAME = gql`
   query GetUserName {

@@ -1,6 +1,6 @@
 <script lang="ts">
 import { defineComponent, PropType, toRefs } from 'vue';
-import Loader from '@/components/ui/AppSpinner.vue';
+import Loader from '@/components/app/AppSpinner.vue';
 
 export default defineComponent({
   name: 'AppModal',
