@@ -4,14 +4,9 @@ import { useRouter } from 'vue-router';
 import Loader from '@/components/app/AppSpinner.vue';
 import { Routes } from '@/types/enums';
 import AppCard from '@/components/app/AppCards/AppCard.vue';
-import { useMutation } from '@urql/vue';
 import { useIdentity } from '@/hooks/useIdentity';
-import { RegistrationInput } from '@/types/graphql/inputs';
-import {
-  REGISTRATION,
-  RegistrationMutationPayload,
-  RegistrationMutationVariables
-} from '../../../graphql/mutations/RegistrationMutation';
+import { RegistrationInput } from '@/graphql/graphql.types';
+import { useRegistrationMutation } from '@/graphql/mutations/registration.generated';
 
 export default defineComponent({
   name: 'Registration',
@@ -36,10 +31,11 @@ export default defineComponent({
     onMounted(() => {
       clearStorage();
     });
-    const { executeMutation: createAccount, fetching: loadCreate, error: errCreate } = useMutation<
-      RegistrationMutationPayload,
-      RegistrationMutationVariables
-    >(REGISTRATION);
+    const {
+      executeMutation: createAccount,
+      fetching: loadCreate,
+      error: errCreate
+    } = useRegistrationMutation();
 
     const passwordStrength = computed(() => passwordStrengthText.value !== 'Too weak');
     const checkPwd = computed(
@@ -187,18 +183,18 @@ export default defineComponent({
                     passwordStrengthText === 'Strong password'
                 }"
                 class="h-2 rounded-full mr-1 w-1/3 bg-gray-300"
-              ></div>
+              />
               <div
                 :class="{
                   'bg-yellow-400':
                     passwordStrengthText === 'Could be stronger' || passwordStrengthText === 'Strong password'
                 }"
                 class="h-2 rounded-full mr-1 w-1/3 bg-gray-300"
-              ></div>
+              />
               <div
                 :class="{ 'bg-green-400': passwordStrengthText === 'Strong password' }"
                 class="h-2 rounded-full w-1/3 bg-gray-300"
-              ></div>
+              />
             </div>
             <div class="text-gray-500 font-medium text-sm ml-3 leading-none">
               {{ passwordStrengthText }}

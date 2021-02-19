@@ -26,7 +26,6 @@ import EditIcon from '@/components/icons/EditIcon.vue';
 import { App } from '@vue/runtime-core';
 
 export default {
-  // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
   install(app: App) {
     app.component('ArrowLeftIcon', ArrowLeftIcon);
     app.component('ChevronRightIcon', ChevronRightIcon);

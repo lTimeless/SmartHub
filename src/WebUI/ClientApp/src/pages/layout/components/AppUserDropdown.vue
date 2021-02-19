@@ -5,13 +5,7 @@
   <div class="relative z-40 text-left cursor-pointer" :class="[mobileSidebarOpen ? 'w-full' : '']">
     <div
       class="flex flex-row items-center"
-      :class="[
-        onlyIcon && !mobileSidebarOpen
-          ? 'w-12 justify-center'
-          : mobileSidebarOpen
-          ? 'w-full justify-start'
-          : ' w-52 justify-start'
-      ]"
+      :class="[(onlyIcon && !mobileSidebarOpen) ? 'w-12 justify-center' : (mobileSidebarOpen ? 'w-full justify-start' : ' w-52 justify-start')]"
     >
       <div
         class="relative z-40 h-12 flex items-center hover:bg-charcoalBlue-200"
@@ -58,8 +52,9 @@
             @click="handleRouteClick(item.path)"
             class="block px-4 py-2 text-sm text-gray-600 hover:bg-gray-200 cursor-pointer active:bg-gray-100"
             role="menuitem"
-            >{{ item.name }}</a
           >
+            {{ item.name }}
+          </a>
         </div>
         <div class="border-t border-solid border-gray-400 mx-4" />
         <div class="py-1">

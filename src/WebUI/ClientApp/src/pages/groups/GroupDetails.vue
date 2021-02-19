@@ -1,3 +1,47 @@
+<script lang="ts">
+import Loader from '@/components/app/AppSpinner.vue';
+import { defineComponent, reactive } from 'vue';
+import { useRoute } from 'vue-router';
+import { UpdateGroupInput } from '@/graphql/graphql.types';
+import { useUpdateGroupMutation } from '@/graphql/mutations/groups/updateGroup.generated';
+import { useGetGroupByNameQuery } from '@/graphql/queries/groups/getGroupByName.generated';
+
+export default defineComponent({
+  name: 'GroupDetails',
+  components: {
+    Loader
+  },
+  setup() {
+    const route = useRoute();
+    const updatedGroup: UpdateGroupInput = reactive({
+      id: ''
+    });
+    const { executeMutation: updateGroup, fetching: loadUpdate, error: errUpdate } = useUpdateGroupMutation();
+    const { data: groupResult, fetching: loading, error } = useGetGroupByNameQuery({
+      variables: { name: route.params.name },
+      requestPolicy: 'network-only'
+    });
+
+    const save = async () => {
+      if (groupResult.value) {
+        updatedGroup.id = groupResult.value.groups[0].id;
+        await updateGroup({ input: updatedGroup });
+      }
+    };
+
+    return {
+      loading,
+      loadUpdate,
+      errUpdate,
+      error,
+      groupResult,
+      save,
+      updatedGroup
+    };
+  }
+});
+</script>
+
 <template>
   <div class="relative flex-col w-full justify-end bg-white border p-3 rounded">
     <template v-if="loading">
@@ -70,53 +114,3 @@
     </template>
   </div>
 </template>
-
-<script lang="ts">
-import Loader from '@/components/app/AppSpinner.vue';
-import { UpdateGroupInput } from '@/types/graphql/inputs';
-import { defineComponent, reactive } from 'vue';
-import { useMutation, useQuery } from '@urql/vue';
-import { useRoute } from 'vue-router';
-import { UPDATE_GROUP } from '../../graphql/mutations/GroupMutations';
-import { GET_GROUP_BY_ID } from '../../graphql/queries/GroupQueries';
-
-export default defineComponent({
-  name: 'GroupDetails',
-  components: {
-    Loader
-  },
-  setup() {
-    const route = useRoute();
-    const updatedGroup: UpdateGroupInput = reactive({
-      id: ''
-    });
-    const { executeMutation: updateGroup, fetching: loadUpdate, error: errUpdate } = useMutation(
-      UPDATE_GROUP
-    );
-    const { data: groupResult, fetching: loading, error } = useQuery({
-      query: GET_GROUP_BY_ID,
-      variables: { name: route.params.name },
-      requestPolicy: 'network-only'
-    });
-
-    const save = async () => {
-      if (groupResult.value) {
-        updatedGroup.id = groupResult.value.groups[0].id;
-        await updateGroup({ input: updatedGroup });
-      }
-    };
-
-    return {
-      loading,
-      loadUpdate,
-      errUpdate,
-      error,
-      groupResult,
-      save,
-      updatedGroup
-    };
-  }
-});
-</script>
-
-<style scoped></style>

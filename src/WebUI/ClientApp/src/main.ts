@@ -1,4 +1,3 @@
-/* eslint-disable prettier/prettier */
 import { createApp } from 'vue';
 import urql from '@urql/vue';
 import IconPlugin from './plugins/IconPlugin';
@@ -7,7 +6,7 @@ import router from './router';
 import { store } from './store';
 import { client } from './graphql-client';
 
-import '@/styles/tailwind.css';
+import '@/styles/main.css';
 import ControlsPlugin from './plugins/ControlsPlugin';
 
 const app = createApp(App)

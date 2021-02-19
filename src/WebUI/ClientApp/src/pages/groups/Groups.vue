@@ -1,24 +1,22 @@
 <script lang="ts">
 import { reactive, toRefs, defineComponent } from 'vue';
 import AppCard from '@/components/app/AppCards/AppCard.vue';
-import { useQuery } from '@urql/vue';
 import Loader from '@/components/app/AppSpinner.vue';
 import { useRouter } from 'vue-router';
 import GroupCreateModal from './modals/GroupCreateModal.vue';
-import GroupDropdown from './components/GroupDropdown.vue';
-import { GET_GROUPS } from '../../graphql/queries/GroupQueries';
+import { useGetGroupsQuery } from '@/graphql/queries/groups/GetGroups.generated';
 
 export default defineComponent({
   name: 'Groups',
   components: {
     AppCard,
     GroupCreateModal,
-    GroupDropdown,
+    // GroupDropdown,
     Loader
   },
   setup() {
     const router = useRouter();
-    const { data, fetching: loading, error } = useQuery({ query: GET_GROUPS });
+    const { data, fetching: loading, error } = useGetGroupsQuery();
     const state = reactive({
       showCreateModal: false,
       showDetailModal: false,
@@ -88,20 +86,20 @@ export default defineComponent({
                 >
                   {{ group.name }}
                 </h1>
-                <GroupDropdown v-if="!group.isSubGroup" :group-id="group.id" :group-name="group.name" />
-                <span v-else class="text-gray-400 text-xs text-left mt-2">Is Subgroup </span>
+                <!-- <GroupDropdown v-if="!group.isSubGroup" :group-id="group.id" :group-name="group.name" /> -->
+                <!-- <span v-else class="text-gray-400 text-xs text-left mt-2">Is Subgroup </span> -->
               </div>
               <div class="text-gray-500 text-sm font-normal text-left">
                 Creator: <span class="font-bold">{{ group.createdBy }}</span>
               </div>
-              <div class="border-border border-t my-2"></div>
+              <div class="border-border border-t my-2" />
               <!-- Show available devices -->
               <template v-if="group.devices !== undefined">
                 <div class="text-left">
                   <div>
                     <span class="text-gray-500 text-sm text-left mt-2">
-                      {{ group.devices.length }} device{{ group.devices.length > 1 ? 's' : '' }}</span
-                    >
+                      {{ group.devices.length }} device{{ group.devices.length > 1 ? 's' : '' }}
+                    </span>
                   </div>
                 </div>
               </template>

@@ -1,13 +1,12 @@
 <script lang="ts">
 import { defineComponent, ref, computed, reactive } from 'vue';
 import { Roles, Routes } from '@/types/enums';
-import { UpdateUserInput } from '@/types/graphql/inputs';
-import { useMutation, useQuery } from '@urql/vue';
 import Loader from '@/components/app/AppSpinner.vue';
 import { useRouter } from 'vue-router';
 import { useIdentity } from '@/hooks/useIdentity';
-import { MeQueryType, ME } from '../../graphql/queries/MeQueries';
-import { UpdateUserMutationPayload, UpdateUserMutationVariables, UPDATE_USER } from '../../graphql/mutations/MeMutations';
+import { UpdateUserInput } from '@/graphql/graphql.types';
+import { useUpdateUserMutation } from '@/graphql/mutations/users/updateUser.generated';
+import { useGetMeQuery } from '@/graphql/queries/GetMe.generated';
 
 export default defineComponent({
   name: 'Me',
@@ -24,18 +23,13 @@ export default defineComponent({
     const updateUserInput: UpdateUserInput = reactive({
       userId: ''
     });
-    const { executeMutation: updateUser, fetching: loadUpdate, error: errUpdate } = useMutation<
-      UpdateUserMutationPayload,
-      UpdateUserMutationVariables
-    >(UPDATE_USER);
-    const { data: resultUser, fetching: loadUser, error: errUser } = useQuery<MeQueryType>({
-      query: ME
-    });
+    const { executeMutation: updateUser, fetching: loadUpdate, error: errUpdate } = useUpdateUserMutation();
+    const { data: resultUser, fetching: loadUser, error: errUser } = useGetMeQuery();
 
     const onSaveClick = async () => {
       const user = resultUser.value?.me.user;
       if (user) {
-        updateUserInput.userId = user.id;
+        updateUserInput.userId = user.id!;
         updateUserInput.newRole = selectedRole.value;
         await updateUser({ input: updateUserInput });
         if (typeof updateUserInput.newRole !== 'undefined' && updateUserInput.newRole !== prevRole) {
@@ -82,15 +76,15 @@ export default defineComponent({
               type="text"
               v-model="updateUserInput.userName"
               class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md"
-              :placeholder="resultUser.me.user.userName"
+              :placeholder="resultUser.me.user.userName ?? '-'"
               disabled
             />
           </label>
         </div>
         <div class="w-1/3 ml-2">
           <label class="text-left block text-sm">
-            <span class="text-gray-600 dark:text-gray-400"
-              >Roles
+            <span class="text-gray-600 dark:text-gray-400">
+              Roles
               <span class="text-gray-600 text-xs text-left">(Change and you need to login again)</span>
             </span>
             <select
@@ -100,9 +94,9 @@ export default defineComponent({
             >
               <option v-for="role in roles" :key="role" :value="role">{{ role }}</option>
             </select>
-            <span v-if="selectedRole === roles.Guest" class="text-red-700 text-xs text-left"
-              >You need to contact an Admin to change your role</span
-            >
+            <span v-if="selectedRole === roles.Guest" class="text-red-700 text-xs text-left">
+              You need to contact an Admin to change your role
+            </span>
           </label>
         </div>
       </div>

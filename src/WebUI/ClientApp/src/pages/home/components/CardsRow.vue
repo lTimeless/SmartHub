@@ -90,17 +90,13 @@
 </template>
 
 <script lang="ts">
-import { useQuery } from '@urql/vue';
 import { defineComponent } from 'vue';
 import AppIcon from '@/components/icons/AppIcon.vue';
 import AppCardRouterLink from '@/components/app/AppCards/AppCardRouterLink.vue';
 import { Routes } from '@/types/enums';
-import {
-  GetDevicesCountQueryType,
-  GetGroupsCountQueryType,
-  GET_DEVICES_COUNT,
-  GET_GROUPS_COUNT
-} from '../../../graphql/queries/HomeQueries';
+import { useGetGroupsCountQuery } from '@/graphql/queries/groups/GetGroupsCount.generated';
+import { useGetDevicesCountQuery } from '@/graphql/queries/devices/GetDeviceCount.generated';
+
 
 export default defineComponent({
   name: 'CardsRow',
@@ -110,12 +106,8 @@ export default defineComponent({
   },
   props: {},
   setup() {
-    const { data: groupsCountResult, fetching: groupsFetch } = useQuery<GetGroupsCountQueryType>({
-      query: GET_GROUPS_COUNT
-    });
-    const { data: devicesResult, fetching: devicesFetch } = useQuery<GetDevicesCountQueryType>({
-      query: GET_DEVICES_COUNT
-    });
+    const { data: groupsCountResult, fetching: groupsFetch } = useGetGroupsCountQuery();
+    const { data: devicesResult, fetching: devicesFetch } = useGetDevicesCountQuery();
 
     return {
       groupsCountResult,

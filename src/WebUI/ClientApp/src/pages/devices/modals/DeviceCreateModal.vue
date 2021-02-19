@@ -1,11 +1,10 @@
 <script lang="ts">
 import { defineComponent, reactive, computed } from 'vue';
 import AppModal from '@/components/app/AppModals/AppModal.vue';
-import { CreateDeviceInput } from '@/types/graphql/inputs';
 import { ConnectionTypes, PluginTypes } from '@/types/enums';
 import { useEnumTypes } from '@/hooks/useEnums.ts';
-import { useMutation } from '@urql/vue';
-import { CREATE_DEVICE } from '../../../graphql/mutations/DeviceMutations';
+import { useCreateDeviceMutation } from '@/graphql/mutations/devices/createDevice.generated';
+import { CreateDeviceInput } from '@/graphql/graphql.types';
 
 export default defineComponent({
   name: 'DeviceCreateModal',
@@ -20,13 +19,16 @@ export default defineComponent({
       ipv4: '',
       companyName: '',
       pluginName: '',
-      pluginTypes: PluginTypes.None.toString(),
-      primaryConnection: ConnectionTypes.None.toString(),
-      secondaryConnection: ConnectionTypes.None.toString()
+      pluginTypes: PluginTypes.None,
+      primaryConnection: ConnectionTypes.None,
+      secondaryConnection: ConnectionTypes.None
     });
-    const { executeMutation: createDevice, fetching: loadCreate, error: errCreate } = useMutation(
-      CREATE_DEVICE
-    );
+    const {
+      executeMutation: createDevice,
+      fetching: loadCreate,
+      error: errCreate
+    } = useCreateDeviceMutation();
+
     const saveBtnActive = computed(() => deviceCreateInput.name !== '' && deviceCreateInput.ipv4 !== '');
     const close = () => {
       context.emit('close', false);

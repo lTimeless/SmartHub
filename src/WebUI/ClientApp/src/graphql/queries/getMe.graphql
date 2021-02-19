@@ -1,0 +1,19 @@
+query GetMe {
+  me {
+    user {
+      ...IdUserName
+      createdAt
+      createdBy
+      lastModifiedAt
+      lastModifiedBy
+      phoneNumber
+      personInfo
+      email
+      personName {
+        firstName
+        lastName
+        middleName
+      }
+    }
+  }
+}

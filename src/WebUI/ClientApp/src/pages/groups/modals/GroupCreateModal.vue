@@ -1,3 +1,45 @@
+<script lang="ts">
+import { defineComponent, reactive, computed, toRefs } from 'vue';
+import AppModal from '@/components/app/AppModals/AppModal.vue';
+import { CreateGroupInput } from '@/graphql/graphql.types';
+import { useCreateGroupMutation } from '@/graphql/mutations/groups/createGroup.generated';
+
+export default defineComponent({
+  name: 'GroupCreateModal',
+  emits: ['close'],
+  components: {
+    AppModal
+  },
+  setup(_, context) {
+    const state = reactive({
+      title: 'Create new Group'
+    });
+    const groupCreateInput = reactive<CreateGroupInput>({
+      name: ''
+    });
+    const { executeMutation: createGroup, fetching: loadCreate, error: errCreate } = useCreateGroupMutation();
+
+    const saveBtnActive = computed(() => groupCreateInput.name !== '');
+    const close = () => {
+      context.emit('close', false);
+    };
+    const save = async () => {
+      await createGroup({ input: groupCreateInput });
+      close();
+    };
+    return {
+      ...toRefs(state),
+      groupCreateInput,
+      saveBtnActive,
+      loadCreate,
+      errCreate,
+      close,
+      save
+    };
+  }
+});
+</script>
+
 <template>
   <AppModal
     :title="title"
@@ -35,55 +77,3 @@
     </template>
   </AppModal>
 </template>
-
-<script lang="ts">
-import { defineComponent, reactive, computed, toRefs } from 'vue';
-import AppModal from '@/components/app/AppModals/AppModal.vue';
-import { CreateGroupInput } from '@/types/graphql/inputs';
-import { useMutation } from '@urql/vue';
-import { GET_GROUPS_COUNT } from '@/graphql/queries/HomeQueries';
-import { CREATE_GROUP } from '../../../graphql/mutations/GroupMutations';
-import { GET_GROUPS } from '../../../graphql/queries/GroupQueries';
-
-export default defineComponent({
-  name: 'GroupCreateModal',
-  emits: ['close'],
-  components: {
-    AppModal
-  },
-  setup(_, context) {
-    const state = reactive({
-      title: 'Create new Group'
-    });
-    const groupCreateInput = reactive<CreateGroupInput>({
-      name: ''
-    });
-    const { executeMutation: createGroup, fetching: loadCreate, error: errCreate } = useMutation(
-      CREATE_GROUP
-    );
-
-    const saveBtnActive = computed(() => groupCreateInput.name !== '');
-    const close = () => {
-      context.emit('close', false);
-    };
-    const save = async () => {
-      await createGroup(
-        { input: groupCreateInput },
-        { refetchQueries: [{ query: GET_GROUPS }, { query: GET_GROUPS_COUNT }] }
-      );
-      close();
-    };
-    return {
-      ...toRefs(state),
-      groupCreateInput,
-      saveBtnActive,
-      loadCreate,
-      errCreate,
-      close,
-      save
-    };
-  }
-});
-</script>
-
-<style scoped></style>

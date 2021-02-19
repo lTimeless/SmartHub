@@ -6,7 +6,7 @@ type SidebarListItem = {
   route: Routes;
   iconName: string;
   children: never[];
-  active: Boolean;
+  active: boolean;
 };
 
 const sidebarList: SidebarListItem[] = [
@@ -116,8 +116,7 @@ const sidebarList: SidebarListItem[] = [
 ];
 
 export const useSidebar = () => {
-
   return {
     sidebarList
-  }
-}
+  };
+};

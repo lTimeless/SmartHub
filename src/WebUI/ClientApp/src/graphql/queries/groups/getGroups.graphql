@@ -1,0 +1,17 @@
+query GetGroups {
+  groups {
+    id
+    name
+    createdBy
+    lastModifiedBy
+    lastModifiedAt
+    createdAt
+    description
+    devices {
+      id
+      name
+      pluginName
+      pluginName
+    }
+  }
+}

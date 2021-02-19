@@ -1,3 +1,58 @@
+<script lang="ts">
+import { computed, defineComponent, reactive, ref, watch } from 'vue';
+import { useRouter } from 'vue-router';
+import AppCard from '@/components/app/AppCards/AppCard.vue';
+import { useMutation, useQuery } from '@urql/vue';
+import { Routes } from '@/types/enums';
+import Loader from '@/components/app/AppSpinner.vue';
+import { AppConfigInitInput } from '@/graphql/graphql.types';
+import { useInitAppMutation } from '@/graphql/mutations/init.generated';
+import { useApplicationIsActiveQuery } from '@/graphql/queries/appSmallInfo.generated';
+
+export default defineComponent({
+  name: 'Init',
+  components: {
+    AppCard,
+    Loader
+  },
+  setup() {
+    const router = useRouter();
+    const title = 'Create your new SmartHub';
+    const githubUrl = ref(process.env.GITHUB_SMARTHUB);
+    const appConfigCreateRequest: AppConfigInitInput = reactive({
+      autoDetectAddress: false
+    });
+    const { executeMutation: initApp, fetching: loadInit, error: errInit } = useInitAppMutation();
+    const { data, fetching: loading, error } = useApplicationIsActiveQuery();
+
+    const applicationIsActive = computed(() => data.value?.applicationIsActive);
+    watch(applicationIsActive, (newApplicationIsActive) => {
+      if (newApplicationIsActive) {
+        router.push(Routes.Login);
+        return Promise.resolve();
+      }
+    });
+
+    const InitHome = async () => {
+      await initApp({ input: appConfigCreateRequest }).then(() => {
+        router.push(Routes.Registration);
+      });
+    };
+
+    return {
+      loadInit,
+      errInit,
+      loading,
+      error,
+      title,
+      githubUrl,
+      appConfigCreateRequest,
+      InitHome
+    };
+  }
+});
+</script>
+
 <template>
   <!-- Main View -->
   <div class="flex items-center min-h-screen p-6 background">
@@ -85,82 +140,3 @@
     </AppCard>
   </div>
 </template>
-
-<script lang="ts">
-import { computed, defineComponent, reactive, ref, watch } from 'vue';
-import { useRouter } from 'vue-router';
-import AppCard from '@/components/app/AppCards/AppCard.vue';
-import { useMutation, useQuery } from '@urql/vue';
-import { Routes } from '@/types/enums';
-import Loader from '@/components/app/AppSpinner.vue';
-import { AppConfigInitInput } from '@/types/graphql/inputs';
-import { INITIALIZE_APP, InitMutationPayload, InitMutationVariables } from '../../graphql/mutations/InitMutation';
-import { ApplicationIsActiveQueryType, APP_IS_ACTIVE } from '../../graphql/queries/InitQueries';
-
-export default defineComponent({
-  name: 'Init',
-  components: {
-    AppCard,
-    Loader
-  },
-  setup() {
-    const router = useRouter();
-    const title = 'Create your new SmartHub';
-    const githubUrl = ref(process.env.GITHUB_SMARTHUB);
-    const appConfigCreateRequest: AppConfigInitInput = reactive({
-      autoDetectAddress: false
-    });
-    const { executeMutation: initApp, fetching: loadInit, error: errInit } = useMutation<
-      InitMutationPayload,
-      InitMutationVariables
-    >(INITIALIZE_APP);
-
-    const { data, fetching: loading, error } = useQuery<ApplicationIsActiveQueryType>({
-      query: APP_IS_ACTIVE
-    });
-    const applicationIsActive = computed(() => data.value?.applicationIsActive);
-    watch(applicationIsActive, (newApplicationIsActive) => {
-      if (newApplicationIsActive) {
-        router.push(Routes.Login);
-        return Promise.resolve();
-      }
-    });
-
-    const InitHome = async () => {
-      await initApp({ input: appConfigCreateRequest }).then(() => {
-        router.push(Routes.Registration);
-      });
-    };
-
-    return {
-      loadInit,
-      errInit,
-      loading,
-      error,
-      title,
-      githubUrl,
-      appConfigCreateRequest,
-      InitHome
-    };
-  }
-});
-</script>
-
-<style scoped lang="css">
-.registration {
-  width: 100%;
-  height: 100vh;
-  display: flex;
-  background-color: var(--color-login-background);
-}
-.fully-centered {
-  align-self: center;
-  height: 80%;
-}
-.img {
-  max-width: 90%;
-  display: flex;
-  justify-items: center;
-  margin: auto;
-}
-</style>

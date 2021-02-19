@@ -1,13 +1,11 @@
 <script lang="ts">
 import { defineComponent, reactive, ref } from 'vue';
 import Loader from '@/components/app/AppSpinner.vue';
-import { UpdateDeviceInput } from '@/types/graphql/inputs';
-import { useMutation, useQuery } from '@urql/vue';
 import { useEnumTypes } from '@/hooks/useEnums';
 import { useRoute } from 'vue-router';
-import { DevicePayload } from '@/types/graphql/payloads';
-import { GetDeviceByIdVariable, GetDevicesQueryType, GET_DEVICE_BY_ID } from '../../graphql/queries/DeviceQueries';
-import { UPDATE_DEVICE } from '../../graphql/mutations/DeviceMutations';
+import { useUpdate_DeviceMutation } from '@/graphql/mutations/devices/updateDevice.generated';
+import { UpdateDeviceInput } from '@/graphql/graphql.types';
+import { useGetDeviceByNameQuery } from '@/graphql/queries/devices/GetDeviceByName.generated';
 
 export default defineComponent({
   name: 'DeviceDetails',
@@ -26,19 +24,16 @@ export default defineComponent({
       executeMutation: updateDevice,
       fetching: loadUpdate,
       error: errUpdate
-    } = useMutation<DevicePayload>(UPDATE_DEVICE);
-    const { data: deviceResult, fetching: loading, error } = useQuery<
-      GetDevicesQueryType,
-      GetDeviceByIdVariable
-    >({
-      query: GET_DEVICE_BY_ID,
+    } = useUpdate_DeviceMutation();
+
+    const { data: deviceResult, fetching: loading, error } = useGetDeviceByNameQuery({
       variables: { name: route.params.name as string }
     });
 
     const save = async () => {
       if (typeof deviceResult.value?.devices !== 'undefined') {
         updatedDevice.id = deviceResult.value.devices[0].id;
-        updatedDevice.primaryConnection = deviceResult.value?.devices[0].primaryConnection;
+        updatedDevice.primaryConnection = deviceResult.value.devices[0].primaryConnection;
         updatedDevice.secondaryConnection = deviceResult.value?.devices[0].secondaryConnection;
         await updateDevice({ input: updatedDevice });
       }

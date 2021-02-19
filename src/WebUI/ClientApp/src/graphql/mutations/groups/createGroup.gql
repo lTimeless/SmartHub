@@ -1,0 +1,11 @@
+mutation CreateGroup($input: CreateGroupInput!) {
+  createGroup(input: $input) {
+    group {
+      id
+    }
+    errors {
+      message
+      code
+    }
+  }
+}

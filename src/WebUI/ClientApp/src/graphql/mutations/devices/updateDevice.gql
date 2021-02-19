@@ -1,0 +1,11 @@
+mutation UPDATE_DEVICE($input: UpdateDeviceInput!) {
+  updateDevice(input: $input) {
+    device {
+      id
+    }
+    errors {
+      message
+      code
+    }
+  }
+}

@@ -12,7 +12,7 @@
       <div class="p-4 flex-auto">
         <!-- Chart -->
         <div class="relative" style="height: 350px">
-          <canvas id="bar-chart"></canvas>
+          <canvas id="bar-chart" />
         </div>
       </div>
     </div>
@@ -21,7 +21,7 @@
 <script lang="js">
 import Chart from 'chart.js';
 export default {
-  mounted () {
+  mounted() {
     this.$nextTick(() => {
       const config = {
         type: 'bar',

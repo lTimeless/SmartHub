@@ -18,9 +18,8 @@
 <script lang="ts">
 import { defineComponent, PropType, ref, toRefs, onMounted, reactive } from 'vue';
 import { LightState } from '@/types/types';
-import { useQuery } from '@urql/vue';
-import { SET_LIGHT_STATE, SetLightStateQueryType } from '@/components/controls/ControlQueries';
 import AppIcon from '../icons/AppIcon.vue';
+import { useSetLightStateQuery } from '@/graphql/queries/SetLightState.generated';
 
 export default defineComponent({
   name: 'LightControl',
@@ -56,8 +55,7 @@ export default defineComponent({
       }
     });
 
-    const { executeQuery } = useQuery<SetLightStateQueryType>({
-      query: SET_LIGHT_STATE,
+    const { executeQuery } = useSetLightStateQuery({
       pause: true,
       variables,
       requestPolicy: 'network-only'

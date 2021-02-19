@@ -1,14 +1,13 @@
 <script lang="ts">
 import { reactive, toRefs, defineComponent } from 'vue';
 import AppCard from '@/components/app/AppCards/AppCard.vue';
-import { useQuery } from '@urql/vue';
 import Loader from '@/components/app/AppSpinner.vue';
 import { useRouter } from 'vue-router';
 import AppIcon from '@/components/icons/AppIcon.vue';
 import { useString } from '@/hooks/useString';
 import AppDeviceControl from '../../components/controls/AppDeviceControl.vue';
-import { GetDevicesQueryType, GET_DEVICES } from '@/graphql/queries/DeviceQueries';
 import DeviceCreateModal from './modals/DeviceCreateModal.vue';
+import { useGetDevicesQuery } from '@/graphql/queries/devices/GetDevices.generated';
 
 export default defineComponent({
   name: 'Devices',
@@ -21,10 +20,8 @@ export default defineComponent({
   },
   setup() {
     const router = useRouter();
-    const { data, fetching: loading, error } = useQuery<GetDevicesQueryType>({
-      query: GET_DEVICES,
-      requestPolicy: 'network-only'
-    });
+    const { data, fetching: loading, error } = useGetDevicesQuery();
+
     const state = reactive({
       showCreateModal: false
     });
@@ -32,7 +29,6 @@ export default defineComponent({
     const toggleCreateModal = () => {
       state.showCreateModal = !state.showCreateModal;
     };
-
     const goToDetail = (name: string) => {
       router.push({ name: 'DeviceDetails', params: { name } });
     };
@@ -100,7 +96,7 @@ export default defineComponent({
                 />
               </div>
               <!-- Divider -->
-              <div class="border-border border-t border-blueGray-300 my-2"></div>
+              <div class="border-border border-t border-blueGray-300 my-2" />
               <!-- Body -->
               <div class="flex justify-center py-4">
                 <AppDeviceControl

@@ -11,7 +11,7 @@ module.exports = {
   extends: [
     'plugin:vue/vue3-strongly-recommended',
     'plugin:@typescript-eslint/recommended',
-    'plugin:prettier/recommended',
+    // 'plugin:prettier/recommended',
     '@vue/typescript/recommended',
     '@vue/prettier/@typescript-eslint'
   ],
@@ -28,11 +28,11 @@ module.exports = {
     ],
     '@typescript-eslint/type-annotation-spacing': ['error', {}],
     '@typescript-eslint/no-use-before-define': ['error', { functions: false, classes: true }],
-    '@typescript-eslint/indent': ['error', 2],
 
     // off
     '@typescript-eslint/explicit-function-return-type': 'off',
     '@typescript-eslint/explicit-member-accessibility': 'off',
+    '@typescript-eslint/explicit-module-boundary-types': 'off',
     '@typescript-eslint/no-explicit-any': 'off',
     '@typescript-eslint/no-parameter-properties': 'off',
     '@typescript-eslint/ban-ts-ignore': 'off',
@@ -49,10 +49,23 @@ module.exports = {
     'consistent-return': 'off',
     complexity: ['off', 11],
     eqeqeq: ['error', 'allow-null'],
-    'vars-on-top': 'error',
+    'vars-on-top': 'warn',
     'operator-linebreak': [2, 'before'],
     // vue
-    'vue/max-attributes-per-line': ['warn', { singleline: 5 }]
+    'vue/max-attributes-per-line': ['warn', { singleline: 6 }],
+    'vue/singleline-html-element-content-newline': 'off',
+    'vue/html-self-closing': [
+      'error',
+      {
+        html: {
+          void: 'always',
+          normal: 'always',
+          component: 'always'
+        },
+        svg: 'always',
+        math: 'always'
+      }
+    ]
   },
   ignorePatterns: ['node_modules/', 'dist/', 'generated/', '!.*', 'schema.graphql', '**/*.svg']
 };

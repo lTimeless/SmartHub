@@ -38,7 +38,7 @@ export default defineConfig({
     ViteFonts({
       google: {
         families: ['JetBrains Mono', 'Roboto']
-      },
+      }
     })
   ]
 });

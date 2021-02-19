@@ -1,7 +1,7 @@
 <template>
   <div class="flex flex-wrap bg-white rounded">
-    <LineChart></LineChart>
-    <BarChart></BarChart>
+    <LineChart />
+    <BarChart />
   </div>
 </template>
 

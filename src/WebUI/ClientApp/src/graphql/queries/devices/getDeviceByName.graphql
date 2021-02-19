@@ -1,0 +1,22 @@
+query GetDeviceByName($name: String!) {
+  devices(where: { name: { eq: $name } }) {
+    id
+    name
+    description
+    primaryConnection
+    secondaryConnection
+    createdAt
+    lastModifiedAt
+    createdBy
+    lastModifiedBy
+    pluginName
+    pluginTypes
+    ip {
+      ipv4
+    }
+    company {
+      name
+      shortName
+    }
+  }
+}
