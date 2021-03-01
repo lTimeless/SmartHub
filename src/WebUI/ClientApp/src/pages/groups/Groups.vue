@@ -53,8 +53,8 @@ export default defineComponent({
         <!-- Add button -->
         <div class="w-full md:w-1/3 xl:w-3/6">
           <button
-            @click="toggleCreateModal"
             class="block w-full px-4 py-2 mt-4 text-sm text-gray-600 font-medium leading-5 text-center bg-white hover:text-white hover:bg-indigo-400 border border-transparent rounded-lg active:bg-primary focus:outline-none"
+            @click="toggleCreateModal"
           >
             Add Group
           </button>
@@ -74,9 +74,9 @@ export default defineComponent({
       <div class="pb-4 h-114 rounded">
         <div v-if="data.groups" class="grid xl:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 gap-4 rounded">
           <AppCard
-            class="bg-white border hover:border-indigo-400 w-full"
             v-for="group in data.groups"
             :key="group.id"
+            class="bg-white border hover:border-indigo-400 w-full"
           >
             <div class="p-3 w-full">
               <div class="flex items-start justify-between">

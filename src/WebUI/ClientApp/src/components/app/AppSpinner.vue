@@ -2,7 +2,7 @@
   <div
     v-if="ready"
     :class="`loader ease-linear rounded-full border-8 border-t-8 border-gray-200 ${height} ${width}`"
-  ></div>
+  />
 </template>
 
 <script lang="ts">

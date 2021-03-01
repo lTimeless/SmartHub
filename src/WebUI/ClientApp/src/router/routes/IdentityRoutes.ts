@@ -1,11 +1,13 @@
 import { RouteRecordRaw } from 'vue-router';
 import { Routes } from '@/types/enums';
+import Login from '../../pages/indentity/login/Login.vue';
+import Registration from '@/pages/indentity/registration/Registration.vue';
 
 export const identityRoutes: Array<RouteRecordRaw> = [
   {
     path: Routes.Login,
     name: 'Login',
-    component: () => import(/* webpackChunkName: "identity" */ '../../pages/indentity/login/Login.vue'),
+    component: Login,
     meta: {
       requiresAuth: false
     }
@@ -13,7 +15,7 @@ export const identityRoutes: Array<RouteRecordRaw> = [
   {
     path: Routes.Registration,
     name: 'Registration',
-    component: () => import(/* webpackChunkName: "identity" */ '../../pages/indentity/registration/Registration.vue'),
+    component: Registration,
     meta: {
       requiresAuth: false
     }

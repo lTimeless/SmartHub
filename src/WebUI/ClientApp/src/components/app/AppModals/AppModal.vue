@@ -4,6 +4,9 @@ import Loader from '@/components/app/AppSpinner.vue';
 
 export default defineComponent({
   name: 'AppModal',
+  components: {
+    Loader
+  },
   props: {
     title: {
       type: String,
@@ -46,9 +49,6 @@ export default defineComponent({
       required: true
     }
   },
-  components: {
-    Loader
-  },
   setup(props) {
     return {
       ...toRefs(props)
@@ -60,7 +60,7 @@ export default defineComponent({
 <template>
   <teleport to="body">
     <div>
-      <div class="opacity-25 fixed inset-0 z-40 bg-black"></div>
+      <div class="opacity-25 fixed inset-0 z-40 bg-black" />
       <div
         class="overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none justify-center items-center flex"
       >
@@ -110,7 +110,6 @@ export default defineComponent({
               <button
                 class="bg-transparent border border-solid font-bold uppercase text-sm pl-4 pr-6 py-3 rounded outline-none focus:outline-none"
                 type="button"
-                @click="save"
                 :class="[
                   `${mainBorderColor}`,
                   saveBtnActive && !loading
@@ -118,6 +117,7 @@ export default defineComponent({
                     : 'opacity-50 focus:outline-none cursor-not-allowed'
                 ]"
                 :disabled="!saveBtnActive || loading"
+                @click="save"
               >
                 <span class="flex">
                   <Loader v-if="loading" height="h-2" width="w-2" />

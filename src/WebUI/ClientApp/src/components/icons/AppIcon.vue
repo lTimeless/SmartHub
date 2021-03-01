@@ -10,7 +10,7 @@
     viewBox="0 0 24 24"
     role="presentation"
   >
-    <component :is="iconFullName"></component>
+    <component :is="iconFullName" />
   </svg>
 </template>
 

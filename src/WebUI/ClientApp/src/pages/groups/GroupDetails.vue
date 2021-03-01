@@ -58,8 +58,8 @@ export default defineComponent({
       <label class="text-left block text-sm">
         <span class="text-gray-600 dark:text-gray-400">Name</span>
         <input
-          type="text"
           v-model="updatedGroup.name"
+          type="text"
           class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md"
           :placeholder="groupResult.groups[0].name"
         />
@@ -67,8 +67,8 @@ export default defineComponent({
       <label class="text-left block text-sm my-3">
         <span class="text-gray-600 dark:text-gray-400">Description</span>
         <input
-          type="text"
           v-model="updatedGroup.description"
+          type="text"
           class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md"
           :placeholder="groupResult.groups[0].description ?? 'Description'"
         />
@@ -97,13 +97,13 @@ export default defineComponent({
         <button
           class="bg-transparent border-indigo-400 border border-solid font-bold uppercase text-sm pl-4 pr-6 py-3 rounded outline-none focus:outline-none"
           type="button"
-          @click="save"
           :class="[
             !loadUpdate
               ? `hover:bg-indigo-400 hover:text-white text-gray-600`
               : 'opacity-50 focus:outline-none cursor-not-allowed'
           ]"
           :disabled="loadUpdate"
+          @click="save"
         >
           <span class="flex">
             <Loader v-if="loadUpdate" height="h-2" width="w-2" />

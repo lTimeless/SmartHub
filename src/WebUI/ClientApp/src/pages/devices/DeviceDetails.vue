@@ -74,8 +74,8 @@ export default defineComponent({
           <label class="text-left block text-sm">
             <span class="text-gray-600 dark:text-gray-400">Name</span>
             <input
-              type="text"
               v-model="updatedDevice.name"
+              type="text"
               class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md"
               :placeholder="deviceResult.devices[0].name"
             />
@@ -85,8 +85,8 @@ export default defineComponent({
           <label class="text-left block text-sm">
             <span class="text-gray-600 dark:text-gray-400">PluginType</span>
             <select
-              disabled
               v-model="deviceResult.devices[0].pluginTypes"
+              disabled
               class="mt-1 text-gray-500 focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md"
             >
               <option v-for="(item, key) in pluginNames" :key="key" :value="item.toUpperCase()">
@@ -102,8 +102,8 @@ export default defineComponent({
           <label class="text-left block text-sm">
             <span class="text-gray-600 dark:text-gray-400">Description</span>
             <input
-              type="text"
               v-model="updatedDevice.description"
+              type="text"
               class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md"
               :placeholder="deviceResult.devices[0].description ?? 'Description'"
             />
@@ -113,8 +113,8 @@ export default defineComponent({
           <label class="text-left block text-sm">
             <span class="text-gray-600 dark:text-gray-400">Ipv4</span>
             <input
-              type="text"
               v-model="updatedDevice.ipv4"
+              type="text"
               class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md"
               :placeholder="deviceResult.devices[0].ip.ipv4"
             />
@@ -141,9 +141,9 @@ export default defineComponent({
           <label class="text-left block text-sm">
             <span class="text-gray-600 dark:text-gray-400">Companyname</span>
             <input
+              v-model="deviceResult.devices[0].company.name"
               type="text"
               disabled
-              v-model="deviceResult.devices[0].company.name"
               class="mt-1 text-gray-500 focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md"
               :placeholder="deviceResult.devices[0].company.name"
             />
@@ -153,9 +153,9 @@ export default defineComponent({
           <label class="text-left block text-sm">
             <span class="text-gray-600 dark:text-gray-400">Pluginname</span>
             <input
+              v-model="deviceResult.devices[0].pluginName"
               type="text"
               disabled
-              v-model="deviceResult.devices[0].pluginName"
               class="mt-1 text-gray-500 focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md"
               placeholder="Plugin name"
             />
@@ -199,13 +199,13 @@ export default defineComponent({
         <button
           class="bg-transparent border-indigo-400 border border-solid font-bold uppercase text-sm pl-4 pr-6 py-3 rounded outline-none focus:outline-none"
           type="button"
-          @click="save"
           :class="[
             !loadUpdate
               ? `hover:bg-indigo-400 hover:text-white text-gray-600`
               : 'opacity-50 focus:outline-none cursor-not-allowed'
           ]"
           :disabled="loadUpdate"
+          @click="save"
         >
           <span class="flex">
             <Loader v-if="loadUpdate" height="h-2" width="w-2" />

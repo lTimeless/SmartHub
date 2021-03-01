@@ -2,7 +2,6 @@
 import { computed, defineComponent, reactive, ref, watch } from 'vue';
 import { useRouter } from 'vue-router';
 import AppCard from '@/components/app/AppCards/AppCard.vue';
-import { useMutation, useQuery } from '@urql/vue';
 import { Routes } from '@/types/enums';
 import Loader from '@/components/app/AppSpinner.vue';
 import { AppConfigInitInput } from '@/graphql/graphql.types';
@@ -87,38 +86,38 @@ export default defineComponent({
             <label class="flex flex-col text-sm">
               <span class="text-gray-600 dark:text-gray-400 justify-start text-left">Name</span>
               <input
+                v-model="appConfigCreateRequest.name"
                 required
                 class="mt-1 focus:ring-primary focus:border-primary block w-full sm:text-sm border-gray-300 rounded"
                 placeholder="SmartHub (default)"
                 type="text"
-                v-model="appConfigCreateRequest.name"
               />
             </label>
             <label class="flex flex-col text-sm mt-4">
               <span class="text-gray-600 dark:text-gray-400 justify-start text-left">Description</span>
               <input
+                v-model="appConfigCreateRequest.description"
                 required
                 class="mt-1 focus:ring-primary focus:border-primary block w-full sm:text-sm border-gray-300 rounded"
                 placeholder="This is an awesome description (default)"
                 type="text"
-                v-model="appConfigCreateRequest.description"
               />
             </label>
             <div class="mt-4">
               <div class="md:flex md:items-center mb-6">
                 <label class="text-gray-500 flex items-center">
                   <input
+                    v-model="appConfigCreateRequest.autoDetectAddress"
                     class="mt-1 focus:ring-primary focus:border-primary sm:text-sm text-primary border-gray-300 rounded"
                     type="checkbox"
-                    v-model="appConfigCreateRequest.autoDetectAddress"
                   />
                   <span class="ml-2 text-sm"> Automatically detect your home address. </span>
                 </label>
               </div>
             </div>
             <button
-              @click="InitHome"
               class="block w-full px-4 py-2 mt-4 text-sm font-medium leading-5 text-center text-white bg-primarySienna rounded hover:bg-primarySiennaHover"
+              @click="InitHome"
             >
               <span class="flex content-center justify-center">
                 <Loader v-if="loadInit" height="h-2" width="w-2" />

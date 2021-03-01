@@ -55,8 +55,8 @@ export default defineComponent({
       <!-- Add Button -->
       <div class="flex justify-start">
         <button
-          @click="toggleCreateModal"
           class="h-9 w-9 text-gray-600 text-center bg-white hover:text-white hover:bg-primaryBlue rounded-lg active:bg-primary focus:outline-none"
+          @click="toggleCreateModal"
         >
           <a class="text-2xl">+</a>
         </button>
@@ -82,7 +82,7 @@ export default defineComponent({
     <div v-if="data">
       <div v-if="data.devices">
         <div class="grid xl:grid-cols-6 md:grid-cols-4 grid-cols-2 gap-4 rounded">
-          <AppCard class="bg-white w-full h-36" v-for="device in data.devices" :key="device.id">
+          <AppCard v-for="device in data.devices" :key="device.id" class="bg-white w-full h-36">
             <div v-if="device" class="w-full">
               <!-- Header -->
               <div class="flex flex-row justify-between items-center content-center">
@@ -91,8 +91,8 @@ export default defineComponent({
                 </h1>
                 <AppIcon
                   icon-name="Edit"
-                  @click="goToDetail(device.name)"
                   class="cursor-pointer p-1 rounded focus:outline-none hover:ring-2 hover:ring-primaryBlue mr-1"
+                  @click="goToDetail(device.name)"
                 />
               </div>
               <!-- Divider -->

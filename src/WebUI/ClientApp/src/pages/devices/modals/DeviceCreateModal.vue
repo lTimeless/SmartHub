@@ -8,10 +8,10 @@ import { CreateDeviceInput } from '@/graphql/graphql.types';
 
 export default defineComponent({
   name: 'DeviceCreateModal',
-  emits: ['close'],
   components: {
     AppModal
   },
+  emits: ['close'],
   setup(_, context) {
     const deviceCreateInput = reactive<CreateDeviceInput>({
       name: '',
@@ -68,8 +68,8 @@ export default defineComponent({
         <label class="text-left block text-sm">
           <span class="text-gray-600 dark:text-gray-400">Name</span>
           <input
-            type="text"
             v-model="deviceCreateInput.name"
+            type="text"
             class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md"
             placeholder="Name"
           />
@@ -95,8 +95,8 @@ export default defineComponent({
         <label class="text-left block text-sm">
           <span class="text-gray-600 dark:text-gray-400">Description</span>
           <input
-            type="text"
             v-model="deviceCreateInput.description"
+            type="text"
             class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md"
             placeholder="Description(optional)"
           />
@@ -106,8 +106,8 @@ export default defineComponent({
         <label class="text-left block text-sm">
           <span class="text-gray-600 dark:text-gray-400">Ipv4</span>
           <input
-            type="text"
             v-model="deviceCreateInput.ipv4"
+            type="text"
             class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md"
             placeholder="Ipv4"
           />
@@ -120,8 +120,8 @@ export default defineComponent({
         <label class="text-left block text-sm">
           <span class="text-gray-600 dark:text-gray-400">Groupname</span>
           <input
-            type="text"
             v-model="deviceCreateInput.groupName"
+            type="text"
             class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md"
             placeholder="Group name (optional)"
           />
@@ -134,8 +134,8 @@ export default defineComponent({
         <label class="text-left block text-sm">
           <span class="text-gray-600 dark:text-gray-400">Companyname</span>
           <input
-            type="text"
             v-model="deviceCreateInput.companyName"
+            type="text"
             class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md"
             placeholder="Company description"
           />
@@ -145,8 +145,8 @@ export default defineComponent({
         <label class="text-left block text-sm">
           <span class="text-gray-600 dark:text-gray-400">Pluginname</span>
           <input
-            type="text"
             v-model="deviceCreateInput.pluginName"
+            type="text"
             class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md"
             placeholder="Plugin name"
           />

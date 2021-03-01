@@ -9,11 +9,15 @@ module.exports = {
     ecmaVersion: 2020
   },
   extends: [
-    'plugin:vue/vue3-strongly-recommended',
-    'plugin:@typescript-eslint/recommended',
-    // 'plugin:prettier/recommended',
+    'plugin:vue/vue3-recommended',
+    'eslint:recommended',
     '@vue/typescript/recommended',
-    '@vue/prettier/@typescript-eslint'
+    'prettier',
+    'prettier/vue',
+    'prettier/@typescript-eslint'
+    // whats the difference ???
+    // '@vue/prettier',
+    // '@vue/prettier/@typescript-eslint'
   ],
   plugins: ['@typescript-eslint'],
   rules: {

@@ -1,13 +1,13 @@
 <template>
   <div v-if="state && state.lights">
     <button
-      @click="handleClick"
       class="rounded-full p-1 focus:outline-none"
       :class="[
         lightStatus
           ? 'ring ring-green-500 md:hover:ring-burntSienna-500'
           : 'ring-2 ring-blueGray-300 md:hover:ring-green-500 hover:ring'
       ]"
+      @click="handleClick"
     >
       <AppIcon icon-name="Bulb" :icon-color="'text-primaryBlue'" height="h-10" width="h-10" />
     </button>
@@ -19,10 +19,13 @@
 import { defineComponent, PropType, ref, toRefs, onMounted, reactive } from 'vue';
 import { LightState } from '@/types/types';
 import AppIcon from '../icons/AppIcon.vue';
-import { useSetLightStateQuery } from '@/graphql/queries/SetLightState.generated';
+import { useSetLightStateQuery } from '@/graphql/queries/setLightState.generated';
 
 export default defineComponent({
   name: 'LightControl',
+  components: {
+    AppIcon
+  },
   props: {
     state: {
       type: Object as PropType<LightState>,
@@ -33,9 +36,6 @@ export default defineComponent({
       type: String,
       required: true
     }
-  },
-  components: {
-    AppIcon
   },
   setup(props) {
     const propsRef = toRefs(props);

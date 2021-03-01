@@ -107,8 +107,8 @@ export default defineComponent({
           <label class="text-left block text-sm">
             <span class="text-gray-600 dark:text-gray-400">Username</span>
             <input
-              type="text"
               v-model="registrationRequest.userName"
+              type="text"
               class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded"
               placeholder="Jane Doe"
             />
@@ -117,12 +117,12 @@ export default defineComponent({
             <label class="text-left block mt-4 text-sm">
               <span class="text-gray-600 dark:text-gray-400"> Password </span>
               <input
-                :type="togglePassword ? 'text' : 'password'"
-                @keydown="checkPasswordStrength"
-                @blur="checkPasswordStrength"
                 v-model="registrationRequest.password"
+                :type="togglePassword ? 'text' : 'password'"
                 class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded"
                 placeholder="***************"
+                @keydown="checkPasswordStrength"
+                @blur="checkPasswordStrength"
               />
               <div
                 class="absolute right-0 bottom-0 flex flex-col justify-end top-0 px-3 py-2 cursor-pointer"
@@ -166,8 +166,8 @@ export default defineComponent({
             <label class="text-left block mt-4 text-sm">
               <span class="text-gray-600 dark:text-gray-400"> Confirm password </span>
               <input
-                :type="togglePassword ? 'text' : 'password'"
                 v-model="confirmPwd"
+                :type="togglePassword ? 'text' : 'password'"
                 class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded"
                 placeholder="***************"
               />
@@ -212,8 +212,8 @@ export default defineComponent({
                 ? 'opacity-50 focus:outline-none cursor-not-allowed'
                 : 'hover:bg-primarySiennaHover'
             "
-            @click="onRegistrationClick"
             :disabled="registrationDisabled"
+            @click="onRegistrationClick"
           >
             <span class="flex content-center justify-center">
               <Loader v-if="loadCreate" height="h-2" width="w-2" />

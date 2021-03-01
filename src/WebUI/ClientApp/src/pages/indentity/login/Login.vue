@@ -107,9 +107,9 @@ export default defineComponent({
               <label class="text-left block text-sm">
                 <span class="text-gray-600 dark:text-gray-400">Username</span>
                 <input
+                  v-model="userName"
                   required
                   type="text"
-                  v-model="userName"
                   class="mt-1 focus:ring-primary focus:border-primary block w-full sm:text-sm border-gray-300 rounded"
                   placeholder="Jane Doe"
                 />
@@ -117,8 +117,8 @@ export default defineComponent({
               <label class="text-left block mt-4 text-sm">
                 <span class="text-gray-600 dark:text-gray-400">Password</span>
                 <input
-                  required
                   v-model="password"
+                  required
                   class="mt-1 focus:ring-primary focus:border-primary block w-full sm:text-sm border-gray-300 rounded"
                   placeholder="***************"
                   type="password"
@@ -133,8 +133,8 @@ export default defineComponent({
                     ? 'opacity-50 focus:outline-none cursor-not-allowed'
                     : 'hover:bg-primarySiennaHover'
                 "
-                @click="onLoginClick"
                 :disabled="signInDisabled"
+                @click="onLoginClick"
               >
                 <span class="flex content-center justify-center">
                   <Loader v-if="loadLogin" height="h-2" width="w-2" />

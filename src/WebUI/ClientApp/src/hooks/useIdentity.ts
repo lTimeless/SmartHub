@@ -1,10 +1,9 @@
 import { AppActionTypes } from '@/store/app/actions';
 import { Roles, Routes } from '@/types/enums';
 import { useStorage } from '@vueuse/core';
-import { Ref } from 'vue';
 import router from '@/router';
 import { store } from '@/store';
-import { useJwt } from '@vueuse/integrations'
+import { useJwt } from '@vueuse/integrations';
 
 type TokenPayload = {
   unique_name: string;
@@ -41,7 +40,7 @@ export const useIdentity = () => {
       return Roles.None;
     }
     const roles = tokenPayload.value?.roles;
-    if(!roles) {
+    if (!roles) {
       return Roles.None;
     }
     if (roles.includes('Admin')) {

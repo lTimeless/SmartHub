@@ -73,8 +73,8 @@ export default defineComponent({
           <label class="text-left block text-sm">
             <span class="text-gray-600 dark:text-gray-400">Username</span>
             <input
-              type="text"
               v-model="updateUserInput.userName"
+              type="text"
               class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md"
               :placeholder="resultUser.me.user.userName ?? '-'"
               disabled
@@ -88,8 +88,8 @@ export default defineComponent({
               <span class="text-gray-600 text-xs text-left">(Change and you need to login again)</span>
             </span>
             <select
-              :disabled="selectedRole === roles.Guest"
               v-model="selectedRole"
+              :disabled="selectedRole === roles.Guest"
               class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md"
             >
               <option v-for="role in roles" :key="role" :value="role">{{ role }}</option>
@@ -105,8 +105,8 @@ export default defineComponent({
         <label class="text-left block text-sm w-full mr-2">
           <span class="text-gray-600 dark:text-gray-400">Firstname</span>
           <input
-            type="text"
             v-model="updateUserInput.firstName"
+            type="text"
             class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md"
             :placeholder="
               resultUser.me.user.personName.firstName === '' ? '-' : resultUser.me.user.personName.firstName
@@ -116,8 +116,8 @@ export default defineComponent({
         <label class="text-left block text-sm w-full mr-2">
           <span class="text-gray-600 dark:text-gray-400">Middlename</span>
           <input
-            type="text"
             v-model="updateUserInput.middleName"
+            type="text"
             class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md"
             :placeholder="
               resultUser.me.user.personName.middleName === '' ? '-' : resultUser.me.user.personName.middleName
@@ -127,8 +127,8 @@ export default defineComponent({
         <label class="text-left block text-sm w-full mr-2">
           <span class="text-gray-600 dark:text-gray-400">Lastname</span>
           <input
-            type="text"
             v-model="updateUserInput.lastName"
+            type="text"
             class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md"
             :placeholder="
               resultUser.me.user.personName.lastName === '' ? '-' : resultUser.me.user.personName.lastName
@@ -140,8 +140,8 @@ export default defineComponent({
       <label class="text-left block text-sm w-full mr-2 mt-4">
         <span class="text-gray-600 dark:text-gray-400">Email</span>
         <input
-          type="text"
           v-model="updateUserInput.email"
+          type="text"
           class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md"
           :placeholder="
             resultUser.me.user.email === '' || resultUser.me.user.email === null
@@ -153,8 +153,8 @@ export default defineComponent({
       <label class="text-left block text-sm w-full mr-2 mt-4">
         <span class="text-gray-600 dark:text-gray-400">Phonenumber</span>
         <input
-          type="text"
           v-model="updateUserInput.phoneNumber"
+          type="text"
           class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md"
           :placeholder="
             resultUser.me.user.phoneNumber === '' || resultUser.me.user.phoneNumber === null
@@ -166,8 +166,8 @@ export default defineComponent({
       <label class="text-left block text-sm w-full mr-2 mt-4">
         <span class="text-gray-600 dark:text-gray-400">Personinfo</span>
         <input
-          type="text"
           v-model="updateUserInput.personInfo"
+          type="text"
           class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md"
           :placeholder="resultUser.me.user.personInfo === '' ? '-' : resultUser.me.user.personInfo"
         />
@@ -182,8 +182,8 @@ export default defineComponent({
     <!-- Save button -->
     <div class="md:w-2/12 mt-3">
       <button
-        @click="onSaveClick"
         class="block w-full px-4 py-2 mt-4 text-sm text-gray-500 font-medium leading-5 text-center bg-white hover:text-white transition-colors duration-150 hover:bg-indigo-500 border border-transparent rounded-lg active:bg-ui-primary focus:outline-none focus:shadow-outlineIndigo"
+        @click="onSaveClick"
       >
         Save
       </button>

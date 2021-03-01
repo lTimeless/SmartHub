@@ -5,7 +5,13 @@
   <div class="relative z-40 text-left cursor-pointer" :class="[mobileSidebarOpen ? 'w-full' : '']">
     <div
       class="flex flex-row items-center"
-      :class="[(onlyIcon && !mobileSidebarOpen) ? 'w-12 justify-center' : (mobileSidebarOpen ? 'w-full justify-start' : ' w-52 justify-start')]"
+      :class="[
+        onlyIcon && !mobileSidebarOpen
+          ? 'w-12 justify-center'
+          : mobileSidebarOpen
+          ? 'w-full justify-start'
+          : ' w-52 justify-start'
+      ]"
     >
       <div
         class="relative z-40 h-12 flex items-center hover:bg-charcoalBlue-200"
@@ -38,8 +44,8 @@
     <template v-if="onlyIcon && !mobileSidebarOpen">
       <!-- Modal -->
       <div
-        ref="modalTarget"
         v-if="showDropdown"
+        ref="modalTarget"
         class="fixed md:inset-x-0 md:bottom-2 md:left-16 origin-top-right right-0 mt-2 mr-2 md:mr-0 z-40 w-40 rounded border bg-white ring-1 ring-black ring-opacity-5"
         role="menu"
         aria-orientation="vertical"
@@ -49,9 +55,9 @@
           <a
             v-for="item in dropDownList"
             :key="item.name"
-            @click="handleRouteClick(item.path)"
             class="block px-4 py-2 text-sm text-gray-600 hover:bg-gray-200 cursor-pointer active:bg-gray-100"
             role="menuitem"
+            @click="handleRouteClick(item.path)"
           >
             {{ item.name }}
           </a>

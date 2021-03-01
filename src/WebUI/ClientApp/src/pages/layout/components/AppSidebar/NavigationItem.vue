@@ -29,7 +29,6 @@ export default defineComponent({
   components: {
     AppIcon
   },
-  emits: ['update:close-mobile-sidebar'],
   props: {
     route: {
       type: String,
@@ -55,6 +54,7 @@ export default defineComponent({
       default: false
     }
   },
+  emits: ['update:close-mobile-sidebar'],
   setup(props) {
     const { isRoute } = useCurrentRoute(props.route);
 

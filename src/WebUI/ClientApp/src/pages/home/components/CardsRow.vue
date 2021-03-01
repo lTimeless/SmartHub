@@ -97,7 +97,6 @@ import { Routes } from '@/types/enums';
 import { useGetGroupsCountQuery } from '@/graphql/queries/groups/GetGroupsCount.generated';
 import { useGetDevicesCountQuery } from '@/graphql/queries/devices/GetDeviceCount.generated';
 
-
 export default defineComponent({
   name: 'CardsRow',
   components: {

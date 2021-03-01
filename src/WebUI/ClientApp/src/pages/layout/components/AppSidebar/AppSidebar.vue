@@ -66,9 +66,9 @@ export default defineComponent({
   >
     <!-- Background if MobileSidebar is open -->
     <button
-      @click="closeMobileSidebar"
       v-if="mobileSidebarOpen"
       class="absolute inset-0 h-full w-full bg-black opacity-20 cursor-default z-20"
+      @click="closeMobileSidebar"
     />
     <div
       class="rounded md:flex flex-col justify-between md:relative absolute top-0 left-0 right-0 z-40 overflow-y-auto overflow-x-hidden"
@@ -78,7 +78,7 @@ export default defineComponent({
       <div v-if="mobileSidebarOpen" class="mb-2">
         <div class="flex flex-wrap">
           <div class="w-2/12 flex items-center">
-            <AppIcon icon-name="Close" @click="closeMobileSidebar" class="cursor-pointer" />
+            <AppIcon icon-name="Close" class="cursor-pointer" @click="closeMobileSidebar" />
           </div>
           <div class="w-10/12 flex justify-center pl-2">
             <AppBrand />

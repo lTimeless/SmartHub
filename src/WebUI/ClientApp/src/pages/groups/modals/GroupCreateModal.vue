@@ -6,10 +6,10 @@ import { useCreateGroupMutation } from '@/graphql/mutations/groups/createGroup.g
 
 export default defineComponent({
   name: 'GroupCreateModal',
-  emits: ['close'],
   components: {
     AppModal
   },
+  emits: ['close'],
   setup(_, context) {
     const state = reactive({
       title: 'Create new Group'
@@ -55,8 +55,8 @@ export default defineComponent({
     <label class="text-left block text-sm">
       <span class="text-gray-600 dark:text-gray-400">Name</span>
       <input
-        type="text"
         v-model="groupCreateInput.name"
+        type="text"
         class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md"
         placeholder="Group name"
       />
@@ -64,8 +64,8 @@ export default defineComponent({
     <label class="text-left block text-sm mt-3">
       <span class="text-gray-600 dark:text-gray-400">Description</span>
       <input
-        type="text"
         v-model="groupCreateInput.description"
+        type="text"
         class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md"
         placeholder="Group description"
       />
