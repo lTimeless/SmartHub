@@ -15,11 +15,10 @@ module.exports = {
     'prettier',
     'prettier/vue',
     'prettier/@typescript-eslint'
-    // whats the difference ???
-    // '@vue/prettier',
-    // '@vue/prettier/@typescript-eslint'
+    // "@vue/prettier",
+    // "@vue/prettier/@typescript-eslint"
   ],
-  plugins: ['@typescript-eslint'],
+  plugins: ['@typescript-eslint', 'prettier'],
   rules: {
     'no-console': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
     'no-debugger': process.env.NODE_ENV === 'production' ? 'warn' : 'off',

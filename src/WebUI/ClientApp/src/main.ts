@@ -9,7 +9,6 @@ import { client } from './graphql-client';
 import '@/styles/main.css';
 import ControlsPlugin from './plugins/ControlsPlugin';
 
-// // eslint-disable-next-line prettier/prettier
 const app = createApp(App)
   .use(urql, client)
   .use(router)
