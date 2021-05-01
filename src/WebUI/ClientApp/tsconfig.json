@@ -18,7 +18,7 @@
           "src/*"
       ]
     },
-    "types": ["vite/client", "node"],
+    "types": ["vite/client", "node", "vite-svg-loader"],
     "plugins": [{ "name": "@vuedx/typescript-plugin-vue" }],
 
   },

@@ -16,6 +16,8 @@
     "generate-gql": "graphql-codegen --config codegen.yml"
   },
   "dependencies": {
+    "@headlessui/vue": "^1.1.1",
+    "@heroicons/vue": "^1.0.1",
     "@urql/exchange-auth": "^0.1.2",
     "@urql/exchange-graphcache": "^3.4.0",
     "@urql/vue": "^0.2.1",
@@ -64,6 +66,7 @@
     "typescript": "^4.1.5",
     "vite": "^2.0.0-beta.69",
     "vite-plugin-fonts": "^0.1.5",
+    "vite-svg-loader": "^1.5.1",
     "vite-tsconfig-paths": "^2.1.0"
   }
 }

@@ -11,7 +11,7 @@
         </div>
         <div class="w-auto pl-4 flex-initial">
           <div class="text-center inline-flex items-center justify-center w-12 h-12 rounded-full bg-red-400">
-            <AppIcon icon-name="folder" />
+            <FolderIcon class="text-gray-600 w-6 h-6" />
           </div>
         </div>
       </template>
@@ -35,7 +35,7 @@
           <div
             class="text-center inline-flex items-center justify-center w-12 h-12 rounded-full bg-yellow-400"
           >
-            <AppIcon icon-name="device" />
+            <ChipIcon class="text-gray-600 h-6 w-6" />
           </div>
         </div>
       </template>
@@ -57,7 +57,7 @@
           <div
             class="text-center inline-flex items-center justify-center w-12 h-12 rounded-full bg-green-400"
           >
-            <AppIcon icon-name="users" />
+            <UsersIcon class="text-gray-600 w-6 h-6" />
           </div>
         </div>
       </template>
@@ -77,7 +77,7 @@
         </div>
         <div class="w-auto pl-4 flex-initial">
           <div class="text-center inline-flex items-center justify-center w-12 h-12 rounded-full bg-blue-400">
-            <AppIcon icon-name="repeat" />
+            <RefreshIcon class="text-gray-600 h-5 w-6" />
           </div>
         </div>
       </template>
@@ -91,17 +91,20 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
-import AppIcon from '@/components/icons/AppIcon.vue';
 import AppCardRouterLink from '@/components/app/AppCards/AppCardRouterLink.vue';
 import { Routes } from '@/types/enums';
 import { useGetGroupsCountQuery } from '@/graphql/queries/groups/GetGroupsCount.generated';
-import { useGetDevicesCountQuery } from '@/graphql/queries/devices/GetDeviceCount.generated';
+import { useGetDevicesCountQuery } from '@/graphql/queries/devices/getDeviceCount.generated';
+import { FolderIcon, ChipIcon, UsersIcon, RefreshIcon } from '@heroicons/vue/outline';
 
 export default defineComponent({
   name: 'CardsRow',
   components: {
-    AppIcon,
-    AppCardRouterLink
+    AppCardRouterLink,
+    ChipIcon,
+    FolderIcon,
+    UsersIcon,
+    RefreshIcon
   },
   props: {},
   setup() {

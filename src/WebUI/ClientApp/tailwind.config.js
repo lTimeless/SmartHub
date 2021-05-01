@@ -6,11 +6,12 @@ const forms = require('@tailwindcss/forms');
 module.exports = {
   purge: {
     enabled: process.env.NODE_ENV === 'production',
-    content: ['./index.html', './src/**/*.vue', './src/**/*.md', './src/**/*.js', './src/**/*.ts'],
+    content: ['./index.html', './public/**/*.html', './src/**/*.{js,jsx,ts,tsx,vue,md}'],
     options: {
       safelist: ['prose', 'prose-sm', 'm-auto']
     }
   },
+  mode: 'jit',
   darkMode: 'media', // or 'media' or 'class'
   theme: {
     extend: {
@@ -113,15 +114,15 @@ module.exports = {
     }
   },
   variants: {
-    extend: {
-      ringColor: ['hover'],
-      ringOffsetColor: ['hover'],
-      ringOffsetWidth: ['hover'],
-      ringOpacity: ['hover'],
-      ringWidth: ['hover'],
-      opacity: ['disabled'],
-      scale: ['hover']
-    }
+    // extend: {
+    //   ringColor: ['hover'],
+    //   ringOffsetColor: ['hover'],
+    //   ringOffsetWidth: ['hover'],
+    //   ringOpacity: ['hover'],
+    //   ringWidth: ['hover'],
+    //   opacity: ['disabled'],
+    //   scale: ['hover']
+    // }
   },
   plugins: [forms, typography]
 };
