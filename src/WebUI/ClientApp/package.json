@@ -2,7 +2,12 @@
   "name": "smarthub",
   "version": "0.1.0",
   "description": "",
-  "keywords": [],
+  "keywords": [
+    "vue3",
+    "typescript",
+    "graphql",
+    "vite"
+  ],
   "author": "Maximilian Stümpfl",
   "license": "MIT",
   "private": true,
@@ -17,10 +22,9 @@
   },
   "dependencies": {
     "@headlessui/vue": "^1.1.1",
-    "@heroicons/vue": "^1.0.1",
     "@urql/exchange-auth": "^0.1.2",
-    "@urql/exchange-graphcache": "^3.4.0",
-    "@urql/vue": "^0.2.1",
+    "@urql/exchange-graphcache": "^4.0.0",
+    "@urql/vue": "^0.3.0",
     "@vueuse/core": "^4.0.2",
     "@vueuse/integrations": "^4.1.1",
     "chart.js": "^2.9.4",
@@ -33,18 +37,18 @@
     "vuex": "^4.0.0"
   },
   "devDependencies": {
-    "@graphql-codegen/cli": "1.20.1",
+    "@graphql-codegen/cli": "1.21.4",
     "@graphql-codegen/import-types-preset": "^1.18.1",
-    "@graphql-codegen/introspection": "1.18.1",
+    "@graphql-codegen/introspection": "1.18.2",
     "@graphql-codegen/near-operation-file-preset": "^1.17.13",
     "@graphql-codegen/typescript": "^1.21.0",
-    "@graphql-codegen/typescript-document-nodes": "1.17.9",
-    "@graphql-codegen/typescript-operations": "1.17.14",
+    "@graphql-codegen/typescript-document-nodes": "1.17.11",
+    "@graphql-codegen/typescript-operations": "1.17.16",
     "@graphql-codegen/typescript-urql": "^2.0.3",
-    "@tailwindcss/forms": "^0.2.1",
+    "@tailwindcss/forms": "^0.3.2",
     "@tailwindcss/line-clamp": "^0.2.0",
     "@tailwindcss/typography": "^0.4.0",
-    "@types/node": "^14.14.27",
+    "@types/node": "^15.0.1",
     "@typescript-eslint/eslint-plugin": "^4.15.0",
     "@typescript-eslint/parser": "^4.9.0",
     "@urql/devtools": "^2.0.2",
@@ -56,7 +60,7 @@
     "@vuedx/typescript-plugin-vue": "^0.6.3",
     "autoprefixer": "^10.2.4",
     "eslint": "^7.19.0",
-    "eslint-config-prettier": "^7.2.0",
+    "eslint-config-prettier": "^8.3.0",
     "eslint-plugin-prettier": "^3.3.1",
     "eslint-plugin-vue": "^7.5.0",
     "postcss": "^8.2.6",
@@ -64,9 +68,9 @@
     "prettier": "^2.2.1",
     "tailwindcss": "^2.0.3",
     "typescript": "^4.1.5",
-    "vite": "^2.0.0-beta.69",
-    "vite-plugin-fonts": "^0.1.5",
+    "vite": "^2.2.3",
+    "vite-plugin-fonts": "^0.2.2",
     "vite-svg-loader": "^1.5.1",
-    "vite-tsconfig-paths": "^2.1.0"
+    "vite-tsconfig-paths": "^3.3.10"
   }
 }
