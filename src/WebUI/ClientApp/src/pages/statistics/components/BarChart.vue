@@ -21,6 +21,7 @@
 <script lang="js">
 import Chart from 'chart.js';
 export default {
+  name: 'BarChart',
   mounted() {
     this.$nextTick(() => {
       const config = {

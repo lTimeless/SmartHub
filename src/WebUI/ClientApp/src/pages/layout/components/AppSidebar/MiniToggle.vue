@@ -4,8 +4,7 @@
     :class="[onlyIcon ? 'w-12 justify-center' : ' w-52 justify-start pl-4']"
     @click="handleIconClick"
   >
-    <ChevronDoubleRightIcon v-if="chevronRight" class="text-primaryBlue h-6 w-6" />
-    <ChevronDoubleLeftIcon v-if="!chevronRight" class="text-primaryBlue h-6 w-6" />
+    <AppIcon :icon-name="iconName" icon-color="text-primaryBlue" />
     <div v-if="!onlyIcon">
       <div class="tracking-wide text-lg leading-loose text-primaryBlue" :class="[onlyIcon ? ' ' : ' pl-2']">
         {{ onlyIcon ? ' ' : 'Hide' }}
@@ -17,13 +16,12 @@
 import { defineComponent, ref, toRefs } from 'vue';
 import { useStore } from 'vuex';
 import { AppActionTypes } from '@/store/app/actions';
-import { ChevronDoubleRightIcon, ChevronDoubleLeftIcon } from '@heroicons/vue/outline';
+import AppIcon from '@/components/icons/AppIcon.vue';
 
 export default defineComponent({
-  name: 'MiniToggle',
+  name: 'AppUserDropdown',
   components: {
-    ChevronDoubleRightIcon,
-    ChevronDoubleLeftIcon
+    AppIcon
   },
   props: {
     onlyIcon: {
@@ -34,20 +32,20 @@ export default defineComponent({
   },
   setup(props) {
     const store = useStore();
-    const chevronRight = ref(true);
+    const iconName = ref('ChevronDoubleRight');
 
     const handleIconClick = () => {
-      if (chevronRight.value) {
-        chevronRight.value = false;
+      if (iconName.value === 'ChevronDoubleRight') {
+        iconName.value = 'ChevronDoubleLeft';
         store.dispatch(AppActionTypes.SET_MINI_SIDEBAR, false);
-      } else if (!chevronRight.value) {
-        chevronRight.value = true;
+      } else if (iconName.value === 'ChevronDoubleLeft') {
+        iconName.value = 'ChevronDoubleRight';
         store.dispatch(AppActionTypes.SET_MINI_SIDEBAR, true);
       }
     };
 
     return {
-      chevronRight,
+      iconName,
       handleIconClick,
       ...toRefs(props)
     };

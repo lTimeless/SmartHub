@@ -11,7 +11,7 @@
         </div>
         <div class="w-auto pl-4 flex-initial">
           <div class="text-center inline-flex items-center justify-center w-12 h-12 rounded-full bg-red-400">
-            <FolderIcon class="text-gray-600 w-6 h-6" />
+            <AppIcon :icon-name="'Folder'" />
           </div>
         </div>
       </template>
@@ -35,7 +35,7 @@
           <div
             class="text-center inline-flex items-center justify-center w-12 h-12 rounded-full bg-yellow-400"
           >
-            <ChipIcon class="text-gray-600 h-6 w-6" />
+            <AppIcon :icon-name="'Device'" />
           </div>
         </div>
       </template>
@@ -57,7 +57,7 @@
           <div
             class="text-center inline-flex items-center justify-center w-12 h-12 rounded-full bg-green-400"
           >
-            <UsersIcon class="text-gray-600 w-6 h-6" />
+            <AppIcon :icon-name="'Users'" />
           </div>
         </div>
       </template>
@@ -77,7 +77,7 @@
         </div>
         <div class="w-auto pl-4 flex-initial">
           <div class="text-center inline-flex items-center justify-center w-12 h-12 rounded-full bg-blue-400">
-            <RefreshIcon class="text-gray-600 h-5 w-6" />
+            <AppIcon :icon-name="'Repeat'" />
           </div>
         </div>
       </template>
@@ -95,16 +95,13 @@ import AppCardRouterLink from '@/components/app/AppCards/AppCardRouterLink.vue';
 import { Routes } from '@/types/enums';
 import { useGetGroupsCountQuery } from '@/graphql/queries/groups/GetGroupsCount.generated';
 import { useGetDevicesCountQuery } from '@/graphql/queries/devices/getDeviceCount.generated';
-import { FolderIcon, ChipIcon, UsersIcon, RefreshIcon } from '@heroicons/vue/outline';
+import AppIcon from '@/components/icons/AppIcon.vue';
 
 export default defineComponent({
   name: 'CardsRow',
   components: {
     AppCardRouterLink,
-    ChipIcon,
-    FolderIcon,
-    UsersIcon,
-    RefreshIcon
+    AppIcon
   },
   props: {},
   setup() {
