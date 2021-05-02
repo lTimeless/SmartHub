@@ -1,7 +1,7 @@
 ﻿using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using SmartHub.Application.Common.Exceptions;
-using SmartHub.Domain.Common.Settings;
+using SmartHub.Domain.Common.Options;
 using SmartHub.Domain.Entities;
 using System;
 using System.Collections.Generic;
@@ -17,9 +17,9 @@ namespace SmartHub.Infrastructure.Services.Identity
 	/// </summary>
 	public class TokenGenerator
 	{
-		private readonly JwtSettings _jwtSettings;
+		private readonly JwtOptions _jwtSettings;
 
-		public TokenGenerator(IOptions<JwtSettings> jwtSettings)
+		public TokenGenerator(IOptions<JwtOptions> jwtSettings)
 		{
 			_jwtSettings = jwtSettings.Value;
 		}

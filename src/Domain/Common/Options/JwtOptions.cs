@@ -1,6 +1,6 @@
-﻿namespace SmartHub.Domain.Common.Settings
+﻿namespace SmartHub.Domain.Common.Options
 {
-	public class JwtSettings
+	public class JwtOptions
 	{
 		public string? Key { get; set; }
 		public double LifeTimeInMinutes { get; set; }

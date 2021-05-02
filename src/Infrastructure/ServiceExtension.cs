@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Authentication.Cookies;
-using System;
+﻿using System;
 using System.Linq;
 using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -13,7 +12,7 @@ using Microsoft.IdentityModel.Tokens;
 using SmartHub.Application.Common.Helpers;
 using SmartHub.Application.Common.Interfaces;
 using SmartHub.Application.Common.Interfaces.Database;
-using SmartHub.Domain.Common.Settings;
+using SmartHub.Domain.Common.Options;
 using SmartHub.Domain.Entities;
 using SmartHub.Infrastructure.Database;
 using SmartHub.Infrastructure.Database.Repositories;
@@ -77,7 +76,7 @@ namespace SmartHub.Infrastructure
                         .AllowAnyMethod()
                         .AllowAnyHeader());
             });
-            services.Configure<JwtSettings>(configuration.GetSection("JwtSettings"));
+            services.Configure<JwtOptions>(configuration.GetSection("JwtSettings"));
 
             services.AddAuthentication(x =>
             {
