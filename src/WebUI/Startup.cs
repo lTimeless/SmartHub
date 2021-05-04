@@ -52,7 +52,7 @@ namespace SmartHub.WebUI
 			// Serilog
 			app.UseSerilogRequestLogging();
 			// CustomExceptionMiddleware
-			app.ConfigureCustomExceptionMiddleware();
+			app.UseCustomExceptionMiddleware();
 			// Spa/ StaticFiles
 			app.UseHttpsRedirection();
 			app.UseStaticFiles();

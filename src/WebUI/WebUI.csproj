@@ -97,6 +97,9 @@
     <Content Update="appsettings.Production.json">
       <DependentUpon>appsettings.json</DependentUpon>
     </Content>
+    <Content Update="appsettings.Test.json">
+      <DependentUpon>appsettings.json</DependentUpon>
+    </Content>
 <!--    <None Include="$(SpaRoot)**" Exclude="$(SpaRoot)node_modules\**" />-->
   </ItemGroup>
 

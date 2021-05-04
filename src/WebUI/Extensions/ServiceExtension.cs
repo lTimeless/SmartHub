@@ -64,25 +64,18 @@ namespace SmartHub.WebUI.Extensions
 			IConfiguration configuration) =>
 			services
 				.ConfigureAndValidateSingleton<ApplicationOptions>(configuration)
-				.ConfigureAndValidateSingleton<CacheProfileOptions>(
-					configuration.GetSection(nameof(ApplicationOptions.CacheProfiles)))
-				.ConfigureAndValidateSingleton<CompressionOptions>(
-					configuration.GetSection(nameof(ApplicationOptions.Compression)))
-				.ConfigureAndValidateSingleton<ForwardedHeadersOptions>(
-					configuration.GetSection(nameof(ApplicationOptions.ForwardedHeaders)))
-				.Configure<ForwardedHeadersOptions>(
-					options =>
+				.ConfigureAndValidateSingleton<CacheProfileOptions>(configuration.GetSection(nameof(ApplicationOptions.CacheProfiles)))
+				.ConfigureAndValidateSingleton<CompressionOptions>(configuration.GetSection(nameof(ApplicationOptions.Compression)))
+				.ConfigureAndValidateSingleton<ForwardedHeadersOptions>(configuration.GetSection(nameof(ApplicationOptions.ForwardedHeaders)))
+				.Configure<ForwardedHeadersOptions>(options =>
 					{
 						options.KnownNetworks.Clear();
 						options.KnownProxies.Clear();
 					})
-				.ConfigureAndValidateSingleton<GraphQlOptions>(
-					configuration.GetSection(nameof(ApplicationOptions.GraphQL)))
-				.ConfigureAndValidateSingleton<RequestExecutorOptions>(
-					configuration.GetSection(nameof(ApplicationOptions.GraphQL))
+				.ConfigureAndValidateSingleton<GraphQlOptions>(configuration.GetSection(nameof(ApplicationOptions.GraphQL)))
+				.ConfigureAndValidateSingleton<RequestExecutorOptions>(configuration.GetSection(nameof(ApplicationOptions.GraphQL))
 						.GetSection(nameof(GraphQlOptions.Request)))
-				.ConfigureAndValidateSingleton<KestrelServerOptions>(
-					configuration.GetSection(nameof(ApplicationOptions.Kestrel)));
+				.ConfigureAndValidateSingleton<KestrelServerOptions>(configuration.GetSection(nameof(ApplicationOptions.Kestrel)));
 
 		/// <summary>
 		/// Configures caching for the application. Registers the <see cref="IDistributedCache"/> and
