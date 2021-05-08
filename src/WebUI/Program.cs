@@ -1,5 +1,6 @@
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 using Serilog;
 using SmartHub.WebUI.Extensions;
 using SmartHub.WebUI.Serilog;
@@ -8,24 +9,22 @@ using System.Threading.Tasks;
 
 namespace SmartHub.WebUI
 {
-	public sealed class Program
+	public static class Program
 	{
 		public static async Task<int> Main(string[] args)
 		{
 			Log.Logger = SerilogExtension.CreateBootstrapLogger();
 			try
 			{
-				Log.Information("Initialising");
 				var host = CreateHostBuilder(args).Build();
 				var hostEnvironment = host.Services.GetRequiredService<IHostEnvironment>();
 				hostEnvironment.ApplicationName = AssemblyInformation.Current.Product;
 
-				Log.Information("Started {Application} in {Environment} mode", hostEnvironment.ApplicationName,
-					hostEnvironment.EnvironmentName);
+				// TODO add in initService
+				// Log.Information("Started {Application} in {Environment} mode", hostEnvironment.ApplicationName, hostEnvironment.EnvironmentName);
 
 				await host.MigrateDatabase().RunAsync();
-				Log.Information("Stopped {Application} in {Environment} mode", hostEnvironment.ApplicationName,
-					hostEnvironment.EnvironmentName);
+				// Log.Information("Stopped {Application} in {Environment} mode", hostEnvironment.ApplicationName, hostEnvironment.EnvironmentName);
 				return 0;
 			}
 			catch (Exception ex)
@@ -39,10 +38,11 @@ namespace SmartHub.WebUI
 			}
 		}
 
-		private static IHostBuilder CreateHostBuilder(string[] args) =>
-			Host.CreateDefaultBuilder()
-				.ConfigureAppConfiguration((hostingContext, config) =>
-					HostExtension.AddConfiguration(config, hostingContext.HostingEnvironment, args))
+		private static IHostBuilder CreateHostBuilder(string[] args)
+		{
+			return Host.CreateDefaultBuilder()
+				// .ConfigureAppConfiguration((hostingContext, config) =>
+				// 	HostExtension.AddConfiguration(config, hostingContext.HostingEnvironment, args))
 				.UseSerilog(SerilogExtension.ConfigureReloadableLogger)
 				.UseDefaultServiceProvider(
 					(context, options) =>
@@ -51,8 +51,9 @@ namespace SmartHub.WebUI
 						options.ValidateScopes = isDevelopment;
 						options.ValidateOnBuild = isDevelopment;
 					})
-				// .ConfigureLogging((_, config) => config.ClearProviders())
+				.ConfigureLogging((_, config) => config.ClearProviders())
 				.ConfigureWebHost(HostExtension.ConfigureWebHostBuilder)
 				.UseConsoleLifetime();
+		}
 	}
 }

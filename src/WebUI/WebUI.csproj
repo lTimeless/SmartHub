@@ -1,35 +1,40 @@
 <Project Sdk="Microsoft.NET.Sdk.Web">
 
-  <PropertyGroup>
-    <TargetFramework>net5.0</TargetFramework>
-    <Nullable>enable</Nullable>
-    <RootNamespace>SmartHub.WebUI</RootNamespace>
-    <AssemblyName>SmartHub.WebUI</AssemblyName>
-    <TypeScriptCompileBlocked>true</TypeScriptCompileBlocked>
-    <TypeScriptToolsVersion>Latest</TypeScriptToolsVersion>
-    <IsPackable>false</IsPackable>
-    <SpaRoot>ClientApp\</SpaRoot>
-    <DefaultItemExcludes>$(DefaultItemExcludes);$(SpaRoot)node_modules\**</DefaultItemExcludes>
+  <PropertyGroup Label="Build">
+      <TargetFramework>net5.0</TargetFramework>
+      <RootNamespace>SmartHub.WebUI</RootNamespace>
+      <AssemblyName>SmartHub.WebUI</AssemblyName>
+      <TypeScriptCompileBlocked>true</TypeScriptCompileBlocked>
+      <TypeScriptToolsVersion>Latest</TypeScriptToolsVersion>
+      <IsPackable>false</IsPackable>
+      <SpaRoot>ClientApp\</SpaRoot>
+      <DefaultItemExcludes>$(DefaultItemExcludes);$(SpaRoot)node_modules\**</DefaultItemExcludes>
 
-    <!-- Set this to true if you enable server-side prerendering -->
-    <BuildServerSideRenderer>false</BuildServerSideRenderer>
-    <UserSecretsId>4ad38c50-ce06-489e-82b1-b19383316829</UserSecretsId>
-    <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
-    <DockerComposeProjectPath>..\docker-compose.dcproj</DockerComposeProjectPath>
+      <!-- Set this to true if you enable server-side prerendering -->
+      <BuildServerSideRenderer>false</BuildServerSideRenderer>
+      <UserSecretsId>4ad38c50-ce06-489e-82b1-b19383316829</UserSecretsId>
+      <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+      <DockerComposeProjectPath>..\docker-compose.dcproj</DockerComposeProjectPath>
   </PropertyGroup>
 
-  <!-- Nuget packages -->
-  <ItemGroup>
-    <PackageReference Include="AutoMapper" Version="10.1.1" />
-    <PackageReference Include="Boxed.AspNetCore" Version="7.0.0" />
-    <PackageReference Include="HotChocolate" Version="11.2.2" />
-    <PackageReference Include="HotChocolate.AspNetCore" Version="11.2.2" />
-    <PackageReference Include="HotChocolate.AspNetCore.Authorization" Version="11.2.2" />
-    <PackageReference Include="HotChocolate.Data" Version="11.2.2" />
-    <PackageReference Include="HotChocolate.Subscriptions" Version="11.2.2" />
-    <PackageReference Include="HotChocolate.Subscriptions.InMemory" Version="11.2.2" />
-    <PackageReference Include="Microsoft.AspNetCore.Mvc" Version="2.2.0" />
-    <PackageReference Include="Microsoft.AspNetCore.ResponseCompression" Version="2.2.0" />
+    <PropertyGroup Label="Package">
+        <Authors>Maximilian Stümpfl</Authors>
+        <Product>SmartHub</Product>
+        <Description>This is a small self created smarthome project, to learn and try new and advanced things.</Description>
+    </PropertyGroup>
+
+    <!-- Nuget packages -->
+    <ItemGroup Label="Package References">
+        <PackageReference Include="AutoMapper" Version="10.1.1"/>
+        <PackageReference Include="Boxed.AspNetCore" Version="7.0.0"/>
+        <PackageReference Include="HotChocolate" Version="11.2.2"/>
+        <PackageReference Include="HotChocolate.AspNetCore" Version="11.2.2"/>
+        <PackageReference Include="HotChocolate.AspNetCore.Authorization" Version="11.2.2"/>
+        <PackageReference Include="HotChocolate.Data" Version="11.2.2"/>
+        <PackageReference Include="HotChocolate.Subscriptions" Version="11.2.2"/>
+        <PackageReference Include="HotChocolate.Subscriptions.InMemory" Version="11.2.2"/>
+        <PackageReference Include="Microsoft.AspNetCore.Mvc" Version="2.2.0"/>
+        <PackageReference Include="Microsoft.AspNetCore.ResponseCompression" Version="2.2.0"/>
     <PackageReference Include="Microsoft.AspNetCore.SpaServices.Extensions" Version="5.0.5" />
     <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="5.0.5" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="5.0.5">
@@ -60,16 +65,16 @@
     <PackageReference Include="Serilog.Sinks.File" Version="5.0.0-dev-00887" />
     <PackageReference Include="Serilog.Sinks.Map" Version="1.0.2" />
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Application\Application.csproj" />
-    <ProjectReference Include="..\Infrastructure\Infrastructure.csproj" />
-  </ItemGroup>
+    <ItemGroup Label="Project References">
+        <ProjectReference Include="..\Application\Application.csproj"/>
+        <ProjectReference Include="..\Infrastructure\Infrastructure.csproj"/>
+    </ItemGroup>
   <!-- To make sure that in a normal build process the wwwroot folder is also beeing copied to the build folder -->
-  <ItemGroup>
-    <None Include="wwwroot\**">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
+    <ItemGroup Label="(Static) Files">
+        <None Include="wwwroot\**">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+    </ItemGroup>
 
 <!--  <ItemGroup>-->
 <!--    <Content Update="appsettings.Development.json">-->

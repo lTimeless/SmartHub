@@ -1,8 +1,5 @@
 using Boxed.AspNetCore;
-using HotChocolate.AspNetCore;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Diagnostics.HealthChecks;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -16,25 +13,27 @@ namespace SmartHub.WebUI
 {
 	public class Startup
 	{
-		private IConfiguration Configuration { get; }
-		private IHostEnvironment HostEnvironment { get; }
-
 		public Startup(IConfiguration configuration, IHostEnvironment hostEnvironment)
 		{
 			Configuration = configuration;
 			HostEnvironment = hostEnvironment;
 		}
 
+		private IConfiguration Configuration { get; }
+		private IHostEnvironment HostEnvironment { get; }
+
 		// This method gets called by the runtime. Use this method to add services to the container.
-		public void ConfigureServices(IServiceCollection services) =>
+		public void ConfigureServices(IServiceCollection services)
+		{
 			services
 				.AddDatabaseDeveloperPageExceptionFilter()
+				.AddApiLayer(HostEnvironment, Configuration)
 				.AddInfrastructurePersistence(Configuration)
-				.AddApplicationLayer()
-				.AddApiLayer(Configuration);
+				.AddApplicationLayer();
+		}
 
 		/// <summary>
-		/// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+		///     This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
 		/// </summary>
 		/// <param name="app">The application builder.</param>
 		public void Configure(IApplicationBuilder app)
@@ -55,7 +54,7 @@ namespace SmartHub.WebUI
 			app.UseCustomExceptionMiddleware();
 			// Spa/ StaticFiles
 			app.UseHttpsRedirection();
-			app.UseStaticFiles();
+			app.UseStaticFilesWithCacheControl();
 			if (!HostEnvironment.IsDevelopment())
 			{
 				app.UseSpaStaticFiles();
@@ -67,7 +66,7 @@ namespace SmartHub.WebUI
 			// Response Compression
 			app.UseResponseCompression();
 			// Auth
-			app.UseCors("CorsPolicy");
+			app.UseCors(CorsPolicyNames.AllowAny);
 			app.UseAuthentication();
 			app.UseAuthorization();
 			// Endpoints
@@ -84,7 +83,7 @@ namespace SmartHub.WebUI
 					.MapHealthChecks("/status")
 					.RequireCors(CorsPolicyNames.AllowAny);
 				builder
-					.MapHealthChecks("/status/self", new HealthCheckOptions() {Predicate = _ => false})
+					.MapHealthChecks("/status/self", new() {Predicate = _ => false})
 					.RequireCors(CorsPolicyNames.AllowAny);
 			});
 			// Spa

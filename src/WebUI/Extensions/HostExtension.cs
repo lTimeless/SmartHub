@@ -1,15 +1,16 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Boxed.AspNetCore;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Server.Kestrel.Core;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Serilog;
+using SmartHub.Application.Common.Helpers;
+using SmartHub.Domain.Common.Options;
 using SmartHub.Infrastructure.Database;
 using System;
 using System.Reflection;
-using Boxed.AspNetCore;
-using Serilog;
-using Microsoft.Extensions.Configuration;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Server.Kestrel.Core;
-using SmartHub.Domain.Common.Options;
 
 namespace SmartHub.WebUI.Extensions
 {
@@ -33,16 +34,11 @@ namespace SmartHub.WebUI.Extensions
 			return host;
 		}
 
-		/// <summary>
-		/// For more info about the creation of the "CreateDefaultBuilder" see "https://docs.microsoft.com/de-de/aspnet/core/fundamentals/host/web-host?view=aspnetcore-5.0".
-		/// </summary>
-		/// <param name="configurationBuilder">The builder.</param>
-		/// <param name="hostEnvironment">The host environment.</param>
-		/// <param name="args">The cmd args.</param>
-		/// <returns>The builder with added config.</returns>
+		[Obsolete("Not needed because all these settings come from the defaultbuilder")]
 		internal static IConfigurationBuilder AddConfiguration(IConfigurationBuilder configurationBuilder,
-			IHostEnvironment hostEnvironment, string[] args) =>
-			configurationBuilder
+			IHostEnvironment hostEnvironment, string[] args)
+		{
+			return configurationBuilder
 				// Including appsettings is not needed because the defaultBuilder will do that automatically
 				.AddJsonFile("appsettings.json", true, false)
 				.AddJsonFile($"appsettings.{hostEnvironment.EnvironmentName}.json", true, false)
@@ -50,29 +46,28 @@ namespace SmartHub.WebUI.Extensions
 					x => x.AddUserSecrets(Assembly.GetExecutingAssembly(), true, false))
 				.AddEnvironmentVariables()
 				.AddIf(args is not null, x => x.AddCommandLine(args));
+		}
 
 		/// <summary>
-		/// Adds default config to the IWebHostBuilder
+		///     Adds default config to the IWebHostBuilder
 		/// </summary>
 		/// <param name="webHostBuilder">The builder.</param>
-		internal static void ConfigureWebHostBuilder(IWebHostBuilder webHostBuilder) =>
+		internal static void ConfigureWebHostBuilder(IWebHostBuilder webHostBuilder)
+		{
 			webHostBuilder
 				.UseKestrel((builderContext, options) =>
 				{
 					options.AddServerHeader = false;
 					options.Configure(builderContext.Configuration.GetSection(nameof(ApplicationOptions.Kestrel)),
 						false);
-					// var host = IpAddressUtils.ShowLocalIpv4();
-					// webBuilder.UseKestrel(opt =>
-					// {
-					//  opt.ListenLocalhost(5001, conf => conf.UseHttps());
-					//  opt.Listen(host, 5000);
-					//  opt.Listen(host, 5001, conf => conf.UseHttps());
-					//
-					// });
+					var host = IpAddressUtils.ShowLocalIpv4();
+					options.ListenLocalhost(5001, conf => conf.UseHttps());
+					options.Listen(host, 5000);
+					options.Listen(host, 5001, conf => conf.UseHttps());
 				})
 				.ConfigureServices(services =>
 					services.Configure<KestrelServerOptions>(options => options.AllowSynchronousIO = true))
 				.UseStartup<Startup>();
+		}
 	}
 }
