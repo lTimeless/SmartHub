@@ -25,24 +25,23 @@ using System.Threading.Tasks;
 
 namespace SmartHub.Infrastructure
 {
+	/// <summary>
+	///     Adds Auth, Services, Repos, etc from the persistence context into the DI container.
+	/// </summary>
 	public static class ServiceExtension
 	{
 		public static IServiceCollection AddInfrastructurePersistence(this IServiceCollection services,
 			IConfiguration configuration)
 		{
-			// Db contexts
-			services.AddDbContext(configuration);
-			// Authentication and Authorization
-			services.AddAuth(configuration);
-			// Repositories
-			services.AddRepositories();
-			// Services
-			services.AddServices();
-			services.AddBackgroundServices();
-			return services;
+			return services.AddDbContext(configuration)
+				.AddCustomCors()
+				.AddCustomAuthorization(configuration)
+				.AddRepositories()
+				.AddServices()
+				.AddBackgroundServices();
 		}
 
-		private static void AddDbContext(this IServiceCollection services, IConfiguration configuration)
+		private static IServiceCollection AddDbContext(this IServiceCollection services, IConfiguration configuration)
 		{
 			var connectionString = CreateConnectionString(configuration);
 			services.AddDbContext<AppDbContext>(builder =>
@@ -57,7 +56,7 @@ namespace SmartHub.Infrastructure
 						options.MigrationsAssembly(typeof(AppDbContext).Assembly.FullName);
 					});
 			});
-			services.AddScoped<IAppDbContext>(provider => provider.GetService<AppDbContext>());
+			services.AddScoped<IAppDbContext>(provider => provider.GetService<AppDbContext>()!);
 
 			services.AddIdentity<User, Role>(options =>
 				{
@@ -66,20 +65,25 @@ namespace SmartHub.Infrastructure
 				})
 				.AddEntityFrameworkStores<AppDbContext>()
 				.AddDefaultTokenProviders();
+
+			return services;
 		}
 
-		private static void AddAuth(this IServiceCollection services, IConfiguration configuration)
+		private static IServiceCollection AddCustomCors(this IServiceCollection services)
 		{
-			services.AddCors(options =>
+			return services.AddCors(options =>
 			{
-				options.AddPolicy(CorsPolicyNames.AllowAny,
+				options.AddPolicy(AuthConstants.CorsPolicies.AllowAny,
 					builder => builder
 						.WithOrigins("http://localhost:8080", "http://localhost:4200")
 						.AllowAnyMethod()
 						.AllowAnyHeader());
 			});
-			services.Configure<JwtOptions>(configuration.GetSection("JwtSettings"));
+		}
 
+		private static IServiceCollection AddCustomAuthorization(this IServiceCollection services,
+			IConfiguration configuration)
+		{
 			services.AddAuthentication(x =>
 			{
 				x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -88,32 +92,35 @@ namespace SmartHub.Infrastructure
 				x.DefaultSignInScheme = JwtBearerDefaults.AuthenticationScheme;
 			}).AddJwtBearer(options =>
 			{
+				var jwtOptions = configuration.GetSection(nameof(ApplicationOptions.Jwt)).Get<JwtOptions>();
 				options.RequireHttpsMetadata = false;
 				options.SaveToken = true;
 				options.TokenValidationParameters = new()
 				{
 					ValidateIssuerSigningKey = true,
 					IssuerSigningKey = new SymmetricSecurityKey(
-						Encoding.ASCII.GetBytes(TokenUtils.ValidateAndGenerateToken(configuration["JwtSettings:Key"]))),
+						Encoding.ASCII.GetBytes(TokenUtils.ValidateAndGenerateToken(jwtOptions.Key))),
 					ValidateIssuer = true,
 					ValidateAudience = true,
 					//RequireExpirationTime = false,
 					ValidateLifetime = true,
 					ClockSkew = TimeSpan.Zero,
-					ValidIssuer = configuration["JwtSettings:Issuer"],
-					ValidAudience = configuration["JwtSettings:Audience"]
+					ValidIssuer = jwtOptions.Issuer,
+					ValidAudience = jwtOptions.Audience
 				};
 
 				options.SaveToken = true;
-				options.Events = new();
-				options.Events.OnMessageReceived = context =>
+				options.Events = new()
 				{
-					if (context.Request.Cookies.ContainsKey("X-Access-Token"))
+					OnMessageReceived = context =>
 					{
-						context.Token = context.Request.Cookies["X-Access-Token"];
-					}
+						if (context.Request.Cookies.ContainsKey("X-Access-Token"))
+						{
+							context.Token = context.Request.Cookies["X-Access-Token"];
+						}
 
-					return Task.CompletedTask;
+						return Task.CompletedTask;
+					}
 				};
 			}).AddCookie(options =>
 			{
@@ -122,26 +129,25 @@ namespace SmartHub.Infrastructure
 				options.Cookie.IsEssential = true;
 			});
 
-			services.AddAuthorization(options =>
-			{
-				// TODO: will be reImplemented at a later date
-				// options.AddPolicy("AdminPolicy" , policy => policy.AddRequirements(new UserAuthRequirement()));
-			});
+			return services.AddAuthorization(options => options
+				.AddPolicy(AuthConstants.AuthorizationPolicies.Admin, x => x.RequireAuthenticatedUser()));
 		}
 
-		private static void AddRepositories(this IServiceCollection services)
+		private static IServiceCollection AddRepositories(this IServiceCollection services)
 		{
 			services.AddScoped(typeof(IBaseRepositoryAsync<>), typeof(BaseRepositoryAsync<>));
 			services.AddScoped<IUnitOfWork, UnitOfWork>();
 			services.AddScoped<IDbSeeder, DbSeeder>();
+			return services;
 		}
 
-		private static void AddBackgroundServices(this IServiceCollection services)
+		private static IServiceCollection AddBackgroundServices(this IServiceCollection services)
 		{
 			services.AddHostedService<InitializationService>();
+			return services;
 		}
 
-		private static void AddServices(this IServiceCollection services)
+		private static IServiceCollection AddServices(this IServiceCollection services)
 		{
 			// Identity
 			services.AddTransient<IIdentityService, IdentityService>();
@@ -152,6 +158,7 @@ namespace SmartHub.Infrastructure
 			// Http
 			services.AddScoped<IPingService, PingService>();
 			services.AddScoped<IHttpService, HttpService>();
+			return services;
 		}
 
 		#region Helper

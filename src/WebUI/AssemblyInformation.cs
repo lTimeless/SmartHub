@@ -6,7 +6,7 @@ namespace SmartHub.WebUI
 	{
 		public static readonly AssemblyInformation Current = new(typeof(AssemblyInformation).Assembly);
 
-		public AssemblyInformation(Assembly assembly) : this(
+		private AssemblyInformation(Assembly assembly) : this(
 			assembly.GetCustomAttribute<AssemblyProductAttribute>()!.Product,
 			assembly.GetCustomAttribute<AssemblyDescriptionAttribute>()!.Description,
 			assembly.GetCustomAttribute<AssemblyFileVersionAttribute>()!.Version)

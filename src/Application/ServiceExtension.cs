@@ -10,6 +10,9 @@ using System.Reflection;
 
 namespace SmartHub.Application
 {
+	/// <summary>
+	///     Adds Mappers, Services, etc from the application context into the DI container.
+	/// </summary>
 	public static class ServiceExtension
 	{
 		public static IServiceCollection AddApplicationLayer(this IServiceCollection services)

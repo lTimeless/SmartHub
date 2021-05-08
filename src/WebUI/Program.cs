@@ -1,15 +1,16 @@
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Serilog;
 using SmartHub.WebUI.Extensions;
-using SmartHub.WebUI.Serilog;
 using System;
+using System.Reflection;
 using System.Threading.Tasks;
 
 namespace SmartHub.WebUI
 {
-	public static class Program
+	public class Program
 	{
 		public static async Task<int> Main(string[] args)
 		{
@@ -19,12 +20,8 @@ namespace SmartHub.WebUI
 				var host = CreateHostBuilder(args).Build();
 				var hostEnvironment = host.Services.GetRequiredService<IHostEnvironment>();
 				hostEnvironment.ApplicationName = AssemblyInformation.Current.Product;
-
-				// TODO add in initService
-				// Log.Information("Started {Application} in {Environment} mode", hostEnvironment.ApplicationName, hostEnvironment.EnvironmentName);
-
 				await host.MigrateDatabase().RunAsync();
-				// Log.Information("Stopped {Application} in {Environment} mode", hostEnvironment.ApplicationName, hostEnvironment.EnvironmentName);
+				Log.Information("Stopped {Application}", hostEnvironment.ApplicationName);
 				return 0;
 			}
 			catch (Exception ex)
@@ -41,19 +38,29 @@ namespace SmartHub.WebUI
 		private static IHostBuilder CreateHostBuilder(string[] args)
 		{
 			return Host.CreateDefaultBuilder()
-				// .ConfigureAppConfiguration((hostingContext, config) =>
-				// 	HostExtension.AddConfiguration(config, hostingContext.HostingEnvironment, args))
-				.UseSerilog(SerilogExtension.ConfigureReloadableLogger)
-				.UseDefaultServiceProvider(
-					(context, options) =>
+				.ConfigureAppConfiguration((hostingContext, configurationBuilder) =>
+				{
+					var env = hostingContext.HostingEnvironment;
+					configurationBuilder
+						.AddJsonFile("appsettings.json", true, true)
+						.AddJsonFile($"appsettings.{env.EnvironmentName}.json", false, true);
+
+					if (env.IsDevelopment() && !string.IsNullOrEmpty(env.ApplicationName))
 					{
-						var isDevelopment = context.HostingEnvironment.IsDevelopment();
-						options.ValidateScopes = isDevelopment;
-						options.ValidateOnBuild = isDevelopment;
-					})
+						var appAssembly = Assembly.Load(new AssemblyName(env.ApplicationName));
+						if (appAssembly != null)
+						{
+							configurationBuilder.AddUserSecrets(appAssembly, true);
+						}
+					}
+
+					configurationBuilder
+						.AddCommandLine(args)
+						.AddEnvironmentVariables();
+				})
+				.UseSerilog(SerilogExtension.ConfigureReloadableLogger)
 				.ConfigureLogging((_, config) => config.ClearProviders())
-				.ConfigureWebHost(HostExtension.ConfigureWebHostBuilder)
-				.UseConsoleLifetime();
+				.ConfigureWebHost(HostExtension.ConfigureWebHostBuilder);
 		}
 	}
 }

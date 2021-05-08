@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Serilog;
 using SmartHub.Application;
 using SmartHub.Domain.Common.Constants;
 using SmartHub.Infrastructure;
@@ -22,14 +21,17 @@ namespace SmartHub.WebUI
 		private IConfiguration Configuration { get; }
 		private IHostEnvironment HostEnvironment { get; }
 
-		// This method gets called by the runtime. Use this method to add services to the container.
+		/// <summary>
+		///     This method gets called by the runtime. Use this method to add services to the container.
+		/// </summary>
+		/// <param name="services">The Service DI-container.</param>
 		public void ConfigureServices(IServiceCollection services)
 		{
 			services
 				.AddDatabaseDeveloperPageExceptionFilter()
-				.AddApiLayer(HostEnvironment, Configuration)
 				.AddInfrastructurePersistence(Configuration)
-				.AddApplicationLayer();
+				.AddApplicationLayer()
+				.AddApiLayer(HostEnvironment, Configuration);
 		}
 
 		/// <summary>
@@ -44,47 +46,39 @@ namespace SmartHub.WebUI
 				// The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
 				x => x.UseExceptionHandler("/Error").UseHsts()
 			);
-			Log.ForContext(typeof(Startup))
-				.Information("----------------------------------------------------------------");
 			// ForwardedHeaders
-			app.UseForwardedHeaders();
+			// app.UseForwardedHeaders();
 			// Serilog
-			app.UseSerilogRequestLogging();
+			app.UseCustomSerilogRequestLogging();
 			// CustomExceptionMiddleware
 			app.UseCustomExceptionMiddleware();
 			// Spa/ StaticFiles
-			app.UseHttpsRedirection();
-			app.UseStaticFilesWithCacheControl();
-			if (!HostEnvironment.IsDevelopment())
-			{
-				app.UseSpaStaticFiles();
-			}
-
-			// Routing
-			app.UseWebSockets();
-			app.UseRouting();
-			// Response Compression
-			app.UseResponseCompression();
+			app.UseHttpsRedirection()
+				.UseStaticFilesWithCacheControl()
+				.UseIf(!HostEnvironment.IsDevelopment(), x => app.UseCustomSpaFiles());
+			// Routing & ResponseCompression
+			app.UseWebSockets()
+				.UseRouting()
+				.UseResponseCompression();
 			// Auth
-			app.UseCors(CorsPolicyNames.AllowAny);
-			app.UseAuthentication();
-			app.UseAuthorization();
+			app.UseCors(AuthConstants.CorsPolicies.AllowAny)
+				.UseAuthentication()
+				.UseAuthorization();
 			// Endpoints
 			app.UseEndpoints(builder =>
 			{
 				// Controllers
-				builder.MapControllerRoute(
-					"default",
-					"{controller}/{action=Index}/{id?}");
+				builder.MapControllers();
 				// GraphQl
 				builder.MapGraphQL()
 					.WithOptions(new() {Tool = {Enable = HostEnvironment.IsDevelopment()}});
+				// HealthChecks
 				builder
 					.MapHealthChecks("/status")
-					.RequireCors(CorsPolicyNames.AllowAny);
+					.RequireCors(AuthConstants.CorsPolicies.AllowAny);
 				builder
 					.MapHealthChecks("/status/self", new() {Predicate = _ => false})
-					.RequireCors(CorsPolicyNames.AllowAny);
+					.RequireCors(AuthConstants.CorsPolicies.AllowAny);
 			});
 			// Spa
 			app.UseSpa(builder =>

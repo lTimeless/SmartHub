@@ -4,7 +4,6 @@ using HotChocolate.Types;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.ResponseCompression;
-using Microsoft.AspNetCore.Server.Kestrel.Core;
 using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Configuration;
@@ -13,7 +12,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
 using Polly;
 using SmartHub.Application.Common.Interfaces;
-using SmartHub.Domain.Common.Constants;
+using SmartHub.Application.UseCases.Entity.Devices.ExtendObjectType;
 using SmartHub.Domain.Common.Options;
 using SmartHub.WebUI.GraphQl;
 using SmartHub.WebUI.Services;
@@ -29,7 +28,6 @@ namespace SmartHub.WebUI.Extensions
 			IConfiguration configuration)
 		{
 			services.AddCustomCaching()
-				// .AddCustomCors()
 				.AddCustomOptions(configuration)
 				.AddCustomRouting()
 				.AddCustomResponseCompression(configuration)
@@ -41,28 +39,8 @@ namespace SmartHub.WebUI.Extensions
 				.AddControllers()
 				.AddSpaStaticFiles()
 				// .AddSignalR()
-				;
-
-			services.AddCustomAuthorization()
-				.AddCustomGraphQl(configuration);
-
-
-			// GraphQl
-			// services.AddCustomGraphQl();
-			// Controllers
-			// services.AddControllers();
-			// Spa
-			// services.AddSpaStaticFiles();
-			// SignalR
-			// services.AddSignalR();
-			// Http
-			// services.AddHttpContextAccessor();
-			// services.AddHttpClientFactory();
-			// Response compression
-			// services.AddResponseCompression();
-
-			// Identity
-			services.AddScoped<ICurrentUserService, CurrentUserService>();
+				.AddCustomGraphQl(configuration)
+				.AddScoped<ICurrentUserService, CurrentUserService>();
 
 			return services;
 		}
@@ -98,24 +76,23 @@ namespace SmartHub.WebUI.Extensions
 		{
 			return services
 				.ConfigureAndValidateSingleton<ApplicationOptions>(configuration)
+				.ConfigureAndValidateSingleton<JwtOptions>(configuration.GetSection(nameof(ApplicationOptions.Jwt)))
 				.ConfigureAndValidateSingleton<CacheProfileOptions>(
 					configuration.GetSection(nameof(ApplicationOptions.CacheProfiles)))
 				.ConfigureAndValidateSingleton<CompressionOptions>(
 					configuration.GetSection(nameof(ApplicationOptions.Compression)))
-				.ConfigureAndValidateSingleton<ForwardedHeadersOptions>(
-					configuration.GetSection(nameof(ApplicationOptions.ForwardedHeaders)))
-				.Configure<ForwardedHeadersOptions>(options =>
-				{
-					options.KnownNetworks.Clear();
-					options.KnownProxies.Clear();
-				})
+				// .ConfigureAndValidateSingleton<ForwardedHeadersOptions>(
+				// 	configuration.GetSection(nameof(ApplicationOptions.ForwardedHeaders)))
+				// .Configure<ForwardedHeadersOptions>(options =>
+				// {
+				// 	options.KnownNetworks.Clear();
+				// 	options.KnownProxies.Clear();
+				// })
 				.ConfigureAndValidateSingleton<GraphQlOptions>(
-					configuration.GetSection(nameof(ApplicationOptions.GraphQL)))
+					configuration.GetSection(nameof(ApplicationOptions.GraphQl)))
 				.ConfigureAndValidateSingleton<RequestExecutorOptions>(configuration
-					.GetSection(nameof(ApplicationOptions.GraphQL))
-					.GetSection(nameof(GraphQlOptions.Request)))
-				.ConfigureAndValidateSingleton<KestrelServerOptions>(
-					configuration.GetSection(nameof(ApplicationOptions.Kestrel)));
+					.GetSection(nameof(ApplicationOptions.GraphQl))
+					.GetSection(nameof(GraphQlOptions.Request)));
 		}
 
 
@@ -165,19 +142,6 @@ namespace SmartHub.WebUI.Extensions
 				.Services;
 		}
 
-
-		/// <summary>
-		///     Add GraphQL authorization (See https://github.com/graphql-dotnet/authorization).
-		/// </summary>
-		/// <param name="services">The services.</param>
-		/// <returns>The services with caching services added.</returns>
-		private static IServiceCollection AddCustomAuthorization(this IServiceCollection services)
-		{
-			return services.AddAuthorization(options => options
-				.AddPolicy(AuthorizationPolicyNames.Admin, x => x.RequireAuthenticatedUser()));
-		}
-
-
 		private static IServiceCollection AddSpaStaticFiles(this IServiceCollection services)
 		{
 			// In production, the files will be served from this directory
@@ -191,13 +155,13 @@ namespace SmartHub.WebUI.Extensions
 		private static IServiceCollection AddCustomGraphQl(this IServiceCollection services,
 			IConfiguration configuration)
 		{
-			var graphQlOptions = configuration.GetSection(nameof(ApplicationOptions.GraphQL)).Get<GraphQlOptions>();
+			var graphQlOptions = configuration.GetSection(nameof(ApplicationOptions.GraphQl)).Get<GraphQlOptions>();
 			return services.AddGraphQLServer()
 					.AddQueryType<RootQueryType>()
 					.AddMutationType<RootMutationType>()
 					.AddAuthorization()
 					.AddDirectiveType<DeferDirectiveType>()
-					.AddTypes()
+					.AddType<ExtendDeviceType>()
 					// .AddProjectScalarTypes()
 					// .AddProjectDirectives()
 					// .AddProjectDataLoaders()

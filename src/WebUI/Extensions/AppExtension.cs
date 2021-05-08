@@ -1,6 +1,9 @@
 ﻿using Boxed.AspNetCore;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
+using Serilog;
+using Serilog.Events;
 using SmartHub.Domain.Common.Constants;
 using SmartHub.Domain.Common.Options;
 using SmartHub.WebUI.Middleware;
@@ -9,6 +12,9 @@ using System.Linq;
 
 namespace SmartHub.WebUI.Extensions
 {
+	/// <summary>
+	///     Extension methods for the <see cref="IApplicationBuilder" />.
+	/// </summary>
 	public static class AppExtension
 	{
 		public static void UseCustomExceptionMiddleware(this IApplicationBuilder app)
@@ -29,7 +35,8 @@ namespace SmartHub.WebUI.Extensions
 			var cacheProfile = application
 				.ApplicationServices
 				.GetRequiredService<CacheProfileOptions>()
-				.Where(x => string.Equals(x.Key, CacheProfileNames.StaticFiles, StringComparison.Ordinal))
+				.Where(x => string.Equals(x.Key, ApplicationConstants.CacheProfiles.StaticFiles,
+					StringComparison.Ordinal))
 				.Select(x => x.Value)
 				.SingleOrDefault();
 			return application
@@ -44,6 +51,94 @@ namespace SmartHub.WebUI.Extensions
 							}
 						}
 					});
+		}
+
+		/// <summary>
+		///     Uses custom serilog request logging. Adds additional properties to each log.
+		///     See https://github.com/serilog/serilog-aspnetcore.
+		/// </summary>
+		/// <param name="application">The application builder.</param>
+		/// <returns>The application builder with the Serilog middleware configured.</returns>
+		public static IApplicationBuilder UseCustomSerilogRequestLogging(this IApplicationBuilder application)
+		{
+			return application.UseSerilogRequestLogging(
+				options =>
+				{
+					options.EnrichDiagnosticContext = (diagnosticContext, httpContext) =>
+					{
+						var request = httpContext.Request;
+						var response = httpContext.Response;
+						var endpoint = httpContext.GetEndpoint();
+
+						diagnosticContext.Set("Host", request.Host);
+						diagnosticContext.Set("Protocol", request.Protocol);
+						diagnosticContext.Set("Scheme", request.Scheme);
+
+						if (request.QueryString.HasValue)
+						{
+							diagnosticContext.Set("QueryString", request.QueryString.Value);
+						}
+
+						// TODO add these header to the client
+						var clientName = request.Headers["graphql-client-name"];
+						if (clientName.Any())
+						{
+							diagnosticContext.Set("ClientName", clientName);
+						}
+
+						var clientVersion = request.Headers["graphql-client-version"];
+						if (clientVersion.Any())
+						{
+							diagnosticContext.Set("ClientVersion", clientVersion);
+						}
+
+						if (endpoint is not null)
+						{
+							diagnosticContext.Set("EndpointName", endpoint.DisplayName);
+						}
+
+						diagnosticContext.Set("ContentType", response.ContentType);
+					};
+					options.GetLevel = GetLevel;
+
+					static LogEventLevel GetLevel(HttpContext httpContext, double elapsedMilliseconds,
+						Exception exception)
+					{
+						if (exception is null && httpContext.Response.StatusCode <= 499)
+						{
+							if (IsHealthCheckEndpoint(httpContext))
+							{
+								return LogEventLevel.Verbose;
+							}
+
+							return LogEventLevel.Information;
+						}
+
+						return LogEventLevel.Error;
+					}
+
+					static bool IsHealthCheckEndpoint(HttpContext httpContext)
+					{
+						var endpoint = httpContext.GetEndpoint();
+						if (endpoint is not null)
+						{
+							return endpoint.DisplayName == "Health checks";
+						}
+
+						return false;
+					}
+				});
+		}
+
+		/// <summary>
+		///     Use this method to setup the spa static files.
+		/// </summary>
+		/// <param name="application">The application builder.</param>
+		/// <returns></returns>
+		public static IApplicationBuilder UseCustomSpaFiles(this IApplicationBuilder application)
+		{
+			application.UseSpaStaticFiles();
+			return application;
 		}
 	}
 }
