@@ -20,6 +20,8 @@ namespace SmartHub.WebUI
 				var host = CreateHostBuilder(args).Build();
 				var hostEnvironment = host.Services.GetRequiredService<IHostEnvironment>();
 				hostEnvironment.ApplicationName = AssemblyInformation.Current.Product;
+				// TODO hier auch ein paar werte der AppConfig setzen (baseLogpath zb)
+				// zb wie in AssemblyInformation mit einem default ctor
 				await host.MigrateDatabase().RunAsync();
 				Log.Information("Stopped {Application}", hostEnvironment.ApplicationName);
 				return 0;
