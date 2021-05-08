@@ -40,7 +40,8 @@ namespace SmartHub.WebUI.Extensions
 			services.AddServerTiming()
 				.AddControllers()
 				.AddSpaStaticFiles()
-				.AddSignalR();
+				// .AddSignalR()
+				;
 
 			services.AddCustomAuthorization()
 				.AddCustomGraphQl(configuration);
