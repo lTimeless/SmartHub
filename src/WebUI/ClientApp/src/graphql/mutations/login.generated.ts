@@ -11,12 +11,14 @@ export type LoginMutation = {
   __typename?: 'AppMutations';
   login: {
     __typename?: 'IdentityPayload';
+    isAuthenticated: boolean;
     message?: Types.Maybe<string>;
     user?: Types.Maybe<{
       __typename?: 'User';
       id?: Types.Maybe<string>;
       userName?: Types.Maybe<string>;
       isFirstLogin: boolean;
+      roles: Array<string>;
     }>;
     errors?: Types.Maybe<Array<{ __typename?: 'UserError'; message: string; code: Types.AppErrorCodes }>>;
   };
@@ -25,10 +27,12 @@ export type LoginMutation = {
 export const LoginDocument = gql`
   mutation Login($input: LoginInput!) {
     login(input: $input) {
+      isAuthenticated
       user {
         id
         userName
         isFirstLogin
+        roles
       }
       errors {
         message

@@ -1,62 +1,51 @@
 import { AppActionTypes } from '@/store/app/actions';
 import { Roles, Routes } from '@/types/enums';
-import { useStorage } from '@vueuse/core';
 import router from '@/router';
 import { store } from '@/store';
-import { useJwt } from '@vueuse/integrations';
+import { ref } from 'vue';
 
-type TokenPayload = {
-  unique_name: string;
-  jti: string;
-  roles: string[] | string;
-  nbf: number;
-  exp: number;
-  iat: number;
-};
-
-const numberThousand = 1000; // used for tokenpayload "exp date" conversion
-const LOCAL_STORAGE_TOKEN = 'token';
+// TODO rewrite without localstorage usage, token are now httpOnly cookies
+//  save roles, isAuthenticated and userId from response in here
 
 export const useIdentity = () => {
-  const token = useStorage(LOCAL_STORAGE_TOKEN, '');
-  const isAuthenticated = () => token.value !== '';
-  const clearStorage = () => {
-    token.value = '';
+  const roles = ref<string[] | undefined>(undefined);
+  const authenticated = ref<boolean>(false);
+  const userId = ref<string | undefined>(undefined);
+
+  const isAuthenticated = () => authenticated.value !== false;
+
+  const clearIdentity = () => {
+    roles.value = undefined;
+    authenticated.value = false;
+    userId.value = undefined;
   };
 
   const logout = async () => {
-    clearStorage();
+    clearIdentity();
     await router.push(Routes.Login);
     await store.dispatch(AppActionTypes.SET_USER_DROPDOWN, false);
     await store.dispatch(AppActionTypes.RESET_SIDEBAR);
   };
 
   const isRole = () => {
-    if (token.value === '') {
+    if (!roles.value) {
       return Roles.None;
-    }
-    const { payload: tokenPayload } = useJwt<TokenPayload>(token.value);
-    if (tokenPayload.value && Date.now() >= tokenPayload.value.exp * numberThousand) {
-      return Roles.None;
-    }
-    const roles = tokenPayload.value?.roles;
-    if (!roles) {
-      return Roles.None;
-    }
-    if (roles.includes('Admin')) {
+    } else if (roles.value.includes('Admin')) {
       return Roles.Admin;
-    }
-    if (roles.includes('User')) {
+    } else if (roles.value.includes('User')) {
       return Roles.User;
-    }
-    if (roles.includes('Guest')) {
+    } else if (roles.value.includes('Guest')) {
       return Roles.Guest;
+    } else {
+      return Roles.None;
     }
-    return Roles.None;
   };
+
   return {
-    token,
-    clearStorage,
+    roles,
+    authenticated,
+    userId,
+    clearIdentity,
     isAuthenticated,
     isRole,
     logout

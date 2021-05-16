@@ -124,6 +124,8 @@ namespace SmartHub.Infrastructure
 				};
 			}).AddCookie(options =>
 			{
+				options.Cookie.HttpOnly = true;
+				options.Cookie.Expiration = TimeSpan.FromHours(1); // TODO get from appSettings
 				options.Cookie.SameSite = SameSiteMode.Strict;
 				options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
 				options.Cookie.IsEssential = true;

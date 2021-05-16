@@ -5,7 +5,7 @@ export type DeviceStatusFragment = {
   __typename?: 'Device';
   status?: Types.Maybe<{
     __typename?: 'StatusResponseType';
-    lights?: Types.Maybe<Array<Types.Maybe<{ __typename?: 'LightResponseType'; ison: boolean }>>>;
+    lights: Array<{ __typename?: 'LightResponseType'; ison: boolean }>;
   }>;
 };
 

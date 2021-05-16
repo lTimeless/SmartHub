@@ -11,9 +11,14 @@ export type RegistrationMutation = {
   __typename?: 'AppMutations';
   registration: {
     __typename?: 'IdentityPayload';
-    token?: Types.Maybe<string>;
+    isAuthenticated: boolean;
     message?: Types.Maybe<string>;
-    user?: Types.Maybe<{ __typename?: 'User'; id?: Types.Maybe<string>; userName?: Types.Maybe<string> }>;
+    user?: Types.Maybe<{
+      __typename?: 'User';
+      id?: Types.Maybe<string>;
+      userName?: Types.Maybe<string>;
+      roles: Array<string>;
+    }>;
     errors?: Types.Maybe<Array<{ __typename?: 'UserError'; message: string; code: Types.AppErrorCodes }>>;
   };
 };
@@ -21,10 +26,11 @@ export type RegistrationMutation = {
 export const RegistrationDocument = gql`
   mutation Registration($input: RegistrationInput!) {
     registration(input: $input) {
-      token
+      isAuthenticated
       user {
         id
         userName
+        roles
       }
       errors {
         message

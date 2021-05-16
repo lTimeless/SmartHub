@@ -1,9 +1,10 @@
 mutation Registration($input: RegistrationInput!) {
   registration(input: $input) {
-    token
+    isAuthenticated
     user {
       id
       userName
+      roles
     }
     errors {
       message

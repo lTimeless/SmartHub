@@ -18,7 +18,7 @@ export default defineComponent({
   props: {},
   setup() {
     const router = useRouter();
-    const { token } = useIdentity();
+    const { authenticated, userId, roles } = useIdentity();
     const title = 'Login';
     const password = ref('');
     const userName = ref('');
@@ -46,8 +46,9 @@ export default defineComponent({
       loginInput.password = password.value;
       await login({ input: loginInput }).then((res) => {
         if (res.data && res.data.login) {
-          // token.value = res.data.login.token;
-          console.log('here');
+          roles.value = res.data.login.user?.roles;
+          userId.value = res.data.login.user?.id;
+          authenticated.value = res.data.login.isAuthenticated;
           router.push(Routes.Home);
         } else {
           //   errLogin.value = {

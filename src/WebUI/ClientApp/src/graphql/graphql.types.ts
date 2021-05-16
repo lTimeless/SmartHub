@@ -35,7 +35,9 @@ export interface AppConfig {
   deleteXAmountAfterLimit?: Maybe<Scalars['Int']>;
   description?: Maybe<Scalars['String']>;
   downloadServerUrl?: Maybe<Scalars['String']>;
+  firstStartUp: Scalars['Boolean'];
   isActive: Scalars['Boolean'];
+  logFilePath: Scalars['String'];
   logFolderName?: Maybe<Scalars['String']>;
   logFolderPath?: Maybe<Scalars['String']>;
   pluginFolderName?: Maybe<Scalars['String']>;
@@ -382,8 +384,8 @@ export interface GroupSortInput {
 export interface IdentityPayload {
   __typename?: 'IdentityPayload';
   errors?: Maybe<Array<UserError>>;
+  isAuthenticated: Scalars['Boolean'];
   message?: Maybe<Scalars['String']>;
-  token?: Maybe<Scalars['String']>;
   user?: Maybe<User>;
 }
 
@@ -414,7 +416,7 @@ export interface LightResponseType {
   blue: Scalars['Int'];
   green: Scalars['Int'];
   ison: Scalars['Boolean'];
-  mode?: Maybe<Scalars['String']>;
+  mode: Scalars['String'];
   red: Scalars['Int'];
   white: Scalars['Int'];
 }
@@ -506,7 +508,7 @@ export enum SortEnumType {
 
 export interface StatusResponseType {
   __typename?: 'StatusResponseType';
-  lights?: Maybe<Array<Maybe<LightResponseType>>>;
+  lights: Array<LightResponseType>;
 }
 
 export interface StringOperationFilterInput {
@@ -573,6 +575,7 @@ export interface User {
   personName: PersonName;
   phoneNumber?: Maybe<Scalars['String']>;
   phoneNumberConfirmed: Scalars['Boolean'];
+  roles: Array<Scalars['String']>;
   securityStamp?: Maybe<Scalars['String']>;
   twoFactorEnabled: Scalars['Boolean'];
   userName?: Maybe<Scalars['String']>;
