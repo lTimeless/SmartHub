@@ -42,7 +42,7 @@ namespace SmartHub.Application.UseCases.Entity.Users.Mutations
 			userEntity.Email = input.Email ?? userEntity.Email;
 			userEntity.PhoneNumber = input.PhoneNumber ?? userEntity.PhoneNumber;
 
-			var updateUser = await identityService.UpdateUser(userEntity);
+			var updateUser = await identityService.UpdateUserAsync(userEntity);
 			if (!updateUser)
 			{
 				return new(new($"Error: Something went wrong updating user {userEntity.UserName}.", AppErrorCodes.NotUpdated));
@@ -52,14 +52,14 @@ namespace SmartHub.Application.UseCases.Entity.Users.Mutations
 			{
 				return new(userEntity);
 			}
-			var currentUserRoles = await identityService.GetUserRoles(userEntity);
+			var currentUserRoles = await identityService.GetUserRolesAsync(userEntity);
 			// checks if currentRoles List has an entry and if that one is equal to the new role
 			if (!currentUserRoles.Except(new List<string> {input.NewRole}).Any())
 			{
 				return new(userEntity);
 			}
 
-			var changeRole = await identityService.UserChangeRole(userEntity, input.NewRole);
+			var changeRole = await identityService.UserChangeRoleAsync(userEntity, input.NewRole);
 			if (changeRole)
 			{
 				await unitOfWork.SaveAsync();

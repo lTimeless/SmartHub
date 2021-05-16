@@ -3,11 +3,11 @@ import { createClient, dedupExchange, fetchExchange, cacheExchange } from '@urql
 
 export const client = createClient({
   url: '/graphql',
-  fetchOptions: () => {
-    const token = localStorage.getItem('token');
-    return {
-      headers: { authorization: token ? `Bearer ${token}` : '' }
-    };
-  },
+  // fetchOptions: () => {
+  //   const token = localStorage.getItem('token');
+  //   return {
+  //     headers: { authorization: token ? `Bearer ${token}` : '' }
+  //   };
+  // },
   exchanges: [dedupExchange, cacheExchange, fetchExchange]
 });

@@ -46,7 +46,7 @@ namespace SmartHub.Application.UseCases.Init
 				: DefaultNames.AppDescription;
 
 			appConfig.IsActive = true;
-			await appConfigService.UpdateConfig(appConfig);
+			await appConfigService.UpdateConfigAsync(appConfig);
 			logger.Information("SmartHub successfully created.");
 			return new(appConfig, "SmartHub successfully created.");
 		}

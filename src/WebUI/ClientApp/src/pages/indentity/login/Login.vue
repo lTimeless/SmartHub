@@ -45,8 +45,9 @@ export default defineComponent({
       loginInput.userName = userName.value;
       loginInput.password = password.value;
       await login({ input: loginInput }).then((res) => {
-        if (res.data && res.data.login.token) {
-          token.value = res.data.login.token;
+        if (res.data && res.data.login) {
+          // token.value = res.data.login.token;
+          console.log('here');
           router.push(Routes.Home);
         } else {
           //   errLogin.value = {

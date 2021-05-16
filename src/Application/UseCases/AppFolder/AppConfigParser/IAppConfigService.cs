@@ -19,7 +19,7 @@ namespace SmartHub.Application.UseCases.AppFolder.AppConfigParser
 		/// </summary>
 		/// <param name="newAppConfig">The new appConfig class.</param>
 		/// <returns>Returns the completed Task state.</returns>
-		Task UpdateConfig(AppConfig newAppConfig);
+		Task UpdateConfigAsync(AppConfig newAppConfig);
 
 		/// <summary>
 		/// Creates a new Config file or reads an existing one and saves it to the cache.
@@ -30,7 +30,7 @@ namespace SmartHub.Application.UseCases.AppFolder.AppConfigParser
 		/// Saves the current appConfig class the the config-File.
 		/// </summary>
 		/// <returns>The completed Task state.</returns>
-		Task SaveConfig();
+		Task SaveConfigAsync();
 
 		/// <summary>
 		/// Validates the given yaml string/File

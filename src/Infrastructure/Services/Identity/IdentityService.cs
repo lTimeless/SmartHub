@@ -23,7 +23,7 @@ namespace SmartHub.Infrastructure.Services.Identity
 			_tokenGenerator = tokenGenerator;
 			_signInManager = signInManager;
 		}
-		public async Task<bool> CreateUser(User user, string pw, string roleName)
+		public async Task<bool> CreateUserAsync(User user, string pw, string roleName)
         {
         	var roleExist = await _roleManager.RoleExistsAsync(roleName);
         	if (!roleExist)
@@ -41,18 +41,18 @@ namespace SmartHub.Infrastructure.Services.Identity
         	return false;
         }
 
-        public async Task<bool> UpdateUser(User user)
+        public async Task<bool> UpdateUserAsync(User user)
         {
 	        var result = await _userManager.UpdateAsync(user);
 	        return result.Succeeded;
         }
 
-        public async Task<IEnumerable<string>> GetUserRoles(User user)
+        public async Task<IEnumerable<string>> GetUserRolesAsync(User user)
         {
 	        return await _userManager.GetRolesAsync(user);
         }
 
-        public async Task<bool> UserChangeRole(User user, string newRoleName)
+        public async Task<bool> UserChangeRoleAsync(User user, string newRoleName)
         {
         	var exists = await _roleManager.RoleExistsAsync(newRoleName);
             if (!exists)
@@ -70,9 +70,17 @@ namespace SmartHub.Infrastructure.Services.Identity
         	return resultAdd.Succeeded;
         }
 
-        public async Task<string> CreateAuthResponse(User user, List<string>? inputRoles = default)
+        public async Task<string> CreateAccessTokenAsync(User user, List<string>? inputRoles = default)
         {
-	        var roles = inputRoles ?? await GetUserRoles(user);
+	        var roles = inputRoles ?? await GetUserRolesAsync(user);
+	        var claims = await _userManager.GetClaimsAsync(user) as List<Claim>;
+	        return  _tokenGenerator.CreateJwtToken(user, roles.ToList(), claims ?? new List<Claim>());
+        }
+
+        public async Task<string> CreateRefreshTokenAsync(User user, List<string>? inputRoles = default)
+        {
+	        // TODO implement
+	        var roles = inputRoles ?? await GetUserRolesAsync(user);
 	        var claims = await _userManager.GetClaimsAsync(user) as List<Claim>;
 	        return  _tokenGenerator.CreateJwtToken(user, roles.ToList(), claims ?? new List<Claim>());
         }
@@ -83,7 +91,7 @@ namespace SmartHub.Infrastructure.Services.Identity
 	        return result.Succeeded;
         }
 
-        public async Task<bool> UsersExist()
+        public async Task<bool> UsersExistAsync()
         {
 	        return await _userManager.Users.AnyAsync();
         }

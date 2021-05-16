@@ -13,6 +13,7 @@ using Microsoft.Extensions.Options;
 using Polly;
 using SmartHub.Application.Common.Interfaces;
 using SmartHub.Application.UseCases.Entity.Devices.ExtendObjectType;
+using SmartHub.Application.UseCases.Entity.Users;
 using SmartHub.Domain.Common.Options;
 using SmartHub.WebUI.GraphQl;
 using SmartHub.WebUI.Services;
@@ -140,6 +141,14 @@ namespace SmartHub.WebUI.Extensions
 				.AddHealthChecks()
 				// Add health checks for external dependencies here. See https://github.com/Xabaril/AspNetCore.Diagnostics.HealthChecks
 				.Services;
+			//    var connectionString = config.GetConnectionString("sqlConnection");
+			//    services.AddHealthChecks()
+			//        .AddDbContextCheck<AppDbContext>()
+			//        .AddNpgSql(connectionString)
+			//        .AddCheck<ServicesHealthCheck>("All Services")
+			//        ;
+
+			//    services.AddSingleton<ServicesHealthCheck>();
 		}
 
 		private static IServiceCollection AddSpaStaticFiles(this IServiceCollection services)
@@ -166,6 +175,7 @@ namespace SmartHub.WebUI.Extensions
 					// .AddProjectDirectives()
 					// .AddProjectDataLoaders()
 					// .AddProjectTypes()
+					.AddType<UserResolver>()
 					.AddProjections()
 					.AddFiltering()
 					.AddSorting()
@@ -201,18 +211,5 @@ namespace SmartHub.WebUI.Extensions
 				.AddTransientHttpErrorPolicy(x => x.WaitAndRetryAsync(3,
 					retryAttempt => TimeSpan.FromMilliseconds(retryAttempt * 100)));
 		}
-
-		//public static void ConfigureHealthChecks( this IServiceCollection services , IConfiguration config )
-		//{
-		//    var connectionString = config.GetConnectionString("sqlConnection");
-		//    services.AddHealthChecks()
-		//        .AddDbContextCheck<AppDbContext>()
-		//        .AddNpgSql(connectionString)
-		//        .AddCheck<ServicesHealthCheck>("All Services")
-		//        ;
-
-		//    services.AddSingleton<ServicesHealthCheck>();
-
-		//}
 	}
 }

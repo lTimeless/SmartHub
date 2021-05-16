@@ -28,8 +28,8 @@ namespace SmartHub.Application.UseCases.AppFolder.AppConfigParser
 		/// <inheritdoc cref="IAppConfigService.GetConfig"/>
 		public AppConfig GetConfig() => _appConfig;
 
-		/// <inheritdoc cref="IAppConfigService.UpdateConfig(AppConfig)"/>
-		public async Task UpdateConfig(AppConfig newAppConfig)
+		/// <inheritdoc cref="IAppConfigService.UpdateConfigAsync"/>
+		public async Task UpdateConfigAsync(AppConfig newAppConfig)
 		{
 			// update file
 			await UpdateFile(newAppConfig);
@@ -61,8 +61,8 @@ namespace SmartHub.Application.UseCases.AppFolder.AppConfigParser
 		}
 
 
-		/// <inheritdoc cref="IAppConfigService.SaveConfig"/>
-		public async Task SaveConfig()
+		/// <inheritdoc cref="IAppConfigService.SaveConfigAsync"/>
+		public async Task SaveConfigAsync()
 		{
 			// update file
 			await UpdateFile(_appConfig);

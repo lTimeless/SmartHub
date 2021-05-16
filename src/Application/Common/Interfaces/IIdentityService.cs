@@ -21,7 +21,7 @@ namespace SmartHub.Application.Common.Interfaces
 		/// Looks if any user exists in the database.
 		/// </summary>
 		/// <returns>True if any user exist.</returns>
-		Task<bool> UsersExist();
+		Task<bool> UsersExistAsync();
 
 		/// <summary>
 		/// Searches for any user by a userName.
@@ -44,21 +44,21 @@ namespace SmartHub.Application.Common.Interfaces
 		/// <param name="pw">The password.</param>
 		/// <param name="roleName">The role.</param>
 		/// <returns>True if successful.</returns>
-		Task<bool> CreateUser(User user, string pw, string roleName);
+		Task<bool> CreateUserAsync(User user, string pw, string roleName);
 
 		/// <summary>
 		/// Updates a user by the given parameters.
 		/// </summary>
 		/// <param name="user">The changed user.</param>
 		/// <returns>True if successful.</returns>
-		Task<bool> UpdateUser(User user);
+		Task<bool> UpdateUserAsync(User user);
 
 		/// <summary>
 		/// Gets an IEnumerable of roles for the given user.
 		/// </summary>
 		/// <param name="user">The user.</param>
 		/// <returns>IEnumerable of roles.</returns>
-		Task<IEnumerable<string>> GetUserRoles(User user);
+		Task<IEnumerable<string>> GetUserRolesAsync(User user);
 
 		/// <summary>
 		/// Changes the role for the given user.
@@ -66,7 +66,7 @@ namespace SmartHub.Application.Common.Interfaces
 		/// <param name="user">The user.</param>
 		/// <param name="newRoleName">The new role.</param>
 		/// <returns>True if successful.</returns>
-		Task<bool> UserChangeRole(User user, string newRoleName);
+		Task<bool> UserChangeRoleAsync(User user, string newRoleName);
 
 		/// <summary>
 		/// Creates a Tuple with the user and a token.
@@ -74,6 +74,8 @@ namespace SmartHub.Application.Common.Interfaces
 		/// <param name="user">The user.</param>
 		/// <param name="roles">The roles if the user doesn't already have some.</param>
 		/// <returns>Tuple with user and token.</returns>
-		Task<string> CreateAuthResponse(User user, List<string>? roles = default);
+		Task<string> CreateAccessTokenAsync(User user, List<string>? roles = default);
+
+		Task<string> CreateRefreshTokenAsync(User user, List<string>? roles = default);
 	}
 }

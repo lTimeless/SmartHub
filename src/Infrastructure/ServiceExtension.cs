@@ -114,9 +114,9 @@ namespace SmartHub.Infrastructure
 				{
 					OnMessageReceived = context =>
 					{
-						if (context.Request.Cookies.ContainsKey("X-Access-Token"))
+						if (context.Request.Cookies.ContainsKey("SmartHub-Access-Token"))
 						{
-							context.Token = context.Request.Cookies["X-Access-Token"];
+							context.Token = context.Request.Cookies["SmartHub-Access-Token"];
 						}
 
 						return Task.CompletedTask;
@@ -127,6 +127,8 @@ namespace SmartHub.Infrastructure
 				options.Cookie.SameSite = SameSiteMode.Strict;
 				options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
 				options.Cookie.IsEssential = true;
+				options.LoginPath = "/login";
+				// options.LogoutPath = "/logout";
 			});
 
 			return services.AddAuthorization(options => options

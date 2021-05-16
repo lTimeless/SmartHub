@@ -1,4 +1,5 @@
 ﻿using HotChocolate;
+using Microsoft.AspNetCore.Http;
 using SmartHub.Application.Common.Interfaces;
 using SmartHub.Application.Common.Interfaces.Database;
 using SmartHub.Application.UseCases.AppFolder.AppConfigParser;
@@ -16,14 +17,16 @@ namespace SmartHub.Application.UseCases.Identity.Mutations
 		/// <summary>
 		/// Handles the login process.
 		/// </summary>
-		/// <param name="identityService"></param>
+		/// <param name="identityService">The identity service.</param>
 		/// <param name="unitOfWork">The unit of work.</param>
-		/// <param name="configService"></param>
-		/// <param name="input"></param>
+		/// <param name="configService">The service for the smartHub config.</param>
+		/// <param name="accessor">The http context accessor.</param>
+		/// <param name="input">The input values.</param>
 		/// <returns>The payload with requested data.</returns>
 		public async Task<IdentityPayload> Login([Service] IIdentityService identityService,
 			[Service] IUnitOfWork unitOfWork,
 			[Service] IAppConfigService configService,
+			[Service] IHttpContextAccessor accessor,
 			LoginInput input)
 		{
 			if (configService.GetConfig().IsActive is false)
@@ -31,30 +34,34 @@ namespace SmartHub.Application.UseCases.Identity.Mutations
 				return new(new("Error: There is no home created yet.", AppErrorCodes.NoHome));
 			}
 
-			var foundUser = await identityService.FindByNameAsync(input.UserName);
+			var (userName, password) = input;
+			var foundUser = await identityService.FindByNameAsync(userName);
 			if (foundUser == null)
 			{
-				return new(new($"Error: No user found with name - {input.UserName}", AppErrorCodes.NotFound));
+				return new(new($"Error: No user found with name - {userName}", AppErrorCodes.NotFound));
 			}
 
-			var result = await identityService.LoginAsync(foundUser, input.Password);
+			var result = await identityService.LoginAsync(foundUser, password);
 			if (!result)
 			{
-				return new(new($"Error: Wrong password for user - {input.UserName}", AppErrorCodes.NotAuthorized));
+				return new(new($"Error: Wrong password for user - {userName}", AppErrorCodes.NotAuthorized));
 			}
-			var token = await identityService.CreateAuthResponse(foundUser);
+
+			var token = await identityService.CreateAccessTokenAsync(foundUser);
+			accessor.HttpContext.Response.Cookies.Append("SmartHub-Access-Token", token,
+				new() {HttpOnly = true, SameSite = SameSiteMode.Strict});
+			var refreshToken = await identityService.CreateRefreshTokenAsync(foundUser);
+			accessor.HttpContext.Response.Cookies.Append("SmartHub-Refresh-Token", refreshToken,
+				new() {HttpOnly = true, SameSite = SameSiteMode.Strict});
+
 			if (foundUser.IsFirstLogin is false)
 			{
-				return new(foundUser, token);
+				return new(foundUser);
 			}
 
 			foundUser.IsFirstLogin = false;
 			await unitOfWork.SaveAsync();
-
-			// Response.Cookies.Append("X-Access-Token", token, new CookieOptions() { HttpOnly = true, SameSite = SameSiteMode.Strict });
-			// Response.Cookies.Append("X-Username", foundUser.UserName, new CookieOptions() { HttpOnly = true, SameSite = SameSiteMode.Strict });
-			// Response.Cookies.Append("X-Refresh-Token", foundUser.RefreshToken, new CookieOptions() { HttpOnly = true, SameSite = SameSiteMode.Strict });
-			return new(foundUser, token);
+			return new(foundUser);
 		}
 	}
 }

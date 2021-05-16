@@ -35,7 +35,7 @@ namespace SmartHub.Application.UseCases.Init
 		/// <returns>Returns true if there are already users created.</returns>
 		public async Task<bool> UsersExist([Service] IIdentityService identityService)
 		{
-			return await identityService.UsersExist();
+			return await identityService.UsersExistAsync();
 		}
 
 		/// <summary>

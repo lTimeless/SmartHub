@@ -1,6 +1,7 @@
 ﻿using HotChocolate;
 using HotChocolate.AspNetCore.Authorization;
 using HotChocolate.Types;
+using Microsoft.AspNetCore.Http;
 using SmartHub.Application.Common.Interfaces;
 using SmartHub.Domain.Common.Enums;
 using System;
@@ -29,7 +30,8 @@ namespace SmartHub.Application.UseCases.Identity.Queries
 			{
 				return new(new($"Error: Couldn't retrieve profile for username {userName}.", AppErrorCodes.NotFound));
 			}
-			return new(user, null);
+
+			return new(user);
 		}
 	}
 }

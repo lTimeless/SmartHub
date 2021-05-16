@@ -11,7 +11,6 @@ export type LoginMutation = {
   __typename?: 'AppMutations';
   login: {
     __typename?: 'IdentityPayload';
-    token?: Types.Maybe<string>;
     message?: Types.Maybe<string>;
     user?: Types.Maybe<{
       __typename?: 'User';
@@ -26,7 +25,6 @@ export type LoginMutation = {
 export const LoginDocument = gql`
   mutation Login($input: LoginInput!) {
     login(input: $input) {
-      token
       user {
         id
         userName

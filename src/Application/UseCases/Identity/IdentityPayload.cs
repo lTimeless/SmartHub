@@ -5,18 +5,18 @@ namespace SmartHub.Application.UseCases.Identity
 {
 	public class IdentityPayload : Payload
 	{
-		public string? Token { get; }
-		// TODO anstatt user dann vlt role(s) und username/id übergeben
+		public bool IsAuthenticated { get; }
 		public User? User { get; }
 
-		public IdentityPayload(User? user, string? token, string? message = null) : base(message)
+		public IdentityPayload(User? user , string? message = null) : base(message)
 		{
-			Token = token;
 			User = user;
+			IsAuthenticated = true;
 		}
 
-		public IdentityPayload(UserError error) : base(new []{ error })
+		public IdentityPayload(UserError error) : base(new[] {error})
 		{
+			IsAuthenticated = false;
 		}
 	}
 }
