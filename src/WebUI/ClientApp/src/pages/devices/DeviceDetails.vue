@@ -5,7 +5,7 @@ import { useEnumTypes } from '@/hooks/useEnums';
 import { useRoute } from 'vue-router';
 import { useUpdate_DeviceMutation } from '@/graphql/mutations/devices/updateDevice.generated';
 import { UpdateDeviceInput } from '@/graphql/graphql.types';
-import { useGetDeviceByNameQuery } from '@/graphql/queries/devices/GetDeviceByName.generated';
+import { useGetDeviceByNameQuery } from '@/graphql/queries/devices/getDeviceByName.generated';
 
 export default defineComponent({
   name: 'DeviceDetails',

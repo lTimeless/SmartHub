@@ -1,6 +1,6 @@
-<Project>
+<Project >
 
-    <PropertyGroup Label="Build">
+    <PropertyGroup Label="Build" Condition="'$(MSBuildProjectExtension)' != '.dcproj'">
         <LangVersion>latest</LangVersion>
         <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
         <AnalysisLevel>latest</AnalysisLevel>

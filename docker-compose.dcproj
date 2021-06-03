@@ -2,6 +2,7 @@
 <Project ToolsVersion="15.0" Sdk="Microsoft.Docker.Sdk">
   <PropertyGroup Label="Globals">
     <ProjectVersion>2.1</ProjectVersion>
+    <TargetFramework>net5.0</TargetFramework>
     <DockerTargetOS>Linux</DockerTargetOS>
     <ProjectGuid>26357e53-7c60-4778-8280-ac153bfbb840</ProjectGuid>
     <Configurations>Debug;Release</Configurations>

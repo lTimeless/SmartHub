@@ -4,7 +4,7 @@ import AppCard from '@/components/app/AppCards/AppCard.vue';
 import Loader from '@/components/app/AppSpinner.vue';
 import { useRouter } from 'vue-router';
 import GroupCreateModal from './modals/GroupCreateModal.vue';
-import { useGetGroupsQuery } from '@/graphql/queries/groups/GetGroups.generated';
+import { useGetGroupsQuery } from '@/graphql/queries/groups/getGroups.generated';
 
 export default defineComponent({
   name: 'Groups',

@@ -6,7 +6,7 @@ import { useRouter } from 'vue-router';
 import { useIdentity } from '@/hooks/useIdentity';
 import { UpdateUserInput } from '@/graphql/graphql.types';
 import { useUpdateUserMutation } from '@/graphql/mutations/users/updateUser.generated';
-import { useGetMeQuery } from '@/graphql/queries/GetMe.generated';
+import { useGetMeQuery } from '@/graphql/queries/getMe.generated';
 
 export default defineComponent({
   name: 'Me',

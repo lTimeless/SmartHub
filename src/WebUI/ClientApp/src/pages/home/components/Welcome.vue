@@ -22,7 +22,7 @@
 import { defineComponent } from 'vue';
 import { useDateTime } from '@/hooks/useDateTime';
 import { useString } from '@/hooks/useString';
-import { useGetMeQuery } from '@/graphql/queries/GetMe.generated';
+import { useGetMeQuery } from '@/graphql/queries/getMe.generated';
 
 export default defineComponent({
   name: 'Welcome',

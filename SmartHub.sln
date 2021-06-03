@@ -15,8 +15,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{A4808DAE-2F2
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{1F8BFE47-D5C3-43C8-9FD7-4282A18B8900}"
 EndProject
-Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{26357E53-7C60-4778-8280-AC153BFBB840}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Application.Tests", "tests\Application.Tests\Application.Tests.csproj", "{9FDE31F1-709A-4A96-B1B9-56E066D2845E}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Domain.Tests", "tests\Domain.Tests\Domain.Tests.csproj", "{066D1F77-6245-4CF2-BF73-550977AA0267}"
@@ -26,51 +24,51 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebUI.Tests", "tests\WebUI.Tests\WebUI.Tests.csproj", "{160FDC2E-2BD8-4F50-A2A6-DA3BC06BBD8C}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{0FE21873-1AE8-473A-BECE-EB800FD077D1}"
-ProjectSection(SolutionItems) = preProject
-	.editorconfig = .editorconfig
-	.gitattributes = .gitattributes
-	.gitignore = .gitignore
-	LICENSE = LICENSE
-	README.md = README.md
-	.dockerignore = .dockerignore
-	dotnet-tools.json = dotnet-tools.json
-	global.json = global.json
-	Directory.Build.props = Directory.Build.props
-EndProjectSection
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+		.gitattributes = .gitattributes
+		.gitignore = .gitignore
+		LICENSE = LICENSE
+		README.md = README.md
+		.dockerignore = .dockerignore
+		dotnet-tools.json = dotnet-tools.json
+		global.json = global.json
+		Directory.Build.props = Directory.Build.props
+	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "shared", "shared", "{E246359D-6C51-4279-A6EE-899DEF154F8C}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BasePlugin", "src\shared\BasePlugin\BasePlugin.csproj", "{CEE08B52-53E1-4927-9E8B-8B46F2EA833C}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".github", ".github", "{7C8A293F-2A58-452C-8BA3-075161CB3064}"
-ProjectSection(SolutionItems) = preProject
-	.github\CODE_OF_CONDUCT.md = .github\CODE_OF_CONDUCT.md
-	.github\CONTRIBUTING.md = .github\CONTRIBUTING.md
-	.github\dependabot.yml = .github\dependabot.yml
-	.github\PULL_REQUEST_TEMPLATE.md = .github\PULL_REQUEST_TEMPLATE.md
-	.github\release-drafter.yml = .github\release-drafter.yml
-	.github\SECURITY.md = .github\SECURITY.md
-EndProjectSection
+	ProjectSection(SolutionItems) = preProject
+		.github\CODE_OF_CONDUCT.md = .github\CODE_OF_CONDUCT.md
+		.github\CONTRIBUTING.md = .github\CONTRIBUTING.md
+		.github\dependabot.yml = .github\dependabot.yml
+		.github\PULL_REQUEST_TEMPLATE.md = .github\PULL_REQUEST_TEMPLATE.md
+		.github\release-drafter.yml = .github\release-drafter.yml
+		.github\SECURITY.md = .github\SECURITY.md
+	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "workflows", "workflows", "{EB041325-0BDC-4E45-9B5B-3117199B456C}"
-ProjectSection(SolutionItems) = preProject
-	.github\workflows\createRelease.yaml = .github\workflows\createRelease.yaml
-	.github\workflows\dotnet.yaml = .github\workflows\dotnet.yaml
-	.github\workflows\vue.yaml = .github\workflows\vue.yaml
-	.github\workflows\sonar.yaml = .github\workflows\sonar.yaml
-EndProjectSection
+	ProjectSection(SolutionItems) = preProject
+		.github\workflows\createRelease.yaml = .github\workflows\createRelease.yaml
+		.github\workflows\dotnet.yaml = .github\workflows\dotnet.yaml
+		.github\workflows\vue.yaml = .github\workflows\vue.yaml
+		.github\workflows\sonar.yaml = .github\workflows\sonar.yaml
+	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ISSIE_TEMPLATE", "ISSIE_TEMPLATE", "{51E041C2-6534-4EB4-84FC-C1E68797EC3F}"
-ProjectSection(SolutionItems) = preProject
-	.github\ISSUE_TEMPLATE\BUG_REPORT.md = .github\ISSUE_TEMPLATE\BUG_REPORT.md
-	.github\ISSUE_TEMPLATE\FEATURE_REQUEST.md = .github\ISSUE_TEMPLATE\FEATURE_REQUEST.md
-EndProjectSection
+	ProjectSection(SolutionItems) = preProject
+		.github\ISSUE_TEMPLATE\BUG_REPORT.md = .github\ISSUE_TEMPLATE\BUG_REPORT.md
+		.github\ISSUE_TEMPLATE\FEATURE_REQUEST.md = .github\ISSUE_TEMPLATE\FEATURE_REQUEST.md
+	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "PULL_REQUEST_TEMPLATE", "PULL_REQUEST_TEMPLATE", "{2721A316-ABE5-4AAB-B647-1AC5A985C66D}"
-ProjectSection(SolutionItems) = preProject
-	.github\PULL_REQUEST_TEMPLATE\BUG.md = .github\PULL_REQUEST_TEMPLATE\BUG.md
-	.github\PULL_REQUEST_TEMPLATE\FEATURE.md = .github\PULL_REQUEST_TEMPLATE\FEATURE.md
-EndProjectSection
+	ProjectSection(SolutionItems) = preProject
+		.github\PULL_REQUEST_TEMPLATE\BUG.md = .github\PULL_REQUEST_TEMPLATE\BUG.md
+		.github\PULL_REQUEST_TEMPLATE\FEATURE.md = .github\PULL_REQUEST_TEMPLATE\FEATURE.md
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -94,10 +92,6 @@ Global
 		{E666AAB0-95C1-4638-A952-97109BBF2AB4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E666AAB0-95C1-4638-A952-97109BBF2AB4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E666AAB0-95C1-4638-A952-97109BBF2AB4}.Release|Any CPU.Build.0 = Release|Any CPU
-		{26357E53-7C60-4778-8280-AC153BFBB840}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{26357E53-7C60-4778-8280-AC153BFBB840}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{26357E53-7C60-4778-8280-AC153BFBB840}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{26357E53-7C60-4778-8280-AC153BFBB840}.Release|Any CPU.Build.0 = Release|Any CPU
 		{9FDE31F1-709A-4A96-B1B9-56E066D2845E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{9FDE31F1-709A-4A96-B1B9-56E066D2845E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9FDE31F1-709A-4A96-B1B9-56E066D2845E}.Release|Any CPU.ActiveCfg = Release|Any CPU
