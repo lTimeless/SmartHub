@@ -4,18 +4,19 @@ using SmartHub.Application.Common.Interfaces;
 using SmartHub.Application.Common.Interfaces.Database;
 using SmartHub.Application.UseCases.AppFolder.AppConfigParser;
 using SmartHub.Domain.Common.Enums;
+using System;
 using System.Threading.Tasks;
 
 namespace SmartHub.Application.UseCases.Identity.Mutations
 {
 	/// <summary>
-	/// Endpoint for login.
+	///     Endpoint for login.
 	/// </summary>
 	[GraphQLDescription("Endpoint for login.")]
 	public class LoginIdentityMutation
 	{
 		/// <summary>
-		/// Handles the login process.
+		///     Handles the login process.
 		/// </summary>
 		/// <param name="identityService">The identity service.</param>
 		/// <param name="unitOfWork">The unit of work.</param>
@@ -49,10 +50,10 @@ namespace SmartHub.Application.UseCases.Identity.Mutations
 
 			var token = await identityService.CreateAccessTokenAsync(foundUser);
 			accessor.HttpContext.Response.Cookies.Append("SmartHub-Access-Token", token,
-				new() {HttpOnly = true, SameSite = SameSiteMode.Strict});
+				new() {HttpOnly = true, SameSite = SameSiteMode.Strict, MaxAge = TimeSpan.FromHours(1), Secure = true});
 			var refreshToken = await identityService.CreateRefreshTokenAsync(foundUser);
 			accessor.HttpContext.Response.Cookies.Append("SmartHub-Refresh-Token", refreshToken,
-				new() {HttpOnly = true, SameSite = SameSiteMode.Strict});
+				new() {HttpOnly = true, SameSite = SameSiteMode.Strict, MaxAge = TimeSpan.FromDays(7), Secure = true});
 
 			if (foundUser.IsFirstLogin is false)
 			{

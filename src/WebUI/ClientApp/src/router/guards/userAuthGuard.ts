@@ -3,7 +3,7 @@ import { Roles, Routes } from '@/types/enums';
 import { useIdentity } from '@/hooks/useIdentity';
 
 const validateUserRoleToRoute = (to: RouteLocationNormalized, next: NavigationGuardNext) => {
-  const { clearStorage, isRole } = useIdentity();
+  const { clearIdentity, isRole } = useIdentity();
   const role = isRole();
   if (to.matched.some((record) => record.meta.isAdmin)) {
     if (role === Roles.Admin) {
@@ -21,7 +21,7 @@ const validateUserRoleToRoute = (to: RouteLocationNormalized, next: NavigationGu
     if (role === Roles.Admin || role === Roles.User || role === Roles.Guest) {
       next();
     } else {
-      clearStorage();
+      clearIdentity();
       next({ path: Routes.Login });
     }
   }
@@ -33,15 +33,14 @@ export const useRouteAuthGuard = (
   next: NavigationGuardNext
 ): void => {
   if (to.matched.some((record) => record.meta.requiresAuth)) {
-    const { isAuthenticated } = useIdentity();
+    const { isAuthenticated, accessTokenAvailable } = useIdentity();
     // TODO: BE call machen wenn Token noch im storage ist, wenn der noch gültig ist dann weiter zum dashboard wenn nicht dann einen neuen beantragen
     // Refreshtoken!!!!
+    accessTokenAvailable();
     if (!isAuthenticated()) {
       // TODO: create toast with error message "Not authorized"
       next({ path: Routes.Login });
     } else {
-      //  anstatt den authresponse zu nehmen um die rollen zu prüfen
-      // TODO: vlt den token nehmen ans BE schicken- prüfen lassen ob es noch valide ist und darauf dann userberechtigungen/authresponse bekommen
       validateUserRoleToRoute(to, next);
     }
   } else {

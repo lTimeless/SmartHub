@@ -1,3 +1,31 @@
+<script lang="ts">
+import { defineComponent, ref } from 'vue';
+import { Roles } from '@/types/enums';
+import { useIdentity } from '@/hooks/useIdentity';
+import AdminCardsRow from './components/AdminCardsRow.vue';
+import CardsRow from './components/CardsRow.vue';
+import Welcome from './components/Welcome.vue';
+
+export default defineComponent({
+  name: 'Home',
+  components: {
+    AdminCardsRow,
+    CardsRow,
+    Welcome
+  },
+  setup() {
+    const expandAdminRow = ref(false);
+    const { isRole } = useIdentity();
+    console.log(isRole());
+    return {
+      isRole,
+      adminRole: Roles.Admin,
+      expandAdminRow
+    };
+  }
+});
+</script>
+
 <template>
   <div class="flex flex-col justify-around h-full mt-4">
     <div class="h-1/2">
@@ -46,30 +74,3 @@
     </div>
   </div>
 </template>
-
-<script lang="ts">
-import { defineComponent, ref } from 'vue';
-import { Roles } from '@/types/enums';
-import { useIdentity } from '@/hooks/useIdentity';
-import AdminCardsRow from './components/AdminCardsRow.vue';
-import CardsRow from './components/CardsRow.vue';
-import Welcome from './components/Welcome.vue';
-
-export default defineComponent({
-  name: 'Home',
-  components: {
-    AdminCardsRow,
-    CardsRow,
-    Welcome
-  },
-  setup() {
-    const expandAdminRow = ref(false);
-
-    return {
-      ...useIdentity(),
-      adminRole: Roles.Admin,
-      expandAdminRow
-    };
-  }
-});
-</script>

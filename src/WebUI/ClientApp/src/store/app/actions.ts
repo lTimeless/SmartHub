@@ -39,6 +39,7 @@ export const actions: ActionTree<AppState, RootState> = {
   async [AppActionTypes.SET_MINI_SIDEBAR]({ commit }, payload): Promise<void> {
     commit(AppMutationTypes.SET_MINI_SIDEBAR, payload);
   },
+  // TODO do i need to reset it manually ?
   async [AppActionTypes.RESET_SIDEBAR]({ commit }): Promise<void> {
     commit(AppMutationTypes.SET_MINI_SIDEBAR, true);
     commit(AppMutationTypes.SET_MOBILE_SIDEBAR, false);

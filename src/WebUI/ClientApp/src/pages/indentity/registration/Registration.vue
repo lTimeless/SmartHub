@@ -2,7 +2,7 @@
 import { defineComponent, onMounted, ref, reactive, computed } from 'vue';
 import { useRouter } from 'vue-router';
 import Loader from '@/components/app/AppSpinner.vue';
-import { Routes } from '@/types/enums';
+import { Roles, Routes } from '@/types/enums';
 import AppCard from '@/components/app/AppCards/AppCard.vue';
 import { useIdentity } from '@/hooks/useIdentity';
 import { RegistrationInput } from '@/graphql/graphql.types';
@@ -17,7 +17,7 @@ export default defineComponent({
   props: {},
   setup() {
     const router = useRouter();
-    const { token, clearStorage } = useIdentity();
+    const { setIdentity, clearIdentity } = useIdentity();
     const title = 'Create account';
     const passwordStrengthText = ref('');
     const togglePassword = ref(false);
@@ -25,11 +25,11 @@ export default defineComponent({
     const registrationRequest: RegistrationInput = reactive({
       userName: '',
       password: '',
-      role: 'User' // default role, can only be changed after registration
+      role: Roles.User // default role, can be changed after registration
     });
 
     onMounted(() => {
-      clearStorage();
+      clearIdentity();
     });
     const {
       executeMutation: createAccount,
@@ -61,9 +61,9 @@ export default defineComponent({
     };
 
     const onRegistrationClick = async () => {
-      await createAccount({ input: registrationRequest }).then((res) => {
-        if (res.data && res.data.registration.token) {
-          token.value = res.data.registration.token;
+      await createAccount({ input: registrationRequest }).then(({ data }) => {
+        if (data && data.registration.token) {
+          setIdentity(data.login.user?.roles, data.login.user?.id, data.login.isAuthenticated);
           router.push(Routes.Home);
           return Promise.resolve();
         }

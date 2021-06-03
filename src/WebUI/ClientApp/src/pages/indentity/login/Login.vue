@@ -18,7 +18,7 @@ export default defineComponent({
   props: {},
   setup() {
     const router = useRouter();
-    const { authenticated, userId, roles } = useIdentity();
+    const { setIdentity } = useIdentity();
     const title = 'Login';
     const password = ref('');
     const userName = ref('');
@@ -44,13 +44,12 @@ export default defineComponent({
     const onLoginClick = async () => {
       loginInput.userName = userName.value;
       loginInput.password = password.value;
-      await login({ input: loginInput }).then((res) => {
-        if (res.data && res.data.login) {
-          roles.value = res.data.login.user?.roles;
-          userId.value = res.data.login.user?.id;
-          authenticated.value = res.data.login.isAuthenticated;
+      await login({ input: loginInput }).then(({ data }) => {
+        if (data && data.login) {
+          setIdentity(data.login.user?.roles, data.login.user?.id, data.login.isAuthenticated);
           router.push(Routes.Home);
         } else {
+          // TODO
           //   errLogin.value = {
           //     graphQLErrors: [
           //       { name: res.data.login.errors[0].code, message: res.data.login.errors[0].message,   }

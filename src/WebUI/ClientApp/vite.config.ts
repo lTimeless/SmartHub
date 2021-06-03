@@ -35,7 +35,7 @@ export default defineConfig({
   },
   plugins: [
     vue(),
-    svgLoader(),
+    // svgLoader(),
     tsconfigPaths(),
     ViteFonts({
       google: {
