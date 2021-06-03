@@ -7,7 +7,7 @@ import AppIcon from '@/components/icons/AppIcon.vue';
 import { useString } from '@/hooks/useString';
 import AppDeviceControl from '../../components/controls/AppDeviceControl.vue';
 import DeviceCreateModal from './modals/DeviceCreateModal.vue';
-import { useGetDevicesQuery } from '@/graphql/queries/devices/GetDevices.generated';
+import { useGetDevicesQuery } from '@/graphql/queries/devices/getDevices.generated';
 
 export default defineComponent({
   name: 'Devices',
