@@ -57,6 +57,7 @@ ProjectSection(SolutionItems) = preProject
 	.github\workflows\createRelease.yaml = .github\workflows\createRelease.yaml
 	.github\workflows\dotnet.yaml = .github\workflows\dotnet.yaml
 	.github\workflows\vue.yaml = .github\workflows\vue.yaml
+	.github\workflows\sonar.yaml = .github\workflows\sonar.yaml
 EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ISSIE_TEMPLATE", "ISSIE_TEMPLATE", "{51E041C2-6534-4EB4-84FC-C1E68797EC3F}"

@@ -3,37 +3,37 @@ name: .Net5 CI
 on:
   workflow_dispatch:
   push:
-    branches: [ master, develop]
+    branches: [ master, develop ]
     paths:
       - 'src/**'
       - '!src/WebUI/ClientApp/**'
       - '!**.md'
   pull_request:
-    branches: [ master, develop]
+    branches: [ master, develop ]
     paths:
       - 'src/**'
 
 env:
   solution: 'SmartHub.sln'
-  
+
 jobs:
   Restore_Build_Test:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
-    - name: Setup .NET 5
-      uses: actions/setup-dotnet@v1
-      with:
-        dotnet-version: 5.0.100
+      - uses: actions/checkout@v2
+      - name: Setup .NET 5
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: 5.0.100
 
-    - name: Use latest Node.js version
-      uses: actions/setup-node@master
+      - name: Use latest Node.js version
+        uses: actions/setup-node@master
 
-    - name: Install dependencies
-      run: dotnet restore $solution
-      
-    - name: Build with dotnet
-      run: dotnet build $solution --configuration Release --no-restore
-      
-    - name: Run Test
-      run: dotnet test $solution --no-restore --verbosity normal
+      - name: Install dependencies
+        run: dotnet restore $solution
+
+      - name: Build with dotnet
+        run: dotnet build $solution --configuration Release --no-restore
+
+      - name: Run Test
+        run: dotnet test $solution --no-restore --verbosity normal
