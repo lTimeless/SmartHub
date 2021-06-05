@@ -6,7 +6,6 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
-using SmartHub.Application.Common.Helpers;
 using SmartHub.Application.Common.Interfaces;
 using SmartHub.Application.Common.Interfaces.Database;
 using SmartHub.Domain.Common.Constants;
@@ -56,7 +55,7 @@ namespace SmartHub.Infrastructure
 						options.MigrationsAssembly(typeof(AppDbContext).Assembly.FullName);
 					});
 			});
-			services.AddScoped<IAppDbContext>(provider => provider.GetService<AppDbContext>()!);
+			// services.AddScoped<IAppDbContext>(provider => provider.GetService<AppDbContext>()!);
 
 			services.AddIdentity<User, Role>(options =>
 				{
@@ -84,6 +83,23 @@ namespace SmartHub.Infrastructure
 		private static IServiceCollection AddCustomAuthorization(this IServiceCollection services,
 			IConfiguration configuration)
 		{
+			var jwtOptions = configuration.GetSection(nameof(ApplicationOptions.Jwt)).Get<JwtOptions>();
+
+			var tokenValidationParameters = new TokenValidationParameters
+			{
+				ValidateIssuerSigningKey = true,
+				// TokenUtils.ValidateAndGenerateToken(
+				IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(jwtOptions.Key)),
+				ValidateIssuer = true,
+				ValidateAudience = true,
+				RequireExpirationTime = false,
+				ValidateLifetime = true,
+				// ClockSkew = TimeSpan.Zero,
+				ValidIssuer = jwtOptions.Issuer,
+				ValidAudience = jwtOptions.Audience
+			};
+			services.AddSingleton(tokenValidationParameters);
+
 			services.AddAuthentication(x =>
 			{
 				x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -92,23 +108,9 @@ namespace SmartHub.Infrastructure
 				x.DefaultSignInScheme = JwtBearerDefaults.AuthenticationScheme;
 			}).AddJwtBearer(options =>
 			{
-				var jwtOptions = configuration.GetSection(nameof(ApplicationOptions.Jwt)).Get<JwtOptions>();
 				options.RequireHttpsMetadata = false;
 				options.SaveToken = true;
-				options.TokenValidationParameters = new()
-				{
-					ValidateIssuerSigningKey = true,
-					IssuerSigningKey = new SymmetricSecurityKey(
-						Encoding.ASCII.GetBytes(TokenUtils.ValidateAndGenerateToken(jwtOptions.Key))),
-					ValidateIssuer = true,
-					ValidateAudience = true,
-					//RequireExpirationTime = false,
-					ValidateLifetime = true,
-					ClockSkew = TimeSpan.Zero,
-					ValidIssuer = jwtOptions.Issuer,
-					ValidAudience = jwtOptions.Audience
-				};
-
+				options.TokenValidationParameters = tokenValidationParameters;
 				options.SaveToken = true;
 				options.Events = new()
 				{
@@ -154,8 +156,7 @@ namespace SmartHub.Infrastructure
 		private static IServiceCollection AddServices(this IServiceCollection services)
 		{
 			// Identity
-			services.AddTransient<IIdentityService, IdentityService>();
-			services.AddTransient<TokenGenerator>();
+			services.AddScoped<IIdentityService, IdentityService>();
 			// Directory
 			services.AddTransient<IFileService, FileService>();
 			services.AddTransient<IDirectoryService, DirectoryService>();

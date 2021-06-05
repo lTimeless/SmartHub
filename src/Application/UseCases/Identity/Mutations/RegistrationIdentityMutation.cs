@@ -4,18 +4,19 @@ using SmartHub.Application.Common.Interfaces;
 using SmartHub.Application.Common.Interfaces.Database;
 using SmartHub.Domain.Common.Enums;
 using SmartHub.Domain.Entities;
+using System;
 using System.Threading.Tasks;
 
 namespace SmartHub.Application.UseCases.Identity.Mutations
 {
 	/// <summary>
-	/// Endpoint for registration.
+	///     Endpoint for registration.
 	/// </summary>
 	[GraphQLDescription("Endpoint for registration.")]
 	public class RegistrationIdentityMutation
 	{
 		/// <summary>
-		/// Handles the registration process.
+		///     Handles the registration process.
 		/// </summary>
 		/// <param name="identityService">The identity service.</param>
 		/// <param name="unitOfWork">The unit of work.</param>
@@ -44,11 +45,10 @@ namespace SmartHub.Application.UseCases.Identity.Mutations
 
 			await unitOfWork.SaveAsync();
 
-			var token = await identityService.CreateAccessTokenAsync(newUser, new() {role});
+			var (token, refreshToken) = await identityService.CreateTokensAsync(newUser, new() {role});
 			accessor.HttpContext.Response.Cookies.Append("SmartHub-Access-Token", token,
 				new() {HttpOnly = true, SameSite = SameSiteMode.Strict});
-			var refreshToken = await identityService.CreateRefreshTokenAsync(newUser);
-			accessor.HttpContext.Response.Cookies.Append("SmartHub-Refresh-Token", refreshToken,
+			accessor.HttpContext.Response.Cookies.Append("SmartHub-Refresh-Token", refreshToken.Token,
 				new() {HttpOnly = true, SameSite = SameSiteMode.Strict});
 
 			return new(newUser);

@@ -17,9 +17,9 @@ namespace SmartHub.Application.Common.Interfaces
 		string? GetCurrentUsername();
 
 		/// <summary>
-		///     Gets the accessToken and the refreshToken or null from the cookies.
+		///     Gets the accessToken(jwt) and the refreshToken from the cookies.
 		/// </summary>
-		/// <returns>If the refreshToken is null than it returns null.</returns>
-		Tuple<string?, string>? GetTokenCookies();
+		/// <returns>If the one of them is null than it returns null.</returns>
+		Tuple<string, string>? GetTokenCookies();
 	}
 }

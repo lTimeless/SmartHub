@@ -11,6 +11,7 @@ namespace SmartHub.Application.Common.Interfaces.Database
 		public DbSet<Device> Devices { get; set; }
 		public DbSet<Plugin> Plugins { get; set; }
 		public DbSet<Activity> Activities { get; set; }
+		public DbSet<RefreshToken> RefreshTokens { get; set; }
 		Task<int> SaveChangesAsync(CancellationToken cancellationToken = new());
 	}
 }

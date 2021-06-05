@@ -1,4 +1,4 @@
-version: '3.4'
+version: '3.8'
 
 services:
 # Elastic and Kibana
@@ -13,7 +13,7 @@ services:
 # PostgreSQL database
   postgres_database:
     image: postgres:alpine
-#    restart: unless-stopped
+    restart: "no"
 
 
 # PostgreSQL pgAdmin Ui

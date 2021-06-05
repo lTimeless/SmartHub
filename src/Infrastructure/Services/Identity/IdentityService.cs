@@ -1,28 +1,43 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
+using Microsoft.IdentityModel.Tokens;
+using SmartHub.Application.Common.Exceptions;
 using SmartHub.Application.Common.Interfaces;
+using SmartHub.Application.Common.Interfaces.Database;
+using SmartHub.Domain.Common.Options;
 using SmartHub.Domain.Entities;
+using System;
 using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
+using System.Security.Cryptography;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace SmartHub.Infrastructure.Services.Identity
 {
 	public class IdentityService : IIdentityService
 	{
+		private readonly JwtOptions _jwtOptions;
+		private readonly IBaseRepositoryAsync<RefreshToken> _refreshTokenRepository;
 		private readonly RoleManager<Role> _roleManager;
 		private readonly SignInManager<User> _signInManager;
-		private readonly TokenGenerator _tokenGenerator;
+		private readonly TokenValidationParameters _tokenValidationParameters;
 		private readonly UserManager<User> _userManager;
 
 		public IdentityService(UserManager<User> userManager, RoleManager<Role> roleManager,
-			TokenGenerator tokenGenerator, SignInManager<User> signInManager)
+			SignInManager<User> signInManager,
+			TokenValidationParameters tokenValidationParameters, IOptions<JwtOptions> jwtSettings,
+			IBaseRepositoryAsync<RefreshToken> refreshTokenRepository)
 		{
 			_userManager = userManager;
 			_roleManager = roleManager;
-			_tokenGenerator = tokenGenerator;
 			_signInManager = signInManager;
+			_tokenValidationParameters = tokenValidationParameters;
+			_refreshTokenRepository = refreshTokenRepository;
+			_jwtOptions = jwtSettings.Value;
 		}
 
 		public async Task<bool> CreateUserAsync(User user, string pw, string roleName)
@@ -76,25 +91,81 @@ namespace SmartHub.Infrastructure.Services.Identity
 			return resultAdd.Succeeded;
 		}
 
-		public async Task<string> CreateAccessTokenAsync(User user, List<string>? inputRoles = default)
-		{
-			var roles = inputRoles ?? await GetUserRolesAsync(user);
-			var claims = await _userManager.GetClaimsAsync(user) as List<Claim>;
-			return _tokenGenerator.CreateJwtToken(user, roles.ToList(), claims ?? new List<Claim>());
-		}
-
-		public async Task<string> CreateRefreshTokenAsync(User user, List<string>? inputRoles = default)
-		{
-			// TODO implement
-			var roles = inputRoles ?? await GetUserRolesAsync(user);
-			var claims = await _userManager.GetClaimsAsync(user) as List<Claim>;
-			return _tokenGenerator.CreateJwtToken(user, roles.ToList(), claims ?? new List<Claim>());
-		}
-
 		public async Task<bool> LoginAsync(User user, string password)
 		{
 			var result = await _signInManager.CheckPasswordSignInAsync(user, password, false);
 			return result.Succeeded;
+		}
+
+		public async Task<Tuple<string, RefreshToken>> CreateTokensAsync(User user, List<string>? inputRoles = default,
+			RefreshToken? storedRefreshToken = default)
+		{
+			var roles = inputRoles ?? await GetUserRolesAsync(user);
+			var claims = await _userManager.GetClaimsAsync(user) as List<Claim>;
+			if (user == null)
+			{
+				throw new SmartHubException("Error: The given user is null");
+			}
+
+			claims ??= new();
+			claims.AddRange(new List<Claim>
+			{
+				new(ClaimTypes.Name, user.UserName),
+				new(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()) // jwt Id
+			});
+			claims.AddRange(roles.Select(role => new Claim("roles", role)));
+
+			var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtOptions.Key));
+
+			var tokenDescriptor = new SecurityTokenDescriptor
+			{
+				Audience = _jwtOptions.Audience,
+				Issuer = _jwtOptions.Issuer,
+				Subject = new(claims),
+				IssuedAt = DateTime.Now,
+				// Expires = DateTime.Now.AddMinutes(_jwtOptions.LifeTimeInMinutes),
+				Expires = DateTime.Now.AddSeconds(10),
+				SigningCredentials = new(key, SecurityAlgorithms.HmacSha256Signature)
+			};
+
+			var tokenHandler = new JwtSecurityTokenHandler();
+			var token = tokenHandler.CreateToken(tokenDescriptor);
+			var jwtToken = tokenHandler.WriteToken(token);
+
+			if (storedRefreshToken == null)
+			{
+				var foundByUserId = await _refreshTokenRepository.FindByAsync(x => x.UserId == user.Id);
+
+				if (foundByUserId is not null && foundByUserId.Used)
+				{
+					await _refreshTokenRepository.RemoveAsync(foundByUserId);
+					foundByUserId = null;
+				}
+
+				if (foundByUserId is not null)
+				{
+					foundByUserId.JwtId = token.Id;
+					return new(jwtToken, foundByUserId);
+				}
+
+				storedRefreshToken = new()
+				{
+					Token = GenerateToken(),
+					JwtId = token.Id,
+					User = user,
+					Used = false,
+					CreatedAt = DateTime.Now,
+					ExpirationDate = DateTime.Now.AddMonths(6)
+				};
+				await _refreshTokenRepository.AddAsync(storedRefreshToken);
+			}
+			else
+			{
+				storedRefreshToken.JwtId = token.Id;
+				storedRefreshToken.Used = true;
+			}
+
+			return new(jwtToken, storedRefreshToken);
 		}
 
 		public async Task<bool> UsersExistAsync()
@@ -112,10 +183,100 @@ namespace SmartHub.Infrastructure.Services.Identity
 			return await _userManager.FindByIdAsync(userId);
 		}
 
-		public async Task<User> LoginByTokens()
+		public async Task<Tuple<string, string>?> RefreshTokensAsync(string jwt, string refreshToken)
 		{
-			// TODO hier eine function welche den user auto login macht, wenn mindestens der refreshToken in den cookies ist
-			return null;
+			var validatedToken = GetPrincipalFromToken(jwt);
+			// null = not valid, somehow broken jwt (doesn't include expire check)
+
+			// Not valid jwt
+			if (validatedToken == null)
+			{
+				return null;
+			}
+
+			var jwtExpiryDateUnix =
+				long.Parse(validatedToken.Claims.Single(x => x.Type == JwtRegisteredClaimNames.Exp).Value);
+			var jwtExpiryDateUtc = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc)
+				.AddSeconds(jwtExpiryDateUnix);
+
+			// JwtToken is not yet expired = return given tokens
+			if (jwtExpiryDateUtc > DateTime.UtcNow)
+			{
+				return new(jwt, refreshToken);
+			}
+
+			var jti = validatedToken.Claims.Single(x => x.Type == JwtRegisteredClaimNames.Jti).Value;
+
+			var storedRefreshToken = await _refreshTokenRepository.FindByAsync(x => x.Token == refreshToken);
+
+			// No refreshToken exist
+			if (storedRefreshToken is null)
+			{
+				return null;
+			}
+
+			// RefreshToken is expired
+			if (DateTime.UtcNow > storedRefreshToken.ExpirationDate)
+			{
+				return null;
+			}
+
+			// RefreshToken is invalidated
+			if (storedRefreshToken.Invalidated)
+			{
+				return null;
+			}
+
+			// RefreshToken has been used = user needs to login again
+			if (storedRefreshToken.Used)
+			{
+				return null;
+			}
+
+			// RefreshToken does not match to the jwt
+			if (storedRefreshToken.JwtId != jti)
+			{
+				return null;
+			}
+
+			// Create new tokens for user
+			var (newJwt, newRefreshToken) =
+				await CreateTokensAsync(storedRefreshToken.User, default, storedRefreshToken);
+
+			// TODO Maybe use this build in method
+			// await _userManager.GenerateUserTokenAsync(user, "Bearer", "accessToken");
+			return new(newJwt, newRefreshToken.Token);
+		}
+
+		private ClaimsPrincipal? GetPrincipalFromToken(string token)
+		{
+			var tokenHandler = new JwtSecurityTokenHandler();
+			try
+			{
+				_tokenValidationParameters.ValidateLifetime = false;
+				var principal = tokenHandler.ValidateToken(token, _tokenValidationParameters, out var validatedToken);
+				_tokenValidationParameters.ValidateLifetime = true;
+				return !IsJwtWithValidSecurityAlg(validatedToken) ? null : principal;
+			}
+			catch (Exception e)
+			{
+				return null;
+			}
+		}
+
+		private bool IsJwtWithValidSecurityAlg(SecurityToken token)
+		{
+			return token is JwtSecurityToken securityToken &&
+			       securityToken.Header.Alg.Equals(SecurityAlgorithms.HmacSha256,
+				       StringComparison.InvariantCultureIgnoreCase);
+		}
+
+		private static string GenerateToken(int size = 32)
+		{
+			var randomNumber = new byte[size];
+			using var rng = RandomNumberGenerator.Create();
+			rng.GetBytes(randomNumber);
+			return Convert.ToBase64String(randomNumber);
 		}
 	}
 }

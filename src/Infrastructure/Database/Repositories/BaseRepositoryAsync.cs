@@ -1,15 +1,14 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using SmartHub.Application.Common.Interfaces.Database;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
-using SmartHub.Application.Common.Interfaces.Database;
-using SmartHub.Domain.Entities;
 
 namespace SmartHub.Infrastructure.Database.Repositories
 {
-	public class BaseRepositoryAsync<T> : IBaseRepositoryAsync<T> where T : BaseEntity
+	public class BaseRepositoryAsync<T> : IBaseRepositoryAsync<T> where T : class
 	{
 		private readonly DbSet<T> _entities;
 
@@ -38,7 +37,8 @@ namespace SmartHub.Infrastructure.Database.Repositories
 		{
 			return await _entities.FindAsync(id);
 		}
-		public IQueryable<T> FindAllAsync(Expression<Func<T, bool>> expression)
+
+		public IQueryable<T> FindAllBy(Expression<Func<T, bool>> expression)
 		{
 			return _entities.Where(expression);
 		}
@@ -81,6 +81,7 @@ namespace SmartHub.Infrastructure.Database.Repositories
 		#endregion Add
 
 		#region Remove
+
 		public async Task<bool> RemoveAsync(T entity)
 		{
 			try

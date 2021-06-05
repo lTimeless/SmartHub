@@ -24,10 +24,12 @@ namespace SmartHub.Application.UseCases.Identity.Mutations
 		/// <param name="accessor">The http context accessor.</param>
 		/// <param name="input">The input values.</param>
 		/// <returns>The payload with requested data.</returns>
-		public async Task<IdentityPayload> Login([Service] IIdentityService identityService,
+		[GraphQLName("login")]
+		public async Task<IdentityPayload> LoginAsync([Service] IIdentityService identityService,
 			[Service] IUnitOfWork unitOfWork,
 			[Service] IAppConfigService configService,
 			[Service] IHttpContextAccessor accessor,
+			[Service] ICurrentUserService currentUserService,
 			LoginInput input)
 		{
 			if (configService.GetConfig().IsActive is false)
@@ -48,21 +50,48 @@ namespace SmartHub.Application.UseCases.Identity.Mutations
 				return new(new($"Error: Wrong password for user - {userName}", AppErrorCodes.NotAuthorized));
 			}
 
-			var token = await identityService.CreateAccessTokenAsync(foundUser);
+			var (token, refreshToken) = await identityService.CreateTokensAsync(foundUser);
 			accessor.HttpContext.Response.Cookies.Append("SmartHub-Access-Token", token,
 				new() {HttpOnly = true, SameSite = SameSiteMode.Strict, MaxAge = TimeSpan.FromHours(1), Secure = true});
-			var refreshToken = await identityService.CreateRefreshTokenAsync(foundUser);
-			accessor.HttpContext.Response.Cookies.Append("SmartHub-Refresh-Token", refreshToken,
+			accessor.HttpContext.Response.Cookies.Append("SmartHub-Refresh-Token", refreshToken.Token,
 				new() {HttpOnly = true, SameSite = SameSiteMode.Strict, MaxAge = TimeSpan.FromDays(7), Secure = true});
 
 			if (foundUser.IsFirstLogin is false)
 			{
+				await unitOfWork.SaveAsync();
 				return new(foundUser);
 			}
 
 			foundUser.IsFirstLogin = false;
 			await unitOfWork.SaveAsync();
 			return new(foundUser);
+		}
+
+		[GraphQLName("refreshTokens")]
+		public async Task<IdentityPayload> RefreshTokensAsync([Service] IIdentityService identityService,
+			[Service] IUnitOfWork unitOfWork, [Service] IHttpContextAccessor accessor,
+			[Service] ICurrentUserService currentUserService)
+		{
+			var tokens = currentUserService.GetTokenCookies();
+			if (tokens is null)
+			{
+				return new(new("Error: Not Authorized, please log in again.", AppErrorCodes.NotAuthorized));
+			}
+
+			var newTokens = await identityService.RefreshTokensAsync(tokens.Item1, tokens.Item2);
+			if (newTokens == null)
+			{
+				return new(new("Error: Not Authorized, please log in again.", AppErrorCodes.NotAuthorized));
+			}
+
+			await unitOfWork.SaveAsync();
+
+			accessor.HttpContext.Response.Cookies.Append("SmartHub-Access-Token", newTokens.Item1,
+				new() {HttpOnly = true, SameSite = SameSiteMode.Strict, MaxAge = TimeSpan.FromHours(1), Secure = true});
+			accessor.HttpContext.Response.Cookies.Append("SmartHub-Refresh-Token", newTokens.Item2,
+				new() {HttpOnly = true, SameSite = SameSiteMode.Strict, MaxAge = TimeSpan.FromDays(7), Secure = true});
+
+			return new(default, "User is authenticated.");
 		}
 	}
 }

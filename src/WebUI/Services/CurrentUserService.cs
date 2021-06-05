@@ -25,13 +25,12 @@ namespace SmartHub.WebUI.Services
 		}
 
 		/// <inheritdoc cref="ICurrentUserService.GetTokenCookies" />
-		public Tuple<string?, string>? GetTokenCookies()
+		public Tuple<string, string>? GetTokenCookies()
 		{
 			var token = _httpContextAccessor.HttpContext?.Request.Cookies["SmartHub-Access-Token"];
 			var reToken = _httpContextAccessor.HttpContext?.Request.Cookies["SmartHub-Refresh-Token"];
-			if (reToken is null)
+			if (reToken is null || token is null)
 			{
-				// null because the server can't create anew accessToken without the refreshToken.
 				return null;
 			}
 
