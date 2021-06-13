@@ -14,7 +14,7 @@ on:
       - 'src/**'
 
 env:
-  solution: 'SmartHub.sln'
+  project: '.\src\WebUi\WebUi.csproj'
 
 jobs:
   Restore_Build_Test:
@@ -30,10 +30,10 @@ jobs:
         uses: actions/setup-node@master
 
       - name: Install dependencies
-        run: dotnet restore $solution
+        run: dotnet restore ${{ env.project }}
 
       - name: Build with dotnet
-        run: dotnet build $solution --configuration Release --no-restore
+        run: dotnet build ${{ env.project }} --configuration Release --no-restore
 
       - name: Run Test
-        run: dotnet test $solution --no-restore --verbosity normal
+        run: dotnet test ${{ env.project }} --no-restore --verbosity normal
