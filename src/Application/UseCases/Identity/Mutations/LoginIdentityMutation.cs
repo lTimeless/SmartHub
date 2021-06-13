@@ -29,7 +29,6 @@ namespace SmartHub.Application.UseCases.Identity.Mutations
 			[Service] IUnitOfWork unitOfWork,
 			[Service] IAppConfigService configService,
 			[Service] IHttpContextAccessor accessor,
-			[Service] ICurrentUserService currentUserService,
 			LoginInput input)
 		{
 			if (configService.GetConfig().IsActive is false)
@@ -65,33 +64,6 @@ namespace SmartHub.Application.UseCases.Identity.Mutations
 			foundUser.IsFirstLogin = false;
 			await unitOfWork.SaveAsync();
 			return new(foundUser);
-		}
-
-		[GraphQLName("refreshTokens")]
-		public async Task<IdentityPayload> RefreshTokensAsync([Service] IIdentityService identityService,
-			[Service] IUnitOfWork unitOfWork, [Service] IHttpContextAccessor accessor,
-			[Service] ICurrentUserService currentUserService)
-		{
-			var tokens = currentUserService.GetTokenCookies();
-			if (tokens is null)
-			{
-				return new(new("Error: Not Authorized, please log in again.", AppErrorCodes.NotAuthorized));
-			}
-
-			var newTokens = await identityService.RefreshTokensAsync(tokens.Item1, tokens.Item2);
-			if (newTokens == null)
-			{
-				return new(new("Error: Not Authorized, please log in again.", AppErrorCodes.NotAuthorized));
-			}
-
-			await unitOfWork.SaveAsync();
-
-			accessor.HttpContext.Response.Cookies.Append("SmartHub-Access-Token", newTokens.Item1,
-				new() {HttpOnly = true, SameSite = SameSiteMode.Strict, MaxAge = TimeSpan.FromHours(1), Secure = true});
-			accessor.HttpContext.Response.Cookies.Append("SmartHub-Refresh-Token", newTokens.Item2,
-				new() {HttpOnly = true, SameSite = SameSiteMode.Strict, MaxAge = TimeSpan.FromDays(7), Secure = true});
-
-			return new(default, "User is authenticated.");
 		}
 	}
 }

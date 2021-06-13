@@ -3,24 +3,15 @@ import { Roles, Routes } from '@/types/enums';
 import router from '@/router';
 import { store } from '@/store';
 import { ref } from 'vue';
-import { useCookies } from '@vueuse/integrations';
+import { Maybe } from '@/graphql/graphql.types';
 
-// TODO rewrite without localstorage usage, token are now httpOnly cookies
-//  save roles, isAuthenticated and userId from response in here
-const userRoles = ref<string[] | undefined>(undefined);
+const userId = ref<Maybe<string>>(undefined);
+const userRoles = ref<Maybe<string[]>>(undefined);
 const authenticated = ref<boolean>(false);
-const userId = ref<string | undefined | null>(undefined);
 
 export const useIdentity = () => {
   const isAuthenticated = () => authenticated.value !== false;
-  const accessTokenAvailable = () => {
-    const cookies = useCookies(['SmartHub-Access-Token', 'SmartHub-Refresh-Token'], { doNotParse: false, autoUpdateDependencies: false });
-    const all = cookies.getAll();
-    console.log(all,cookies.get('SmartHub-Access-Token'));
-    return cookies;
-  };
-
-  const setIdentity = (roles: string[], id: string, isAuthenticated: boolean) => {
+  const setIdentity = (roles: Maybe<string[]>, id: Maybe<string>, isAuthenticated: Maybe<boolean>) => {
     userRoles.value = roles ?? userRoles.value;
     userId.value = id ?? userId.value;
     authenticated.value = isAuthenticated ?? authenticated.value;
@@ -54,12 +45,17 @@ export const useIdentity = () => {
     }
   };
 
+  const refreshTokens = () => {
+    // TODO call BE endpoint via gql
+    return;
+  };
+
   return {
     roles: userRoles,
     authenticated,
     userId,
-    accessTokenAvailable,
     setIdentity,
+    refreshTokens,
     clearIdentity,
     isAuthenticated,
     isRole,

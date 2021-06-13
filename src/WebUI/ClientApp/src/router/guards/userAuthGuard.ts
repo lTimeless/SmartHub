@@ -33,12 +33,13 @@ export const useRouteAuthGuard = (
   next: NavigationGuardNext
 ): void => {
   if (to.matched.some((record) => record.meta.requiresAuth)) {
-    const { isAuthenticated, accessTokenAvailable } = useIdentity();
+    const { isAuthenticated } = useIdentity();
     // TODO: BE call machen wenn Token noch im storage ist, wenn der noch gültig ist dann weiter zum dashboard wenn nicht dann einen neuen beantragen
     // Refreshtoken!!!!
-    accessTokenAvailable();
     if (!isAuthenticated()) {
-      // TODO: create toast with error message "Not authorized"
+      // TODO try to refresh Tokens = call BE endpoint
+      // if server response is still not Authenticated than relogin (and create toast with error message "Not authorized")
+      // if than true than call "validateUserRoleToRoute()"
       next({ path: Routes.Login });
     } else {
       validateUserRoleToRoute(to, next);

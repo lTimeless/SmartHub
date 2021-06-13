@@ -13,7 +13,7 @@ namespace SmartHub.Application.Common.Interfaces.Database
 
 		Task<T> FindByIdAsync(string id);
 		IQueryable<T> FindAllBy(Expression<Func<T, bool>> expression);
-		Task<T> FindByAsync(Expression<Func<T, bool>> expression);
+		Task<T?> FindByAsync(Expression<Func<T, bool>> expression);
 
 		Task<bool> AddAsync(T entity);
 		Task<bool> AddRangeAsync(IEnumerable<T> entity);

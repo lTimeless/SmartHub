@@ -1,4 +1,4 @@
-export type Maybe<T> = T | null;
+export type Maybe<T> = T | null | undefined;
 export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
 export type MakeOptional<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]?: Maybe<T[SubKey]> };
 export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]: Maybe<T[SubKey]> };
@@ -73,6 +73,7 @@ export interface AppMutations {
   createGroup: GroupPayload;
   initializeApp: InitPayload;
   login: IdentityPayload;
+  refreshTokens: IdentityPayload;
   registration: IdentityPayload;
   updateDevice: DevicePayload;
   updateGroup: GroupPayload;
@@ -126,9 +127,9 @@ export interface AppQueries {
   applicationIsActive: Scalars['Boolean'];
   devices: Array<Device>;
   devicesCount: Scalars['Int'];
+  getMe: IdentityPayload;
   groups: Array<Group>;
   groupsCount: Scalars['Int'];
-  me: IdentityPayload;
   scanNetworkDevices: Array<NetworkDevice>;
   setLightState: DeviceStatePayload;
   usersExist: Scalars['Boolean'];

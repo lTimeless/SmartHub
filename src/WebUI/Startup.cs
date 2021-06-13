@@ -12,14 +12,14 @@ namespace SmartHub.WebUI
 {
 	public class Startup
 	{
+		private IConfiguration Configuration { get; }
+		private IHostEnvironment HostEnvironment { get; }
+
 		public Startup(IConfiguration configuration, IHostEnvironment hostEnvironment)
 		{
 			Configuration = configuration;
 			HostEnvironment = hostEnvironment;
 		}
-
-		private IConfiguration Configuration { get; }
-		private IHostEnvironment HostEnvironment { get; }
 
 		/// <summary>
 		///     This method gets called by the runtime. Use this method to add services to the container.
@@ -83,7 +83,7 @@ namespace SmartHub.WebUI
 			// Spa
 			app.UseSpa(builder =>
 			{
-				// To learn more about options for serving an Angular SPA from ASP.NET Core,
+				// To learn more about options for serving an SPA from ASP.NET Core,
 				// see https://go.microsoft.com/fwlink/?linkid=864501
 				builder.Options.SourcePath = "ClientApp";
 

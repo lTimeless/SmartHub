@@ -16,7 +16,7 @@ namespace SmartHub.Application.UseCases.Identity.Queries
 		/// </summary>
 		/// <exception cref="ArgumentNullException">Throws if current userName is null.</exception>
 		/// <returns>Returns my user object or throws error if the needed info can't be retrieved from jwt.</returns>
-		[GraphQLName("GetMe")]
+		[GraphQLName("getMe")]
 		public async Task<IdentityPayload> GetMeAsync([Service] IIdentityService identityService,
 			[Service] ICurrentUserService currentUserService)
 		{

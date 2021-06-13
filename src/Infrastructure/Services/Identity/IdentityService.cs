@@ -123,8 +123,7 @@ namespace SmartHub.Infrastructure.Services.Identity
 				Issuer = _jwtOptions.Issuer,
 				Subject = new(claims),
 				IssuedAt = DateTime.Now,
-				// Expires = DateTime.Now.AddMinutes(_jwtOptions.LifeTimeInMinutes),
-				Expires = DateTime.Now.AddSeconds(10),
+				Expires = DateTime.Now.AddMinutes(_jwtOptions.LifeTimeInMinutes),
 				SigningCredentials = new(key, SecurityAlgorithms.HmacSha256Signature)
 			};
 
@@ -132,20 +131,21 @@ namespace SmartHub.Infrastructure.Services.Identity
 			var token = tokenHandler.CreateToken(tokenDescriptor);
 			var jwtToken = tokenHandler.WriteToken(token);
 
-			if (storedRefreshToken == null)
+			// path for login or registration
+			if (storedRefreshToken is null)
 			{
-				var foundByUserId = await _refreshTokenRepository.FindByAsync(x => x.UserId == user.Id);
+				storedRefreshToken = await _refreshTokenRepository.FindByAsync(x => x.UserId == user.Id);
 
-				if (foundByUserId is not null && foundByUserId.Used)
+				if (storedRefreshToken is not null && storedRefreshToken.Used)
 				{
-					await _refreshTokenRepository.RemoveAsync(foundByUserId);
-					foundByUserId = null;
+					await _refreshTokenRepository.RemoveAsync(storedRefreshToken);
+					storedRefreshToken = null;
 				}
 
-				if (foundByUserId is not null)
+				if (storedRefreshToken is not null)
 				{
-					foundByUserId.JwtId = token.Id;
-					return new(jwtToken, foundByUserId);
+					storedRefreshToken.JwtId = token.Id;
+					return new(jwtToken, storedRefreshToken);
 				}
 
 				storedRefreshToken = new()
@@ -186,11 +186,9 @@ namespace SmartHub.Infrastructure.Services.Identity
 		public async Task<Tuple<string, string>?> RefreshTokensAsync(string jwt, string refreshToken)
 		{
 			var validatedToken = GetPrincipalFromToken(jwt);
-			// null = not valid, somehow broken jwt (doesn't include expire check)
-
-			// Not valid jwt
-			if (validatedToken == null)
+			if (validatedToken is null)
 			{
+				// null = not valid or somehow broken jwt (doesn't include expire check)
 				return null;
 			}
 
@@ -206,7 +204,6 @@ namespace SmartHub.Infrastructure.Services.Identity
 			}
 
 			var jti = validatedToken.Claims.Single(x => x.Type == JwtRegisteredClaimNames.Jti).Value;
-
 			var storedRefreshToken = await _refreshTokenRepository.FindByAsync(x => x.Token == refreshToken);
 
 			// No refreshToken exist

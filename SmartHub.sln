@@ -19,28 +19,27 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Application.Tests", "tests\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Domain.Tests", "tests\Domain.Tests\Domain.Tests.csproj", "{066D1F77-6245-4CF2-BF73-550977AA0267}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infrastructure.Tests", "tests\Infrastructure.Tests\Infrastructure.Tests.csproj", "{EFCD9E98-A269-4E7B-B192-3F517A5FA124}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Infrastructure.Tests", "tests\Infrastructure.Tests\Infrastructure.Tests.csproj", "{EFCD9E98-A269-4E7B-B192-3F517A5FA124}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebUI.Tests", "tests\WebUI.Tests\WebUI.Tests.csproj", "{160FDC2E-2BD8-4F50-A2A6-DA3BC06BBD8C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebUI.Tests", "tests\WebUI.Tests\WebUI.Tests.csproj", "{160FDC2E-2BD8-4F50-A2A6-DA3BC06BBD8C}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{0FE21873-1AE8-473A-BECE-EB800FD077D1}"
 	ProjectSection(SolutionItems) = preProject
+		.dockerignore = .dockerignore
 		.editorconfig = .editorconfig
 		.gitattributes = .gitattributes
 		.gitignore = .gitignore
-		LICENSE = LICENSE
-		README.md = README.md
-		.dockerignore = .dockerignore
+		Directory.Build.props = Directory.Build.props
 		dotnet-tools.json = dotnet-tools.json
 		global.json = global.json
-		Directory.Build.props = Directory.Build.props
-		docker-compose.yml = docker-compose.yml
-		docker-compose.override.yml = docker-compose.override.yml
+		LICENSE = LICENSE
+		README.md = README.md
+		smartHub.env = smartHub.env
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "shared", "shared", "{E246359D-6C51-4279-A6EE-899DEF154F8C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BasePlugin", "src\shared\BasePlugin\BasePlugin.csproj", "{CEE08B52-53E1-4927-9E8B-8B46F2EA833C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BasePlugin", "src\shared\BasePlugin\BasePlugin.csproj", "{CEE08B52-53E1-4927-9E8B-8B46F2EA833C}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".github", ".github", "{7C8A293F-2A58-452C-8BA3-075161CB3064}"
 	ProjectSection(SolutionItems) = preProject
@@ -56,8 +55,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "workflows", "workflows", "{
 	ProjectSection(SolutionItems) = preProject
 		.github\workflows\createRelease.yaml = .github\workflows\createRelease.yaml
 		.github\workflows\dotnet.yaml = .github\workflows\dotnet.yaml
-		.github\workflows\vue.yaml = .github\workflows\vue.yaml
 		.github\workflows\sonar.yaml = .github\workflows\sonar.yaml
+		.github\workflows\vue.yaml = .github\workflows\vue.yaml
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ISSIE_TEMPLATE", "ISSIE_TEMPLATE", "{51E041C2-6534-4EB4-84FC-C1E68797EC3F}"
@@ -71,6 +70,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "PULL_REQUEST_TEMPLATE", "PU
 		.github\PULL_REQUEST_TEMPLATE\BUG.md = .github\PULL_REQUEST_TEMPLATE\BUG.md
 		.github\PULL_REQUEST_TEMPLATE\FEATURE.md = .github\PULL_REQUEST_TEMPLATE\FEATURE.md
 	EndProjectSection
+EndProject
+Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{82D35861-BA88-4401-AC50-F41A9C6C96DE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -114,14 +115,18 @@ Global
 		{CEE08B52-53E1-4927-9E8B-8B46F2EA833C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CEE08B52-53E1-4927-9E8B-8B46F2EA833C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CEE08B52-53E1-4927-9E8B-8B46F2EA833C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{82D35861-BA88-4401-AC50-F41A9C6C96DE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{82D35861-BA88-4401-AC50-F41A9C6C96DE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{82D35861-BA88-4401-AC50-F41A9C6C96DE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{82D35861-BA88-4401-AC50-F41A9C6C96DE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{9E9FA8F4-9C11-4FCE-8455-E9E96EF532EE} = {A4808DAE-2F25-4874-9D4A-778A02F10C05}
-		{1097B98A-DECF-43AB-84B7-5BD315CC417B} = {A4808DAE-2F25-4874-9D4A-778A02F10C05}
 		{106B3ACC-8E85-4961-9CC1-F6931322CACA} = {A4808DAE-2F25-4874-9D4A-778A02F10C05}
+		{1097B98A-DECF-43AB-84B7-5BD315CC417B} = {A4808DAE-2F25-4874-9D4A-778A02F10C05}
 		{E666AAB0-95C1-4638-A952-97109BBF2AB4} = {A4808DAE-2F25-4874-9D4A-778A02F10C05}
 		{9FDE31F1-709A-4A96-B1B9-56E066D2845E} = {1F8BFE47-D5C3-43C8-9FD7-4282A18B8900}
 		{066D1F77-6245-4CF2-BF73-550977AA0267} = {1F8BFE47-D5C3-43C8-9FD7-4282A18B8900}

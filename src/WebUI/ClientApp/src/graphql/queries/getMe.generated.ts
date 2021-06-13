@@ -9,7 +9,7 @@ export type GetMeQueryVariables = Types.Exact<{ [key: string]: never }>;
 
 export type GetMeQuery = {
   __typename?: 'AppQueries';
-  me: {
+  getMe: {
     __typename?: 'IdentityPayload';
     user?: Types.Maybe<
       {
@@ -29,7 +29,7 @@ export type GetMeQuery = {
 
 export const GetMeDocument = gql`
   query GetMe {
-    me {
+    getMe {
       user {
         ...IdUserName
         createdAt

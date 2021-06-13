@@ -6,7 +6,7 @@ import { Roles, Routes } from '@/types/enums';
 import AppCard from '@/components/app/AppCards/AppCard.vue';
 import { useIdentity } from '@/hooks/useIdentity';
 import { RegistrationInput } from '@/graphql/graphql.types';
-import { useRegistrationMutation } from '@/graphql/mutations/registration.generated';
+import { useRegistrationMutation } from '@/graphql/mutations/identity/registration.generated';
 
 export default defineComponent({
   name: 'Registration',
@@ -109,7 +109,16 @@ export default defineComponent({
             <input
               v-model="registrationRequest.userName"
               type="text"
-              class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded"
+              class="
+                mt-1
+                focus:ring-indigo-500
+                focus:border-indigo-500
+                block
+                w-full
+                sm:text-sm
+                border-gray-300
+                rounded
+              "
               placeholder="Jane Doe"
             />
           </label>
@@ -119,7 +128,16 @@ export default defineComponent({
               <input
                 v-model="registrationRequest.password"
                 :type="togglePassword ? 'text' : 'password'"
-                class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded"
+                class="
+                  mt-1
+                  focus:ring-indigo-500
+                  focus:border-indigo-500
+                  block
+                  w-full
+                  sm:text-sm
+                  border-gray-300
+                  rounded
+                "
                 placeholder="***************"
                 @keydown="checkPasswordStrength"
                 @blur="checkPasswordStrength"
@@ -168,7 +186,16 @@ export default defineComponent({
               <input
                 v-model="confirmPwd"
                 :type="togglePassword ? 'text' : 'password'"
-                class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded"
+                class="
+                  mt-1
+                  focus:ring-indigo-500
+                  focus:border-indigo-500
+                  block
+                  w-full
+                  sm:text-sm
+                  border-gray-300
+                  rounded
+                "
                 placeholder="***************"
               />
             </label>
@@ -206,7 +233,19 @@ export default defineComponent({
           </div>
 
           <button
-            class="block w-full px-4 py-2 mt-4 text-sm font-medium leading-5 text-center text-white bg-primarySienna rounded"
+            class="
+              block
+              w-full
+              px-4
+              py-2
+              mt-4
+              text-sm
+              font-medium
+              leading-5
+              text-center text-white
+              bg-primarySienna
+              rounded
+            "
             :class="
               registrationDisabled
                 ? 'opacity-50 focus:outline-none cursor-not-allowed'
@@ -223,7 +262,28 @@ export default defineComponent({
           <hr class="my-8" />
           <button
             disabled
-            class="flex items-center justify-center w-full px-4 py-2 text-sm font-medium leading-5 text-black transition-colors duration-150 border border-gray-300 rounded-lg dark:text-gray-400 active:bg-transparent focus:border-gray-500 active:text-gray-500 focus:outline-none focus:shadow-outline-gray"
+            class="
+              flex
+              items-center
+              justify-center
+              w-full
+              px-4
+              py-2
+              text-sm
+              font-medium
+              leading-5
+              text-black
+              transition-colors
+              duration-150
+              border border-gray-300
+              rounded-lg
+              dark:text-gray-400
+              active:bg-transparent
+              focus:border-gray-500
+              active:text-gray-500
+              focus:outline-none
+              focus:shadow-outline-gray
+            "
             :class="true ? 'opacity-50 focus:outline-none cursor-not-allowed' : 'hover:border-gray-500'"
           >
             Additional options....

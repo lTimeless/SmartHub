@@ -1,8 +1,11 @@
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Server.Kestrel.Core;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Serilog;
+using SmartHub.Application.Common.Helpers;
 using SmartHub.WebUI.Extensions;
 using System;
 using System.Reflection;
@@ -44,7 +47,7 @@ namespace SmartHub.WebUI
 				{
 					var env = hostingContext.HostingEnvironment;
 					configurationBuilder
-						.AddJsonFile("appsettings.json", true, true)
+						.AddJsonFile("appsettings.json", false, true)
 						.AddJsonFile($"appsettings.{env.EnvironmentName}.json", false, true);
 
 					if (env.IsDevelopment() && !string.IsNullOrEmpty(env.ApplicationName))
@@ -62,7 +65,16 @@ namespace SmartHub.WebUI
 				})
 				.UseSerilog(SerilogExtension.ConfigureReloadableLogger)
 				.ConfigureLogging((_, config) => config.ClearProviders())
-				.ConfigureWebHost(HostExtension.ConfigureWebHostBuilder);
+				.ConfigureWebHostDefaults(builder => builder.UseKestrel(opt =>
+					{
+						var host = IpAddressUtils.ShowLocalIpv4();
+						opt.ListenLocalhost(5001, conf => conf.UseHttps());
+						opt.Listen(host, 5000);
+						opt.Listen(host, 5001, conf => conf.UseHttps());
+					})
+					.ConfigureServices(services =>
+						services.Configure<KestrelServerOptions>(options => options.AllowSynchronousIO = true))
+					.UseStartup<Startup>());
 		}
 	}
 }

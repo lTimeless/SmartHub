@@ -43,6 +43,7 @@ type AppMutations {
     createGroup(input: CreateGroupInput!): GroupPayload!
     initializeApp(input: AppConfigInitInput!): InitPayload!
     login(input: LoginInput!): IdentityPayload!
+    refreshTokens: IdentityPayload!
     registration(input: RegistrationInput!): IdentityPayload!
     updateDevice(input: UpdateDeviceInput!): DevicePayload!
     updateGroup(input: UpdateGroupInput!): GroupPayload!
@@ -55,9 +56,9 @@ type AppQueries {
     applicationIsActive: Boolean!
     devices(order: [DeviceSortInput!], where: DeviceFilterInput): [Device!]!
     devicesCount: Int!
+    getMe: IdentityPayload!
     groups(order: [GroupSortInput!], where: GroupFilterInput): [Group!]!
     groupsCount: Int!
-    me: IdentityPayload!
     scanNetworkDevices(order: [NetworkDeviceSortInput!], where: NetworkDeviceFilterInput): [NetworkDevice!]!
     setLightState(input: DeviceLightStateInput!): DeviceStatePayload!
     usersExist: Boolean!

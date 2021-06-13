@@ -43,7 +43,7 @@ namespace SmartHub.Infrastructure.Database.Repositories
 			return _entities.Where(expression);
 		}
 
-		public async Task<T> FindByAsync(Expression<Func<T, bool>> expression)
+		public async Task<T?> FindByAsync(Expression<Func<T, bool>> expression)
 		{
 			return await _entities.Where(expression).FirstOrDefaultAsync();
 		}

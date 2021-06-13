@@ -7,6 +7,8 @@ generates:
   src/graphql/graphql.types.ts:
     config:
       declarationKind: 'interface'
+      maybeValue: 'T | null | undefined'
+      avoidOptionals: false
     plugins:
       - "typescript"
   src/graphql/:

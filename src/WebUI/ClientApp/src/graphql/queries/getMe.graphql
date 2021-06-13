@@ -1,5 +1,5 @@
 query GetMe {
-  me {
+  getMe {
     user {
       ...IdUserName
       createdAt

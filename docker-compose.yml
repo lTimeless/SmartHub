@@ -1,40 +1,16 @@
-version: '3.8'
+version: '3.4'
 
 services:
-# Elastic and Kibana
-  # elastic:
-  #   image: docker.elastic.co/elasticsearch/elasticsearch:7.9.1
-  #   restart: unless-stopped
-
-  # kibana:
-  #   image: docker.elastic.co/kibana/kibana:7.9.1
-  #   restart: unless-stopped
-
-# PostgreSQL database
-  postgres_database:
+  database:
     image: postgres:alpine
     restart: "no"
-
-
-# PostgreSQL pgAdmin Ui
-#  pgadmin:
-#    image: dpage/pgadmin4
-#    restart: unless-stopped
-
-#  smarthub.api:
-#    image: ${DOCKER_REGISTRY-}smarthubapi
+#  smartHub:
+#    image: ${DOCKER_REGISTRY-}webui
 #    build:
 #      context: .
-#      dockerfile: Dockerfile
+#      dockerfile: src/WebUI/Dockerfile
 #    depends_on:
-#        - postgres_database
+#       - postgres_database
 
 volumes:
   database-data:
-#  pgadmin:
-  data01:
-    driver: local
-
-#networks:
-#  elastic:
-#    driver: bridge

@@ -1,0 +1,9 @@
+fragment Identity on IdentityPayload {
+    isAuthenticated
+    user {
+        id
+        userName
+        isFirstLogin
+        roles
+    }
+}
