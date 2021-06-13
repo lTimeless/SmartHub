@@ -14,7 +14,7 @@ on:
       - 'src/**'
 
 env:
-  project: '.\src\WebUI\WebUI.csproj'
+  project: './src/WebUI/WebUI.csproj'
 
 jobs:
   Restore_Build_Test:
