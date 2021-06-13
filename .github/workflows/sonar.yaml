@@ -7,7 +7,7 @@ on:
   pull_request:
     types: [ opened, synchronize, reopened ]
 env:
-  project: '.\src\WebUi\WebUi.csproj'
+  project: '.\src\WebUI\WebUI.csproj'
 jobs:
   build:
     name: Build
