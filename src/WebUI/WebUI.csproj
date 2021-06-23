@@ -61,16 +61,24 @@
         <PackageReference Include="Serilog.Expressions" Version="3.1.0" />
         <PackageReference Include="Serilog.Extensions.Hosting" Version="4.1.2" />
         <PackageReference Include="Serilog.Extensions.Logging" Version="3.0.2-dev-10281" />
-        <PackageReference Include="Serilog.Sinks.AspNetCore.SignalR" Version="0.4.0" />
-        <PackageReference Include="Serilog.Sinks.Async" Version="1.4.1-dev-00073" />
-        <PackageReference Include="Serilog.Sinks.Console" Version="4.0.0-dev-00839" />
-        <PackageReference Include="Serilog.Sinks.File" Version="5.0.0-dev-00887" />
-        <PackageReference Include="Serilog.Sinks.Map" Version="1.0.2" />
+        <PackageReference Include="Serilog.Sinks.AspNetCore.SignalR" Version="0.4.0"/>
+        <PackageReference Include="Serilog.Sinks.Async" Version="1.4.1-dev-00073"/>
+        <PackageReference Include="Serilog.Sinks.Console" Version="4.0.0-dev-00839"/>
+        <PackageReference Include="Serilog.Sinks.File" Version="5.0.0-dev-00887"/>
+        <PackageReference Include="Serilog.Sinks.Map" Version="1.0.2"/>
     </ItemGroup>
     <ItemGroup Label="Project References">
-        <ProjectReference Include="..\Application\Application.csproj" />
-        <ProjectReference Include="..\Infrastructure\Infrastructure.csproj" />
+        <ProjectReference Include="..\Application\Application.csproj"/>
+        <ProjectReference Include="..\Infrastructure\Infrastructure.csproj"/>
     </ItemGroup>
+
+    <ItemGroup>
+        <!-- Don't publish the SPA source files, but do show them in the project files list -->
+        <Content Remove="$(SpaRoot)**"/>
+        <None Remove="$(SpaRoot)**"/>
+        <None Include="$(SpaRoot)**" Exclude="$(SpaRoot)node_modules\**"/>
+    </ItemGroup>
+
     <!-- To make sure that in a normal build process the wwwroot folder is also beeing copied to the build folder -->
     <ItemGroup Label="(Static) Files">
         <None Include="wwwroot\**">
@@ -86,9 +94,6 @@
         </AssemblyAttribute>
     </ItemGroup>
     <ItemGroup>
-        <!-- Don't publish the SPA source files, but do show them in the project files list -->
-        <Content Remove="$(SpaRoot)**" />
-        <None Remove="$(SpaRoot)**" />
         <!--    <None Include="$(SpaRoot)**" Exclude="$(SpaRoot)node_modules\**" />-->
         <Content Update="appsettings.Development.json">
             <DependentUpon>appsettings.json</DependentUpon>
