@@ -16,7 +16,6 @@ export default defineComponent({
   setup() {
     const expandAdminRow = ref(false);
     const { isRole } = useIdentity();
-    console.log(isRole());
     return {
       isRole,
       adminRole: Roles.Admin,

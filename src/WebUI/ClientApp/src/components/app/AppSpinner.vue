@@ -22,7 +22,7 @@ export default defineComponent({
     }
   },
   setup(props) {
-    const { ready } = useTimeout(300, true);
+    const { ready } = useTimeout(300, {controls: true});
     return {
       ...toRefs(props),
       ready

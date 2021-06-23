@@ -1,6 +1,6 @@
 import { RouteRecordRaw } from 'vue-router';
 import { Routes } from '@/types/enums';
-import Login from '../../pages/indentity/login/Login.vue';
+import Login from '@/pages/indentity/login/Login.vue';
 import Registration from '@/pages/indentity/registration/Registration.vue';
 
 export const identityRoutes: Array<RouteRecordRaw> = [
@@ -9,7 +9,8 @@ export const identityRoutes: Array<RouteRecordRaw> = [
     name: 'Login',
     component: Login,
     meta: {
-      requiresAuth: false
+      requiresAuth: false,
+      autoLogin: true
     }
   },
   {

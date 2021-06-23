@@ -24,10 +24,10 @@ export default defineComponent({
       userId: ''
     });
     const { executeMutation: updateUser, fetching: loadUpdate, error: errUpdate } = useUpdateUserMutation();
-    const { data: resultUser, fetching: loadUser, error: errUser } = useGetMeQuery();
+    const { data: resultUser, fetching: loadUser, error: errUser } = useGetMeQuery({requestPolicy: 'network-only'});
 
     const onSaveClick = async () => {
-      const user = resultUser.value?.me.user;
+      const user = resultUser.value?.getMe.user;
       if (user) {
         updateUserInput.userId = user.id!;
         updateUserInput.newRole = selectedRole.value;
@@ -56,7 +56,7 @@ export default defineComponent({
 <template>
   <div class="relative flex-col w-full justify-end bg-white border p-3 rounded">
     <!-- Form -->
-    <template v-if="loadUser">
+    <template v-if="loadUser && !resultUser">
       <div class="flex items-center justify-center w-full h-full">
         <Loader height="h-48" width="w-48" />
       </div>
@@ -66,7 +66,7 @@ export default defineComponent({
         <p>Error: {{ errUser.name }} {{ errUser.message }}</p>
       </div>
     </template>
-    <template v-if="resultUser && resultUser.me.user">
+    <template v-if="resultUser && resultUser.getMe.user">
       <!-- Username -->
       <div class="flex mr-2 justify-between">
         <div class="w-1/3 mr-2">
@@ -76,7 +76,7 @@ export default defineComponent({
               v-model="updateUserInput.userName"
               type="text"
               class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md"
-              :placeholder="resultUser.me.user.userName ?? '-'"
+              :placeholder="resultUser.getMe.user.userName ?? '-'"
               disabled
             />
           </label>
@@ -109,7 +109,7 @@ export default defineComponent({
             type="text"
             class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md"
             :placeholder="
-              resultUser.me.user.personName.firstName === '' ? '-' : resultUser.me.user.personName.firstName
+              resultUser.getMe.user.personName.firstName === '' ? '-' : resultUser.getMe.user.personName.firstName
             "
           />
         </label>
@@ -120,7 +120,7 @@ export default defineComponent({
             type="text"
             class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md"
             :placeholder="
-              resultUser.me.user.personName.middleName === '' ? '-' : resultUser.me.user.personName.middleName
+              resultUser.getMe.user.personName.middleName === '' ? '-' : resultUser.getMe.user.personName.middleName
             "
           />
         </label>
@@ -131,7 +131,7 @@ export default defineComponent({
             type="text"
             class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md"
             :placeholder="
-              resultUser.me.user.personName.lastName === '' ? '-' : resultUser.me.user.personName.lastName
+              resultUser.getMe.user.personName.lastName === '' ? '-' : resultUser.getMe.user.personName.lastName
             "
           />
         </label>
@@ -144,9 +144,9 @@ export default defineComponent({
           type="text"
           class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md"
           :placeholder="
-            resultUser.me.user.email === '' || resultUser.me.user.email === null
+            resultUser.getMe.user.email === '' || resultUser.getMe.user.email === null
               ? '-'
-              : resultUser.me.user.email
+              : resultUser.getMe.user.email
           "
         />
       </label>
@@ -157,9 +157,9 @@ export default defineComponent({
           type="text"
           class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md"
           :placeholder="
-            resultUser.me.user.phoneNumber === '' || resultUser.me.user.phoneNumber === null
+            resultUser.getMe.user.phoneNumber === '' || resultUser.getMe.user.phoneNumber === null
               ? '-'
-              : resultUser.me.user.phoneNumber
+              : resultUser.getMe.user.phoneNumber
           "
         />
       </label>
@@ -169,14 +169,14 @@ export default defineComponent({
           v-model="updateUserInput.personInfo"
           type="text"
           class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md"
-          :placeholder="resultUser.me.user.personInfo === '' ? '-' : resultUser.me.user.personInfo"
+          :placeholder="resultUser.getMe.user.personInfo === '' ? '-' : resultUser.getMe.user.personInfo"
         />
       </label>
       <div class="text-gray-500 text-sm text-left mt-10">
-        Last modified by: {{ resultUser.me.user.lastModifiedBy }}
+        Last modified by: {{ resultUser.getMe.user.lastModifiedBy }}
       </div>
       <div class="text-gray-500 text-sm text-left">
-        Last modified at: {{ resultUser.me.user.lastModifiedAt }}
+        Last modified at: {{ resultUser.getMe.user.lastModifiedAt }}
       </div>
     </template>
     <!-- Save button -->

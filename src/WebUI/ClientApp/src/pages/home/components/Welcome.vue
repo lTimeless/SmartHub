@@ -6,12 +6,12 @@
       </h3>
       <div>
         <h1 class="text-left text-3xl md:text-6xl text-primaryBlue">Good {{ timeOfDay }}</h1>
-        <h2 v-if="fetching" class="text-left text-4xl md:text-6xl text-primarySienna">Loading...</h2>
+        <h2 v-if="!userName" class="text-left text-4xl md:text-6xl text-primarySienna">Something went wront..</h2>
         <h2
-          v-else-if="data && data.me.user && data.me.user.userName"
+          v-else-if="userName"
           class="text-left text-4xl md:text-6xl text-primarySienna"
         >
-          {{ capitalize(data.me.user.userName) }}
+          {{ capitalize(userName) }}
         </h2>
       </div>
     </div>
@@ -22,16 +22,15 @@
 import { defineComponent } from 'vue';
 import { useDateTime } from '@/hooks/useDateTime';
 import { useString } from '@/hooks/useString';
-import { useGetMeQuery } from '@/graphql/queries/getMe.generated';
+import { useIdentity } from '@/hooks/useIdentity';
 
 export default defineComponent({
   name: 'Welcome',
   setup() {
-    const { data, fetching } = useGetMeQuery();
+    const { userName } = useIdentity();
 
     return {
-      data,
-      fetching,
+      userName,
       ...useString(),
       ...useDateTime()
     };

@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace SmartHub.WebUI
 {
-	public class Program
+	public static class Program
 	{
 		public static async Task<int> Main(string[] args)
 		{

@@ -18,6 +18,8 @@ namespace SmartHub.Application.Common.Interfaces
 		/// <returns>True if successful.</returns>
 		Task<bool> LoginAsync(User user, string password);
 
+		Task<bool> LogoutAsync();
+
 		/// <summary>
 		///     Looks if any user exists in the database.
 		/// </summary>
@@ -79,6 +81,6 @@ namespace SmartHub.Application.Common.Interfaces
 		Task<Tuple<string, RefreshToken>> CreateTokensAsync(User user, List<string>? roles = default,
 			RefreshToken? storedRefreshToken = default);
 
-		Task<Tuple<string, string>?> RefreshTokensAsync(string jwt, string refreshToken);
+		Task<Tuple<string, RefreshToken>?> RefreshTokensAsync(string jwt, string refreshToken);
 	}
 }

@@ -16,7 +16,7 @@
 
 <script lang="ts">
 import { computed, defineComponent, toRefs } from 'vue';
-
+// TODO write all Icons as JSX and put them into one file , that would save a lot of files
 export default defineComponent({
   name: 'AppIcon',
   props: {

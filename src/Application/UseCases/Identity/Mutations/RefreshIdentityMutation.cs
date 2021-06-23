@@ -41,12 +41,13 @@ namespace SmartHub.Application.UseCases.Identity.Mutations
 
 			await unitOfWork.SaveAsync();
 
+			// TODO move into separate method
 			accessor.HttpContext.Response.Cookies.Append("SmartHub-Access-Token", newTokens.Item1,
 				new() {HttpOnly = true, SameSite = SameSiteMode.Strict, MaxAge = TimeSpan.FromHours(1), Secure = true});
-			accessor.HttpContext.Response.Cookies.Append("SmartHub-Refresh-Token", newTokens.Item2,
+			accessor.HttpContext.Response.Cookies.Append("SmartHub-Refresh-Token", newTokens.Item2.Token,
 				new() {HttpOnly = true, SameSite = SameSiteMode.Strict, MaxAge = TimeSpan.FromDays(7), Secure = true});
 
-			return new(default, "User is authenticated.");
+			return new(newTokens.Item2.User, "User is authenticated.");
 		}
 	}
 }

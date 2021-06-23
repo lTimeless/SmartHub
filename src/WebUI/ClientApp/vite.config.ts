@@ -3,7 +3,6 @@ import { defineConfig } from 'vite';
 import vue from '@vitejs/plugin-vue';
 import tsconfigPaths from 'vite-tsconfig-paths';
 import ViteFonts from 'vite-plugin-fonts';
-import svgLoader from 'vite-svg-loader';
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -35,7 +34,6 @@ export default defineConfig({
   },
   plugins: [
     vue(),
-    // svgLoader(),
     tsconfigPaths(),
     ViteFonts({
       google: {

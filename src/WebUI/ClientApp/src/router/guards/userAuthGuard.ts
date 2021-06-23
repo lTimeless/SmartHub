@@ -2,8 +2,26 @@ import { NavigationGuardNext, RouteLocationNormalized } from 'vue-router';
 import { Roles, Routes } from '@/types/enums';
 import { useIdentity } from '@/hooks/useIdentity';
 
+export const useRouteAuthGuard = async (
+  to: RouteLocationNormalized,
+  from: RouteLocationNormalized,
+  next: NavigationGuardNext
+) => {
+  if (to.matched.some((record) => record.meta.requiresAuth)) {
+    validateIdentityAndGoToRoute(to, next);
+  } else {
+    if(to.matched.some((record) => record.meta.autoLogin)) {
+      validateIdentityAndGoToRoute(to, next);
+    }
+    else {
+      next({ path: Routes.Login });
+    }
+  }
+};
+
+
 const validateUserRoleToRoute = (to: RouteLocationNormalized, next: NavigationGuardNext) => {
-  const { clearIdentity, isRole } = useIdentity();
+  const { isRole } = useIdentity();
   const role = isRole();
   if (to.matched.some((record) => record.meta.isAdmin)) {
     if (role === Roles.Admin) {
@@ -21,30 +39,30 @@ const validateUserRoleToRoute = (to: RouteLocationNormalized, next: NavigationGu
     if (role === Roles.Admin || role === Roles.User || role === Roles.Guest) {
       next();
     } else {
-      clearIdentity();
       next({ path: Routes.Login });
-    }
-  }
-};
-
-export const useRouteAuthGuard = (
-  to: RouteLocationNormalized,
-  from: RouteLocationNormalized,
-  next: NavigationGuardNext
-): void => {
-  if (to.matched.some((record) => record.meta.requiresAuth)) {
-    const { isAuthenticated } = useIdentity();
-    // TODO: BE call machen wenn Token noch im storage ist, wenn der noch gültig ist dann weiter zum dashboard wenn nicht dann einen neuen beantragen
-    // Refreshtoken!!!!
-    if (!isAuthenticated()) {
-      // TODO try to refresh Tokens = call BE endpoint
-      // if server response is still not Authenticated than relogin (and create toast with error message "Not authorized")
-      // if than true than call "validateUserRoleToRoute()"
-      next({ path: Routes.Login });
-    } else {
-      validateUserRoleToRoute(to, next);
     }
   } else {
     next();
   }
 };
+
+
+const validateIdentityAndGoToRoute = async (to: RouteLocationNormalized, next: NavigationGuardNext) => {
+  const { isAuthenticated, refreshTokens } = useIdentity();
+  if (isAuthenticated()) {
+    validateUserRoleToRoute(to, next);
+  }
+  else {
+    await refreshTokens();
+    if (isAuthenticated()) {
+      if (to.path === '/login') {
+        next({path: Routes.Home});
+      } else {
+        validateUserRoleToRoute(to, next);
+      }
+    }
+    else {
+      next({ path: Routes.Login });
+    }
+  }
+}

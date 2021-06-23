@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
@@ -93,8 +94,16 @@ namespace SmartHub.Infrastructure.Services.Identity
 
 		public async Task<bool> LoginAsync(User user, string password)
 		{
+			await _signInManager.SignInAsync(user, new AuthenticationProperties {IsPersistent = true});
 			var result = await _signInManager.CheckPasswordSignInAsync(user, password, false);
 			return result.Succeeded;
+		}
+
+		public async Task<bool> LogoutAsync()
+		{
+			//TODO add logout logic
+			await _signInManager.SignOutAsync();
+			return true;
 		}
 
 		public async Task<Tuple<string, RefreshToken>> CreateTokensAsync(User user, List<string>? inputRoles = default,
@@ -155,7 +164,7 @@ namespace SmartHub.Infrastructure.Services.Identity
 					User = user,
 					Used = false,
 					CreatedAt = DateTime.Now,
-					ExpirationDate = DateTime.Now.AddMonths(6)
+					ExpirationDate = DateTime.Now.AddMonths(_jwtOptions.RefreshTokenLifeTimeInMonths)
 				};
 				await _refreshTokenRepository.AddAsync(storedRefreshToken);
 			}
@@ -183,7 +192,7 @@ namespace SmartHub.Infrastructure.Services.Identity
 			return await _userManager.FindByIdAsync(userId);
 		}
 
-		public async Task<Tuple<string, string>?> RefreshTokensAsync(string jwt, string refreshToken)
+		public async Task<Tuple<string, RefreshToken>?> RefreshTokensAsync(string jwt, string refreshToken)
 		{
 			var validatedToken = GetPrincipalFromToken(jwt);
 			if (validatedToken is null)
@@ -197,13 +206,6 @@ namespace SmartHub.Infrastructure.Services.Identity
 			var jwtExpiryDateUtc = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc)
 				.AddSeconds(jwtExpiryDateUnix);
 
-			// JwtToken is not yet expired = return given tokens
-			if (jwtExpiryDateUtc > DateTime.UtcNow)
-			{
-				return new(jwt, refreshToken);
-			}
-
-			var jti = validatedToken.Claims.Single(x => x.Type == JwtRegisteredClaimNames.Jti).Value;
 			var storedRefreshToken = await _refreshTokenRepository.FindByAsync(x => x.Token == refreshToken);
 
 			// No refreshToken exist
@@ -211,6 +213,13 @@ namespace SmartHub.Infrastructure.Services.Identity
 			{
 				return null;
 			}
+
+			// JwtToken is not yet expired = return given tokens
+			if (jwtExpiryDateUtc > DateTime.UtcNow)
+			{
+				return new(jwt, storedRefreshToken);
+			}
+
 
 			// RefreshToken is expired
 			if (DateTime.UtcNow > storedRefreshToken.ExpirationDate)
@@ -230,6 +239,7 @@ namespace SmartHub.Infrastructure.Services.Identity
 				return null;
 			}
 
+			var jti = validatedToken.Claims.Single(x => x.Type == JwtRegisteredClaimNames.Jti).Value;
 			// RefreshToken does not match to the jwt
 			if (storedRefreshToken.JwtId != jti)
 			{
@@ -242,7 +252,7 @@ namespace SmartHub.Infrastructure.Services.Identity
 
 			// TODO Maybe use this build in method
 			// await _userManager.GenerateUserTokenAsync(user, "Bearer", "accessToken");
-			return new(newJwt, newRefreshToken.Token);
+			return new(newJwt, storedRefreshToken);
 		}
 
 		private ClaimsPrincipal? GetPrincipalFromToken(string token)

@@ -37,7 +37,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		smartHub.env = smartHub.env
 	EndProjectSection
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "shared", "shared", "{E246359D-6C51-4279-A6EE-899DEF154F8C}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Shared", "Shared", "{E246359D-6C51-4279-A6EE-899DEF154F8C}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BasePlugin", "src\shared\BasePlugin\BasePlugin.csproj", "{CEE08B52-53E1-4927-9E8B-8B46F2EA833C}"
 EndProject
