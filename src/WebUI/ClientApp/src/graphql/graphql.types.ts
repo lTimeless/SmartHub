@@ -122,17 +122,18 @@ export interface AppMutationsUpdateUserArgs {
 
 /** Main entrypoint for all queries. */
 export interface AppQueries {
-  __typename?: 'AppQueries';
-  appConfig: AppConfig;
-  applicationIsActive: Scalars['Boolean'];
-  devices: Array<Device>;
-  devicesCount: Scalars['Int'];
-  getMe: IdentityPayload;
-  groups: Array<Group>;
-  groupsCount: Scalars['Int'];
-  scanNetworkDevices: Array<NetworkDevice>;
-  setLightState: DeviceStatePayload;
-  usersExist: Scalars['Boolean'];
+    __typename?: 'AppQueries';
+    appConfig: AppConfig;
+    applicationIsActive: Scalars['Boolean'];
+    devices: Array<Device>;
+    devicesCount: Scalars['Int'];
+    getMe: IdentityPayload;
+    groups: Array<Group>;
+    groupsCount: Scalars['Int'];
+    logout: IdentityPayload;
+    scanNetworkDevices: Array<NetworkDevice>;
+    setLightState: DeviceStatePayload;
+    usersExist: Scalars['Boolean'];
 }
 
 /** Main entrypoint for all queries. */

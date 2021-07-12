@@ -34,5 +34,23 @@ namespace SmartHub.Application.UseCases.Identity.Queries
 
 			return new(user);
 		}
+
+		/// <summary>
+		///     logs out the current user.
+		/// </summary>
+		/// <returns>Returns the identityPayload with info that the user is now logged out.</returns>
+		[GraphQLName("logout")]
+		public async Task<IdentityPayload> LogoutAsync([Service] IIdentityService identityService,
+			[Service] ICurrentUserService currentUserService)
+		{
+			var tokenCookies = currentUserService.GetTokenCookies();
+			if (tokenCookies is null)
+			{
+				return new(new("Error: User is not logged in.", AppErrorCodes.NotSet));
+			}
+
+			var res = currentUserService.DeleteTokenCookies();
+			return new(!res, "User logged out.");
+		}
 	}
 }

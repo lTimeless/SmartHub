@@ -1,5 +1,4 @@
 ﻿using HotChocolate;
-using Microsoft.AspNetCore.Http;
 using SmartHub.Application.Common.Interfaces;
 using SmartHub.Application.Common.Interfaces.Database;
 using SmartHub.Domain.Common.Enums;
@@ -20,12 +19,12 @@ namespace SmartHub.Application.UseCases.Identity.Mutations
 		/// </summary>
 		/// <param name="identityService">The identity service.</param>
 		/// <param name="unitOfWork">The unit of work.</param>
-		/// <param name="accessor">The http context accessor.</param>
+		/// <param name="currentUserService">The current user service.</param>
 		/// <param name="input">The input the user does.</param>
 		/// <returns>The payload with requested data.</returns>
-		public async Task<IdentityPayload> Registration([Service] IIdentityService identityService,
+		public async Task<IdentityPayload> RegistrationAsync([Service] IIdentityService identityService,
 			[Service] IUnitOfWork unitOfWork,
-			[Service] IHttpContextAccessor accessor,
+			[Service] ICurrentUserService currentUserService,
 			RegistrationInput input)
 		{
 			var (userName, password, role) = input;
@@ -46,11 +45,7 @@ namespace SmartHub.Application.UseCases.Identity.Mutations
 			await unitOfWork.SaveAsync();
 
 			var (token, refreshToken) = await identityService.CreateTokensAsync(newUser, new() {role});
-			accessor.HttpContext.Response.Cookies.Append("SmartHub-Access-Token", token,
-				new() {HttpOnly = true, SameSite = SameSiteMode.Strict});
-			accessor.HttpContext.Response.Cookies.Append("SmartHub-Refresh-Token", refreshToken.Token,
-				new() {HttpOnly = true, SameSite = SameSiteMode.Strict});
-
+			currentUserService.SetTokenCookies(token, refreshToken);
 			return new(newUser);
 		}
 	}

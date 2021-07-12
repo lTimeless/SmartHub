@@ -27,10 +27,10 @@ module.exports = {
     '@typescript-eslint/semi': ['warn', 'always'],
     '@typescript-eslint/member-delimiter-style': [
       'error',
-      { multiline: { delimiter: 'semi', requireLast: true } }
+      {multiline: {delimiter: 'semi', requireLast: true}}
     ],
     '@typescript-eslint/type-annotation-spacing': ['error', {}],
-    '@typescript-eslint/no-use-before-define': ['error', { functions: false, classes: true }],
+    '@typescript-eslint/no-use-before-define': ['error', {functions: false, classes: true, variables: false}],
 
     // off
     '@typescript-eslint/explicit-function-return-type': 'off',

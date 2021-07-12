@@ -59,6 +59,7 @@ type AppQueries {
     getMe: IdentityPayload!
     groups(order: [GroupSortInput!], where: GroupFilterInput): [Group!]!
     groupsCount: Int!
+    logout: IdentityPayload!
     scanNetworkDevices(order: [NetworkDeviceSortInput!], where: NetworkDeviceFilterInput): [NetworkDevice!]!
     setLightState(input: DeviceLightStateInput!): DeviceStatePayload!
     usersExist: Boolean!

@@ -1,5 +1,4 @@
 ﻿using HotChocolate;
-using Microsoft.AspNetCore.Http;
 using SmartHub.Application.Common.Interfaces;
 using SmartHub.Application.Common.Interfaces.Database;
 using SmartHub.Application.UseCases.AppFolder.AppConfigParser;
@@ -21,14 +20,14 @@ namespace SmartHub.Application.UseCases.Identity.Mutations
 		/// <param name="identityService">The identity service.</param>
 		/// <param name="unitOfWork">The unit of work.</param>
 		/// <param name="configService">The service for the smartHub config.</param>
-		/// <param name="accessor">The http context accessor.</param>
+		/// <param name="currentUserService">The current user service.</param>
 		/// <param name="input">The input values.</param>
 		/// <returns>The payload with requested data.</returns>
 		[GraphQLName("login")]
 		public async Task<IdentityPayload> LoginAsync([Service] IIdentityService identityService,
 			[Service] IUnitOfWork unitOfWork,
 			[Service] IAppConfigService configService,
-			[Service] IHttpContextAccessor accessor,
+			[Service] ICurrentUserService currentUserService,
 			LoginInput input)
 		{
 			if (configService.GetConfig().IsActive is false)
@@ -50,10 +49,7 @@ namespace SmartHub.Application.UseCases.Identity.Mutations
 			}
 
 			var (token, refreshToken) = await identityService.CreateTokensAsync(foundUser);
-			accessor.HttpContext.Response.Cookies.Append("SmartHub-Access-Token", token,
-				new() {HttpOnly = true, SameSite = SameSiteMode.Strict, MaxAge = TimeSpan.FromHours(1), Secure = true});
-			accessor.HttpContext.Response.Cookies.Append("SmartHub-Refresh-Token", refreshToken.Token,
-				new() {HttpOnly = true, SameSite = SameSiteMode.Strict, MaxAge = TimeSpan.FromDays(7), Secure = true});
+			currentUserService.SetTokenCookies(token, refreshToken);
 
 			if (foundUser.IsFirstLogin is false)
 			{

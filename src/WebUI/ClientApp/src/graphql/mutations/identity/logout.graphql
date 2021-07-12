@@ -1,0 +1,10 @@
+query Logout {
+    logout {
+        ...Identity
+        errors {
+            message
+            code
+        }
+        message
+    }
+}

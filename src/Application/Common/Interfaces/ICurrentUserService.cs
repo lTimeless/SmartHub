@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SmartHub.Domain.Entities;
+using System;
 
 namespace SmartHub.Application.Common.Interfaces
 {
@@ -21,5 +22,17 @@ namespace SmartHub.Application.Common.Interfaces
 		/// </summary>
 		/// <returns>If the one of them is null than it returns null.</returns>
 		Tuple<string, string>? GetTokenCookies();
+
+		/// <summary>
+		///     Sets the accessToken(jwt) and the refreshToken in the cookies.
+		/// </summary>
+		/// <returns>If the one of them is null than it returns null.</returns>
+		void SetTokenCookies(string token, RefreshToken refreshToken);
+
+		/// <summary>
+		///     Gets the accessToken(jwt) and the refreshToken from the cookies.
+		/// </summary>
+		/// <returns>If the one of them is null than it returns null.</returns>
+		bool DeleteTokenCookies();
 	}
 }

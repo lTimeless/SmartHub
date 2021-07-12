@@ -1,13 +1,13 @@
 <script lang="ts">
-import { computed, defineComponent, reactive, ref, watch } from 'vue';
-import { useRouter } from 'vue-router';
-import { Routes } from '@/types/enums';
+import {computed, defineComponent, reactive, ref, watch} from 'vue';
+import {useRouter} from 'vue-router';
+import {Routes} from '@/types/enums';
 import Loader from '@/components/app/AppSpinner.vue';
 import AppCard from '@/components/app/AppCards/AppCard.vue';
-import { useIdentity } from '@/hooks/useIdentity';
-import { LoginInput } from '@/graphql/graphql.types';
-import { useLoginMutation } from '@/graphql/mutations/identity/login.generated';
-import { useHomeAndUsersExistQuery } from '@/graphql/queries/appSmallInfo.generated';
+import {useIdentity} from '@/hooks/useIdentity';
+import {LoginInput} from '@/graphql/graphql.types';
+import {useLoginMutation} from '@/graphql/mutations/identity/login.generated';
+import {useHomeAndUsersExistQuery} from '@/graphql/queries/appSmallInfo.generated';
 
 export default defineComponent({
   name: 'Login',
@@ -28,7 +28,7 @@ export default defineComponent({
     });
     const { executeMutation: login, fetching: loadLogin, error: errLogin } = useLoginMutation();
 
-    const { data: result, fetching: loading, error } = useHomeAndUsersExistQuery();
+    const {data: result, fetching: loading, error} = useHomeAndUsersExistQuery({requestPolicy: 'network-only'});
     const data = computed(() => result.value);
     watch(data, (newData) => {
       if (newData && !newData.applicationIsActive) {

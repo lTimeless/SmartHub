@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -101,39 +100,42 @@ namespace SmartHub.Infrastructure
 			services.AddSingleton(tokenValidationParameters);
 
 			services.AddAuthentication(x =>
-			{
-				x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-				x.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
-				x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-				x.DefaultSignInScheme = JwtBearerDefaults.AuthenticationScheme;
-			}).AddJwtBearer(options =>
-			{
-				options.RequireHttpsMetadata = false;
-				options.SaveToken = true;
-				options.TokenValidationParameters = tokenValidationParameters;
-				options.SaveToken = true;
-				options.Events = new()
 				{
-					OnMessageReceived = context =>
+					x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+					x.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+					x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+					x.DefaultSignInScheme = JwtBearerDefaults.AuthenticationScheme;
+				}).AddJwtBearer(options =>
+				{
+					options.RequireHttpsMetadata = false;
+					options.SaveToken = true;
+					options.TokenValidationParameters = tokenValidationParameters;
+					options.SaveToken = true;
+					options.Events = new()
 					{
-						if (context.Request.Cookies.ContainsKey("SmartHub-Access-Token"))
+						OnMessageReceived = context =>
 						{
-							context.Token = context.Request.Cookies["SmartHub-Access-Token"];
-						}
+							if (context.Request.Cookies.ContainsKey("SmartHub-Access-Token"))
+							{
+								context.Token = context.Request.Cookies["SmartHub-Access-Token"];
+							}
 
-						return Task.CompletedTask;
-					}
-				};
-			}).AddCookie(options =>
-			{
-				options.Cookie.HttpOnly = true;
-				options.Cookie.Expiration = TimeSpan.FromHours(1); // TODO get from appSettings
-				options.Cookie.SameSite = SameSiteMode.Strict;
-				options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
-				options.Cookie.IsEssential = true;
-				options.LoginPath = "/login";
-				// options.LogoutPath = "/logout";
-			});
+							return Task.CompletedTask;
+						}
+					};
+				})
+				// 	.AddCookie(options =>
+				// {
+				// 	options.Cookie.HttpOnly = true;
+				// 	options.ExpireTimeSpan = TimeSpan.FromHours(1);
+				// 	options.SlidingExpiration = true;
+				// 	options.Cookie.SameSite = SameSiteMode.Strict;
+				// 	options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
+				// 	options.Cookie.IsEssential = true;
+				// 	options.LoginPath = "/login";
+				// 	// options.LogoutPath = "/logout";
+				// })
+				;
 
 			return services.AddAuthorization(options => options
 				.AddPolicy(AuthConstants.AuthorizationPolicies.Admin, x => x.RequireAuthenticatedUser()));

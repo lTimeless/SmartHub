@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
@@ -94,16 +93,9 @@ namespace SmartHub.Infrastructure.Services.Identity
 
 		public async Task<bool> LoginAsync(User user, string password)
 		{
-			await _signInManager.SignInAsync(user, new AuthenticationProperties {IsPersistent = true});
+			// await _signInManager.SignInAsync(user, new AuthenticationProperties {IsPersistent = true});
 			var result = await _signInManager.CheckPasswordSignInAsync(user, password, false);
 			return result.Succeeded;
-		}
-
-		public async Task<bool> LogoutAsync()
-		{
-			//TODO add logout logic
-			await _signInManager.SignOutAsync();
-			return true;
 		}
 
 		public async Task<Tuple<string, RefreshToken>> CreateTokensAsync(User user, List<string>? inputRoles = default,

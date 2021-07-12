@@ -18,7 +18,6 @@ namespace SmartHub.Application.Common.Interfaces
 		/// <returns>True if successful.</returns>
 		Task<bool> LoginAsync(User user, string password);
 
-		Task<bool> LogoutAsync();
 
 		/// <summary>
 		///     Looks if any user exists in the database.
