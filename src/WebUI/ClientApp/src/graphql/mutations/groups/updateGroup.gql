@@ -1,8 +1,0 @@
-mutation UpdateGroup($input: UpdateGroupInput!) {
-  updateGroup(input: $input) {
-    errors {
-      message
-      code
-    }
-  }
-}

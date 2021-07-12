@@ -239,3 +239,5 @@ SmartHub.configFolder-dev/
 src/WebUI/Logs/
 
 src/WebUI/wwwroot/
+
+src/WebUI/ClientApp/.yarn/

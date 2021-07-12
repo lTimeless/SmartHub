@@ -1,7 +1,6 @@
 import path from 'path';
-import { defineConfig } from 'vite';
-import vue from '@vitejs/plugin-vue';
-import tsconfigPaths from 'vite-tsconfig-paths';
+import { defineConfig } from 'vite'
+import reactRefresh from '@vitejs/plugin-react-refresh'
 import ViteFonts from 'vite-plugin-fonts';
 
 // https://vitejs.dev/config/
@@ -29,16 +28,11 @@ export default defineConfig({
     emptyOutDir: true,
     outDir: '../wwwroot'
   },
-  optimizeDeps: {
-    include: ['@urql/vue', '@urql/core']
-  },
   plugins: [
-    vue(),
-    tsconfigPaths(),
+    reactRefresh(),
     ViteFonts({
       google: {
         families: ['JetBrains Mono', 'Roboto']
       }
-    })
-  ]
-});
+    })]
+})

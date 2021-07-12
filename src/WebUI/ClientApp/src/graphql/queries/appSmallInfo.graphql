@@ -1,8 +1,0 @@
-query ApplicationIsActive {
-  applicationIsActive
-}
-
-query HomeAndUsersExist {
-  applicationIsActive
-  usersExist
-}
