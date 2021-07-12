@@ -23,21 +23,15 @@ jobs:
     - uses: actions/checkout@v2
 
     - name: Go to ClientApp folder
-      run: |
-        cd ${{ env.SmartHubUipath }}
-        ls
+      run: cd ${{ env.SmartHubUipath }}
 
     - name: Use latest Node.js version
       uses: actions/setup-node@master
           
     - name: Installing project dependencies
 #      run: npm --prefix '${SmartHubUipath}' install
-      run: |
-        ls
-        yarn
+      run: cd ${{ env.SmartHubUipath }} && yarn
 
     - name: Building the project
 #      run: npm --prefix ${SmartHubUipath} run build
-      run: |
-        ls
-        yarn build
+      run: cd ${{ env.SmartHubUipath }} && yarn build
