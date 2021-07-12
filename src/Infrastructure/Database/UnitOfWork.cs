@@ -1,36 +1,36 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using SmartHub.Application.Common.Interfaces.Database;
+using System;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
-using SmartHub.Application.Common.Interfaces;
-using SmartHub.Application.Common.Interfaces.Database;
 
 namespace SmartHub.Infrastructure.Database
 {
 	public class UnitOfWork : IUnitOfWork
 	{
-		public AppDbContext AppDbContext { get; }
+		private readonly AppDbContext _appDbContext;
 
 		public UnitOfWork(AppDbContext appDbContext)
 		{
-			AppDbContext = appDbContext;
+			_appDbContext = appDbContext;
 		}
 
 		public async Task SaveAsync()
 		{
-			await AppDbContext.SaveChangesAsync();
+			await _appDbContext.SaveChangesAsync();
 		}
 
 		public void Dispose()
 		{
-			AppDbContext.Dispose();
+			_appDbContext.Dispose();
 			GC.SuppressFinalize(this);
 		}
 
 		public async Task RollbackAsync()
 		{
-			AppDbContext.ChangeTracker.Entries()
-				.Where(e => e.Entity != null) // vlt das hinzufügen => && (e.State == EntityState.Added || e.State == EntityState.Modified)
+			_appDbContext.ChangeTracker.Entries()
+				.Where(e => e.Entity !=
+				            null) // vlt das hinzufügen => && (e.State == EntityState.Added || e.State == EntityState.Modified)
 				.ToList()
 				.ForEach(e => e.State = EntityState.Detached);
 			await SaveAsync().ConfigureAwait(false);

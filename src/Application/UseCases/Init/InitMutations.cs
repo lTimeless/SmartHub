@@ -1,9 +1,8 @@
 ﻿using HotChocolate;
 using Serilog;
-using SmartHub.Application.Common.Models;
 using SmartHub.Application.UseCases.AppFolder.AppConfigParser;
 using SmartHub.Application.UseCases.GeoLocation;
-using SmartHub.Domain.Common;
+using SmartHub.Domain.Common.Constants;
 using SmartHub.Domain.Common.Enums;
 using SmartHub.Domain.Common.Extensions;
 using System.Threading.Tasks;
@@ -11,7 +10,7 @@ using System.Threading.Tasks;
 namespace SmartHub.Application.UseCases.Init
 {
 	/// <summary>
-	/// Endpoint for initialization.
+	///     Endpoint for initialization.
 	/// </summary>
 	[GraphQLDescription("Entrypoint for initialization services.")]
 	public class InitMutations
@@ -24,8 +23,8 @@ namespace SmartHub.Application.UseCases.Init
 			var appConfig = appConfigService.GetConfig();
 			if (appConfig.IsActive)
 			{
-				return new InitPayload(
-					new UserError("There is already an active home.", AppErrorCodes.Exists));
+				return new(
+					new("There is already an active home.", AppErrorCodes.Exists));
 			}
 
 			if (input.AutoDetectAddress)
@@ -42,12 +41,14 @@ namespace SmartHub.Application.UseCases.Init
 			}
 
 			appConfig.ApplicationName = !string.IsNullOrWhiteSpace(input.Name) ? input.Name : DefaultNames.AppName;
-			appConfig.Description = !string.IsNullOrWhiteSpace(input.Description) ? input.Description : DefaultNames.AppDescription;
+			appConfig.Description = !string.IsNullOrWhiteSpace(input.Description)
+				? input.Description
+				: DefaultNames.AppDescription;
 
 			appConfig.IsActive = true;
-			await appConfigService.UpdateConfig(appConfig);
+			await appConfigService.UpdateConfigAsync(appConfig);
 			logger.Information("SmartHub successfully created.");
-			return new InitPayload(appConfig, "SmartHub successfully created.");
+			return new(appConfig, "SmartHub successfully created.");
 		}
 	}
 }

@@ -1,0 +1,10 @@
+mutation RefreshTokens  {
+    refreshTokens {
+        ...Identity
+        errors {
+            message
+            code
+        }
+        message
+    }
+}

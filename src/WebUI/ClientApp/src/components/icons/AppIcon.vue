@@ -10,13 +10,13 @@
     viewBox="0 0 24 24"
     role="presentation"
   >
-    <component :is="iconFullName"></component>
+    <component :is="iconFullName" />
   </svg>
 </template>
 
 <script lang="ts">
 import { computed, defineComponent, toRefs } from 'vue';
-
+// TODO write all Icons as JSX and put them into one file , that would save a lot of files
 export default defineComponent({
   name: 'AppIcon',
   props: {

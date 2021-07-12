@@ -1,3 +1,47 @@
+<script lang="ts">
+import Loader from '@/components/app/AppSpinner.vue';
+import { defineComponent, reactive } from 'vue';
+import { useRoute } from 'vue-router';
+import { UpdateGroupInput } from '@/graphql/graphql.types';
+import { useUpdateGroupMutation } from '@/graphql/mutations/groups/updateGroup.generated';
+import { useGetGroupByNameQuery } from '@/graphql/queries/groups/getGroupByName.generated';
+
+export default defineComponent({
+  name: 'GroupDetails',
+  components: {
+    Loader
+  },
+  setup() {
+    const route = useRoute();
+    const updatedGroup: UpdateGroupInput = reactive({
+      id: ''
+    });
+    const { executeMutation: updateGroup, fetching: loadUpdate, error: errUpdate } = useUpdateGroupMutation();
+    const { data: groupResult, fetching: loading, error } = useGetGroupByNameQuery({
+      variables: { name: route.params.name },
+      requestPolicy: 'network-only'
+    });
+
+    const save = async () => {
+      if (groupResult.value) {
+        updatedGroup.id = groupResult.value.groups[0].id;
+        await updateGroup({ input: updatedGroup });
+      }
+    };
+
+    return {
+      loading,
+      loadUpdate,
+      errUpdate,
+      error,
+      groupResult,
+      save,
+      updatedGroup
+    };
+  }
+});
+</script>
+
 <template>
   <div class="relative flex-col w-full justify-end bg-white border p-3 rounded">
     <template v-if="loading">
@@ -14,8 +58,8 @@
       <label class="text-left block text-sm">
         <span class="text-gray-600 dark:text-gray-400">Name</span>
         <input
-          type="text"
           v-model="updatedGroup.name"
+          type="text"
           class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md"
           :placeholder="groupResult.groups[0].name"
         />
@@ -23,8 +67,8 @@
       <label class="text-left block text-sm my-3">
         <span class="text-gray-600 dark:text-gray-400">Description</span>
         <input
-          type="text"
           v-model="updatedGroup.description"
+          type="text"
           class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md"
           :placeholder="groupResult.groups[0].description ?? 'Description'"
         />
@@ -53,13 +97,13 @@
         <button
           class="bg-transparent border-indigo-400 border border-solid font-bold uppercase text-sm pl-4 pr-6 py-3 rounded outline-none focus:outline-none"
           type="button"
-          @click="save"
           :class="[
             !loadUpdate
               ? `hover:bg-indigo-400 hover:text-white text-gray-600`
               : 'opacity-50 focus:outline-none cursor-not-allowed'
           ]"
           :disabled="loadUpdate"
+          @click="save"
         >
           <span class="flex">
             <Loader v-if="loadUpdate" height="h-2" width="w-2" />
@@ -70,53 +114,3 @@
     </template>
   </div>
 </template>
-
-<script lang="ts">
-import Loader from '@/components/ui/AppSpinner.vue';
-import { UpdateGroupInput } from '@/types/graphql/inputs';
-import { defineComponent, reactive } from 'vue';
-import { useMutation, useQuery } from '@urql/vue';
-import { useRoute } from 'vue-router';
-import { UPDATE_GROUP } from './GroupMutations';
-import { GET_GROUP_BY_ID } from './GroupQueries';
-
-export default defineComponent({
-  name: 'GroupDetails',
-  components: {
-    Loader
-  },
-  setup() {
-    const route = useRoute();
-    const updatedGroup: UpdateGroupInput = reactive({
-      id: ''
-    });
-    const { executeMutation: updateGroup, fetching: loadUpdate, error: errUpdate } = useMutation(
-      UPDATE_GROUP
-    );
-    const { data: groupResult, fetching: loading, error } = useQuery({
-      query: GET_GROUP_BY_ID,
-      variables: { name: route.params.name },
-      requestPolicy: 'network-only'
-    });
-
-    const save = async () => {
-      if (groupResult.value) {
-        updatedGroup.id = groupResult.value.groups[0].id;
-        await updateGroup({ input: updatedGroup });
-      }
-    };
-
-    return {
-      loading,
-      loadUpdate,
-      errUpdate,
-      error,
-      groupResult,
-      save,
-      updatedGroup
-    };
-  }
-});
-</script>
-
-<style scoped></style>

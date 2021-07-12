@@ -6,9 +6,12 @@
       </h3>
       <div>
         <h1 class="text-left text-3xl md:text-6xl text-primaryBlue">Good {{ timeOfDay }}</h1>
-        <h2 v-if="fetching" class="text-left text-4xl md:text-6xl text-primarySienna">Loading...</h2>
-        <h2 v-else-if="data && data.me.user" class="text-left text-4xl md:text-6xl text-primarySienna">
-          {{ capitalize(data.me.user.userName) }}
+        <h2 v-if="!userName" class="text-left text-4xl md:text-6xl text-primarySienna">Something went wront..</h2>
+        <h2
+          v-else-if="userName"
+          class="text-left text-4xl md:text-6xl text-primarySienna"
+        >
+          {{ capitalize(userName) }}
         </h2>
       </div>
     </div>
@@ -18,30 +21,16 @@
 <script lang="ts">
 import { defineComponent } from 'vue';
 import { useDateTime } from '@/hooks/useDateTime';
-import { useQuery } from '@urql/vue';
 import { useString } from '@/hooks/useString';
-import gql from 'graphql-tag';
-import { FRAGMENT_ME, MeQueryType } from '@/pages/me/MeQueries';
-
-const GET_USERNAME = gql`
-  query GetUserName {
-    me {
-      user {
-        ...IdUserName
-      }
-    }
-  }
-  ${FRAGMENT_ME}
-`;
+import { useIdentity } from '@/hooks/useIdentity';
 
 export default defineComponent({
   name: 'Welcome',
   setup() {
-    const { data, fetching } = useQuery<MeQueryType>({ query: GET_USERNAME });
+    const { userName } = useIdentity();
 
     return {
-      data,
-      fetching,
+      userName,
       ...useString(),
       ...useDateTime()
     };

@@ -15,8 +15,8 @@ namespace SmartHub.WebUI.GraphQl
 	{
 		protected override void Configure(IObjectTypeDescriptor descriptor)
 		{
-			descriptor.Name("AppQueries");
-			descriptor.Description("Main entrypoint for all queries.");
+			descriptor.Name("AppQueries")
+				.Description("Main entrypoint for all queries.");
 			// Group
 			descriptor.Include<GroupQueries>();
 			// Device

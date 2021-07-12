@@ -1,14 +1,13 @@
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Server.Kestrel.Core;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Serilog;
-using Serilog.Sinks.Elasticsearch;
 using SmartHub.Application.Common.Helpers;
 using SmartHub.WebUI.Extensions;
-using SmartHub.WebUI.Serilog;
 using System;
-using System.Net;
 using System.Reflection;
 using System.Threading.Tasks;
 
@@ -16,23 +15,24 @@ namespace SmartHub.WebUI
 {
 	public static class Program
 	{
-		public static async Task Main(string[] args)
+		public static async Task<int> Main(string[] args)
 		{
-			Log.Logger = new LoggerConfiguration()
-				.WriteTo.Console()
-				.CreateBootstrapLogger();
-
+			Log.Logger = SerilogExtension.CreateBootstrapLogger();
 			try
 			{
-				await CreateHostBuilder(args)
-					.Build()
-					.MigrateDatabase()
-					.RunAsync()
-					.ConfigureAwait(false);
+				var host = CreateHostBuilder(args).Build();
+				var hostEnvironment = host.Services.GetRequiredService<IHostEnvironment>();
+				hostEnvironment.ApplicationName = AssemblyInformation.Current.Product;
+				// TODO hier auch ein paar werte der AppConfig setzen (baseLogpath zb)
+				// zb wie in AssemblyInformation mit einem default ctor
+				await host.MigrateDatabase().RunAsync();
+				Log.Information("Stopped {Application}", hostEnvironment.ApplicationName);
+				return 0;
 			}
 			catch (Exception ex)
 			{
 				Log.Fatal(ex, "An unhandled exception occured during bootstrapping");
+				return 1;
 			}
 			finally
 			{
@@ -40,13 +40,14 @@ namespace SmartHub.WebUI
 			}
 		}
 
-		private static IHostBuilder CreateHostBuilder(string[] args) =>
-			Host.CreateDefaultBuilder(args)
+		private static IHostBuilder CreateHostBuilder(string[] args)
+		{
+			return Host.CreateDefaultBuilder()
 				.ConfigureAppConfiguration((hostingContext, configurationBuilder) =>
 				{
 					var env = hostingContext.HostingEnvironment;
 					configurationBuilder
-						.AddJsonFile("appsettings.json", true, true)
+						.AddJsonFile("appsettings.json", false, true)
 						.AddJsonFile($"appsettings.{env.EnvironmentName}.json", false, true);
 
 					if (env.IsDevelopment() && !string.IsNullOrEmpty(env.ApplicationName))
@@ -57,39 +58,23 @@ namespace SmartHub.WebUI
 							configurationBuilder.AddUserSecrets(appAssembly, true);
 						}
 					}
+
 					configurationBuilder
 						.AddCommandLine(args)
 						.AddEnvironmentVariables();
 				})
-				.UseSerilog((context, service, loggerConfig) =>
-				{
-					loggerConfig
-						.ReadFrom.Configuration(context.Configuration)
-						.Enrich.WithProperty("Environment", context.HostingEnvironment.EnvironmentName)
-						.Enrich.With(new LogFilePathEnricher(service))
-						.WriteTo.Map(LogFilePathEnricher.LogFilePathPropertyName,
-							(logFilePath, configuration) =>
-							{
-								if (context.Configuration.GetValue<bool>("LogToFile") ||
-								    context.HostingEnvironment.IsProduction())
-								{
-									configuration.File($"{logFilePath}");
-								}
-							}, 1)
-;
-				})
+				.UseSerilog(SerilogExtension.ConfigureReloadableLogger)
 				.ConfigureLogging((_, config) => config.ClearProviders())
-				.ConfigureWebHostDefaults(webBuilder =>
-				{
-					var host = IpAddressUtils.ShowLocalIpv4();
-					webBuilder.UseKestrel(opt =>
+				.ConfigureWebHostDefaults(builder => builder.UseKestrel(opt =>
 					{
+						var host = IpAddressUtils.ShowLocalIpv4();
 						opt.ListenLocalhost(5001, conf => conf.UseHttps());
 						opt.Listen(host, 5000);
 						opt.Listen(host, 5001, conf => conf.UseHttps());
-
-					});
-					webBuilder.UseStartup<Startup>();
-				});
+					})
+					.ConfigureServices(services =>
+						services.Configure<KestrelServerOptions>(options => options.AllowSynchronousIO = true))
+					.UseStartup<Startup>());
+		}
 	}
 }

@@ -11,7 +11,7 @@
         </div>
         <div class="w-auto pl-4 flex-initial">
           <div class="text-center inline-flex items-center justify-center w-12 h-12 rounded-full bg-red-400">
-            <AppIcon icon-name="folder" />
+            <AppIcon :icon-name="'Folder'" />
           </div>
         </div>
       </template>
@@ -35,7 +35,7 @@
           <div
             class="text-center inline-flex items-center justify-center w-12 h-12 rounded-full bg-yellow-400"
           >
-            <AppIcon icon-name="device" />
+            <AppIcon :icon-name="'Device'" />
           </div>
         </div>
       </template>
@@ -57,7 +57,7 @@
           <div
             class="text-center inline-flex items-center justify-center w-12 h-12 rounded-full bg-green-400"
           >
-            <AppIcon icon-name="users" />
+            <AppIcon :icon-name="'Users'" />
           </div>
         </div>
       </template>
@@ -77,7 +77,7 @@
         </div>
         <div class="w-auto pl-4 flex-initial">
           <div class="text-center inline-flex items-center justify-center w-12 h-12 rounded-full bg-blue-400">
-            <AppIcon icon-name="repeat" />
+            <AppIcon :icon-name="'Repeat'" />
           </div>
         </div>
       </template>
@@ -90,32 +90,24 @@
 </template>
 
 <script lang="ts">
-import { useQuery } from '@urql/vue';
 import { defineComponent } from 'vue';
-import AppIcon from '@/components/icons/AppIcon.vue';
-import AppCardRouterLink from '@/components/ui/AppCards/AppCardRouterLink.vue';
+import AppCardRouterLink from '@/components/app/AppCards/AppCardRouterLink.vue';
 import { Routes } from '@/types/enums';
-import {
-  GetDevicesCountQueryType,
-  GetGroupsCountQueryType,
-  GET_DEVICES_COUNT,
-  GET_GROUPS_COUNT
-} from '../HomeQueries';
+import { useGetGroupsCountQuery } from '@/graphql/queries/groups/getGroupsCount.generated';
+import { useGetDevicesCountQuery } from '@/graphql/queries/devices/getDeviceCount.generated';
+import AppIcon from '@/components/icons/AppIcon.vue';
 
 export default defineComponent({
   name: 'CardsRow',
   components: {
-    AppIcon,
-    AppCardRouterLink
+    AppCardRouterLink,
+    AppIcon
   },
   props: {},
   setup() {
-    const { data: groupsCountResult, fetching: groupsFetch } = useQuery<GetGroupsCountQueryType>({
-      query: GET_GROUPS_COUNT
-    });
-    const { data: devicesResult, fetching: devicesFetch } = useQuery<GetDevicesCountQueryType>({
-      query: GET_DEVICES_COUNT
-    });
+    // TODO combine both queries 
+    const { data: groupsCountResult, fetching: groupsFetch } = useGetGroupsCountQuery();
+    const { data: devicesResult, fetching: devicesFetch } = useGetDevicesCountQuery();
 
     return {
       groupsCountResult,

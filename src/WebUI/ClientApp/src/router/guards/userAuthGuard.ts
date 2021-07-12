@@ -1,14 +1,52 @@
-import { NavigationGuardNext, RouteLocationNormalized } from 'vue-router';
-import { Roles, Routes } from '@/types/enums';
-import { useIdentity } from '@/hooks/useIdentity';
+import {NavigationGuardNext, RouteLocationNormalized} from 'vue-router';
+import {Roles, Routes} from '@/types/enums';
+import {useIdentity} from '@/hooks/useIdentity';
+
+interface UseRouteAuthGuardParams {
+    to: RouteLocationNormalized;
+    from: RouteLocationNormalized;
+    next: NavigationGuardNext;
+}
+
+export const useRouteAuthGuard = ({to, next}: UseRouteAuthGuardParams) => {
+    if (to.matched.some((record) => record.meta.requiresAuth)) {
+        validateIdentityAndGoToRoute(to, next);
+    } else {
+        const {autoLoginAlreadyDone} = useIdentity();
+        if (to.matched.some((record) => record.meta.autoLogin) && !autoLoginAlreadyDone) {
+            validateIdentityAndGoToRoute(to, next);
+        } else {
+            next();
+        }
+    }
+};
+
+const validateIdentityAndGoToRoute = (to: RouteLocationNormalized, next: NavigationGuardNext) => {
+    const {isAuthenticated, refreshTokens} = useIdentity();
+    if (isAuthenticated()) {
+        validateUserRoleToRoute(to, next);
+    } else {
+        refreshTokens().then(() => {
+            if (isAuthenticated()) {
+                if (to.path === Routes.Login || to.path === Routes.Registration) {
+                    next({path: Routes.Home});
+                } else {
+                    next({path: to.path});
+                }
+            } else {
+                next({path: Routes.Login});
+            }
+        });
+    }
+};
 
 const validateUserRoleToRoute = (to: RouteLocationNormalized, next: NavigationGuardNext) => {
-  const { clearStorage, isRole } = useIdentity();
-  const role = isRole();
-  if (to.matched.some((record) => record.meta.isAdmin)) {
-    if (role === Roles.Admin) {
-      next();
-    } else {
+    const {isRole} = useIdentity();
+    const role = isRole();
+    if (to.matched.some((record) => record.meta.isAdmin)) {
+        if (role === Roles.Admin) {
+            next();
+        } else {
       next({ path: Routes.NotAuthorized });
     }
   } else if (to.matched.some((record) => record.meta.isUser)) {
@@ -21,28 +59,7 @@ const validateUserRoleToRoute = (to: RouteLocationNormalized, next: NavigationGu
     if (role === Roles.Admin || role === Roles.User || role === Roles.Guest) {
       next();
     } else {
-      clearStorage();
       next({ path: Routes.Login });
-    }
-  }
-};
-
-export const useRouteAuthGuard = (
-  to: RouteLocationNormalized,
-  from: RouteLocationNormalized,
-  next: NavigationGuardNext
-): void => {
-  if (to.matched.some((record) => record.meta.requiresAuth)) {
-    const { isAuthenticated } = useIdentity();
-    // TODO: BE call machen wenn Token noch im storage ist, wenn der noch gültig ist dann weiter zum dashboard wenn nicht dann einen neuen beantragen
-    // Refreshtoken!!!!
-    if (!isAuthenticated()) {
-      // TODO: create toast with error message "Not authorized"
-      next({ path: Routes.Login });
-    } else {
-      //  anstatt den authresponse zu nehmen um die rollen zu prüfen
-      // TODO: vlt den token nehmen ans BE schicken- prüfen lassen ob es noch valide ist und darauf dann userberechtigungen/authresponse bekommen
-      validateUserRoleToRoute(to, next);
     }
   } else {
     next();

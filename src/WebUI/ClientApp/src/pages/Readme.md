@@ -1,3 +1,3 @@
-# pages
+# Pages
 
-Here are all views, components, routes, etc. per _page_ defined.
+Here are all main entrypoints for all pages(views) with components, services, hooks, etc. only belonging to these pages.

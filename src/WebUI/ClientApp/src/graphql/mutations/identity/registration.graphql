@@ -1,0 +1,10 @@
+mutation Registration($input: RegistrationInput!) {
+    registration(input: $input) {
+        ...Identity
+        errors {
+            message
+            code
+        }
+        message
+    }
+}

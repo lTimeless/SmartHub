@@ -1,13 +1,13 @@
 <template>
   <div v-if="state && state.lights">
     <button
-      @click="handleClick"
       class="rounded-full p-1 focus:outline-none"
       :class="[
         lightStatus
           ? 'ring ring-green-500 md:hover:ring-burntSienna-500'
           : 'ring-2 ring-blueGray-300 md:hover:ring-green-500 hover:ring'
       ]"
+      @click="handleClick"
     >
       <AppIcon icon-name="Bulb" :icon-color="'text-primaryBlue'" height="h-10" width="h-10" />
     </button>
@@ -18,12 +18,14 @@
 <script lang="ts">
 import { defineComponent, PropType, ref, toRefs, onMounted, reactive } from 'vue';
 import { LightState } from '@/types/types';
-import { useQuery } from '@urql/vue';
-import { SET_LIGHT_STATE, SetLightStateQueryType } from '@/components/controls/ControlQueries';
 import AppIcon from '../icons/AppIcon.vue';
+import { useSetLightStateQuery } from '@/graphql/queries/setLightState.generated';
 
 export default defineComponent({
   name: 'LightControl',
+  components: {
+    AppIcon
+  },
   props: {
     state: {
       type: Object as PropType<LightState>,
@@ -34,9 +36,6 @@ export default defineComponent({
       type: String,
       required: true
     }
-  },
-  components: {
-    AppIcon
   },
   setup(props) {
     const propsRef = toRefs(props);
@@ -56,8 +55,7 @@ export default defineComponent({
       }
     });
 
-    const { executeQuery } = useQuery<SetLightStateQueryType>({
-      query: SET_LIGHT_STATE,
+    const { executeQuery } = useSetLightStateQuery({
       pause: true,
       variables,
       requestPolicy: 'network-only'

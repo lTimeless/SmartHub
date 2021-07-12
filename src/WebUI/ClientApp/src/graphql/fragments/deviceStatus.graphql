@@ -1,0 +1,7 @@
+fragment DeviceStatus on Device {
+    status {
+      lights {
+        ison
+      }
+    }
+  }

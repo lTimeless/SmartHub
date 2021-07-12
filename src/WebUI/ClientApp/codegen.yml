@@ -1,0 +1,33 @@
+overwrite: true
+schema: "src/graphql/schema.graphql"
+documents: 
+  - "src/**/*.graphql"
+  - "src/**/*.gql"
+generates:
+  src/graphql/graphql.types.ts:
+    config:
+      declarationKind: 'interface'
+      maybeValue: 'T | null | undefined'
+      avoidOptionals: false
+    plugins:
+      - "typescript"
+  src/graphql/:
+    preset: near-operation-file
+    presetConfig:
+      baseTypesPath: 'graphql.types.ts'
+    config:
+      withHooks: true
+      preResolveTypes: true
+      urqlImportFrom: '@urql/vue'
+      declarationKind: 'interface'
+    plugins:
+      - "typescript-operations"
+      - "typescript-urql"
+  ./graphql.schema.json:
+    plugins:
+      - "introspection"
+
+hooks:
+  afterOneFileWrite:
+    - prettier --write
+#    - eslint --fix

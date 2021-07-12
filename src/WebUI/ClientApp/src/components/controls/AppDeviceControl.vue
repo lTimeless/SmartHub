@@ -1,9 +1,10 @@
 <template>
-  <component :is="typeFullName" :state="state" :device-id="deviceId"></component>
+  <component :is="typeFullName" :state="state" :device-id="deviceId" />
 </template>
 
 <script lang="ts">
-import { computed, defineComponent } from 'vue';
+import { Maybe } from '@/graphql/graphql.types';
+import { computed, defineComponent, PropType } from 'vue';
 
 export default defineComponent({
   name: 'AppDeviceControl',
@@ -13,7 +14,19 @@ export default defineComponent({
       required: true
     },
     state: {
-      type: Object,
+      type: Object as PropType<
+        | {
+            __typename?: 'StatusResponseType' | undefined;
+            lights?:
+              | Maybe<{ __typename?: 'LightResponseType' | undefined; ison: boolean }>[]
+              | null
+              | undefined;
+          }
+        | null
+        | undefined
+        | null
+        | undefined
+      >,
       required: false,
       default: null
     },

@@ -11,10 +11,10 @@
     <!-- Dropdown background invisible close btn  -->
     <button
       v-if="showDropdown"
-      @click="toggleDropDownValue"
       :tabindex="-1"
       class="fixed inset-0 h-full w-full opacity-0 cursor-default"
-    ></button>
+      @click="toggleDropDownValue"
+    />
     <!-- Dropdown modal -->
     <div
       v-if="showDropdown"

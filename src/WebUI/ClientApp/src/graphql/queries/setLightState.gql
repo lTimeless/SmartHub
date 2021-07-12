@@ -1,0 +1,15 @@
+query SetLightState($input: DeviceLightStateInput!) {
+  setLightState(input: $input) {
+    errors {
+      message
+      code
+    }
+    message
+    lightResponseType {
+      ison
+      red
+      green
+      blue
+    }
+  }
+}

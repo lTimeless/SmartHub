@@ -1,0 +1,12 @@
+mutation InitApp($input: AppConfigInitInput!) {
+  initializeApp(input: $input) {
+    errors {
+      message
+      code
+    }
+    appConfig {
+      applicationName
+    }
+    message
+  }
+}

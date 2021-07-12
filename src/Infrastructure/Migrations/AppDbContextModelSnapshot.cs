@@ -17,9 +17,9 @@ namespace SmartHub.Infrastructure.Migrations
             modelBuilder
                 .HasDefaultSchema("smarthub")
                 .HasPostgresExtension("uuid-ossp")
-                .UseIdentityByDefaultColumns()
                 .HasAnnotation("Relational:MaxIdentifierLength", 63)
-                .HasAnnotation("ProductVersion", "5.0.1");
+                .HasAnnotation("ProductVersion", "5.0.5")
+                .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
             modelBuilder.Entity("DeviceGroup", b =>
                 {
@@ -41,7 +41,7 @@ namespace SmartHub.Infrastructure.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer")
-                        .UseIdentityByDefaultColumn();
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
                     b.Property<string>("ClaimType")
                         .HasColumnType("text");
@@ -65,7 +65,7 @@ namespace SmartHub.Infrastructure.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer")
-                        .UseIdentityByDefaultColumn();
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
                     b.Property<string>("ClaimType")
                         .HasColumnType("text");
@@ -140,7 +140,7 @@ namespace SmartHub.Infrastructure.Migrations
                     b.ToTable("UserTokens");
                 });
 
-            modelBuilder.Entity("Domain.Entities.Activity", b =>
+            modelBuilder.Entity("SmartHub.Domain.Entities.Activity", b =>
                 {
                     b.Property<string>("Id")
                         .ValueGeneratedOnAdd()
@@ -173,7 +173,7 @@ namespace SmartHub.Infrastructure.Migrations
                     b.ToTable("Activities");
                 });
 
-            modelBuilder.Entity("Domain.Entities.Device", b =>
+            modelBuilder.Entity("SmartHub.Domain.Entities.Device", b =>
                 {
                     b.Property<string>("Id")
                         .ValueGeneratedOnAdd()
@@ -225,7 +225,7 @@ namespace SmartHub.Infrastructure.Migrations
                     b.ToTable("Devices");
                 });
 
-            modelBuilder.Entity("Domain.Entities.Group", b =>
+            modelBuilder.Entity("SmartHub.Domain.Entities.Group", b =>
                 {
                     b.Property<string>("Id")
                         .ValueGeneratedOnAdd()
@@ -261,7 +261,7 @@ namespace SmartHub.Infrastructure.Migrations
                     b.ToTable("Groups");
                 });
 
-            modelBuilder.Entity("Domain.Entities.Plugin", b =>
+            modelBuilder.Entity("SmartHub.Domain.Entities.Plugin", b =>
                 {
                     b.Property<string>("Id")
                         .ValueGeneratedOnAdd()
@@ -275,8 +275,9 @@ namespace SmartHub.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<double>("AssemblyVersion")
-                        .HasColumnType("double precision");
+                    b.Property<string>("AssemblyVersion")
+                        .IsRequired()
+                        .HasColumnType("text");
 
                     b.Property<string>("ConnectionTypes")
                         .IsRequired()
@@ -318,7 +319,39 @@ namespace SmartHub.Infrastructure.Migrations
                     b.ToTable("Plugins");
                 });
 
-            modelBuilder.Entity("Domain.Entities.Role", b =>
+            modelBuilder.Entity("SmartHub.Domain.Entities.RefreshToken", b =>
+                {
+                    b.Property<string>("Token")
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<DateTime>("ExpirationDate")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<bool>("Invalidated")
+                        .HasColumnType("boolean");
+
+                    b.Property<string>("JwtId")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<bool>("Used")
+                        .HasColumnType("boolean");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Token");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("RefreshTokens");
+                });
+
+            modelBuilder.Entity("SmartHub.Domain.Entities.Role", b =>
                 {
                     b.Property<string>("Id")
                         .ValueGeneratedOnAdd()
@@ -363,7 +396,7 @@ namespace SmartHub.Infrastructure.Migrations
                     b.ToTable("Roles");
                 });
 
-            modelBuilder.Entity("Domain.Entities.User", b =>
+            modelBuilder.Entity("SmartHub.Domain.Entities.User", b =>
                 {
                     b.Property<string>("Id")
                         .ValueGeneratedOnAdd()
@@ -455,13 +488,13 @@ namespace SmartHub.Infrastructure.Migrations
 
             modelBuilder.Entity("DeviceGroup", b =>
                 {
-                    b.HasOne("Domain.Entities.Device", null)
+                    b.HasOne("SmartHub.Domain.Entities.Device", null)
                         .WithMany()
                         .HasForeignKey("DevicesId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Domain.Entities.Group", null)
+                    b.HasOne("SmartHub.Domain.Entities.Group", null)
                         .WithMany()
                         .HasForeignKey("GroupsId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -470,7 +503,7 @@ namespace SmartHub.Infrastructure.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
-                    b.HasOne("Domain.Entities.Role", null)
+                    b.HasOne("SmartHub.Domain.Entities.Role", null)
                         .WithMany()
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -479,7 +512,7 @@ namespace SmartHub.Infrastructure.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
                 {
-                    b.HasOne("Domain.Entities.User", null)
+                    b.HasOne("SmartHub.Domain.Entities.User", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -488,7 +521,7 @@ namespace SmartHub.Infrastructure.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
-                    b.HasOne("Domain.Entities.User", null)
+                    b.HasOne("SmartHub.Domain.Entities.User", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -497,13 +530,13 @@ namespace SmartHub.Infrastructure.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<string>", b =>
                 {
-                    b.HasOne("Domain.Entities.Role", null)
+                    b.HasOne("SmartHub.Domain.Entities.Role", null)
                         .WithMany()
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Domain.Entities.User", null)
+                    b.HasOne("SmartHub.Domain.Entities.User", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -512,16 +545,16 @@ namespace SmartHub.Infrastructure.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
                 {
-                    b.HasOne("Domain.Entities.User", null)
+                    b.HasOne("SmartHub.Domain.Entities.User", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Domain.Entities.Device", b =>
+            modelBuilder.Entity("SmartHub.Domain.Entities.Device", b =>
                 {
-                    b.OwnsOne("Domain.Entities.ValueObjects.Company", "Company", b1 =>
+                    b.OwnsOne("SmartHub.Domain.Entities.ValueObjects.Company", "Company", b1 =>
                         {
                             b1.Property<string>("DeviceId")
                                 .ValueGeneratedOnAdd()
@@ -547,7 +580,7 @@ namespace SmartHub.Infrastructure.Migrations
                                 .HasForeignKey("DeviceId");
                         });
 
-                    b.OwnsOne("Domain.Entities.ValueObjects.IpAddress", "Ip", b1 =>
+                    b.OwnsOne("SmartHub.Domain.Entities.ValueObjects.IpAddress", "Ip", b1 =>
                         {
                             b1.Property<string>("DeviceId")
                                 .ValueGeneratedOnAdd()
@@ -575,9 +608,9 @@ namespace SmartHub.Infrastructure.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Domain.Entities.Plugin", b =>
+            modelBuilder.Entity("SmartHub.Domain.Entities.Plugin", b =>
                 {
-                    b.OwnsOne("Domain.Entities.ValueObjects.Company", "Company", b1 =>
+                    b.OwnsOne("SmartHub.Domain.Entities.ValueObjects.Company", "Company", b1 =>
                         {
                             b1.Property<string>("PluginId")
                                 .ValueGeneratedOnAdd()
@@ -609,9 +642,20 @@ namespace SmartHub.Infrastructure.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Domain.Entities.User", b =>
+            modelBuilder.Entity("SmartHub.Domain.Entities.RefreshToken", b =>
                 {
-                    b.OwnsOne("Domain.Entities.ValueObjects.PersonName", "PersonName", b1 =>
+                    b.HasOne("SmartHub.Domain.Entities.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("SmartHub.Domain.Entities.User", b =>
+                {
+                    b.OwnsOne("SmartHub.Domain.Entities.ValueObjects.PersonName", "PersonName", b1 =>
                         {
                             b1.Property<string>("UserId")
                                 .ValueGeneratedOnAdd()

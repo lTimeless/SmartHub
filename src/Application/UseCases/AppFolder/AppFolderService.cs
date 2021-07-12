@@ -51,7 +51,7 @@ namespace SmartHub.Application.UseCases.AppFolder
 		/// <inheritdoc cref="IAppFolderService.Save"/>
 		public Task Save()
 		{
-			_appConfigService.SaveConfig();
+			_appConfigService.SaveConfigAsync();
 			return Task.CompletedTask;
 		}
 

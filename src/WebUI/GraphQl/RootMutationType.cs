@@ -14,23 +14,23 @@ namespace SmartHub.WebUI.GraphQl
 	{
 		protected override void Configure(IObjectTypeDescriptor descriptor)
 		{
-			descriptor.Name("AppMutations");
-			descriptor.Description("Main entrypoint for all mutations.");
+			descriptor.Name("AppMutations")
+				.Description("Main entrypoint for all mutations.");
 
 			// Identity
-			descriptor.Include<LoginIdentityMutation>();
-			descriptor.Include<RegistrationIdentityMutation>();
+			descriptor.Include<LoginIdentityMutation>()
+				.Include<RefreshIdentityMutation>()
+				.Include<RegistrationIdentityMutation>();
 			// Initialization
 			descriptor.Include<InitMutations>();
 			// Group
-			descriptor.Include<CreateGroupMutation>();
-			descriptor.Include<UpdateGroupMutation>();
+			descriptor.Include<CreateGroupMutation>()
+				.Include<UpdateGroupMutation>();
 			// Device
-			descriptor.Include<CreateDeviceMutation>();
-			descriptor.Include<UpdateDeviceMutation>();
+			descriptor.Include<CreateDeviceMutation>()
+				.Include<UpdateDeviceMutation>();
 			// User
 			descriptor.Include<UpdateUserMutations>();
-
 		}
 	}
 }

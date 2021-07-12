@@ -1,18 +1,17 @@
-﻿using System;
-using System.Threading;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using SmartHub.Application.Common.Interfaces;
-using SmartHub.Application.Common.Interfaces.Database;
 using SmartHub.Domain.Entities;
+using System;
 using System.Reflection;
+using System.Threading;
+using System.Threading.Tasks;
 using AppRoles = SmartHub.Domain.Common.Enums.Roles;
 
 namespace SmartHub.Infrastructure.Database
 {
-	public sealed class AppDbContext : IdentityDbContext<User, Role, string>, IAppDbContext
+	public sealed class AppDbContext : IdentityDbContext<User, Role, string>
 	{
 		private readonly ICurrentUserService _currentUserService;
 
@@ -25,6 +24,7 @@ namespace SmartHub.Infrastructure.Database
 		public DbSet<Device> Devices { get; set; } = default!;
 		public DbSet<Plugin> Plugins { get; set; } = default!;
 		public DbSet<Activity> Activities { get; set; } = default!;
+		public DbSet<RefreshToken> RefreshTokens { get; set; } = default!;
 
 		protected override void OnModelCreating(ModelBuilder builder)
 		{
@@ -65,6 +65,7 @@ namespace SmartHub.Infrastructure.Database
 						break;
 				}
 			}
+
 			return base.SaveChangesAsync(cancellationToken);
 		}
 	}

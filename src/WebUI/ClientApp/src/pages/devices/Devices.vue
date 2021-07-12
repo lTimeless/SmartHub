@@ -1,14 +1,13 @@
 <script lang="ts">
 import { reactive, toRefs, defineComponent } from 'vue';
-import AppCard from '@/components/ui/AppCards/AppCard.vue';
-import { useQuery } from '@urql/vue';
-import Loader from '@/components/ui/AppSpinner.vue';
+import AppCard from '@/components/app/AppCards/AppCard.vue';
+import Loader from '@/components/app/AppSpinner.vue';
 import { useRouter } from 'vue-router';
 import AppIcon from '@/components/icons/AppIcon.vue';
 import { useString } from '@/hooks/useString';
 import AppDeviceControl from '../../components/controls/AppDeviceControl.vue';
-import { GetDevicesQueryType, GET_DEVICES } from './DeviceQueries';
 import DeviceCreateModal from './modals/DeviceCreateModal.vue';
+import { useGetDevicesQuery } from '@/graphql/queries/devices/getDevices.generated';
 
 export default defineComponent({
   name: 'Devices',
@@ -21,10 +20,8 @@ export default defineComponent({
   },
   setup() {
     const router = useRouter();
-    const { data, fetching: loading, error } = useQuery<GetDevicesQueryType>({
-      query: GET_DEVICES,
-      requestPolicy: 'network-only'
-    });
+    const { data, fetching: loading, error } = useGetDevicesQuery();
+
     const state = reactive({
       showCreateModal: false
     });
@@ -32,7 +29,6 @@ export default defineComponent({
     const toggleCreateModal = () => {
       state.showCreateModal = !state.showCreateModal;
     };
-
     const goToDetail = (name: string) => {
       router.push({ name: 'DeviceDetails', params: { name } });
     };
@@ -59,8 +55,8 @@ export default defineComponent({
       <!-- Add Button -->
       <div class="flex justify-start">
         <button
-          @click="toggleCreateModal"
           class="h-9 w-9 text-gray-600 text-center bg-white hover:text-white hover:bg-primaryBlue rounded-lg active:bg-primary focus:outline-none"
+          @click="toggleCreateModal"
         >
           <a class="text-2xl">+</a>
         </button>
@@ -86,7 +82,7 @@ export default defineComponent({
     <div v-if="data">
       <div v-if="data.devices">
         <div class="grid xl:grid-cols-6 md:grid-cols-4 grid-cols-2 gap-4 rounded">
-          <AppCard class="bg-white w-full h-36" v-for="device in data.devices" :key="device.id">
+          <AppCard v-for="device in data.devices" :key="device.id" class="bg-white w-full h-36">
             <div v-if="device" class="w-full">
               <!-- Header -->
               <div class="flex flex-row justify-between items-center content-center">
@@ -95,12 +91,12 @@ export default defineComponent({
                 </h1>
                 <AppIcon
                   icon-name="Edit"
-                  @click="goToDetail(device.name)"
                   class="cursor-pointer p-1 rounded focus:outline-none hover:ring-2 hover:ring-primaryBlue mr-1"
+                  @click="goToDetail(device.name)"
                 />
               </div>
               <!-- Divider -->
-              <div class="border-border border-t border-blueGray-300 my-2"></div>
+              <div class="border-border border-t border-blueGray-300 my-2" />
               <!-- Body -->
               <div class="flex justify-center py-4">
                 <AppDeviceControl

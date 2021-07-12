@@ -21,12 +21,12 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
-      
+
     - name: Use latest Node.js version
       uses: actions/setup-node@master
           
     - name: Installing project dependencies
-      run: npm --prefix '${SmartHubUipath}' install
-    
+      run: cd ${{ env.SmartHubUipath }} && yarn --frozen-lockfile
+
     - name: Building the project
-      run: npm --prefix ${SmartHubUipath} run build
+      run: cd ${{ env.SmartHubUipath }} && yarn build

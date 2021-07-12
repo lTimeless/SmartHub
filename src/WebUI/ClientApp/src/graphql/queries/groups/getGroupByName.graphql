@@ -1,0 +1,17 @@
+query GetGroupByName($name: String!) {
+  groups(where: { name: { eq: $name } }) {
+    id
+    name
+    createdBy
+    lastModifiedBy
+    lastModifiedAt
+    createdAt
+    description
+    devices {
+      id
+      name
+      pluginName
+      pluginName
+    }
+  }
+}

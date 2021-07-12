@@ -1,18 +1,17 @@
 <script lang="ts">
 import { defineComponent, reactive, computed } from 'vue';
-import AppModal from '@/components/ui/AppModals/AppModal.vue';
-import { CreateDeviceInput } from '@/types/graphql/inputs';
+import AppModal from '@/components/app/AppModals/AppModal.vue';
 import { ConnectionTypes, PluginTypes } from '@/types/enums';
 import { useEnumTypes } from '@/hooks/useEnums.ts';
-import { useMutation } from '@urql/vue';
-import { CREATE_DEVICE } from '../DeviceMutations';
+import { useCreateDeviceMutation } from '@/graphql/mutations/devices/createDevice.generated';
+import { CreateDeviceInput } from '@/graphql/graphql.types';
 
 export default defineComponent({
   name: 'DeviceCreateModal',
-  emits: ['close'],
   components: {
     AppModal
   },
+  emits: ['close'],
   setup(_, context) {
     const deviceCreateInput = reactive<CreateDeviceInput>({
       name: '',
@@ -20,13 +19,16 @@ export default defineComponent({
       ipv4: '',
       companyName: '',
       pluginName: '',
-      pluginTypes: PluginTypes.None.toString(),
-      primaryConnection: ConnectionTypes.None.toString(),
-      secondaryConnection: ConnectionTypes.None.toString()
+      pluginTypes: PluginTypes.None,
+      primaryConnection: ConnectionTypes.None,
+      secondaryConnection: ConnectionTypes.None
     });
-    const { executeMutation: createDevice, fetching: loadCreate, error: errCreate } = useMutation(
-      CREATE_DEVICE
-    );
+    const {
+      executeMutation: createDevice,
+      fetching: loadCreate,
+      error: errCreate
+    } = useCreateDeviceMutation();
+
     const saveBtnActive = computed(() => deviceCreateInput.name !== '' && deviceCreateInput.ipv4 !== '');
     const close = () => {
       context.emit('close', false);
@@ -66,8 +68,8 @@ export default defineComponent({
         <label class="text-left block text-sm">
           <span class="text-gray-600 dark:text-gray-400">Name</span>
           <input
-            type="text"
             v-model="deviceCreateInput.name"
+            type="text"
             class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md"
             placeholder="Name"
           />
@@ -93,8 +95,8 @@ export default defineComponent({
         <label class="text-left block text-sm">
           <span class="text-gray-600 dark:text-gray-400">Description</span>
           <input
-            type="text"
             v-model="deviceCreateInput.description"
+            type="text"
             class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md"
             placeholder="Description(optional)"
           />
@@ -104,8 +106,8 @@ export default defineComponent({
         <label class="text-left block text-sm">
           <span class="text-gray-600 dark:text-gray-400">Ipv4</span>
           <input
-            type="text"
             v-model="deviceCreateInput.ipv4"
+            type="text"
             class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md"
             placeholder="Ipv4"
           />
@@ -118,8 +120,8 @@ export default defineComponent({
         <label class="text-left block text-sm">
           <span class="text-gray-600 dark:text-gray-400">Groupname</span>
           <input
-            type="text"
             v-model="deviceCreateInput.groupName"
+            type="text"
             class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md"
             placeholder="Group name (optional)"
           />
@@ -132,8 +134,8 @@ export default defineComponent({
         <label class="text-left block text-sm">
           <span class="text-gray-600 dark:text-gray-400">Companyname</span>
           <input
-            type="text"
             v-model="deviceCreateInput.companyName"
+            type="text"
             class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md"
             placeholder="Company description"
           />
@@ -143,8 +145,8 @@ export default defineComponent({
         <label class="text-left block text-sm">
           <span class="text-gray-600 dark:text-gray-400">Pluginname</span>
           <input
-            type="text"
             v-model="deviceCreateInput.pluginName"
+            type="text"
             class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md"
             placeholder="Plugin name"
           />

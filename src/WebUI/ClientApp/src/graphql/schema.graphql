@@ -25,7 +25,9 @@ type AppConfig {
     deleteXAmountAfterLimit: Int
     description: String
     downloadServerUrl: String
+    firstStartUp: Boolean!
     isActive: Boolean!
+    logFilePath: String!
     logFolderName: String
     logFolderPath: String
     pluginFolderName: String
@@ -41,6 +43,7 @@ type AppMutations {
     createGroup(input: CreateGroupInput!): GroupPayload!
     initializeApp(input: AppConfigInitInput!): InitPayload!
     login(input: LoginInput!): IdentityPayload!
+    refreshTokens: IdentityPayload!
     registration(input: RegistrationInput!): IdentityPayload!
     updateDevice(input: UpdateDeviceInput!): DevicePayload!
     updateGroup(input: UpdateGroupInput!): GroupPayload!
@@ -53,9 +56,10 @@ type AppQueries {
     applicationIsActive: Boolean!
     devices(order: [DeviceSortInput!], where: DeviceFilterInput): [Device!]!
     devicesCount: Int!
+    getMe: IdentityPayload!
     groups(order: [GroupSortInput!], where: GroupFilterInput): [Group!]!
     groupsCount: Int!
-    me: IdentityPayload!
+    logout: IdentityPayload!
     scanNetworkDevices(order: [NetworkDeviceSortInput!], where: NetworkDeviceFilterInput): [NetworkDevice!]!
     setLightState(input: DeviceLightStateInput!): DeviceStatePayload!
     usersExist: Boolean!
@@ -131,8 +135,8 @@ type GroupPayload {
 
 type IdentityPayload {
     errors: [UserError!]
+    isAuthenticated: Boolean!
     message: String
-    token: String
     user: User
 }
 
@@ -150,7 +154,7 @@ type LightResponseType {
     blue: Int!
     green: Int!
     ison: Boolean!
-    mode: String
+    mode: String!
     red: Int!
     white: Int!
 }
@@ -171,7 +175,7 @@ type PersonName {
 }
 
 type StatusResponseType {
-    lights: [LightResponseType]
+    lights: [LightResponseType!]!
 }
 
 type User {
@@ -194,6 +198,7 @@ type User {
     personName: PersonName!
     phoneNumber: String
     phoneNumberConfirmed: Boolean!
+    roles: [String!]!
     securityStamp: String
     twoFactorEnabled: Boolean!
     userName: String

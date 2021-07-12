@@ -1,0 +1,11 @@
+mutation CreateDevice($input: CreateDeviceInput!) {
+  createDevice(input: $input) {
+    device {
+      id
+    }
+    errors {
+      message
+      code
+    }
+  }
+}

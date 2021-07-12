@@ -1,0 +1,19 @@
+query GetDevices {
+  devices {
+    id
+    name
+    description
+    primaryConnection
+    secondaryConnection
+    pluginName
+    pluginTypes
+    ip {
+      ipv4
+    }
+    company {
+      name
+      shortName
+    }
+    ...DeviceStatus
+  }
+}

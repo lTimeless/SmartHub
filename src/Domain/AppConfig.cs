@@ -4,23 +4,27 @@ using System.IO;
 namespace SmartHub.Domain
 {
 	/// <summary>
-	/// This contains all settings for the smarthome.
+	///     This contains all settings for the smarthome.
 	/// </summary>
 	public class AppConfig
 	{
+		// TODO make it a record ??! 🤔🤔
+		// TODO clean this up
+
 		// TODO save all downloaded pluginNames -> will be implemented with the "Download plugin from cloud UseCase"
 
 		/// <summary>
-		/// The app name.
+		///     The app name.
 		/// </summary>
 		public string? ApplicationName { get; set; }
+
 		public string? ConfigName { get; set; }
 		public string? Description { get; set; }
 		public Address? Address { get; set; }
 
 		/// <summary>
-		/// Defines if the Home is created or not.
-		/// true = created
+		///     Defines if the Home is created or not.
+		///     true = created
 		/// </summary>
 		public bool IsActive { get; set; }
 
@@ -40,13 +44,15 @@ namespace SmartHub.Domain
 		public string? LogFolderName { get; set; }
 		public string? LogFolderPath { get; set; }
 
+		public bool FirstStartUp { get; set; } = false;
+
 		/// <summary>
-		/// The offset that will be added to the amount of deleted items if the limit is reached.
+		///     The offset that will be added to the amount of deleted items if the limit is reached.
 		/// </summary>
 		public int? DeleteXAmountAfterLimit { get; set; }
 
 		/// <summary>
-		/// The limit for saving items.
+		///     The limit for saving items.
 		/// </summary>
 		public int? SaveXLimit { get; set; }
 
@@ -55,8 +61,13 @@ namespace SmartHub.Domain
 		public string GetConfigFilePath()
 		{
 			return ConfigFolderPath + Path.DirectorySeparatorChar + ConfigFileName;
-
 		}
+
+		public string GetLogFilePath()
+		{
+			return LogFolderPath + Path.DirectorySeparatorChar + LogFolderName;
+		}
+
 		#endregion
 	}
 }

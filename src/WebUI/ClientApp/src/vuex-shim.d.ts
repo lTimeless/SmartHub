@@ -1,5 +1,4 @@
 import { CommitOptions, DispatchOptions, Store as VuexStore } from 'vuex';
-
 import { RootState } from '@/store/index.types';
 import { AppMutations } from '@/store/app/mutations';
 import { HomeActions } from '@/store/app/actions';
