@@ -93,7 +93,7 @@
 import { defineComponent } from 'vue';
 import AppCardRouterLink from '@/components/app/AppCards/AppCardRouterLink.vue';
 import { Routes } from '@/types/enums';
-import { useGetGroupsCountQuery } from '@/graphql/queries/groups/GetGroupsCount.generated';
+import { useGetGroupsCountQuery } from '@/graphql/queries/groups/getGroupsCount.generated';
 import { useGetDevicesCountQuery } from '@/graphql/queries/devices/getDeviceCount.generated';
 import AppIcon from '@/components/icons/AppIcon.vue';
 
