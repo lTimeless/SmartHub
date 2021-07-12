@@ -24,6 +24,8 @@ jobs:
       
     - name: Use latest Node.js version
       uses: actions/setup-node@master
+      with:
+        cache: 'yarn'
           
     - name: Installing project dependencies
 #      run: npm --prefix '${SmartHubUipath}' install
