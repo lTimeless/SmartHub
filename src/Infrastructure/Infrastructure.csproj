@@ -7,25 +7,25 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Figgle" Version="0.4.0" />
-    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="5.0.5" />
-    <PackageReference Include="Microsoft.AspNetCore.Identity" Version="2.2.0" />
-    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="5.0.5" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="5.0.5" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="5.0.5">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-    </PackageReference>
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Proxies" Version="5.0.5" />
-    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="5.0.0" />
-    <PackageReference Include="Microsoft.Extensions.DependencyModel" Version="5.0.0" />
-    <PackageReference Include="Microsoft.IdentityModel.Tokens" Version="6.11.0" />
-    <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="5.0.5.1" />
-    <PackageReference Include="Serilog" Version="2.10.1-dev-01249" />
-    <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.11.0" />
-    <PackageReference Include="System.Text.Json" Version="5.0.2" />
-    <PackageReference Include="YamlDotNet" Version="11.1.1" />
-    <PackageReference Include="YamlDotNet.NetCore" Version="1.0.0" />
+      <PackageReference Include="Figgle" Version="0.4.0"/>
+      <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="5.0.7"/>
+      <PackageReference Include="Microsoft.AspNetCore.Identity" Version="2.2.0"/>
+      <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="5.0.7"/>
+      <PackageReference Include="Microsoft.EntityFrameworkCore" Version="5.0.7"/>
+      <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="5.0.7">
+          <PrivateAssets>all</PrivateAssets>
+          <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      </PackageReference>
+      <PackageReference Include="Microsoft.EntityFrameworkCore.Proxies" Version="5.0.7"/>
+      <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="5.0.0"/>
+      <PackageReference Include="Microsoft.Extensions.DependencyModel" Version="5.0.0"/>
+      <PackageReference Include="Microsoft.IdentityModel.Tokens" Version="6.11.1"/>
+      <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="5.0.7"/>
+      <PackageReference Include="Serilog" Version="2.10.1-dev-01249"/>
+      <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.11.1"/>
+      <PackageReference Include="System.Text.Json" Version="5.0.2"/>
+      <PackageReference Include="YamlDotNet" Version="11.2.1"/>
+      <PackageReference Include="YamlDotNet.NetCore" Version="1.0.0"/>
   </ItemGroup>
 
   <ItemGroup>
