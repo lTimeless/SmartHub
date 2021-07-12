@@ -23,12 +23,10 @@ jobs:
     - uses: actions/checkout@v2
 
     - name: Go to ClientApp folder
-      run: cd '${SmartHubUipath}'
+      run: cd ${{ env.SmartHubUipath }}
 
     - name: Use latest Node.js version
       uses: actions/setup-node@master
-      with:
-        cache: 'yarn'
           
     - name: Installing project dependencies
 #      run: npm --prefix '${SmartHubUipath}' install
