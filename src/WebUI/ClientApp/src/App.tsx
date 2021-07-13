@@ -1,22 +1,26 @@
-import React, { useState } from 'react'
+import React, {useState} from 'react'
+import {
+  Route,
+  RouteChildrenProps,
+  Switch,
+} from 'react-router-dom'
+import {routes} from './config/routes';
 
 function App() {
   const [count, setCount] = useState(0)
 
   return (
-    <div className="h-screen w-screen ">
-      <div className="bg-blue-400 h-full w-full flex flex-col justify-center items-center">
-        <p>Hello Vite + React!</p>
-        <p>
-          <button type="button" onClick={() => setCount((count) => count + 1)}>
-            count is: {count}
-          </button>
-        </p>
-        <p>
-          Edit <code>App.tsx</code> and save to test HMR updates.
-        </p>
-      </div>
-    </div>
+      <Switch>
+        {routes.map((route, index) => {
+          return (
+              <Route key={index}
+                     exact={route.exact}
+                     path={route.path}
+                     render={(routeProps: RouteChildrenProps<any>) => <route.component {...routeProps} />}
+              />
+          )
+        })}
+      </Switch>
   )
 }
 
