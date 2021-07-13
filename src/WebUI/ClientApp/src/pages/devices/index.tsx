@@ -1,9 +1,11 @@
 import React from 'react'
 
-export const DevicesPage: React.FC = () => {
+const DevicesPage = () => {
     return (
         <div className="bg-red-300">
             Devices
         </div>
     )
 }
+
+export default DevicesPage;

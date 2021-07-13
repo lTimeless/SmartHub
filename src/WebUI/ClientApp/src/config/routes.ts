@@ -1,12 +1,11 @@
-import {DevicesPage} from "@/pages/devices/devices";
-import HomePage from "@/pages/home/home";
+import DevicesPage from "@/pages/devices";
+import HomePage from "@/pages/home";
 import {Routes} from "@/types/enums";
-import LoginPage from "src/pages/identity/login/login";
-import RegistrationPage from "src/pages/identity/registration/registration";
-import Layout from "src/pages/layout/layout";
+import LoginPage from "@/pages/identity/login";
+import RegistrationPage from "@/pages/identity/registration";
 import IRoute from "../types/route";
 
-const authRoutes: IRoute[] = [
+export const publicRoutes: IRoute[] = [
     {
         path: Routes.Login,
         exact: true,
@@ -20,10 +19,7 @@ const authRoutes: IRoute[] = [
         auth: false,
         component: RegistrationPage,
         name: 'Registration'
-    }
-];
-
-const baseRoutes: IRoute[] = [
+    },
     {
         path: Routes.Init,
         exact: true,
@@ -31,34 +27,22 @@ const baseRoutes: IRoute[] = [
         component: RegistrationPage,
         name: 'Init'
     },
-    {
-        path: Routes.Layout,
-        exact: true,
-        auth: true,
-        component: Layout,
-        name: 'Layout'
-    },
 ];
 
-export const inAppRoutes: IRoute[] = [
+export const protectedRoutes: IRoute[] = [
     {
         path: Routes.Home,
-        exact: true,
+        exact: false,
         auth: true,
         component: HomePage,
         name: 'Home'
     },
     {
         path: Routes.Devices,
-        exact: true,
+        exact: false,
         auth: true,
         component: DevicesPage,
         name: 'Devices'
     },
 ];
 
-
-export const routes: IRoute[] = [
-    ...baseRoutes,
-    ...authRoutes
-];

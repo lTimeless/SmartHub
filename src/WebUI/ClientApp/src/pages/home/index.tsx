@@ -1,9 +1,9 @@
 import React from 'react'
 
-interface HomeProps {
+interface IHomeProps {
 }
 
-const HomePage: React.FC<HomeProps> = props => {
+const HomePage = (props: IHomeProps) => {
     return (
         <div className="bg-blue-300">
             Home page

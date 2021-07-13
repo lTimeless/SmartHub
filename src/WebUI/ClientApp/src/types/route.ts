@@ -5,4 +5,5 @@ export default interface IRoute {
     auth: boolean;
     component: any;
     props?: any;
+    routes?: IRoute[]
 }

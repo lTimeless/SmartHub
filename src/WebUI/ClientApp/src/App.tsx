@@ -1,27 +1,44 @@
-import React, {useState} from 'react'
+import React from 'react'
 import {
+  BrowserRouter,
+  Redirect,
   Route,
-  RouteChildrenProps,
   Switch,
 } from 'react-router-dom'
-import {routes} from './config/routes';
+import AuthLayout from '@/components/layouts/AuthLayout';
+import Layout from '@/components/layouts/Layout';
+import { protectedRoutes, publicRoutes } from './config/routes';
+import NotFoundPage from '@/pages/errors/NotFoundPage';
+import { Routes } from './types/enums';
 
-function App() {
-  const [count, setCount] = useState(0)
-
+const App =() => {
   return (
+    <BrowserRouter >
       <Switch>
-        {routes.map((route, index) => {
-          return (
-              <Route key={index}
-                     exact={route.exact}
-                     path={route.path}
-                     render={(routeProps: RouteChildrenProps<any>) => <route.component {...routeProps} />}
-              />
-          )
-        })}
+        <Redirect exact from={Routes.Layout} to={Routes.Home} />
+        <Route exact path={[...publicRoutes.map(x => x.path)]}>
+          <AuthLayout>
+            <Switch>
+              {publicRoutes.map((route, i) => (
+                <Route key={i} path={route.path} component={route.component} />
+              ))}
+            </Switch>
+          </AuthLayout>
+        </Route>
+        {/* TODO make protected */}
+        <Route exact path={protectedRoutes.map(x => x.path)}>
+          <Layout>
+            <Switch>
+              {protectedRoutes.map((route, i) => (
+                <Route key={i} path={route.path} component={route.component} />
+              ))}
+            </Switch>
+          </Layout>
+        </Route>
+        <Route path="*" component={NotFoundPage} />
       </Switch>
+    </BrowserRouter>
   )
 }
 
-export default App
+export default App;
