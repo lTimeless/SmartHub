@@ -60,7 +60,7 @@
         <PackageReference Include="Serilog.Enrichers.Thread" Version="3.2.0-dev-00747"/>
         <PackageReference Include="Serilog.Expressions" Version="3.2.0"/>
         <PackageReference Include="Serilog.Extensions.Hosting" Version="4.1.2"/>
-        <PackageReference Include="Serilog.Extensions.Logging" Version="3.0.2-dev-10281"/>
+        <PackageReference Include="Serilog.Extensions.Logging" Version="3.0.2-dev-10289"/>
         <PackageReference Include="Serilog.Sinks.AspNetCore.SignalR" Version="0.4.0"/>
         <PackageReference Include="Serilog.Sinks.Async" Version="1.5.0"/>
         <PackageReference Include="Serilog.Sinks.Console" Version="4.0.0-dev-00839"/>
