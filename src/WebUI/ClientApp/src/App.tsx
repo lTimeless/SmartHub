@@ -8,22 +8,22 @@ import { Routes } from './types/enums';
 
 const App = () => {
   return (
-              <BrowserRouter>
-                <Switch>
-                  <Redirect exact from={Routes.Layout} to={Routes.Home} />
-                  <Route exact path={[...publicRoutes.map(x => x.path)]}>
-                    <AuthLayout>
-                      <Switch>
-                        {publicRoutes.map(route => (
-                          <Route
-                            key={route.name}
-                            path={route.path}
-                            component={route.component}
-                          />
-                        ))}
-                      </Switch>
-                    </AuthLayout>
-                  </Route>
+    <BrowserRouter>
+      <Switch>
+        <Redirect exact from={Routes.Layout} to={Routes.Home} />
+        <Route exact path={[...publicRoutes.map(x => x.path)]}>
+          <AuthLayout>
+            <Switch>
+              {publicRoutes.map(route => (
+                <Route
+                  key={route.name}
+                  path={route.path}
+                  component={route.component}
+                />
+              ))}
+            </Switch>
+          </AuthLayout>
+        </Route>
         {/* TODO make protected */}
         <Route exact path={protectedRoutes.map(x => x.path)}>
           <Layout>
