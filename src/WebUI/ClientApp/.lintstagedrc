@@ -1,6 +1,7 @@
 {
   "*.{js,ts,tsx,md}": [
     "yarn run lint:fix", 
-    "yarn run prettier:fix"
+    "yarn run prettier:fix",
+    "git add ."
     ]
 } 
