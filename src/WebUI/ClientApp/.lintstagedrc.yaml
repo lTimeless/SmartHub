@@ -1,3 +1,2 @@
-"*.{js,ts,tsx}": 
+"*.{js,ts,tsx,md}": 
   - "yarn run lint:fix"
- 
