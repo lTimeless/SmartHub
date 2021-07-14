@@ -1,2 +1,5 @@
-"*.{js,ts,tsx,md}": 
+"*.{js,ts,tsx}": 
   - "yarn run lint:fix"
+
+"*.{md}": 
+  - "yarn run prettier:fix"

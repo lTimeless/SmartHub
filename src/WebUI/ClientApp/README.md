@@ -26,7 +26,7 @@ __Prettier__ is also a plugin for __eslint__, so there is no actual need to call
 
 ### Pre-commit
 
-Before each commit a [husky](https://typicode.github.io/husky/#/) command is called, wich calls `yarn lint:fix`.  
+Before each commit a [husky](https://typicode.github.io/husky/#/) with [lint-staged](https://github.com/okonet/lint-staged#configuration) command is called, wich calls `yarn lint:fix`.  
 
 If you use "GitKraken" the husky commands will not work properly. They work with VsCode, Jetbrains and terminals.
 
