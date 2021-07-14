@@ -12,6 +12,7 @@
   "license": "MIT",
   "private": true,
   "scripts": {
+    "postinstall": "cd ../../.. && husky install ./src/WebUI/ClientApp/.husky",
     "dev": "vite",
     "build": "tsc && vite build",
     "serve": "vite preview",
