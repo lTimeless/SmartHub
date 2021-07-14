@@ -10,6 +10,10 @@ const App = () => {
   return (
     <BrowserRouter>
       <Switch>
+
+
+
+        
         <Redirect exact from={Routes.Layout} to={Routes.Home} />
         <Route exact path={[...publicRoutes.map(x => x.path)]}>
           <AuthLayout>
