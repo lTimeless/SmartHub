@@ -1,15 +1,17 @@
-import { Routes } from '@/types/enums'
-import React from 'react'
-import { Link, useLocation } from 'react-router-dom'
+import React from 'react';
+import { useLocation } from 'react-router-dom';
 
 const Navbar = () => {
-  const route = useLocation()
-  const breadcrumb = route.pathname.split('/').filter(x => x !== '').join('> ');
+  const route = useLocation();
+  const breadcrumb = route.pathname
+    .split('/')
+    .filter(x => x !== '')
+    .join('> ');
   return (
-    <div className="w-full border-b-2">
+    <div className='w-full border-b-2'>
       <span>{breadcrumb}</span>
     </div>
-  )
-}
+  );
+};
 
-export default Navbar
+export default Navbar;

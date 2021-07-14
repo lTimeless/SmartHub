@@ -1,14 +1,7 @@
-import React from 'react'
+import React from 'react';
 
-interface IHomeProps {
-}
+const HomePage = () => {
+  return <div className='bg-blue-300'>Home page</div>;
+};
 
-const HomePage = (props: IHomeProps) => {
-    return (
-        <div className="bg-blue-300">
-            Home page
-        </div>
-    )
-}
-
-export default HomePage
+export default HomePage;
