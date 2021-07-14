@@ -56,7 +56,7 @@
         <PackageReference Include="Serilog" Version="2.10.1-dev-01249"/>
         <PackageReference Include="Serilog.AspNetCore" Version="4.1.0"/>
         <PackageReference Include="Serilog.Enrichers.Environment" Version="2.2.0-dev-00784"/>
-        <PackageReference Include="Serilog.Enrichers.Process" Version="2.0.2-dev-00733"/>
+        <PackageReference Include="Serilog.Enrichers.Process" Version="2.0.2-dev-00741"/>
         <PackageReference Include="Serilog.Enrichers.Thread" Version="3.2.0-dev-00747"/>
         <PackageReference Include="Serilog.Expressions" Version="3.2.0"/>
         <PackageReference Include="Serilog.Extensions.Hosting" Version="4.1.2"/>
