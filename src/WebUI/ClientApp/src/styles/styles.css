@@ -9,6 +9,7 @@ body {
     sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    @apply selection:bg-primary selection:text-white;
 }
 
 code {
@@ -39,10 +40,4 @@ code {
 ::-webkit-scrollbar-thumb:hover {
     @apply bg-gray-400 bg-opacity-50 border rounded w-6;
     /* background: #c1cacb; */
-}
-
-/* Background */
-.background {
-    /* @apply bg-gradient-to-b from-charcoalBlue-300 via-charcoalBlue-200 to-charcoalBlue-50 */
-    @apply bg-blueGray-300;
 }

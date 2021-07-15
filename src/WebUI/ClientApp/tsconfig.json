@@ -14,7 +14,12 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "noEmit": true,
-    "jsx": "react"
+    "jsx": "react",
+    "paths": {
+      "@/*": ["src/*"],
+      "@pages/*" :["src/pages/*"],
+      "@components/*": ["src/components/*"]
+    },
   },
   "include": ["./src"],
   "exclude": [

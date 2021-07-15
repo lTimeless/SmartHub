@@ -6,9 +6,8 @@ interface IAuthProps {
 
 const AuthLayout = ({ children }: IAuthProps) => {
   return (
-    <div>
-      <h1>Auth Layout</h1>
-      {children}
+    <div className='flex flex-row justify-center items-center min-h-screen p-6 bg-sky-100'>
+      <div className='w-full h-screen xl:w-1/3 flex flex-col justify-center'>{children}</div>
     </div>
   );
 };

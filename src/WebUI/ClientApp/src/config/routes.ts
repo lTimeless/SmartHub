@@ -3,6 +3,8 @@ import HomePage from 'src/pages/home';
 import { Routes } from 'src/types/enums';
 import LoginPage from 'src/pages/identity/login';
 import RegistrationPage from 'src/pages/identity/registration';
+import NotFoundPage from 'src/pages/errors/NotFoundPage';
+import NotAuthorizedPage from 'src/pages/errors/NotAuthorizedPage';
 import IRoute from '../types/route';
 
 export const publicRoutes: IRoute[] = [
@@ -14,7 +16,7 @@ export const publicRoutes: IRoute[] = [
     name: 'Login'
   },
   {
-    path: Routes.Registration,
+    path: Routes.Register,
     exact: true,
     auth: false,
     component: RegistrationPage,
@@ -43,5 +45,20 @@ export const protectedRoutes: IRoute[] = [
     auth: true,
     component: DevicesPage,
     name: 'Devices'
+  },
+  // Error
+  {
+    path: Routes.NotFound,
+    exact: false,
+    auth: true,
+    component: NotFoundPage,
+    name: 'NotFound'
+  },
+  {
+    path: Routes.NotAuthorized,
+    exact: false,
+    auth: true,
+    component: NotAuthorizedPage,
+    name: 'NotAuthorized'
   }
 ];

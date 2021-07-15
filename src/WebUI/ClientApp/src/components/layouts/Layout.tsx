@@ -1,7 +1,7 @@
-import Navbar from 'src/components/ui/Navbar';
+import Navbar from '@/components/ui/navbar';
 import React, { ReactNode } from 'react';
 
-import Sidebar from '../ui/Sidebar';
+import Sidebar from '../ui/sidebar';
 
 interface LayoutProps {
   children?: ReactNode;

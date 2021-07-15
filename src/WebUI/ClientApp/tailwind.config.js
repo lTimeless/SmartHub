@@ -1,10 +1,11 @@
 const colors = require('tailwindcss/colors');
 const typography = require('@tailwindcss/typography');
-const forms = require('@tailwindcss/forms');
+// TODO no need for it ??
+// const forms = require('@tailwindcss/forms');
 
 module.exports = {
   mode: 'jit',
-  purge: ['./index.html', './src/**/*.{vue,js,ts,jsx,tsx}'],
+  purge: ['./index.html', './src/**/*.{js,ts,jsx,tsx}'],
   darkMode: false, // or 'media' or 'class'
   theme: {
     extend: {
@@ -13,8 +14,15 @@ module.exports = {
         indigo: colors.indigo,
         blueGray: colors.blueGray,
         teal: colors.teal,
+        rose: colors.rose,
+        cyan: colors.cyan,
+        sky: colors.sky,
         // Primary colors
-        BlueGreen: '#135872', // just for later
+        primary: colors.sky[500],
+        primaryHover: colors.sky[400],
+        secondary: colors.teal[500],
+        secondaryHover: colors.teal[400],
+        blueGreen: '#135872', // just for later
         primaryBlue: '#264653',
         primaryBlueHover: '#B9D4DF',
         primaryGreen: '#2A9D8F',
@@ -109,5 +117,5 @@ module.exports = {
   variants: {
     extend: {}
   },
-  plugins: [forms, typography]
+  plugins: [typography]
 };
