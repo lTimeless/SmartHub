@@ -2,15 +2,24 @@ import Button from '@/components/ui/button';
 import Card from '@/components/ui/card';
 import Input from '@/components/ui/input';
 import { Routes } from '@/types/enums';
-import React, { SyntheticEvent, useState } from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 
 const LoginPage = () => {
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
+  const [credentials, setCredentials] = useState({
+    userName: '',
+    password: ''
+  });
 
-  const handleSubmit = (event: SyntheticEvent) => {
-    console.log('click', username, password);
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setCredentials({
+      ...credentials,
+      [event.target.name]: event.target.value
+    });
+  };
+
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    console.log(credentials);
     // TODO sent gql request to backend
     event.preventDefault();
   };
@@ -31,15 +40,16 @@ const LoginPage = () => {
       children={
         <div className='px-10 pb-8 bg-white rounded-tr-4xl'>
           <h1 className='text-2xl font-semibold text-gray-900'>Welcome back!</h1>
-          <form className='mt-12' onSubmit={handleSubmit} method='POST'>
+          <form className='mt-12' onSubmit={e => handleSubmit(e)} method='POST'>
             <div className='relative'>
               <Input
                 label='Username'
                 type='text'
-                name='username'
+                name='userName'
                 placeholder='Username'
+                value={credentials.userName}
                 width='w-full'
-                onChange={e => setUsername(e.target.value)}
+                onChange={e => handleChange(e)}
               />
             </div>
             <div className='mt-10 relative'>
@@ -48,8 +58,9 @@ const LoginPage = () => {
                 type='password'
                 name='password'
                 placeholder='Password'
+                value={credentials.password}
                 width='w-full'
-                onChange={e => setPassword(e.target.value)}
+                onChange={e => handleChange(e)}
               />
             </div>
 

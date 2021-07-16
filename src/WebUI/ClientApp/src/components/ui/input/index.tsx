@@ -6,20 +6,26 @@ interface IInputProps {
   type: string;
   name: string;
   label: string;
+  value: any;
   width?: string;
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  onKeyDown?: (e: React.KeyboardEvent<HTMLInputElement>) => void;
+  onBlur?: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
-const Input = ({ placeholder, type, name, label, width, onChange }: IInputProps) => {
+const Input = ({ placeholder, type, name, label, width, value, onChange, onKeyDown, onBlur }: IInputProps) => {
   return (
     <div className={clsx(width || 'w-48', 'relative')}>
       <input
         id={name}
         type={type}
         name={name}
+        value={value}
         onChange={onChange}
-        className='peer h-10 w-full border-b-2 border-gray-300 text-gray-900 placeholder-transparent focus:outline-none focus:border-primary'
+        onKeyDown={onKeyDown}
+        onBlur={onBlur}
         placeholder={placeholder}
+        className='peer h-10 w-full border-b-2 border-gray-300 text-gray-900 placeholder-transparent focus:outline-none focus:border-primary'
       />
       <label
         htmlFor={name}
