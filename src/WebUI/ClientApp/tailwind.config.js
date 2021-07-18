@@ -17,6 +17,7 @@ module.exports = {
         rose: colors.rose,
         cyan: colors.cyan,
         sky: colors.sky,
+        red: colors.red,
         // Primary colors
         primary: colors.sky[500],
         primaryHover: colors.sky[400],

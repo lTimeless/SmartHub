@@ -13,6 +13,7 @@ interface IInputProps {
   onBlur?: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
+// TODO Create span for error messages
 const Input = ({ placeholder, type, name, label, width, value, onChange, onKeyDown, onBlur }: IInputProps) => {
   return (
     <div className={clsx(width || 'w-48', 'relative')}>

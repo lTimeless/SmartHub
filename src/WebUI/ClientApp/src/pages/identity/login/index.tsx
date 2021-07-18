@@ -10,6 +10,9 @@ const LoginPage = () => {
     userName: '',
     password: ''
   });
+  const pageTitle = 'Welcome back!';
+
+  const isBtnDisabled = () => credentials.userName !== '' && credentials.password !== '';
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setCredentials({
@@ -39,7 +42,7 @@ const LoginPage = () => {
       }
       children={
         <div className='px-10 pb-8 bg-white rounded-tr-4xl'>
-          <h1 className='text-2xl font-semibold text-gray-900'>Welcome back!</h1>
+          <h1 className='text-2xl font-semibold text-gray-900'>{pageTitle}</h1>
           <form className='mt-12' onSubmit={e => handleSubmit(e)} method='POST'>
             <div className='relative'>
               <Input
@@ -65,7 +68,7 @@ const LoginPage = () => {
             </div>
 
             <div className='mt-10'>
-              <Button type='submit' label='Sign in' primary width='w-full' />
+              <Button type='submit' disabled={!isBtnDisabled()} label='Sign in' primary width='w-full' />
             </div>
           </form>
           <div className='flex justify-between'>
